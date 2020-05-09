@@ -1,0 +1,6 @@
+[submodule "Neat/vendor/GLFW"]
+	path = Neat/vendor/GLFW
+	url = https://github.com/glfw/glfw
+[submodule "Neat/vendor/ImGui"]
+	path = Neat/vendor/ImGui
+	url = https://github.com/ocornut/imgui

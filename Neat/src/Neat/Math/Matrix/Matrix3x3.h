@@ -1,0 +1,141 @@
+#pragma once
+
+#include "Neat/Math/Matrix/MatrixMxN.h"
+#include "Neat/Math/Vector/VectorN.h"
+
+
+namespace Neat
+{
+   template <typename T>
+   struct Mat<3, 3, T>
+   {
+      // Default constructor
+      constexpr
+      Mat() : flattened{} {}
+
+
+      // Basic constructors
+      constexpr
+      Mat(
+         T m00, T m01, T m02,
+         T m10, T m11, T m12,
+         T m20, T m21, T m22)
+         : flattened{
+            m00, m01, m02,
+            m10, m11, m12,
+            m20, m21, m22
+            } {}
+
+      constexpr explicit
+      Mat(T scalar)
+         : flattened{
+            scalar, static_cast<T>(0), static_cast<T>(0),
+            static_cast<T>(0), scalar, static_cast<T>(0),
+            static_cast<T>(0), static_cast<T>(0), scalar
+            } {}
+
+
+      // Copy constrcutor
+      constexpr
+      Mat(const Mat<3, 3, T>& m)
+         : flattened{
+            m[0], m[1], m[2],
+            m[3], m[4], m[5],
+            m[6], m[7], m[8]
+            } {}
+
+
+      // Conversion constructors
+      template <
+         typename X1, typename Y1, typename Z1,
+         typename X2, typename Y2, typename Z2,
+         typename X3, typename Y3, typename Z3>
+      constexpr
+      Mat(
+         X1 m00, Y1 m01, Z1 m02,
+         X2 m10, Y2 m11, Z2 m12,
+         X3 m20, Y3 m21, Z3 m22)
+         : flattened{
+            static_cast<T>(m00), static_cast<T>(m01), static_cast<T>(m02),
+            static_cast<T>(m10), static_cast<T>(m11), static_cast<T>(m12),
+            static_cast<T>(m20), static_cast<T>(m21), static_cast<T>(m22)
+            } {}
+
+      template <typename U>
+      constexpr explicit
+      Mat(const Mat<3, 3, U>& m)
+         : flattened{
+            static_cast<T>(m[0]), static_cast<T>(m[1]), static_cast<T>(m[2]),
+            static_cast<T>(m[3]), static_cast<T>(m[4]), static_cast<T>(m[5]),
+            static_cast<T>(m[6]), static_cast<T>(m[7]), static_cast<T>(m[8])
+            } {}
+
+      template <typename U>
+      constexpr explicit
+      Mat(const Mat<4, 4, U>& m)
+         : flattened{
+            static_cast<T>(m[0]), static_cast<T>(m[1]), static_cast<T>(m[2]),
+            static_cast<T>(m[4]), static_cast<T>(m[5]), static_cast<T>(m[6]),
+            static_cast<T>(m[8]), static_cast<T>(m[9]), static_cast<T>(m[10])
+            } {}
+
+      template <typename U>
+      constexpr explicit
+         Mat(const Mat<2, 2, U>& m)
+         : flattened{
+            static_cast<T>(m[0]), static_cast<T>(m[1]), static_cast<T>(0),
+            static_cast<T>(m[2]), static_cast<T>(m[3]), static_cast<T>(0),
+            static_cast<T>(0), static_cast<T>(0), static_cast<T>(0)
+            } {}
+
+
+      constexpr SizeType size() const { return 3 * 3; }
+
+      // Elements acessing
+      constexpr T* dataPointer() { return this->flattened; }
+      constexpr const T* dataPointer() const { return this->flattened; }
+
+      constexpr T& operator[](SizeType pos) { return this->flattened[pos]; }
+      constexpr const T& operator[](SizeType pos) const { return this->flattened[pos]; }
+
+      constexpr T& operator()(SizeType i, SizeType j) { return this->data[i][j]; }
+      constexpr const T& operator()(SizeType i, SizeType j) const { return this->data[i][j]; }
+      constexpr T& operator()(SizeType i) { return this->flattened[i]; }
+      constexpr const T& operator()(SizeType i) const { return this->flattened[i]; }
+
+   private:
+      // Class data
+      union
+      {
+         T flattened[3 * 3];
+         T data[3][3];
+      };
+   };
+
+
+   template <typename T>
+   inline constexpr
+   Mat<3, 3, T> operator+(const Mat<3, 3, T>& ma, const Mat<3, 3, T>& mb);
+
+   template <typename T>
+   inline constexpr
+   Mat<3, 3, T> operator-(const Mat<3, 3, T>& ma, const Mat<3, 3, T>& mb);
+
+   template <typename T>
+   inline constexpr
+   Mat<3, 3, T> operator*(const Mat<3, 3, T>& ma, const Mat<3, 3, T>& mb);
+
+   template <typename T>
+   inline constexpr
+   Mat<3, 3, T> operator*(T scalar, const Mat<3, 3, T>& m);
+
+   template <typename T>
+   inline constexpr
+   Mat<3, 3, T> operator*(const Mat<3, 3, T>& m, T scalar);
+
+   template <typename T>
+   inline constexpr
+   Vec<3, T> operator*(const Mat<3, 3, T>& m, const Vec<3, T>& v);
+}
+
+#include "Neat/Math/Matrix/Matrix3x3.inl"
