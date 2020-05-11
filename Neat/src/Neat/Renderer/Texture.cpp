@@ -29,7 +29,7 @@ namespace Neat
       glTextureParameteri(this->rendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
       glTextureParameteri(this->rendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTextureParameteri(this->rendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTextureParameteri(this->rendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
    }
 
    Texture2D::Texture2D(const std::string& filepath)
@@ -73,7 +73,7 @@ namespace Neat
       glTextureParameteri(this->rendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
       glTextureParameteri(this->rendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTextureParameteri(this->rendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTextureParameteri(this->rendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
       glTextureSubImage2D(
          this->rendererID, 0, 0, 0, this->width, this->height,

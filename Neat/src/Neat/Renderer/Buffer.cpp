@@ -63,7 +63,7 @@ namespace Neat
 
    void VertexBuffer::setData(const void* data, IntLong size)
    {
-      glBindBuffer(GL_ARRAY_BUFFER, this->rendererID);
+      this->bind();
       glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
    }
 

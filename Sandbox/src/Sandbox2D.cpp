@@ -8,6 +8,12 @@ Sandbox2D::Sandbox2D()
       (float)Neat::Application::get().getWindow().getHeight(),
       true)
 {
+   //auto mat = Neat::rotate(Neat::degreesToRadians(50.0f), {0, 0, 1});
+   //for (int i = 0; i < 16; ++i)
+   //{
+   //   std::cout << mat[i] << "  ";
+   //}
+   //NT_CORE_ASSERT(false, "");
 }
 
 void Sandbox2D::onAttach()
@@ -50,6 +56,7 @@ void Sandbox2D::onRender()
       NT_PROFILE_SCOPE("Renderer");
 
       Neat::Renderer2D::beginScene(this->cameraController.getCamera());
+
       Neat::Renderer2D::drawQuad(
          {1.0f, 0.0f}, {0.5f, 0.5f}, {0.7f, 0.5f, 0.3f, 1.0f});
       Neat::Renderer2D::drawQuad(
@@ -58,22 +65,19 @@ void Sandbox2D::onRender()
          { 0.0f, 0.75f }, { 0.5f, 0.5f }, 45.0f, { 0.65f, 0.78f, 0.2f, 1.0f });
       Neat::Renderer2D::drawQuad(
          {0.0f, 0.0f, -0.1f}, {20.0f, 20.0f}, this->checkerboardTexture, this->tint, 5.0f);
-      Neat::Renderer2D::endScene();
 
-      Neat::Renderer2D::beginScene(this->cameraController.getCamera());
       for (std::size_t i = 0; i < this->numberOfLines; ++i)
          for (std::size_t j = 0; j < this->numberOfColumns; ++j)
             Neat::Renderer2D::drawQuad(
                { 0.1f * j, 0.1f * i},
                { 0.1f, 0.1f },
                { float(i) / this->numberOfLines, float(j) / this->numberOfColumns, 1.0f, 1.0f });
-      Neat::Renderer2D::endScene();
 
-      Neat::Renderer2D::beginScene(this->cameraController.getCamera());
       Neat::Renderer2D::drawQuad(
          { 0.0f, -0.7f, 0.5f }, { 1.0f, 1.0f }, this->stairsTexture);
       Neat::Renderer2D::drawQuad(
          { 1.0f, -0.7f, 0.5f }, { 1.0f, 1.0f }, this->stairsTexture2);
+
       Neat::Renderer2D::endScene();
    }
 }

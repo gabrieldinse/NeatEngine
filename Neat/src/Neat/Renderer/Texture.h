@@ -21,8 +21,6 @@ namespace Neat
       virtual void setData(void* data, UInt size) = 0;
 
       virtual void bind(UInt slot = 0) const = 0;
-
-      virtual Bool operator==(const Texture& other) const = 0;
    };
 
    class Texture2D : public Texture
@@ -44,11 +42,9 @@ namespace Neat
 
       void bind(UInt slot) const;
 
-      Bool operator==(const Texture& other) const
+      Bool operator==(const Texture2D& other) const
       {
-         return
-            (this->rendererID ==
-               static_cast<const Texture2D&>(other).rendererID);
+         return (this->rendererID == other.rendererID);
       }
 
    private:

@@ -70,21 +70,69 @@ namespace Neat
       static void startNewBatch();
 
    private:
-      struct QuadVertex
+      struct QuadVertexData
       {
          Vec3 position;
          Vec4 color;
          Vec2 textureCoordinate;
-         Float textureIndex;
+         Int textureIndex;
          Float tilingFactor;
       };
 
+      struct QuadVextexDataBuffer
+      {
+         static constexpr UInt maxQuads = 10000;
+         static constexpr UInt maxVertices = maxQuads * 4;
+         static constexpr UInt maxIndexes = maxQuads * 6;
+         static constexpr Vec4 defaultPositions[4] = {
+               { -0.5f, -0.5f, 0.0f, 1.0f },
+               { 0.5f, -0.5f, 0.0f, 1.0f },
+               { 0.5f,  0.5f, 0.0f, 1.0f },
+               { -0.5f,  0.5f, 0.0f, 1.0f }
+               };
+
+         UInt indexCount = 0;
+         std::unique_ptr<QuadVertexData[]> data;
+         QuadVertexData* currentPos = nullptr;
+
+         QuadVextexDataBuffer()
+            : data(std::make_unique<QuadVertexData[]>(
+               QuadVextexDataBuffer::maxVertices))
+         {
+         }
+
+         void addQuad(const Mat4& transform, const Vec4& color,
+            const Vec2* textureCoordinates, Int textureIndex,
+            Float tilingFactor)
+         {
+            for (SizeType i = 0; i < 4; ++i)
+            {
+               this->currentPos->position = transform * defaultPositions[i];
+               this->currentPos->color = color;
+               this->currentPos->textureCoordinate = textureCoordinates[i];
+               this->currentPos->textureIndex = textureIndex;
+               this->currentPos->tilingFactor = tilingFactor;
+               this->currentPos++;
+            }
+            this->indexCount += 6;
+         }
+
+         IntLong getDataSize() const
+         {
+            return (IntLong)((Byte*)(this->currentPos) -
+               (Byte*)(this->data.get())
+               );
+         }
+
+         void reset()
+         {
+            this->indexCount = 0;
+            this->currentPos = this->data.get();
+         }
+      };
 
       struct Renderer2DData
       {
-         static constexpr const UInt maxQuads = 10000;
-         static constexpr const UInt maxVertices = maxQuads * 4;
-         static constexpr const UInt maxIndexes = maxQuads * 6;
          static constexpr const UInt maxTextureSlots = 32; // TODO: RenderCapatilities
 
          std::shared_ptr<VertexArray> quadVertexArray;
@@ -92,14 +140,10 @@ namespace Neat
          std::shared_ptr<TextureShader> textureShader;
          std::shared_ptr<Texture2D> whiteTexture;
 
-         UInt quadIndexCount = 0;
-         std::unique_ptr<QuadVertex[]> quadVertexBufferBase;
-         QuadVertex* quadVertexBufferPtr = nullptr;
+         QuadVextexDataBuffer quadVextexDataBuffer;
 
          std::array<std::shared_ptr<Texture2D>, maxTextureSlots> textureSlots;
-         UInt textureSlotIndex = 1; // 0 = white texture
-
-         Vec4 quadVertexPositions[4];
+         Int textureSlotIndex = 1; // 0 = white texture
 
          Statistics stats;
       };
