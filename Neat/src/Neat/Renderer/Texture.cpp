@@ -17,19 +17,19 @@ namespace Neat
       NT_CORE_ASSERT(this->internalFormat & this->dataFormat,
          "Color channel format not supported!");
 
-      glCreateTextures(GL_TEXTURE_2D, 1, &this->rendererID);
+      glCreateTextures(GL_TEXTURE_2D, 1, &this->id);
 
       // Alocates storage on the gpu for the texture
       glTextureStorage2D(
-         this->rendererID, 1, this->internalFormat, this->width, this->height);
+         this->id, 1, this->internalFormat, this->width, this->height);
 
       // Set linear interpolation (integer parameter) for resizing
       // (expansion or contraction) the texture in the geometry
-      glTextureParameteri(this->rendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-      glTextureParameteri(this->rendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTextureParameteri(this->id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTextureParameteri(this->id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-      glTextureParameteri(this->rendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTextureParameteri(this->rendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      glTextureParameteri(this->id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTextureParameteri(this->id, GL_TEXTURE_WRAP_T, GL_REPEAT);
    }
 
    Texture2D::Texture2D(const std::string& filepath)
@@ -61,22 +61,22 @@ namespace Neat
       NT_CORE_ASSERT(this->internalFormat & this->dataFormat,
          "Color channel format not supported!");
 
-      glCreateTextures(GL_TEXTURE_2D, 1, &this->rendererID);
+      glCreateTextures(GL_TEXTURE_2D, 1, &this->id);
 
       // Alocates storage on the gpu for the texture
       glTextureStorage2D(
-         this->rendererID, 1, this->internalFormat, this->width, this->height);
+         this->id, 1, this->internalFormat, this->width, this->height);
 
       // Set linear interpolation (integer parameter) for resizing
       // (expansion or contraction) the texture in the geometry
-      glTextureParameteri(this->rendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-      glTextureParameteri(this->rendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTextureParameteri(this->id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTextureParameteri(this->id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-      glTextureParameteri(this->rendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTextureParameteri(this->rendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      glTextureParameteri(this->id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTextureParameteri(this->id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
       glTextureSubImage2D(
-         this->rendererID, 0, 0, 0, this->width, this->height,
+         this->id, 0, 0, 0, this->width, this->height,
          this->dataFormat, GL_UNSIGNED_BYTE, data);
 
       // Deallocates the memory
@@ -87,7 +87,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      glDeleteTextures(1, &this->rendererID);
+      glDeleteTextures(1, &this->id);
    }
 
    void Texture2D::setData(void* data, UInt size)
@@ -95,7 +95,7 @@ namespace Neat
       NT_PROFILE_FUNCTION();
 
       glTextureSubImage2D(
-         this->rendererID, 0, 0, 0, this->width, this->height,
+         this->id, 0, 0, 0, this->width, this->height,
          this->dataFormat, GL_UNSIGNED_BYTE, data);
    }
 
@@ -103,6 +103,6 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      glBindTextureUnit(slot, this->rendererID);
+      glBindTextureUnit(slot, this->id);
    }
 }

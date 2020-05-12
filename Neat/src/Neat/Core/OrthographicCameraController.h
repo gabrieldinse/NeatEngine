@@ -17,7 +17,7 @@ namespace Neat
       OrthographicCamera& getCamera() { return this->camera; }
       const OrthographicCamera& getCamera() const { return this->camera; }
 
-      void onUpdate(Timestep dt);
+      void onUpdate(Timestep deltaTime);
       void onEvent(Event& event);
 
    private:

@@ -100,23 +100,31 @@ namespace Neat
       Vec<2, T>& operator/=(U scalar);
 
 
-      inline constexpr operator Bool() const;
+      inline constexpr explicit
+      operator Bool() const;
 
 
-      constexpr SizeType size() const
+      constexpr
+      SizeType size() const
       {
          return std::extent<decltype(this->data)>::value;
       }
 
 
       // Element acessing
+      constexpr
       T& operator[](SizeType pos);
+      constexpr
       const T& operator[](SizeType pos) const;
 
+      constexpr
       T& operator()(SizeType pos) { return (*this)[pos]; }
+      constexpr
       const T& operator()(SizeType pos) const { return (*this)[pos]; }
 
+      constexpr
       T* dataPointer() { return &this->x; }
+      constexpr
       const T* dataPointer() const { return &this->x; }
    };
 

@@ -8,15 +8,11 @@
 
 namespace Neat
 {
-   class  KeyEvent : public Event
+   class KeyEvent : public Event
    {
    public:
+      using Event::Event;
       inline KeyCode getKeyCode() const { return this->keyCode; }
-
-      virtual Int getCategoryFlags() const override
-      {
-         return EventCategoryInput | EventCategoryKeyboard;
-      }
 
    protected:
       KeyEvent(KeyCode keyCode)
@@ -26,7 +22,7 @@ namespace Neat
    };
 
 
-   class  KeyPressedEvent : public KeyEvent
+   class KeyPressedEvent : public KeyEvent
    {
    public:
       KeyPressedEvent(KeyCode keyCode, Int repeatCount = 0)
@@ -34,17 +30,16 @@ namespace Neat
 
       Int getRepeatCount() const { return this->repeatCount; }
 
-      std::string toString() const override
+      virtual std::string toString() const override
       {
          std::stringstream ss;
          ss << "KeyPressedEvent: " << getKeyCode() << " (" << getRepeatCount() << " repeats)";
          return ss.str();
       }
 
-      virtual const Char* getName() const override
-      {
-         return "KeyPressed";
-      }
+      virtual const Char* getName() const override { return "KeyPressed"; }
+      static EventType type() { return EventType::KeyPressed; }
+      virtual EventType getType() const override { return type(); }
 
    private:
       Int repeatCount;
@@ -55,19 +50,18 @@ namespace Neat
    {
    public:
       KeyReleasedEvent(KeyCode keycode)
-         : KeyEvent(keycode) {}
+         : KeyEvent(keyCode) {}
       
-      std::string toString() const override
+      virtual std::string toString() const override
       {
          std::stringstream ss;
          ss << "KeyReleasedEvent: " << getKeyCode();
          return ss.str();
       }
 
-      virtual const Char* getName() const override
-      {
-         return "KeyReleased";
-      }
+      virtual const Char* getName() const override{return "KeyReleased"; }
+      static EventType type() { return EventType::KeyReleased; }
+      virtual EventType getType() const override { return type(); }
    };
 
 
@@ -77,16 +71,15 @@ namespace Neat
       KeyTypedEvent(KeyCode keyCode)
          : KeyEvent(keyCode) {}
 
-      std::string toString() const override
+      virtual std::string toString() const override
       {
          std::stringstream ss;
          ss << "KeyTypedEvent: " << getKeyCode();
          return ss.str();
       }
 
-      virtual const Char* getName() const override
-      {
-         return "KeyTyped";
-      }
+      virtual const Char* getName() const override { return "KeyTyped"; }
+      static EventType type() { return EventType::KeyTyped; }
+      virtual EventType getType() const override { return type(); }
    };
 }

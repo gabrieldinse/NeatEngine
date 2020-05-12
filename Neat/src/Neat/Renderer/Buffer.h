@@ -91,7 +91,7 @@ namespace Neat
       void setLayout(const BufferLayout& layout);
 
    private:
-      UInt rendererID = 0;
+      UInt id = 0;
       BufferLayout layout;
    };
 
@@ -111,7 +111,7 @@ namespace Neat
       Int getCount() const { return this->count; }
 
    private:
-      UInt rendererID = 0;
+      UInt id = 0;
       Int count;
    };
 }

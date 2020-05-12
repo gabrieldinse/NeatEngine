@@ -28,7 +28,7 @@ namespace Neat
       }
 
    private:
-      UInt rendererID = 0;
+      UInt id = 0;
       std::vector<std::shared_ptr<VertexBuffer>> vertexBuffers;
       std::shared_ptr<IndexBuffer> indexBuffer;
    };

@@ -11,21 +11,21 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      glCreateVertexArrays(1, &this->rendererID);
+      glCreateVertexArrays(1, &this->id);
    }
 
    VertexArray::~VertexArray()
    {
       NT_PROFILE_FUNCTION();
 
-      glDeleteVertexArrays(1, &this->rendererID);
+      glDeleteVertexArrays(1, &this->id);
    }
 
    void VertexArray::bind() const
    {
       NT_PROFILE_FUNCTION();
 
-      glBindVertexArray(this->rendererID);
+      glBindVertexArray(this->id);
    }
 
    void VertexArray::unbind() const
@@ -41,7 +41,7 @@ namespace Neat
 
       NT_CORE_ASSERT(vertexBuffer->getLayout().getElements().size(),
          "VertexBuffer has no layout!");
-      glBindVertexArray(this->rendererID);
+      glBindVertexArray(this->id);
       vertexBuffer->bind();
 
       const auto& layout = vertexBuffer->getLayout();
@@ -64,7 +64,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      glBindVertexArray(this->rendererID);
+      glBindVertexArray(this->id);
       indexBuffer->bind();
       this->indexBuffer = indexBuffer;
    }

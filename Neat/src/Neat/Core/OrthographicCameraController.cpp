@@ -19,7 +19,7 @@ namespace Neat
    {
    }
 
-   void OrthographicCameraController::onUpdate(Timestep dt)
+   void OrthographicCameraController::onUpdate(Timestep deltaTime)
    {
       NT_PROFILE_FUNCTION();
 
@@ -30,25 +30,25 @@ namespace Neat
       {
          if (isKeyPressed(KeyCode::W))
          {
-            this->cameraPosition.y += this->cameraTranslationSpeed * dt;
+            this->cameraPosition.y += this->cameraTranslationSpeed * deltaTime;
             this->camera.setPosition(this->cameraPosition);
          }
 
          if (isKeyPressed(KeyCode::S))
          {
-            this->cameraPosition.y -= this->cameraTranslationSpeed * dt;
+            this->cameraPosition.y -= this->cameraTranslationSpeed * deltaTime;
             this->camera.setPosition(this->cameraPosition);
          }
 
          if (isKeyPressed(KeyCode::D))
          {
-            this->cameraPosition.x += this->cameraTranslationSpeed * dt;
+            this->cameraPosition.x += this->cameraTranslationSpeed * deltaTime;
             this->camera.setPosition(this->cameraPosition);
          }
 
          if (isKeyPressed(KeyCode::A))
          {
-            this->cameraPosition.x -= this->cameraTranslationSpeed * dt;
+            this->cameraPosition.x -= this->cameraTranslationSpeed * deltaTime;
             this->camera.setPosition(this->cameraPosition);
          }
       }
@@ -57,7 +57,7 @@ namespace Neat
       {
          if (isKeyPressed(KeyCode::Q))
          {
-            this->cameraRotation += this->cameraRotationSpeed * dt;
+            this->cameraRotation += this->cameraRotationSpeed * deltaTime;
             if (this->cameraRotation >= 360.0f)
                this->cameraRotation -= 360.0f;
             this->camera.setRotation(this->cameraRotation);
@@ -65,7 +65,7 @@ namespace Neat
 
          if (isKeyPressed(KeyCode::E))
          {
-            this->cameraRotation -= this->cameraRotationSpeed * dt;
+            this->cameraRotation -= this->cameraRotationSpeed * deltaTime;
             if (this->cameraRotation <= -360.0f)
                this->cameraRotation += 360.0f;
             this->camera.setRotation(this->cameraRotation);

@@ -134,9 +134,9 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<3, T>& Vec<3, T>::operator+=(const Vec<3, U>& v)
    {
-      this->x += static_cast<T>(v.x);
-      this->y += static_cast<T>(v.y);
-      this->z += static_cast<T>(v.z);
+      this->x += v.x;
+      this->y += v.y;
+      this->z += v.z;
 
       return *this;
    }
@@ -145,9 +145,9 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<3, T>& Vec<3, T>::operator-=(const Vec<3, U>& v)
    {
-      this->x -= static_cast<T>(v.x);
-      this->y -= static_cast<T>(v.y);
-      this->z -= static_cast<T>(v.z);
+      this->x -= v.x;
+      this->y -= v.y;
+      this->z -= v.z;
 
       return *this;
    }
@@ -156,9 +156,9 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<3, T>& Vec<3, T>::operator*=(const Vec<3, U>& v)
    {
-      this->x *= static_cast<T>(v.x);
-      this->y *= static_cast<T>(v.y);
-      this->z *= static_cast<T>(v.z);
+      this->x *= v.x;
+      this->y *= v.y;
+      this->z *= v.z;
 
       return *this;
    }
@@ -167,9 +167,9 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<3, T>& Vec<3, T>::operator*=(U scalar)
    {
-      this->x *= static_cast<T>(scalar);
-      this->y *= static_cast<T>(scalar);
-      this->z *= static_cast<T>(scalar);
+      this->x *= scalar;
+      this->y *= scalar;
+      this->z *= scalar;
 
       return *this;
    }
@@ -178,9 +178,9 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<3, T>& Vec<3, T>::operator/=(U scalar)
    {
-      this->x /= static_cast<T>(scalar);
-      this->y /= static_cast<T>(scalar);
-      this->z /= static_cast<T>(scalar);
+      this->x /= scalar;
+      this->y /= scalar;
+      this->z /= scalar;
 
       return *this;
    }
@@ -195,7 +195,8 @@ namespace Neat
 
 
    template <typename T>
-   inline T& Vec<3, T>::operator[](SizeType pos)
+   inline constexpr
+   T& Vec<3, T>::operator[](SizeType pos)
    {
       switch (pos)
       {
@@ -208,7 +209,8 @@ namespace Neat
    }
 
    template <typename T>
-   inline const T& Vec<3, T>::operator[](SizeType pos) const
+   inline constexpr
+   const T& Vec<3, T>::operator[](SizeType pos) const
    {
       switch (pos)
       {

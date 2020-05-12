@@ -19,7 +19,7 @@ namespace Neat
 
       virtual void onAttach() {}
       virtual void onDetach() {}
-      virtual void onUpdate(Timestep dt) {}
+      virtual void onUpdate(Timestep deltaTime) {}
       virtual void onRender() {}
       virtual void onImGuiRender() {}
       virtual void onEvent(Event& event) {}

@@ -95,7 +95,7 @@ namespace Neat
 		auto shader_sources = preprocessShaderSource(source);
 		compile(shader_sources);
 		this->name = std::filesystem::path(filepath).stem().string();
-		this->uniformLibrary = std::make_unique<UniformLibrary>(this->rendererID);
+		this->uniformLibrary = std::make_unique<UniformLibrary>(this->id);
 	}
 
 	ShaderProgram::ShaderProgram(const std::string& name,
@@ -107,7 +107,7 @@ namespace Neat
 		auto shader_sources = preprocessShaderSource(source);
 		compile(shader_sources);
 		this->name = name;
-		this->uniformLibrary = std::make_unique<UniformLibrary>(this->rendererID);
+		this->uniformLibrary = std::make_unique<UniformLibrary>(this->id);
 	}
 
 	ShaderProgram::ShaderProgram(
@@ -121,14 +121,14 @@ namespace Neat
 		shader_sources[GL_VERTEX_SHADER] = vertexSource;
 		shader_sources[GL_FRAGMENT_SHADER] = fragmentSource;
 		compile(shader_sources);
-		this->uniformLibrary = std::make_unique<UniformLibrary>(this->rendererID);
+		this->uniformLibrary = std::make_unique<UniformLibrary>(this->id);
 	}
 
 	ShaderProgram::~ShaderProgram()
 	{
 		NT_PROFILE_FUNCTION();
 
-		glDeleteProgram(this->rendererID);
+		glDeleteProgram(this->id);
 	}
 
 	void ShaderProgram::compile(const std::unordered_map<UInt,
@@ -206,14 +206,14 @@ namespace Neat
 		for (auto shader_id : shaders_id)
 			glDetachShader(program_id, shader_id);
 
-		this->rendererID = program_id;
+		this->id = program_id;
 	}
 
 	void ShaderProgram::bind() const
 	{
 		NT_PROFILE_FUNCTION();
 
-		glUseProgram(this->rendererID);
+		glUseProgram(this->id);
 	}
 
 	void ShaderProgram::unbind() const

@@ -26,8 +26,8 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      glCreateBuffers(1, &this->rendererID);
-      glBindBuffer(GL_ARRAY_BUFFER, this->rendererID);
+      glCreateBuffers(1, &this->id);
+      glBindBuffer(GL_ARRAY_BUFFER, this->id);
       glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_DYNAMIC_DRAW);
    }
 
@@ -35,8 +35,8 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      glCreateBuffers(1, &this->rendererID);
-      glBindBuffer(GL_ARRAY_BUFFER, this->rendererID);
+      glCreateBuffers(1, &this->id);
+      glBindBuffer(GL_ARRAY_BUFFER, this->id);
       glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
    }
 
@@ -44,14 +44,14 @@ namespace Neat
    {
 
       NT_PROFILE_FUNCTION();
-      glDeleteBuffers(1, &this->rendererID);
+      glDeleteBuffers(1, &this->id);
    }
 
    void VertexBuffer::bind() const
    {
       NT_PROFILE_FUNCTION();
 
-      glBindBuffer(GL_ARRAY_BUFFER, this->rendererID);
+      glBindBuffer(GL_ARRAY_BUFFER, this->id);
    }
 
    void VertexBuffer::unbind() const
@@ -80,8 +80,8 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      glCreateBuffers(1, &this->rendererID);
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->rendererID);
+      glCreateBuffers(1, &this->id);
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->id);
       glBufferData(GL_ELEMENT_ARRAY_BUFFER,
          count * sizeof(count), indices, GL_STATIC_DRAW);
    }
@@ -90,14 +90,14 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      glDeleteBuffers(1, &this->rendererID);
+      glDeleteBuffers(1, &this->id);
    }
 
    void IndexBuffer::bind() const
    {
       NT_PROFILE_FUNCTION();
 
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->rendererID);
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->id);
    }
 
    void IndexBuffer::unbind() const

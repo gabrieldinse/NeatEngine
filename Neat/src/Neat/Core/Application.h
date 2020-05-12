@@ -5,6 +5,7 @@
 #include "Neat/Core/LayerGroup.h"
 #include "Neat/Events/ApplicationEvent.h"
 #include "Neat/Core/Timestep.h"
+#include "Neat/ECS/EntityManager.h"
 
 
 namespace Neat
@@ -40,7 +41,7 @@ namespace Neat
       std::unique_ptr<Layer> popOverlay(Int position);
       std::unique_ptr<Layer> popOverlay(const std::string& name);
 
-      void setUpdateRate(Float rate) { this->dt = 1.0f / rate; }
+      void setUpdateRate(Float rate) { this->deltaTime = 1.0f / rate; }
 
       static Application& get() { return *instance; }
       Window& getWindow() { return this->window; }
@@ -58,7 +59,7 @@ namespace Neat
 
       Window window;
       LayerGroup layerGroup;
-      Float dt = 1.0f / 120.0f;
+      Float deltaTime = 1.0f / 120.0f;
 
       Bool running = false;
    };

@@ -1,5 +1,6 @@
 #pragma once
 
+
 // Platform detection
 #ifdef _WIN32
    /* Windows x64/x86 */

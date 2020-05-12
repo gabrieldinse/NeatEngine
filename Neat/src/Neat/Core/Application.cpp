@@ -62,13 +62,13 @@ namespace Neat
          timer.reset();
          accumulator += timer.getDeltaTime();
 
-         while (accumulator >= this->dt)
+         while (accumulator >= this->deltaTime)
          {
             NT_PROFILE_SCOPE("LayerGroup onUpdate");
 
             for (auto& layer : this->layerGroup)
-               layer->onUpdate(this->dt);
-            accumulator -= this->dt;
+               layer->onUpdate(this->deltaTime);
+            accumulator -= this->deltaTime;
          }
       }
    }

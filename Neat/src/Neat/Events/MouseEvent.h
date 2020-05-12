@@ -8,15 +8,10 @@
 
 namespace Neat
 {
-   class  MouseButtonEvent : public Event
+   class MouseButtonEvent : public Event
    {
    public:
       MouseCode getButton() const { return this->button; }
-
-      virtual Int getCategoryFlags() const override
-      {
-         return EventCategoryInput | EventCategoryMouse;
-      }
 
    protected:
       MouseButtonEvent(MouseCode button)
@@ -26,49 +21,46 @@ namespace Neat
    };
 
 
-   class  MouseButtonPressedEvent : public MouseButtonEvent
+   class MouseButtonPressedEvent : public MouseButtonEvent
    {
    public:
       MouseButtonPressedEvent(MouseCode button)
          : MouseButtonEvent(button) {}
 
 
-      std::string toString() const override
+      virtual std::string toString() const override
       {
          std::stringstream ss;
          ss << "MouseButtonPressedEvent: " << getButton();
          return ss.str();
       }
 
-      virtual const Char* getName() const override
-      {
-         return "MouseButtonPressed";
-      }
-
+      virtual const Char* getName() const override { return "MouseButtonPressed"; }
+      static EventType type() { return EventType::KeyTyped; }
+      virtual EventType getType() const override { return type(); }
    };
 
 
-   class  MouseButtonReleasedEvent : public MouseButtonEvent
+   class MouseButtonReleasedEvent : public MouseButtonEvent
    {
    public:
       MouseButtonReleasedEvent(MouseCode button)
          : MouseButtonEvent(button) {}
 
-      std::string toString() const override
+      virtual std::string toString() const override
       {
          std::stringstream ss;
          ss << "MouseButtonReleasedEvent: " << getButton();
          return ss.str();
       }
 
-      virtual const Char* getName() const override
-      {
-         return "MouseButtonReleased";
-      }
+      virtual const Char* getName() const override { return "MouseButtonReleased"; }
+      static EventType type() { return EventType::KeyTyped; }
+      virtual EventType getType() const override { return type(); }
    };
 
       
-   class  MouseMovedEvent : public Event
+   class MouseMovedEvent : public Event
    {
    public:
       MouseMovedEvent(Float mouseX, Float mouseY)
@@ -77,22 +69,17 @@ namespace Neat
       Float getX() const { return this->mouseX; }
       Float getY() const { return this->mouseY; }
 
-      std::string toString() const override
+      virtual std::string toString() const override
       {
          std::stringstream ss;
          ss << "MouseMovedEvent: " << getX() << ", " << getY();
          return ss.str();
       }
 
-      virtual Int getCategoryFlags() const override
-      {
-         return EventCategoryInput | EventCategoryMouse;
-      }
+      virtual const Char* getName() const override { return "MouseMoved"; }
 
-      virtual const Char* getName() const override
-      {
-         return "MouseMoved";
-      }
+      constexpr static EventType type() { return EventType::MouseMoved; }
+      virtual EventType getType() const override { return type(); }
 
    private:
       Float mouseX;
@@ -109,22 +96,17 @@ namespace Neat
       Float getXOffset() const { return this->offsetX; }
       Float getYOffset() const { return this->offsetY; }
 
-      std::string toString() const override
+      virtual std::string toString() const override
       {
          std::stringstream ss;
          ss << "MouseScrolledEvent: " << getXOffset() << ", " << getYOffset();
          return ss.str();
       }
 
-      virtual Int getCategoryFlags() const override
-      {
-         return EventCategoryInput | EventCategoryMouse;
-      }
+      virtual const Char* getName() const override { return "MouseScrolled"; }
 
-      virtual const Char* getName() const override
-      {
-         return "MouseScrolled";
-      }
+      constexpr static EventType type() { return EventType::MouseScrolled; }
+      virtual EventType getType() const override { return type(); }
 
    private:
       Float offsetX;

@@ -16,22 +16,16 @@ namespace Neat
       UInt getWidth() const { return this->width; }
       UInt getHeight() const { return this->height; }
 
-      std::string toString() const override
+      virtual std::string toString() const override
       {
          std::stringstream ss;
          ss << "WindowResizeEvent: " << getWidth() << ", " << getHeight();
          return ss.str();
       }
 
-      virtual Int getCategoryFlags() const override
-      {
-         return EventCategoryApplication;
-      }
-
-      virtual const Char* getName() const override
-      {
-         return "WindowResize";
-      }
+      virtual const Char* getName() const override { return "WindowResize"; }
+      static EventType type() { return EventType::WindowResize; }
+      virtual EventType getType() const override { return type(); }
 
    private:
       UInt width;
@@ -44,73 +38,49 @@ namespace Neat
    public:
       WindowCloseEvent() = default;
 
-      std::string toString() const override
+      virtual std::string toString() const override
       {
          std::stringstream ss;
          ss << "WindowCloseEvent";
          return ss.str();
       }
 
-      virtual Int getCategoryFlags() const override
-      {
-         return EventCategoryApplication;
-      }
-
-      virtual const Char* getName() const override
-      {
-         return "WindowClose";
-      }
+      virtual const Char* getName() const override { return "WindowClose"; }
+      static EventType type() { return EventType::WindowClose; }
+      virtual EventType getType() const override { return type(); }
    };
 
 
-   class  AppTickEvent : public Event
+   class  ApplicationTickEvent : public Event
    {
    public:
-      AppTickEvent() = default;
+      ApplicationTickEvent() = default;
 
-      virtual Int getCategoryFlags() const override
-      {
-         return EventCategoryApplication;
-      }
-
-      virtual const Char* getName() const override
-      {
-         return "AppTick";
-      }
+      virtual const Char* getName() const override { return "ApplicationTick"; }
+      static EventType type() { return EventType::ApplicationTick; }
+      virtual EventType getType() const override { return type(); }
    };
 
 
-   class  AppUpdateEvent : public Event
+   class  ApplicationUpdateEvent : public Event
    {
    public:
-      AppUpdateEvent() = default;
+      ApplicationUpdateEvent() = default;
 
-      virtual Int getCategoryFlags() const override
-      {
-         return EventCategoryApplication;
-      }
-
-      virtual const Char* getName() const override
-      {
-         return "AppUpdate";
-      }
+      virtual const Char* getName() const override { return "ApplicationUpdate"; }
+      static EventType type() { return EventType::ApplicationUpdate; }
+      virtual EventType getType() const override { return type(); }
    };
 
 
-   class  AppRendererEvent : public Event
+   class  ApplicationRenderEvent : public Event
    {
    public:
-      AppRendererEvent() = default;
+      ApplicationRenderEvent() = default;
 
-      virtual Int getCategoryFlags() const override
-      {
-         return EventCategoryApplication;
-      }
-
-      virtual const Char* getName() const override
-      {
-         return "AppRenderer";
-      }
+      virtual const Char* getName() const override { return "ApplicationRender"; }
+      static EventType type() { return EventType::ApplicationRender; }
+      virtual EventType getType() const override { return type(); }
    };
 }
 

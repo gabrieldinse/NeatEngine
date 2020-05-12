@@ -98,7 +98,7 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<1, T>& Vec<1, T>::operator+=(const Vec<1, U>& v)
    {
-      this->x += static_cast<T>(v.x);
+      this->x += v.x;
 
       return *this;
    }
@@ -107,7 +107,7 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<1, T>& Vec<1, T>::operator-=(const Vec<1, U>& v)
    {
-      this->x -= static_cast<T>(v.x);
+      this->x -= v.x;
 
       return *this;
    }
@@ -116,7 +116,7 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<1, T>& Vec<1, T>::operator*=(const Vec<1, U>& v)
    {
-      this->x *= static_cast<T>(v.x);
+      this->x *= v.x;
 
 
       return *this;
@@ -126,7 +126,7 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<1, T>& Vec<1, T>::operator*=(U scalar)
    {
-      this->x *= static_cast<T>(scalar);
+      this->x *= scalar;
 
       return *this;
    }
@@ -135,7 +135,7 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<1, T>& Vec<1, T>::operator/=(U scalar)
    {
-      this->x /= static_cast<T>(scalar);
+      this->x /= scalar;
 
       return *this;
    }
@@ -150,7 +150,8 @@ namespace Neat
 
 
    template<typename T>
-   inline T& Vec<1, T>::operator[](SizeType pos)
+   inline  constexpr
+   T& Vec<1, T>::operator[](SizeType pos)
    {
       switch (pos)
       {
@@ -161,7 +162,8 @@ namespace Neat
    }
 
    template<typename T>
-   inline const T& Vec<1, T>::operator[](SizeType pos) const
+   inline constexpr
+   const T& Vec<1, T>::operator[](SizeType pos) const
    {
       switch (pos)
       {

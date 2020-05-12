@@ -30,7 +30,7 @@ namespace Neat
       const std::string& getName() const { return this->name; }
       void setName(const std::string& name) { this->name = name; }
 
-      UInt getRendererID() const { return this->rendererID; }
+      UInt getRendererID() const { return this->id; }
 
       const UniformLibrary& getUniformLibrary() const { return *this->uniformLibrary; }
 
@@ -39,7 +39,7 @@ namespace Neat
          const std::unordered_map<UInt, std::string>& shaderSources);
 
    private:
-      UInt rendererID = 0;
+      UInt id = 0;
       std::unique_ptr<UniformLibrary> uniformLibrary;
       std::string name;
    };

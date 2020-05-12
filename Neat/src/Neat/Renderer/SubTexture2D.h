@@ -11,7 +11,10 @@ namespace Neat
       SubTexture2D(const Texture2D& texture,
          const Vec2& upperLeftCoordinate, const Vec2& size);
 
-      const Vec2* getCoordinates() const override { return this->textureCoordinates; }
+      virtual const Vec2* getCoordinates() const override
+      {
+         return this->textureCoordinates;
+      }
 
       static std::shared_ptr<SubTexture2D> createFromIndex(
          const Texture2D& texture,

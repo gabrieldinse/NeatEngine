@@ -44,11 +44,11 @@ namespace Neat
 
       Bool operator==(const Texture2D& other) const
       {
-         return (this->rendererID == other.rendererID);
+         return (this->id == other.id);
       }
 
    private:
-      UInt rendererID;
+      UInt id;
       Int width;
       Int height;
       UInt internalFormat;

@@ -109,8 +109,8 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<2, T>& Vec<2, T>::operator+=(const Vec<2, U>& v)
    {
-      this->x += static_cast<T>(v.x);
-      this->y += static_cast<T>(v.y);
+      this->x += v.x;
+      this->y += v.y;
 
       return *this;
    }
@@ -119,8 +119,8 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<2, T>& Vec<2, T>::operator-=(const Vec<2, U>& v)
    {
-      this->x -= static_cast<T>(v.x);
-      this->y -= static_cast<T>(v.y);
+      this->x -= v.x;
+      this->y -= v.y;
 
       return *this;
    }
@@ -129,8 +129,8 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<2, T>& Vec<2, T>::operator*=(const Vec<2, U>& v)
    {
-      this->x *= static_cast<T>(v.x);
-      this->y *= static_cast<T>(v.y);
+      this->x *= v.x;
+      this->y *= v.y;
 
 
       return *this;
@@ -140,8 +140,8 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<2, T>& Vec<2, T>::operator*=(U scalar)
    {
-      this->x *= static_cast<T>(scalar);
-      this->y *= static_cast<T>(scalar);
+      this->x *= scalar;
+      this->y *= scalar;
 
       return *this;
    }
@@ -150,8 +150,8 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<2, T>& Vec<2, T>::operator/=(U scalar)
    {
-      this->x /= static_cast<T>(scalar);
-      this->y /= static_cast<T>(scalar);
+      this->x /= scalar;
+      this->y /= scalar;
 
       return *this;
    }
@@ -159,14 +159,15 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-      Vec<2, T>::operator Bool() const
+   Vec<2, T>::operator Bool() const
    {
       return (norm(*this) > static_cast<T>(0));
    }
    
 
    template<typename T>
-   inline T& Vec<2, T>::operator[](SizeType pos)
+   inline  constexpr
+   T& Vec<2, T>::operator[](SizeType pos)
    {
       switch (pos)
       {
@@ -178,7 +179,8 @@ namespace Neat
    }
 
    template<typename T>
-   inline const T& Vec<2, T>::operator[](SizeType pos) const
+   inline constexpr
+   const T& Vec<2, T>::operator[](SizeType pos) const
    {
       switch (pos)
       {

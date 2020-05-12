@@ -212,12 +212,12 @@ namespace Neat
    void Uniform<ShaderDataType::Mat3>::set(Mat3 matrix)
    {
       glUniformMatrix3fv(
-			this->data->location, 1, GL_FALSE, transpose(matrix).dataPointer());
+			this->data->location, 1, GL_TRUE, matrix.dataPointer());
    }
 
    void Uniform<ShaderDataType::Mat4>::set(Mat4 matrix)
    {
       glUniformMatrix4fv(
-			this->data->location, 1, GL_FALSE, transpose(matrix).dataPointer());
+			this->data->location, 1, GL_TRUE, matrix.dataPointer());
    }
 }

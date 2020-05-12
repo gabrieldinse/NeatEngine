@@ -8,12 +8,6 @@ Sandbox2D::Sandbox2D()
       (float)Neat::Application::get().getWindow().getHeight(),
       true)
 {
-   //auto mat = Neat::rotate(Neat::degreesToRadians(50.0f), {0, 0, 1});
-   //for (int i = 0; i < 16; ++i)
-   //{
-   //   std::cout << mat[i] << "  ";
-   //}
-   //NT_CORE_ASSERT(false, "");
 }
 
 void Sandbox2D::onAttach()

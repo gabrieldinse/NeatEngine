@@ -115,7 +115,6 @@ namespace Neat
       constexpr T& operator()(SizeType i) { return this->flattened[i]; }
       constexpr const T& operator()(SizeType i) const { return this->flattened[i]; }
 
-   private:
       // Class data
       union
       {

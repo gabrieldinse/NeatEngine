@@ -157,55 +157,60 @@ namespace Neat
    // Compound assigment operators
    template<typename T>
    template<typename U>
-   inline constexpr Vec<4, T>& Vec<4, T>::operator+=(const Vec<4, U>& v)
+   inline constexpr
+   Vec<4, T>& Vec<4, T>::operator+=(const Vec<4, U>& v)
    {
-      this->x += static_cast<T>(v.x);
-      this->y += static_cast<T>(v.y);
-      this->z += static_cast<T>(v.z);
-      this->w += static_cast<T>(v.w);
+      this->x += v.x;
+      this->y += v.y;
+      this->z += v.z;
+      this->w += v.w;
 
       return *this;
    }
 
    template<typename T>
    template<typename U>
-   inline constexpr Vec<4, T>& Vec<4, T>::operator-=(const Vec<4, U>& v)
+   inline constexpr
+   Vec<4, T>& Vec<4, T>::operator-=(const Vec<4, U>& v)
    {
-      this->x -= static_cast<T>(v.x);
-      this->y -= static_cast<T>(v.y);
-      this->z -= static_cast<T>(v.z);
-      this->w -= static_cast<T>(v.w);
+      this->x -= v.x;
+      this->y -= v.y;
+      this->z -= v.z;
+      this->w -= v.w;
 
       return *this;
    }
 
    template<typename T>
    template<typename U>
-   inline constexpr Vec<4, T>& Vec<4, T>::operator*=(const Vec<4, U>& v)
+   inline constexpr
+   Vec<4, T>& Vec<4, T>::operator*=(const Vec<4, U>& v)
    {
-      this->x *= static_cast<T>(v.x);
-      this->y *= static_cast<T>(v.y);
-      this->z *= static_cast<T>(v.z);
-      this->w *= static_cast<T>(v.w);
+      this->x *= v.x;
+      this->y *= v.y;
+      this->z *= v.z;
+      this->w *= v.w;
 
       return *this;
    }
 
    template<typename T>
    template<typename U>
-   inline constexpr Vec<4, T>& Vec<4, T>::operator*=(U scalar)
+   inline constexpr
+   Vec<4, T>& Vec<4, T>::operator*=(U scalar)
    {
-      this->x *= static_cast<T>(scalar);
-      this->y *= static_cast<T>(scalar);
-      this->z *= static_cast<T>(scalar);
-      this->w *= static_cast<T>(scalar);
+      this->x *= scalar;
+      this->y *= scalar;
+      this->z *= scalar;
+      this->w *= scalar;
 
       return *this;
    }
 
    template<typename T>
    template<typename U>
-   inline constexpr Vec<4, T>& Vec<4, T>::operator/=(U scalar)
+   inline constexpr
+   Vec<4, T>& Vec<4, T>::operator/=(U scalar)
    {
       this->x /= static_cast<T>(scalar);
       this->y /= static_cast<T>(scalar);
@@ -225,7 +230,8 @@ namespace Neat
 
 
    template<typename T>
-   inline T& Vec<4, T>::operator[](SizeType pos)
+   inline constexpr
+   T& Vec<4, T>::operator[](SizeType pos)
    {
       switch (pos)
       {
@@ -239,7 +245,8 @@ namespace Neat
    }
 
    template<typename T>
-   inline const T& Vec<4, T>::operator[](SizeType pos) const
+   inline constexpr
+   const T& Vec<4, T>::operator[](SizeType pos) const
    {
       switch (pos)
       {
