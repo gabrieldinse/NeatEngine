@@ -9,16 +9,16 @@
 namespace Neat
 {
    GraphicsContext::GraphicsContext(GLFWwindow* windowHandle)
-      : window(windowHandle)
+      : m_window(windowHandle)
    {
-      NT_CORE_ASSERT(this->window, "Window is null!");
+      NT_CORE_ASSERT(m_window, "Window is null!");
    }
 
    void GraphicsContext::init()
    {
       NT_PROFILE_FUNCTION();
 
-      glfwMakeContextCurrent(this->window);
+      glfwMakeContextCurrent(m_window);
 
       // Glad initialization (need to be after window creation)
       auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -34,6 +34,6 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      glfwSwapBuffers(this->window);
+      glfwSwapBuffers(m_window);
    }
 }

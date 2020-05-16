@@ -18,7 +18,7 @@ namespace Neat
    {
       std::string name;
       long long start, end;
-      SizeType theadID;
+      std::size_t theadID;
    };
 
    struct InstrumentationSession
@@ -28,90 +28,90 @@ namespace Neat
 
    class Instrumentor
    {
-   private:
-      InstrumentationSession* currentSession;
-      std::ofstream outputStream;
-      Int profileCount;
-      std::mutex writingMutex;
-
    public:
       Instrumentor()
-         : currentSession(nullptr), profileCount(0)
+         : m_currentSession(nullptr), m_profileCount(0)
       {
       }
 
       void beginSession(const std::string& name, const std::string& filepath = "results.json")
       {
-         this->outputStream.open(filepath);
+         m_outputStream.open(filepath);
          writeHeader();
-         this->currentSession = new InstrumentationSession{name};
+         m_currentSession = new InstrumentationSession{name};
       }
 
       void endSession()
       {
          writeFooter();
-         this->outputStream.close();
-         delete this->currentSession;
-         this->currentSession = nullptr;
-         this->profileCount = 0;
+         m_outputStream.close();
+         delete m_currentSession;
+         m_currentSession = nullptr;
+         m_profileCount = 0;
       }
 
       void writeProfile(const ProfileResult& result)
       {
-         writingMutex.lock();
-         if (this->profileCount++ > 0)
-            this->outputStream << ",";
+         m_writingMutex.lock();
+         if (m_profileCount++ > 0)
+            m_outputStream << ",";
 
          std::string name = result.name;
          std::replace(name.begin(), name.end(), '"', '\'');
 
-         this->outputStream << "{";
-         this->outputStream << "\"cat\":\"function\",";
-         this->outputStream << "\"dur\":" << (result.end - result.start) << ",";
-         this->outputStream << "\"name\":\"" << name << "\",";
-         this->outputStream << "\"ph\":\"X\",";
-         this->outputStream << "\"pid\":0,";
-         this->outputStream << "\"tid\":" << result.theadID << ",";
-         this->outputStream << "\"ts\":" << result.start;
-         this->outputStream << "}";
+         m_outputStream << "{";
+         m_outputStream << "\"cat\":\"function\",";
+         m_outputStream << "\"dur\":" << (result.end - result.start) << ",";
+         m_outputStream << "\"name\":\"" << name << "\",";
+         m_outputStream << "\"ph\":\"X\",";
+         m_outputStream << "\"pid\":0,";
+         m_outputStream << "\"tid\":" << result.theadID << ",";
+         m_outputStream << "\"ts\":" << result.start;
+         m_outputStream << "}";
 
-         this->outputStream.flush();
-         writingMutex.unlock();
+         m_outputStream.flush();
+         m_writingMutex.unlock();
       }
 
       void writeHeader()
       {
-         this->outputStream << "{\"otherData\": {},\"traceEvents\":[";
-         this->outputStream.flush();
+         m_outputStream << "{\"otherData\": {},\"traceEvents\":[";
+         m_outputStream.flush();
       }
 
       void writeFooter()
       {
-         this->outputStream << "]}";
-         this->outputStream.flush();
+         m_outputStream << "]}";
+         m_outputStream.flush();
       }
 
       static Instrumentor& get()
       {
-         static Instrumentor instance;
-         return instance;
+         static Instrumentor s_instance;
+         return s_instance;
       }
+
+   private:
+      InstrumentationSession* m_currentSession;
+      std::ofstream m_outputStream;
+      Int m_profileCount;
+      std::mutex m_writingMutex;
    };
 
    class InstrumentationTimer
    {
    public:
-      InstrumentationTimer(const Char* name)
-         : name(name)
-         , stopped(false)
-         , startTimepoint(std::chrono::high_resolution_clock::now())
+      InstrumentationTimer(const char* name)
+         : m_name(name)
+         , m_stopped(false)
+         , m_startTimepoint(std::chrono::high_resolution_clock::now())
       {
       }
 
       ~InstrumentationTimer()
       {
-         if (!this->stopped)
-            this->stop();
+         if (!m_stopped)
+            stop();
       }
 
       void stop()
@@ -119,18 +119,19 @@ namespace Neat
          using namespace std::chrono;
          auto end_timepoint = high_resolution_clock::now();
 
-         auto start = time_point_cast<microseconds>(startTimepoint).time_since_epoch().count();
+         auto start = time_point_cast<microseconds>(m_startTimepoint).time_since_epoch().count();
          auto end = time_point_cast<microseconds>(end_timepoint).time_since_epoch().count();
 
          auto thread_id = std::hash<std::thread::id>{}(std::this_thread::get_id());
-         Instrumentor::get().writeProfile({this->name, start, end, thread_id});
+         Instrumentor::get().writeProfile({m_name, start, end, thread_id});
 
-         this->stopped = true;
+         m_stopped = true;
       }
+
    private:
-      const Char* name;
-      std::chrono::time_point<std::chrono::high_resolution_clock> startTimepoint;
-      Bool stopped;
+      const char* m_name;
+      std::chrono::time_point<std::chrono::high_resolution_clock> m_startTimepoint;
+      bool m_stopped;
    };
 }
 

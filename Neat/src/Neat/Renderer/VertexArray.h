@@ -19,17 +19,17 @@ namespace Neat
 
       const std::vector<std::shared_ptr<VertexBuffer>>& getVertexBuffers() const
       {
-         return this->vertexBuffers;
+         return m_vertexBuffers;
       }
 
       const std::shared_ptr<IndexBuffer>& getIndexBuffer() const
       {
-         return this->indexBuffer;
+         return m_indexBuffer;
       }
 
    private:
-      UInt id = 0;
-      std::vector<std::shared_ptr<VertexBuffer>> vertexBuffers;
-      std::shared_ptr<IndexBuffer> indexBuffer;
+      UInt m_id = 0;
+      std::vector<std::shared_ptr<VertexBuffer>> m_vertexBuffers;
+      std::shared_ptr<IndexBuffer> m_indexBuffer;
    };
 }

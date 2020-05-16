@@ -11,21 +11,21 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      glCreateVertexArrays(1, &this->id);
+      glCreateVertexArrays(1, &m_id);
    }
 
    VertexArray::~VertexArray()
    {
       NT_PROFILE_FUNCTION();
 
-      glDeleteVertexArrays(1, &this->id);
+      glDeleteVertexArrays(1, &m_id);
    }
 
    void VertexArray::bind() const
    {
       NT_PROFILE_FUNCTION();
 
-      glBindVertexArray(this->id);
+      glBindVertexArray(m_id);
    }
 
    void VertexArray::unbind() const
@@ -41,7 +41,7 @@ namespace Neat
 
       NT_CORE_ASSERT(vertexBuffer->getLayout().getElements().size(),
          "VertexBuffer has no layout!");
-      glBindVertexArray(this->id);
+      glBindVertexArray(m_id);
       vertexBuffer->bind();
 
       const auto& layout = vertexBuffer->getLayout();
@@ -54,18 +54,18 @@ namespace Neat
             element.dataType,
             element.normalized,
             layout.getStride(),
-            static_cast<const void*>(static_cast<const Char*>(0) + element.offset));
+            static_cast<const void*>(static_cast<const char*>(0) + element.offset));
       }
 
-      this->vertexBuffers.push_back(vertexBuffer);
+      m_vertexBuffers.push_back(vertexBuffer);
    }
 
    void VertexArray::setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
    {
       NT_PROFILE_FUNCTION();
 
-      glBindVertexArray(this->id);
+      glBindVertexArray(m_id);
       indexBuffer->bind();
-      this->indexBuffer = indexBuffer;
+      m_indexBuffer = indexBuffer;
    }
 }

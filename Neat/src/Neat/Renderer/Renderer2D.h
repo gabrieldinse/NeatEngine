@@ -5,7 +5,7 @@
 
 #include "Neat/Core/Types.h"
 #include "Neat/Renderer/OrthographicCamera.h"
-#include "Neat/Renderer/CustomShaders/TextureShader.h"
+#include "Neat/Renderer/Shaders/TextureShader.h"
 #include "Neat/Renderer/VertexArray.h"
 #include "Neat/Renderer/Texture.h"
 
@@ -31,26 +31,26 @@ namespace Neat
 
       static void drawQuad(const Vec2& position, const Vec2& size,
          const std::shared_ptr<Texture2D>& texture,
-         const Vec4& tint = Vec4(1.0f), Float tilingFactor = 1.0f);
+         const Vec4& tint = Vec4(1.0f), float tilingFactor = 1.0f);
 
       static void drawQuad(const Vec3& position, const Vec2& size,
          const std::shared_ptr<Texture2D>& texture,
-         const Vec4& tint = Vec4(1.0f), Float tilingFactor = 1.0f);
+         const Vec4& tint = Vec4(1.0f), float tilingFactor = 1.0f);
 
       // Rotated Quads
       static void drawRotatedQuad(const Vec2& position, const Vec2& size,
-         Float angleDegrees, const Vec4 color);
+         float angleDegrees, const Vec4 color);
 
       static void drawRotatedQuad(const Vec3& position, const Vec2& size,
-         Float angleDegrees, const Vec4 color);
+         float angleDegrees, const Vec4 color);
 
       static void drawRotatedQuad(const Vec2& position, const Vec2& size,
-         Float angleDegrees, const std::shared_ptr<Texture2D>& texture,
-         const Vec4& tint = Vec4(1.0f), Float tilingFactor = 1.0f);
+         float angleDegrees, const std::shared_ptr<Texture2D>& texture,
+         const Vec4& tint = Vec4(1.0f), float tilingFactor = 1.0f);
 
       static void drawRotatedQuad(const Vec3& position, const Vec2& size,
-         Float angleDegrees, const std::shared_ptr<Texture2D>& texture,
-         const Vec4& tint = Vec4(1.0f), Float tilingFactor = 1.0f);
+         float angleDegrees, const std::shared_ptr<Texture2D>& texture,
+         const Vec4& tint = Vec4(1.0f), float tilingFactor = 1.0f);
       // ----------------------------------------------------------------------
 
       struct Statistics
@@ -76,7 +76,7 @@ namespace Neat
          Vec4 color;
          Vec2 textureCoordinate;
          Int textureIndex;
-         Float tilingFactor;
+         float tilingFactor;
       };
 
       struct QuadVextexDataBuffer
@@ -92,42 +92,42 @@ namespace Neat
                };
 
          UInt indexCount = 0;
-         std::unique_ptr<QuadVertexData[]> data;
+         std::unique_ptr<QuadVertexData[]> m_data;
          QuadVertexData* currentPos = nullptr;
 
          QuadVextexDataBuffer()
-            : data(std::make_unique<QuadVertexData[]>(
+            : m_data(std::make_unique<QuadVertexData[]>(
                QuadVextexDataBuffer::maxVertices))
          {
          }
 
          void addQuad(const Mat4& transform, const Vec4& color,
             const Vec2* textureCoordinates, Int textureIndex,
-            Float tilingFactor)
+            float tilingFactor)
          {
-            for (SizeType i = 0; i < 4; ++i)
+            for (std::size_t i = 0; i < 4; ++i)
             {
-               this->currentPos->position = transform * defaultPositions[i];
-               this->currentPos->color = color;
-               this->currentPos->textureCoordinate = textureCoordinates[i];
-               this->currentPos->textureIndex = textureIndex;
-               this->currentPos->tilingFactor = tilingFactor;
-               this->currentPos++;
+               currentPos->position = transform * defaultPositions[i];
+               currentPos->color = color;
+               currentPos->textureCoordinate = textureCoordinates[i];
+               currentPos->textureIndex = textureIndex;
+               currentPos->tilingFactor = tilingFactor;
+               currentPos++;
             }
-            this->indexCount += 6;
+            indexCount += 6;
          }
 
          IntLong getDataSize() const
          {
-            return (IntLong)((Byte*)(this->currentPos) -
-               (Byte*)(this->data.get())
+            return (IntLong)((Byte*)(currentPos) -
+               (Byte*)(m_data.get())
                );
          }
 
          void reset()
          {
-            this->indexCount = 0;
-            this->currentPos = this->data.get();
+            indexCount = 0;
+            currentPos = m_data.get();
          }
       };
 
@@ -149,6 +149,6 @@ namespace Neat
       };
 
    private:
-      static Renderer2DData data;
+      static Renderer2DData s_data;
    };
 }

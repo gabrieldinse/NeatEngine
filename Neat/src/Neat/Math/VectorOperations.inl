@@ -28,7 +28,7 @@ namespace Neat
          va[0] * vb[0] + va[1] * vb[1] + va[2] * vb[2] + va[3] * vb[3];
    }
 
-   template <typename T, SizeType N>
+   template <typename T, std::size_t N>
    T innerProduct(const Vec<N, T>& va, const Vec<N, T>& vb)
    {
       return dotProduct(va, vb);

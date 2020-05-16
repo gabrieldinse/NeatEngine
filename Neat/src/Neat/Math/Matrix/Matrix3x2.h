@@ -8,20 +8,20 @@ namespace Neat
    template <typename T>
    struct Mat<3, 2, T>
    {
-      constexpr Mat() : flattened{} {}
+      constexpr Mat() : m_flattened{} {}
 
       constexpr Mat(
          T m00, T m01,
          T m10, T m11,
          T m20, T m21)
-         : flattened{
+         : m_flattened{
             m00, m01,
             m10, m11,
             m20, m21
             } {}
 
       constexpr explicit Mat(T scalar)
-         : flattened{
+         : m_flattened{
             scalar, static_cast<T>(0),
             static_cast<T>(0), scalar,
             static_cast<T>(0), static_cast<T>(0),
@@ -29,33 +29,33 @@ namespace Neat
             } {}
 
       constexpr Mat(const Mat<3, 2, T>& m)
-         : flattened{
+         : m_flattened{
             m[0], m[1],
             m[2], m[3],
             m[4], m[5]
             } {}
 
 
-      constexpr SizeType size() const { return 3 * 2; }
+      constexpr std::size_t size() const { return 3 * 2; }
 
       // Elements acessing
-      constexpr T* dataPointer() { return this->flattened; }
-      constexpr const T* dataPointer() const { return this->flattened; }
+      constexpr T* dataPointer() { return m_flattened; }
+      constexpr const T* dataPointer() const { return m_flattened; }
 
-      constexpr T& operator[](SizeType pos) { return this->flattened[pos]; }
-      constexpr const T& operator[](SizeType pos) const { return this->flattened[pos]; }
+      constexpr T& operator[](std::size_t pos) { return m_flattened[pos]; }
+      constexpr const T& operator[](std::size_t pos) const { return m_flattened[pos]; }
 
-      constexpr T& operator()(SizeType i, SizeType j) { return this->data[i][j]; }
-      constexpr const T& operator()(SizeType i, SizeType j) const { return this->data[i][j]; }
-      constexpr T& operator()(SizeType i) { return this->flattened[i]; }
-      constexpr const T& operator()(SizeType i) const { return this->flattened[i]; }
+      constexpr T& operator()(std::size_t i, std::size_t j) { return m_data[i][j]; }
+      constexpr const T& operator()(std::size_t i, std::size_t j) const { return m_data[i][j]; }
+      constexpr T& operator()(std::size_t i) { return m_flattened[i]; }
+      constexpr const T& operator()(std::size_t i) const { return m_flattened[i]; }
 
    private:
       // Class data
       union
       {
-         T flattened[3 * 2];
-         T data[3][2];
+         T m_flattened[3 * 2];
+         T m_data[3][2];
       };
    };
 

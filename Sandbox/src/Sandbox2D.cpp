@@ -5,8 +5,7 @@ Sandbox2D::Sandbox2D()
    : Layer("Example Layer")
    , cameraController(
       (float)Neat::Application::get().getWindow().getWidth() /
-      (float)Neat::Application::get().getWindow().getHeight(),
-      true)
+      (float)Neat::Application::get().getWindow().getHeight())
 {
 }
 
@@ -74,11 +73,6 @@ void Sandbox2D::onRender()
 
       Neat::Renderer2D::endScene();
    }
-}
-
-void Sandbox2D::onEvent(Neat::Event& event)
-{
-   this->cameraController.onEvent(event);
 }
 
 void Sandbox2D::onImGuiRender()

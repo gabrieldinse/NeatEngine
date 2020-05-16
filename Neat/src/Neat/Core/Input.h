@@ -10,9 +10,14 @@
 
 namespace Neat
 {
-   Bool isKeyPressed(KeyCode key);
-   Bool isMouseButtonPressed(MouseCode button);
-   Vec2 getMousePosition();
-   Float getMouseX();
-   Float getMouseY();
+   class Input
+   {
+   public:
+      static bool isKeyPressed(KeyCode key);
+      static bool isMouseButtonPressed(MouseCode button);
+      static Vec2 getMousePosition();
+      static float getMouseX();
+      static float getMouseY();
+   };
+   
 }

@@ -29,7 +29,7 @@ namespace Neat
       BufferElement() = default;
 
       BufferElement(ShaderDataType type, const std::string& name,
-         Bool normalized = false);
+         bool normalized = false);
    };
 
 
@@ -47,28 +47,28 @@ namespace Neat
       BufferLayout() = default;
       
       BufferLayout(const std::initializer_list<BufferElement>& elements)
-         : elements(elements)
+         : m_elements(elements)
       {
          UInt index = 0;
-         for (auto& element : this->elements)
+         for (auto& element : m_elements)
          {
             element.index = index++;
-            element.offset = this->stride;
-            this->stride += element.size;
+            element.offset = m_stride;
+            m_stride += element.size;
          }
       }
 
-      UInt getStride() const { return this->stride; }
-      const BufferElementsVector& getElements() const { return this->elements; }
+      UInt getStride() const { return m_stride; }
+      const BufferElementsVector& getElements() const { return m_elements; }
 
-      BufferElementsVectorIt begin() { return this->elements.begin(); }
-      BufferElementsVectorIt end() { return this->elements.end(); }
-      BufferElementsVectorConstIt begin() const { return this->elements.begin(); }
-      BufferElementsVectorConstIt end() const { return this->elements.end(); }
+      BufferElementsVectorIt begin() { return m_elements.begin(); }
+      BufferElementsVectorIt end() { return m_elements.end(); }
+      BufferElementsVectorConstIt begin() const { return m_elements.begin(); }
+      BufferElementsVectorConstIt end() const { return m_elements.end(); }
 
    private:
-      BufferElementsVector elements;
-      UInt stride = 0;
+      BufferElementsVector m_elements;
+      UInt m_stride = 0;
    };
 
 
@@ -79,20 +79,20 @@ namespace Neat
    {
    public:
       VertexBuffer(UInt size);
-      VertexBuffer(Float* vertices, UInt size);
+      VertexBuffer(float* vertices, UInt size);
       ~VertexBuffer();
 
       void bind() const;
       void unbind() const;
 
-      void setData(const void* data, IntLong size);
+      void setData(const void* m_data, IntLong size);
 
-      const BufferLayout& getLayout() const { return this->layout; }
+      const BufferLayout& getLayout() const { return m_layout; }
       void setLayout(const BufferLayout& layout);
 
    private:
-      UInt id = 0;
-      BufferLayout layout;
+      UInt m_id = 0;
+      BufferLayout m_layout;
    };
 
 
@@ -108,10 +108,10 @@ namespace Neat
       void bind() const;
       void unbind() const;
 
-      Int getCount() const { return this->count; }
+      Int getCount() const { return m_count; }
 
    private:
-      UInt id = 0;
-      Int count;
+      UInt m_id = 0;
+      Int m_count;
    };
 }

@@ -8,29 +8,29 @@
 
 namespace Neat
 {
-   Renderer2D::Renderer2DData Renderer2D::data;
+   Renderer2D::Renderer2DData Renderer2D::s_data;
 
    void Renderer2D::init()
    {
       NT_PROFILE_FUNCTION();
 
-      data.quadVertexArray = std::make_shared<VertexArray>();
-      data.quadVertexBuffer = std::make_shared<VertexBuffer>(
+      s_data.quadVertexArray = std::make_shared<VertexArray>();
+      s_data.quadVertexBuffer = std::make_shared<VertexBuffer>(
          QuadVextexDataBuffer::maxVertices * (UInt)sizeof(QuadVertexData));
 
-      data.quadVertexBuffer->setLayout({
+      s_data.quadVertexBuffer->setLayout({
          { ShaderDataType::Vec3, "a_position" },
          { ShaderDataType::Vec4, "a_color"},
          { ShaderDataType::Vec2, "a_textureCoordinate"},
          { ShaderDataType::Float, "a_textureIndex"},
          { ShaderDataType::Float, "a_tilingFactor"}
          });
-      data.quadVertexArray->addVertexBuffer(data.quadVertexBuffer);
+      s_data.quadVertexArray->addVertexBuffer(s_data.quadVertexBuffer);
 
       auto quadIndexes = std::make_unique<UInt[]>(
          QuadVextexDataBuffer::maxIndexes);
       UInt offset = 0;
-      for (SizeType i = 0; i < QuadVextexDataBuffer::maxIndexes; i += 6, offset += 4)
+      for (std::size_t i = 0; i < QuadVextexDataBuffer::maxIndexes; i += 6, offset += 4)
       {
          quadIndexes[i + 0] = offset + 0;
          quadIndexes[i + 1] = offset + 1;
@@ -44,21 +44,21 @@ namespace Neat
       auto squareIB = std::make_shared<IndexBuffer>(
          quadIndexes.get(), QuadVextexDataBuffer::maxIndexes);
 
-      data.quadVertexArray->setIndexBuffer(squareIB);
+      s_data.quadVertexArray->setIndexBuffer(squareIB);
 
-      data.whiteTexture = std::make_shared<Texture2D>(1, 1);
+      s_data.whiteTexture = std::make_shared<Texture2D>(1, 1);
       UInt white_texture_data = 0xffffffff;
-      data.whiteTexture->setData(&white_texture_data, sizeof(UInt));
+      s_data.whiteTexture->setData(&white_texture_data, sizeof(UInt));
 
       Int samplers[Renderer2DData::maxTextureSlots];
       for (Int i = 0; i < Renderer2DData::maxTextureSlots; ++i)
          samplers[i] = i;
 
-      data.textureShader = std::make_shared<TextureShader>(
+      s_data.textureShader = std::make_shared<TextureShader>(
          "assets/glsl/texture.glsl");
-      data.textureShader->setTextures(samplers, sizeof(samplers));
+      s_data.textureShader->setTextures(samplers, sizeof(samplers));
 
-      data.textureSlots[0] = data.whiteTexture;
+      s_data.textureSlots[0] = s_data.whiteTexture;
    }
 
    void Renderer2D::shutdown()
@@ -71,7 +71,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      data.textureShader->setviewProjection(camera.getViewProjectionMatrix());
+      s_data.textureShader->setviewProjection(camera.getViewProjectionMatrix());
 
       startNewBatch();
    }
@@ -85,22 +85,22 @@ namespace Neat
 
    void Renderer2D::startNewBatch()
    {
-      data.quadVextexDataBuffer.reset();
-      data.textureSlotIndex = 1;
+      s_data.quadVextexDataBuffer.reset();
+      s_data.textureSlotIndex = 1;
    }
 
    void Renderer2D::draw()
    {
-      data.quadVertexBuffer->setData(data.quadVextexDataBuffer.data.get(),
-         data.quadVextexDataBuffer.getDataSize());
+      s_data.quadVertexBuffer->setData(s_data.quadVextexDataBuffer.m_data.get(),
+         s_data.quadVextexDataBuffer.getDataSize());
 
       UInt index = 0;
-      for (SizeType i = 0; i < data.textureSlotIndex; ++i, ++index)
-         data.textureSlots[i]->bind(index);
+      for (std::size_t i = 0; i < s_data.textureSlotIndex; ++i, ++index)
+         s_data.textureSlots[i]->bind(index);
 
-      RenderCommand::drawIndexed(data.quadVertexArray, data.quadVextexDataBuffer.indexCount);
+      RenderCommand::drawIndexed(s_data.quadVertexArray, s_data.quadVextexDataBuffer.indexCount);
 
-      data.stats.drawCalls++;
+      s_data.stats.drawCalls++;
    }
 
    void Renderer2D::drawQuad(const Vec2& position, const Vec2& size,
@@ -115,29 +115,29 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      if (data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
+      if (s_data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
       {
          draw();
          startNewBatch();
       }
 
       constexpr Int textureIndex = 0; // white texture;
-      constexpr Float tilingFactor = 1.0f;
+      constexpr float tilingFactor = 1.0f;
       constexpr Vec2 textureCoordinates[] = {
          {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}
       };
 
       auto transform = translate(position) * scale(Vec3(size.x, size.y, 1.0f));
       
-      data.quadVextexDataBuffer.addQuad(
+      s_data.quadVextexDataBuffer.addQuad(
          transform, color, textureCoordinates, textureIndex, tilingFactor);
 
-      data.stats.quadCount++;
+      s_data.stats.quadCount++;
    }
 
    void Renderer2D::drawQuad(const Vec2& position,const Vec2& size,
       const std::shared_ptr<Texture2D>& texture, const Vec4& tint,
-      Float tilingFactor)
+      float tilingFactor)
    {
       drawQuad(
          {position.x, position.y, 0.0f}, size, texture, tint, tilingFactor);
@@ -146,20 +146,20 @@ namespace Neat
    void Renderer2D::drawQuad(
       const Vec3& position, const Vec2& size,
       const std::shared_ptr<Texture2D>& texture, const Vec4& tint,
-      Float tilingFactor)
+      float tilingFactor)
    {
       NT_PROFILE_FUNCTION();
 
-      if (data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
+      if (s_data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
       {
          draw();
          startNewBatch();
       }
 
       Int textureIndex = 0;
-      for (Int i = 1; i < data.textureSlotIndex; ++i)
+      for (Int i = 1; i < s_data.textureSlotIndex; ++i)
       {
-         if (*data.textureSlots[i] == *texture)
+         if (*s_data.textureSlots[i] == *texture)
          {
             textureIndex = i;
             break;
@@ -168,40 +168,40 @@ namespace Neat
 
       if (textureIndex == 0)
       {
-         textureIndex = data.textureSlotIndex;
-         data.textureSlots[data.textureSlotIndex] = texture;
-         data.textureSlotIndex++;
+         textureIndex = s_data.textureSlotIndex;
+         s_data.textureSlots[s_data.textureSlotIndex] = texture;
+         s_data.textureSlotIndex++;
       }
 
       auto transform = translate(position) * scale(Vec3(size.x, size.y, 1.0f));
 
-      data.quadVextexDataBuffer.addQuad(
+      s_data.quadVextexDataBuffer.addQuad(
          transform, tint, texture->getCoordinates(), textureIndex, tilingFactor);
 
-      data.stats.quadCount++;
+      s_data.stats.quadCount++;
    }
 
    // Rotated Quads 
    void Renderer2D::drawRotatedQuad(const Vec2& position, const Vec2& size,
-      Float angleDegrees, const Vec4 color)
+      float angleDegrees, const Vec4 color)
    {
       drawRotatedQuad(
          { position.x, position.y, 0.0f }, size, angleDegrees, color);
    }
 
    void Renderer2D::drawRotatedQuad(const Vec3& position, const Vec2& size,
-      Float angleDegrees, const Vec4 color)
+      float angleDegrees, const Vec4 color)
    {
       NT_PROFILE_FUNCTION();
 
-      if (data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
+      if (s_data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
       {
          draw();
          startNewBatch();
       }
 
       constexpr Int textureIndex = 0; // white texture;
-      constexpr Float tilingFactor = 1.0f;
+      constexpr float tilingFactor = 1.0f;
       constexpr Vec2 textureCoordinates[] = {
          {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}
       };
@@ -211,15 +211,15 @@ namespace Neat
          rotate(degreesToRadians(angleDegrees), { 0, 0, 1 }) *
          scale(Vec3(size.x, size.y, 1.0f));
 
-      data.quadVextexDataBuffer.addQuad(
+      s_data.quadVextexDataBuffer.addQuad(
          transform, color, textureCoordinates, textureIndex, tilingFactor);
 
-      data.stats.quadCount++;
+      s_data.stats.quadCount++;
    }
 
    void Renderer2D::drawRotatedQuad(const Vec2& position, const Vec2& size,
-      Float angleDegrees, const std::shared_ptr<Texture2D>& texture,
-      const Vec4& tint, Float tilingFactor)
+      float angleDegrees, const std::shared_ptr<Texture2D>& texture,
+      const Vec4& tint, float tilingFactor)
    {
       drawRotatedQuad(
          { position.x, position.y, 0.0f },
@@ -228,21 +228,21 @@ namespace Neat
 
    void Renderer2D::drawRotatedQuad(
       const Vec3& position, const Vec2& size,
-      Float angleDegrees, const std::shared_ptr<Texture2D>& texture,
-      const Vec4& tint, Float tilingFactor)
+      float angleDegrees, const std::shared_ptr<Texture2D>& texture,
+      const Vec4& tint, float tilingFactor)
    {
       NT_PROFILE_FUNCTION();
 
-      if (data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
+      if (s_data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
       {
          draw();
          startNewBatch();
       }
 
       Int textureIndex = 0;
-      for (Int i = 1; i < data.textureSlotIndex; ++i)
+      for (Int i = 1; i < s_data.textureSlotIndex; ++i)
       {
-         if (*data.textureSlots[i] == *texture)
+         if (*s_data.textureSlots[i] == *texture)
          {
             textureIndex = i;
             break;
@@ -251,9 +251,9 @@ namespace Neat
 
       if (textureIndex == 0)
       {
-         textureIndex = data.textureSlotIndex;
-         data.textureSlots[data.textureSlotIndex] = texture;
-         data.textureSlotIndex++;
+         textureIndex = s_data.textureSlotIndex;
+         s_data.textureSlots[s_data.textureSlotIndex] = texture;
+         s_data.textureSlotIndex++;
       }
 
       auto transform =
@@ -261,21 +261,21 @@ namespace Neat
          rotate(degreesToRadians(angleDegrees), { 0, 0, 1 }) *
          scale(Vec3(size.x, size.y, 1.0f));
 
-      data.quadVextexDataBuffer.addQuad(
+      s_data.quadVextexDataBuffer.addQuad(
          transform, tint, texture->getCoordinates(), textureIndex, tilingFactor);
 
-      data.stats.quadCount++;
+      s_data.stats.quadCount++;
    }
 
    // Statistics
    Renderer2D::Statistics Renderer2D::getStats()
    {
-      return data.stats; 
+      return s_data.stats; 
    }
 
    void Renderer2D::resetStats()
    {
-      std::memset(&data.stats, 0, sizeof(Statistics));
+      std::memset(&s_data.stats, 0, sizeof(Statistics));
    }
 }
 

@@ -3,9 +3,9 @@
 // For using in Neat applications -------------------------------------------
 #include "Neat/Core/Application.h"
 #include "Neat/Core/Layer.h"
-#include "Neat/Core/Timestep.h"
 #include "Neat/Core/Log.h"
 #include "Neat/Core/Types.h"
+#include "Neat/Core/Exceptions.h"
 
 #include "Neat/Core/Input.h"
 #include "Neat/Core/KeyCodes.h"
@@ -13,9 +13,7 @@
 
 #include "Neat/Core/OrthographicCameraController.h"
 
-#include "Neat/Events/ApplicationEvent.h"
-#include "Neat/Events/MouseEvent.h"
-#include "Neat/Events/KeyEvent.h"
+#include "Neat/Events/Event.h"
 // ----------------------------------------------------------------------------
 
 // Renderer -------------------------------------------------------------------

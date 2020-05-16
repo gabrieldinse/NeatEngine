@@ -5,15 +5,15 @@
 
 namespace Neat
 {
-   std::shared_ptr<spdlog::logger> Log::clientLogger;
-   std::shared_ptr<spdlog::logger> Log::coreLogger;
+   std::shared_ptr<spdlog::logger> Log::s_clientLogger;
+   std::shared_ptr<spdlog::logger> Log::s_coreLogger;
 
-   void Log::init(const Char* pattern)
+   void Log::init(const char* pattern)
    {
       spdlog::set_pattern(pattern);
-      Log::coreLogger = spdlog::stdout_color_mt("DINGAL");
-      Log::coreLogger->set_level(spdlog::level::trace);
-      Log::clientLogger = spdlog::stdout_color_mt("APP");
-      Log::clientLogger->set_level(spdlog::level::trace);
+      Log::s_coreLogger = spdlog::stdout_color_mt("DINGAL");
+      Log::s_coreLogger->set_level(spdlog::level::trace);
+      Log::s_clientLogger = spdlog::stdout_color_mt("APP");
+      Log::s_clientLogger->set_level(spdlog::level::trace);
    }
 }

@@ -6,43 +6,43 @@
 #include <algorithm>
 
 #include "Neat/Core/Types.h"
-#include "Neat/Math/Exceptions.h"
+#include "Neat/Core/Exceptions.h"
 
 
 namespace Neat
 {
    // Vec class template
-   template <SizeType N, typename T>
+   template <std::size_t N, typename T>
    struct Vec;
 
 
    // Relational operators
-   template <typename T, SizeType N>
+   template <typename T, std::size_t N>
    inline constexpr
-   Bool operator>(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator>(const Vec<N, T>& va, const Vec<N, T>& vb);
 
-   template <typename T, SizeType N>
+   template <typename T, std::size_t N>
    inline constexpr
-   Bool operator<(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator<(const Vec<N, T>& va, const Vec<N, T>& vb);
 
-   template <typename T, SizeType N>
+   template <typename T, std::size_t N>
    inline constexpr
-   Bool operator==(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator==(const Vec<N, T>& va, const Vec<N, T>& vb);
 
-   template <typename T, SizeType N>
+   template <typename T, std::size_t N>
    inline constexpr
-   Bool operator!=(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator!=(const Vec<N, T>& va, const Vec<N, T>& vb);
 
-   template <typename T, SizeType N>
+   template <typename T, std::size_t N>
    inline constexpr
-   Bool operator>=(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator>=(const Vec<N, T>& va, const Vec<N, T>& vb);
 
-   template <typename T, SizeType N>
+   template <typename T, std::size_t N>
    inline constexpr
-   Bool operator<=(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator<=(const Vec<N, T>& va, const Vec<N, T>& vb);
 
 
-   template <typename T, SizeType N>
+   template <typename T, std::size_t N>
    std::ostream& operator<<(std::ostream& os, const Vec<N, T>& v);
 }
 

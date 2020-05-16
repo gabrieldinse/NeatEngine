@@ -14,22 +14,22 @@ namespace Neat
 
       void start()
       {
-         this->startTicks = std::chrono::high_resolution_clock::now();
+         m_startTicks = std::chrono::high_resolution_clock::now();
       }
 
       void reset()
       {
          auto current_ticks = std::chrono::high_resolution_clock::now();
-         this->deltaTime = 
-            std::chrono::duration_cast<std::chrono::duration<Float>>(
-            (current_ticks - this->startTicks)).count();
-         this->startTicks = current_ticks;
+         m_deltaTime = 
+            std::chrono::duration_cast<std::chrono::duration<Timestep>>(
+            (current_ticks - m_startTicks)).count();
+         m_startTicks = current_ticks;
       }
 
-      Float getDeltaTime() const { return this->deltaTime; }
+      Timestep getDeltaTime() const { return m_deltaTime; }
 
    private:
-      std::chrono::steady_clock::time_point startTicks;
-      Float deltaTime = 0.0f;
+      std::chrono::steady_clock::time_point m_startTicks;
+      Timestep m_deltaTime = 0.0f;
    };
 }

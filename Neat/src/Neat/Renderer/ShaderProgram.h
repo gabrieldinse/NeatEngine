@@ -27,21 +27,21 @@ namespace Neat
       void bind() const;
       void unbind() const;
 
-      const std::string& getName() const { return this->name; }
-      void setName(const std::string& name) { this->name = name; }
+      const std::string& getName() const { return m_name; }
+      void setName(const std::string& name) { m_name = name; }
 
-      UInt getRendererID() const { return this->id; }
+      UInt getRendererID() const { return m_id; }
 
-      const UniformLibrary& getUniformLibrary() const { return *this->uniformLibrary; }
+      const UniformLibrary& getUniformLibrary() const { return *m_uniformLibrary; }
 
    private:
       void compile(
          const std::unordered_map<UInt, std::string>& shaderSources);
 
    private:
-      UInt id = 0;
-      std::unique_ptr<UniformLibrary> uniformLibrary;
-      std::string name;
+      UInt m_id = 0;
+      std::unique_ptr<UniformLibrary> m_uniformLibrary;
+      std::string m_name;
    };
 
 
@@ -55,9 +55,9 @@ namespace Neat
          const std::string& name, const std::string& filepath);
       std::shared_ptr<ShaderProgram> get(const std::string& name);
 
-      Bool exists(const std::string& name) const;
+      bool exists(const std::string& name) const;
 
    private:
-      std::unordered_map<std::string, std::shared_ptr<ShaderProgram>> shaders;
+      std::unordered_map<std::string, std::shared_ptr<ShaderProgram>> m_shaders;
    };
 }

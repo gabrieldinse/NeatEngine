@@ -6,15 +6,15 @@
 #include <algorithm>
 
 #include "Neat/Core/Types.h"
-#include "Neat/Math/Exceptions.h"
+#include "Neat/Core/Exceptions.h"
 
 
 namespace Neat
 {
-   template <SizeType M, SizeType N, typename T>
+   template <std::size_t M, std::size_t N, typename T>
    struct Mat;
 
-   template <SizeType M, SizeType N, typename T>
+   template <std::size_t M, std::size_t N, typename T>
    std::ostream& operator<<(std::ostream& os, const Mat<M, N, T>& m);
 }
 

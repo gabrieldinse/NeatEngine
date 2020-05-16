@@ -1,55 +1,229 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include <functional>
-#include <type_traits>
+#include <unordered_map>
+#include <utility>
+#include <memory>
 
-#include "Neat/Core/Utility.h"
+#include "Neat/Core/Types.h"
+#include "Neat/Core/MouseCodes.h"
+#include "Neat/Core/KeyCodes.h"
+
+#include "SimpleSignal.h"
 
 
 namespace Neat
 {
-   enum class EventType : Int
+   class EventManager;
+
+   using EventSignal = Simple::Signal<bool (const void*)>;
+
+   // ---------------------------------------------------------------------- //
+   // BaseEvent ------------------------------------------------------------ //
+   // ---------------------------------------------------------------------- //
+   class BaseEvent
    {
-      None = 0,
-      WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
-		ApplicationTick, ApplicationUpdate, ApplicationRender,
-		KeyPressed, KeyReleased, KeyTyped,
-		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
+   public:
+      using Family = UIntLong;
+
+      virtual ~BaseEvent() {}
+
+   protected:
+      static Family s_familyCounter;
    };
 
 
-   class Event
+   // ---------------------------------------------------------------------- //
+   // Event ---------------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+   template <typename Derived>
+   class Event : public BaseEvent
    {
-      template<typename T>
-      using eventFunction = std::function<Bool(T&)>;
+   private:
+      friend class EventManager;
 
-   public:
-      virtual ~Event() = default;
-      virtual const Char* getName() const = 0;
-      virtual EventType getType() const = 0;
-      virtual std::string toString() const { return getName(); }
-      
-      Bool isHandled() const { return this->handled; }
-
-      template<typename T>
-      Bool dispatch(eventFunction<T> function)
+      static Family getFamily()
       {
-         if (this->getType() == T::type())
+         static Family family = s_familyCounter++;
+         return family;
+      }
+   };
+
+
+   // ---------------------------------------------------------------------- //
+   // BaseEventReceiver ---------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+   class BaseEventReceiver
+   {
+   public:
+      BaseEventReceiver::~BaseEventReceiver()
+      {
+         for (auto& connection : m_connections)
          {
-            this->handled = function(*static_cast<T*>(this));
-            return true;
+            auto& ptr = connection.second.first;
+            if (!ptr.expired())
+               ptr.lock()->disconnect(connection.second.second);
          }
-         return false;
+      }
+
+      std::size_t BaseEventReceiver::getNumberOfConnectedSignals() const
+      {
+         std::size_t count = 0;
+         for (auto& connection : m_connections)
+            if (!connection.second.first.expired())
+               ++count;
+
+         return count;
       }
 
    private:
-      Bool handled = false;
+      friend class EventManager;
+
+      std::unordered_map<
+         BaseEvent::Family,
+         std::pair<std::weak_ptr<EventSignal>, std::size_t>
+         > m_connections;
    };
 
-   inline std::ostream& operator<<(std::ostream& os, const Event& event)
+
+   // ---------------------------------------------------------------------- //
+   // EventReceiver -------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+   template <typename Derived>
+   class EventReceiver : public BaseEventReceiver
    {
-      return os << event.toString();
-   }
+   public:
+      virtual ~EventReceiver() {}
+   };
+
+
+   // ---------------------------------------------------------------------- //
+   // Window events -------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+   class WindowResizeEvent
+   {
+   public:
+      WindowResizeEvent(UInt width, UInt height)
+         : m_width(width), m_height(height) {}
+
+      UInt getWidth() const { return m_width; }
+      UInt getHeight() const { return m_height; }
+
+   private:
+      UInt m_width;
+      UInt m_height;
+   };
+
+
+   class WindowCloseEvent
+   {
+   public:
+      WindowCloseEvent() = default;
+   };
+
+
+   // ---------------------------------------------------------------------- //
+   // Mouse events --------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+   class MouseButtonEvent
+   {
+   public:
+      MouseCode getButton() const { return m_button; }
+
+   protected:
+      MouseButtonEvent(MouseCode button)
+         : m_button(button) {}
+
+      MouseCode m_button;
+   };
+
+
+   class MouseButtonPressedEvent : public MouseButtonEvent
+   {
+   public:
+      MouseButtonPressedEvent(MouseCode button)
+         : MouseButtonEvent(button) {}
+   };
+
+
+   class MouseButtonReleasedEvent : public MouseButtonEvent
+   {
+   public:
+      MouseButtonReleasedEvent(MouseCode button)
+         : MouseButtonEvent(button) {}
+   };
+
+
+   class MouseMovedEvent
+   {
+   public:
+      MouseMovedEvent(float mouseX, float mouseY)
+         : m_mouseX(mouseX), m_mouseY(mouseY) {}
+
+      float getX() const { return m_mouseX; }
+      float getY() const { return m_mouseY; }
+
+   private:
+      float m_mouseX;
+      float m_mouseY;
+   };
+
+
+   class  MouseScrolledEvent
+   {
+   public:
+      MouseScrolledEvent(float offsetX, float offsetY)
+         : m_offsetX(offsetX), m_offsetY(offsetY) {}
+      
+      float getXOffset() const { return m_offsetX; }
+      float getYOffset() const { return m_offsetY; }
+
+   private:
+      float m_offsetX;
+      float m_offsetY;
+   };
+
+
+   // ---------------------------------------------------------------------- //
+   // Key events ----------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+   class KeyEvent
+   {
+   public:
+      inline KeyCode getKeyCode() const { return m_keyCode; }
+
+   protected:
+      KeyEvent(KeyCode keyCode)
+         : m_keyCode(keyCode) {}
+
+      KeyCode m_keyCode;
+   };
+
+
+   class KeyPressedEvent : public KeyEvent
+   {
+   public:
+      KeyPressedEvent(KeyCode keyCode, Int repeatCount = 0)
+         : KeyEvent(keyCode), m_repeatCount(repeatCount) {}
+
+      Int getRepeatCount() const { return m_repeatCount; }
+
+   private:
+      Int m_repeatCount;
+   };
+
+
+   class  KeyReleasedEvent : public KeyEvent
+   {
+   public:
+      KeyReleasedEvent(KeyCode keycode)
+         : KeyEvent(m_keyCode) {}
+   };
+
+
+   class  KeyTypedEvent : public KeyEvent
+   {
+   public:
+      KeyTypedEvent(KeyCode keyCode)
+         : KeyEvent(keyCode) {}
+   };
 }

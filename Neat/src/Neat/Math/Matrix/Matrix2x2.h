@@ -11,7 +11,7 @@ namespace Neat
    {
       // Default constructor
       constexpr
-      Mat() : flattened{} {}
+      Mat() : m_flattened{} {}
 
 
       // Basic constructors
@@ -19,7 +19,7 @@ namespace Neat
       Mat(
          T m00, T m01,
          T m10, T m11)
-         : flattened{
+         : m_flattened{
             m00, m01,
             m10, m11
          }
@@ -27,14 +27,14 @@ namespace Neat
 
       constexpr explicit
       Mat(T scalar)
-         : flattened{
+         : m_flattened{
             scalar, static_cast<T>(0),
             static_cast<T>(0), scalar
             } {}
 
       constexpr
       Mat(const Mat<2, 2, T>& m)
-         : flattened{
+         : m_flattened{
             m[0], m[1],
             m[2], m[3]
             } {}
@@ -48,7 +48,7 @@ namespace Neat
       Mat(
          X1 m00, Y1 m01,
          X2 m10, Y2 m11)
-         : flattened{
+         : m_flattened{
             static_cast<T(m00), static_cast<T(m01),
             static_cast<T(m10), static_cast<T(m11)
          }
@@ -57,7 +57,7 @@ namespace Neat
       template <typename U>
       constexpr explicit
       Mat(const Mat<2, 2, U>& m)
-         : flattened{
+         : m_flattened{
             static_cast<T(m[0]), static_cast<T(m[1]),
             static_cast<T(m[2]), static_cast<T(m[3])
             } {}
@@ -65,7 +65,7 @@ namespace Neat
       template <typename U>
       constexpr explicit
       Mat(const Mat<4, 4, U>& m)
-         : flattened{
+         : m_flattened{
             static_cast<T(m[0]), static_cast<T(m[1]),
             static_cast<T(m[4]), static_cast<T(m[5])
             } {}
@@ -73,32 +73,32 @@ namespace Neat
       template <typename U>
       constexpr explicit
       Mat(const Mat<3, 3, U>& m)
-         : flattened{
+         : m_flattened{
             static_cast<T(m[0]), static_cast<T(m[1]),
             static_cast<T(m[3]), static_cast<T(m[4])
             } {}
 
 
-      constexpr SizeType size() const { return 2 * 2; }
+      constexpr std::size_t size() const { return 2 * 2; }
 
       // Elements acessing
-      constexpr T* dataPointer() { return this->flattened; }
-      constexpr const T* dataPointer() const { return this->flattened; }
+      constexpr T* dataPointer() { return m_flattened; }
+      constexpr const T* dataPointer() const { return m_flattened; }
 
-      constexpr T& operator[](SizeType pos) { return this->flattened[pos]; }
-      constexpr const T& operator[](SizeType pos) const { return this->flattened[pos]; }
+      constexpr T& operator[](std::size_t pos) { return m_flattened[pos]; }
+      constexpr const T& operator[](std::size_t pos) const { return m_flattened[pos]; }
 
-      constexpr T& operator()(SizeType i, SizeType j) { return this->data[i][j]; }
-      constexpr const T& operator()(SizeType i, SizeType j) const { return this->data[i][j]; }
-      constexpr T& operator()(SizeType i) { return this->flattened[i]; }
-      constexpr const T& operator()(SizeType i) const { return this->flattened[i]; }
+      constexpr T& operator()(std::size_t i, std::size_t j) { return m_data[i][j]; }
+      constexpr const T& operator()(std::size_t i, std::size_t j) const { return m_data[i][j]; }
+      constexpr T& operator()(std::size_t i) { return m_flattened[i]; }
+      constexpr const T& operator()(std::size_t i) const { return m_flattened[i]; }
 
    private:
       // Class data
       union
       {
-         T flattened[2 * 2];
-         T data[2][2];
+         T m_flattened[2 * 2];
+         T m_data[2][2];
       };
    };
 

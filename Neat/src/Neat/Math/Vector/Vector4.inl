@@ -109,10 +109,10 @@ namespace Neat
    constexpr
    Vec<4, T>& Vec<4, T>::operator=(const Vec<4, T>& other)
    {
-      this->x = other.x;
-      this->y = other.y;
-      this->z = other.z;
-      this->w = other.w;
+      x = other.x;
+      y = other.y;
+      z = other.z;
+      w = other.w;
 
       return *this;
    }
@@ -121,10 +121,10 @@ namespace Neat
    constexpr
    Vec<4, T>& Vec<4, T>::operator=(const Vec<3, T>& other)
    {
-      this->x = other.x;
-      this->y = other.y;
-      this->z = other.z;
-      this->w = static_cast<T>(0);
+      x = other.x;
+      y = other.y;
+      z = other.z;
+      w = static_cast<T>(0);
 
       return *this;
    }
@@ -133,10 +133,10 @@ namespace Neat
    constexpr
    Vec<4, T>& Vec<4, T>::operator=(const Vec<2, T>& other)
    {
-      this->x = other.x;
-      this->y = other.y;
-      this->z = static_cast<T>(0);
-      this->w = static_cast<T>(0);
+      x = other.x;
+      y = other.y;
+      z = static_cast<T>(0);
+      w = static_cast<T>(0);
 
       return *this;
    }
@@ -145,10 +145,10 @@ namespace Neat
    constexpr
    Vec<4, T>& Vec<4, T>::operator=(const Vec<1, T>& other)
    {
-      this->x = other.x;
-      this->y = static_cast<T>(0);
-      this->z = static_cast<T>(0);
-      this->w = static_cast<T>(0);
+      x = other.x;
+      y = static_cast<T>(0);
+      z = static_cast<T>(0);
+      w = static_cast<T>(0);
 
       return *this;
    }
@@ -160,10 +160,10 @@ namespace Neat
    inline constexpr
    Vec<4, T>& Vec<4, T>::operator+=(const Vec<4, U>& v)
    {
-      this->x += v.x;
-      this->y += v.y;
-      this->z += v.z;
-      this->w += v.w;
+      x += v.x;
+      y += v.y;
+      z += v.z;
+      w += v.w;
 
       return *this;
    }
@@ -173,10 +173,10 @@ namespace Neat
    inline constexpr
    Vec<4, T>& Vec<4, T>::operator-=(const Vec<4, U>& v)
    {
-      this->x -= v.x;
-      this->y -= v.y;
-      this->z -= v.z;
-      this->w -= v.w;
+      x -= v.x;
+      y -= v.y;
+      z -= v.z;
+      w -= v.w;
 
       return *this;
    }
@@ -186,10 +186,10 @@ namespace Neat
    inline constexpr
    Vec<4, T>& Vec<4, T>::operator*=(const Vec<4, U>& v)
    {
-      this->x *= v.x;
-      this->y *= v.y;
-      this->z *= v.z;
-      this->w *= v.w;
+      x *= v.x;
+      y *= v.y;
+      z *= v.z;
+      w *= v.w;
 
       return *this;
    }
@@ -199,10 +199,10 @@ namespace Neat
    inline constexpr
    Vec<4, T>& Vec<4, T>::operator*=(U scalar)
    {
-      this->x *= scalar;
-      this->y *= scalar;
-      this->z *= scalar;
-      this->w *= scalar;
+      x *= scalar;
+      y *= scalar;
+      z *= scalar;
+      w *= scalar;
 
       return *this;
    }
@@ -212,10 +212,10 @@ namespace Neat
    inline constexpr
    Vec<4, T>& Vec<4, T>::operator/=(U scalar)
    {
-      this->x /= static_cast<T>(scalar);
-      this->y /= static_cast<T>(scalar);
-      this->z /= static_cast<T>(scalar);
-      this->w /= static_cast<T>(scalar);
+      x /= static_cast<T>(scalar);
+      y /= static_cast<T>(scalar);
+      z /= static_cast<T>(scalar);
+      w /= static_cast<T>(scalar);
 
       return *this;
    }
@@ -223,7 +223,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Vec<4, T>::operator Bool() const
+   Vec<4, T>::operator bool() const
    {
       return (norm(*this) > static_cast<T>(0));
    }
@@ -231,32 +231,32 @@ namespace Neat
 
    template<typename T>
    inline constexpr
-   T& Vec<4, T>::operator[](SizeType pos)
+   T& Vec<4, T>::operator[](std::size_t pos)
    {
       switch (pos)
       {
-         case 0: return this->x;
-         case 1: return this->y;
-         case 2: return this->z;
-         case 3: return this->w;
+         case 0: return x;
+         case 1: return y;
+         case 2: return z;
+         case 3: return w;
       }
 
-      throw VecDimensionError("Wrong Vec dimension being acessed!");
+      throw VecDimensionError();
    }
 
    template<typename T>
    inline constexpr
-   const T& Vec<4, T>::operator[](SizeType pos) const
+   const T& Vec<4, T>::operator[](std::size_t pos) const
    {
       switch (pos)
       {
-         case 0: return this->x;
-         case 1: return this->y;
-         case 2: return this->z;
-         case 3: return this->w;
+         case 0: return x;
+         case 1: return y;
+         case 2: return z;
+         case 3: return w;
       }
 
-      throw VecDimensionError("Wrong Vec dimension being acessed!");
+      throw VecDimensionError();
    }
 
 

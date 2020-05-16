@@ -5,7 +5,7 @@
 namespace Neat
 {
    LayerGroup::LayerGroup()
-      : insertIndex(0)
+      : m_insertIndex(0)
    {
    }
 
@@ -16,41 +16,41 @@ namespace Neat
    void LayerGroup::pushLayer(std::unique_ptr<Layer>&& layer)
    {
       layer->onAttach();
-      layers.emplace(this->begin() + this->insertIndex, std::move(layer));
-      this->insertIndex++;
+      m_layers.emplace(begin() + m_insertIndex, std::move(layer));
+      m_insertIndex++;
    }
 
    void LayerGroup::pushOverlay(std::unique_ptr<Layer>&& layer)
    {
       layer->onAttach();
-      this->layers.push_back(std::move(layer));
+      m_layers.push_back(std::move(layer));
    }
 
    std::unique_ptr<Layer> LayerGroup::popLayer(Int position)
    {
-      NT_CORE_ASSERT(position < this->layers.size(), "Invalid layer position!");
-      auto layer = std::move(this->layers[position]);
+      NT_CORE_ASSERT(position < m_layers.size(), "Invalid layer position!");
+      auto layer = std::move(m_layers[position]);
       layer->onDetach();
-      this->layers.erase(this->layers.begin() + position);
-      this->insertIndex--;
+      m_layers.erase(m_layers.begin() + position);
+      m_insertIndex--;
       return layer;
    }
 
    std::unique_ptr<Layer> LayerGroup::popLayer(const std::string& name)
    {
-      auto it = std::find_if(this->begin(), this->end(),
+      auto it = std::find_if(begin(), end(),
          [&name](const std::unique_ptr<Layer>& layer)
          {
             return (layer->getName() == name);
          }
       );
 
-      if (it != this->end())
+      if (it != end())
       {
          auto layer = std::move(*it);
          layer->onDetach();
-         this->layers.erase(it);
-         this->insertIndex--;
+         m_layers.erase(it);
+         m_insertIndex--;
          return layer;
       }
 
@@ -60,27 +60,27 @@ namespace Neat
 
    std::unique_ptr<Layer> LayerGroup::popOverlay(Int position)
    {
-      NT_CORE_ASSERT(position < this->layers.size(), "Invalid overlay position!");
-      auto layer = std::move(this->layers[position]);
+      NT_CORE_ASSERT(position < m_layers.size(), "Invalid overlay position!");
+      auto layer = std::move(m_layers[position]);
       layer->onDetach();
-      this->layers.erase(this->layers.begin() + position);
+      m_layers.erase(m_layers.begin() + position);
       return layer;
    }
 
    std::unique_ptr<Layer> LayerGroup::popOverlay(const std::string& name)
    {
-      auto it = std::find_if(this->begin(), this->end(),
+      auto it = std::find_if(begin(), end(),
          [&name](const std::unique_ptr<Layer>& layer)
          {
             return (layer->getName() == name);
          }
       );
 
-      if (it != this->end())
+      if (it != end())
       {
          auto layer = std::move(*it);
          layer->onDetach();
-         this->layers.erase(it);
+         m_layers.erase(it);
          return layer;
       }
 

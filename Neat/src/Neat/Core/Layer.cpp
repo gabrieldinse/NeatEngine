@@ -4,7 +4,7 @@
 namespace Neat
 {
    Layer::Layer(const std::string& name)
-      : name(name)
+      : m_name(name)
    {
    }
 

@@ -5,7 +5,7 @@
 
 namespace Neat
 {
-   std::unique_ptr<Renderer::SceneData> Renderer::sceneData = std::make_unique<Renderer::SceneData>();
+   std::unique_ptr<Renderer::SceneData> Renderer::m_sceneData = std::make_unique<Renderer::SceneData>();
 
    void Renderer::init()
    {

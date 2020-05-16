@@ -91,36 +91,36 @@ namespace Neat
 
 
       inline constexpr explicit
-      operator Bool() const;
+      operator bool() const;
 
 
       constexpr
-      SizeType size() const
+      std::size_t size() const
       {
-         return std::extent<decltype(this->data)>::value;
+         return std::extent<decltype(m_data)>::value;
       }
 
 
       // Element acessing
       constexpr
-      T& operator[](SizeType pos);
+      T& operator[](std::size_t pos);
       constexpr
-      const T& operator[](SizeType pos) const;
+      const T& operator[](std::size_t pos) const;
 
       constexpr
-      T& operator()(SizeType pos) { return (*this)[pos]; }
+      T& operator()(std::size_t pos) { return (*this)[pos]; }
       constexpr
-      const T& operator()(SizeType pos) const { return (*this)[pos]; }
+      const T& operator()(std::size_t pos) const { return (*this)[pos]; }
 
       constexpr
-      T* dataPointer() { return &this->x; }
+      T* dataPointer() { return &x; }
       constexpr
-      const T* dataPointer() const { return &this->x; }
+      const T* dataPointer() const { return &x; }
 
 
       // Conversion operator
       constexpr
-      operator T() const { return this->x; }
+      operator T() const { return x; }
    };
 
 

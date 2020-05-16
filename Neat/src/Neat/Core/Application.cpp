@@ -10,21 +10,22 @@
 #include "Neat/Debug/Instrumentator.h"
 
 
-
 namespace Neat
 {
-   Application* Application::instance = nullptr;
+   Application* Application::s_instance = nullptr;
 
    Application::Application()
    {
       NT_PROFILE_FUNCTION();
 
       // Check of there's another application running
-      NT_CORE_ASSERT(!instance, "Application already exists!");
-      instance = this;
+      NT_CORE_ASSERT(!s_instance, "Application already exists!");
+      s_instance = this;
 
-      this->window.setEventCallback(
-         [this](Event& event) { this->onEvent(event); });
+      m_window = std::make_unique<Window>(this->events);
+
+      events.subscribe<WindowCloseEvent>(*this);
+      events.subscribe<WindowResizeEvent>(*this);
 
       Renderer::init();
       ImGuiRender::init();
@@ -34,6 +35,9 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
+      events.unsubscribe<WindowCloseEvent>(*this);
+      events.unsubscribe<WindowResizeEvent>(*this);
+
       Renderer::shutdown();
       ImGuiRender::shutdown();
    }
@@ -42,48 +46,53 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      this->running = true;
+      m_running = true;
       std::thread update_loop(&Application::updateLoop, this);
       renderLoop();
       update_loop.join();
    }
 
+   void Application::stop()
+   {
+      m_running = false;
+   }
+
    void Application::updateLoop()
    {
       Timer timer;
-      Float accumulator = 0.0f;
+      Timestep accumulator = 0.0f;
 
       timer.start();
 
-      while (this->running)
+      while (m_running)
       {
          NT_PROFILE_SCOPE("Update loop");
 
          timer.reset();
          accumulator += timer.getDeltaTime();
 
-         while (accumulator >= this->deltaTime)
+         while (accumulator >= m_deltaTime)
          {
             NT_PROFILE_SCOPE("LayerGroup onUpdate");
 
-            for (auto& layer : this->layerGroup)
-               layer->onUpdate(this->deltaTime);
-            accumulator -= this->deltaTime;
+            for (auto& layer : m_layerGroup)
+               layer->onUpdate(m_deltaTime);
+            accumulator -= m_deltaTime;
          }
       }
    }
 
    void Application::renderLoop()
    {
-      while (this->running)
+      while (m_running)
       {
          NT_PROFILE_SCOPE("Render loop");
 
-         if (!this->window.isMinimized())
+         if (!m_window->isMinimized())
          {
             NT_PROFILE_SCOPE("LayerGroup onRender");
 
-            for (auto& layer : this->layerGroup)
+            for (auto& layer : m_layerGroup)
                layer->onRender();
          }
 
@@ -92,31 +101,13 @@ namespace Neat
          {
             NT_PROFILE_SCOPE("LayerGroup onImGuiRender");
 
-            for (auto& layer : this->layerGroup)
+            for (auto& layer : m_layerGroup)
                layer->onImGuiRender();
          }
          ImGuiRender::end();
       #endif
 
-         this->window.onUpdate();
-      }
-   }
-
-   void Application::onEvent(Event& event)
-   {
-      NT_PROFILE_FUNCTION();
-
-      event.dispatch<WindowCloseEvent>(
-         [this](WindowCloseEvent& event) { return this->onWindowClose(event); });
-      event.dispatch<WindowResizeEvent>(
-         [this](WindowResizeEvent& event) { return this->onWindowResize(event); });
-
-      // Do stuff with the event until its handled (function returns true)
-      for (auto& layer : this->layerGroup)
-      {
-         layer->onEvent(event);
-         if (event.isHandled())
-            break;
+         m_window->onUpdate();
       }
    }
 
@@ -124,28 +115,28 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      this->layerGroup.pushLayer(std::move(layer));
+      m_layerGroup.pushLayer(std::move(layer));
    }
 
    void Application::pushOverlay(std::unique_ptr<Layer>&& layer)
    {
       NT_PROFILE_FUNCTION();
 
-      this->layerGroup.pushOverlay(std::move(layer));
+      m_layerGroup.pushOverlay(std::move(layer));
    }
 
    std::unique_ptr<Layer> Application::popLayer(Int position)
    {
       NT_PROFILE_FUNCTION();
 
-      return this->layerGroup.popLayer(position);
+      return m_layerGroup.popLayer(position);
    }
 
    std::unique_ptr<Layer> Application::popLayer(const std::string& name)
    {
       NT_PROFILE_FUNCTION();
 
-      return this->layerGroup.popLayer(name);
+      return m_layerGroup.popLayer(name);
    }
 
 
@@ -153,30 +144,28 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      return this->layerGroup.popOverlay(position);
+      return m_layerGroup.popOverlay(position);
    }
 
    std::unique_ptr<Layer> Application::popOverlay(const std::string& name)
    {
       NT_PROFILE_FUNCTION();
 
-      return this->layerGroup.popOverlay(name);
+      return m_layerGroup.popOverlay(name);
    }
 
-   Bool Application::onWindowClose(WindowCloseEvent& event)
+
+   // Events receiving
+   bool Application::receive(const WindowCloseEvent& event)
    {
-      this->running = false;
+      stop();
       return true;
    }
 
-   Bool Application::onWindowResize(WindowResizeEvent& event)
+   bool Application::receive(const WindowResizeEvent& event)
    {
-      NT_PROFILE_FUNCTION();
-
-      if (this->window.isMinimized())
-         return false;
-
-      Renderer::onWindowResize(event.getWidth(), event.getHeight());
+      if (!m_window->isMinimized())
+         Renderer::onWindowResize(event.getWidth(), event.getHeight());
 
       return false;
    }

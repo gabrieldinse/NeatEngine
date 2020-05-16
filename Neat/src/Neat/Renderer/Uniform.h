@@ -21,18 +21,18 @@ namespace Neat
 	class UniformLibrary
 	{
 	public:
-		UniformLibrary(UInt shaderProgramID);
+		UniformLibrary(UInt shaderId);
 		UniformLibrary() = delete;
 		~UniformLibrary();
 
-		Bool exists(const std::string& name) const;
+		bool exists(const std::string& name) const;
 
 		UniformData& operator[](const std::string& name);
 		const UniformData& operator[](const std::string& name) const;
 
 	private:
 		std::unordered_map<std::string, std::unique_ptr<UniformData>> uniforms;
-		UInt shaderProgramID = 0;
+		UInt m_shaderId = 0;
 	};
 
 
@@ -52,7 +52,7 @@ namespace Neat
 			const std::string& name, const UniformLibrary& uniformLibrary);
 
    protected:
-      std::unique_ptr<UniformData> data;
+      std::unique_ptr<UniformData> m_data;
    };
 
 
@@ -66,7 +66,7 @@ namespace Neat
 	struct Uniform<ShaderDataType::Float> : public UniformBase
 	{
 		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
-		void set(Float value);
+		void set(float value);
 	};
 
 	template<>

@@ -14,7 +14,6 @@ public:
    void onDetach() override;
    void onUpdate(Neat::Timestep dt) override;
    void onRender() override;
-   void onEvent(Neat::Event& event) override;
    virtual void onImGuiRender() override;
 
 private:

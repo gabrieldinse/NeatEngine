@@ -5,7 +5,8 @@
 #include <memory>
 
 #include "Neat/Core/Core.h"
-#include "Neat/Events/Event.h"
+#include "Neat/Core/Types.h"
+#include "Neat/Events/EventManager.h"
 
 
 struct GLFWwindow;
@@ -13,7 +14,8 @@ struct GLFWwindow;
 
 namespace Neat
 {
-   using eventCallbackFunction = std::function<void(Event&)>;
+   class Application;
+
    struct WindowImpl;
 
    struct WindowProps
@@ -33,8 +35,8 @@ namespace Neat
    class Window
    {
    public:
-      //Window();
-      Window(const WindowProps & props = WindowProps());
+      Window(EventManager& eventManager,
+         const WindowProps& props = WindowProps());
       ~Window();
 
       void onUpdate();
@@ -44,14 +46,13 @@ namespace Neat
 
       void* getNativeWindow() const;
 
-      Bool isMinimized() const;
+      bool isMinimized() const;
 
       // Window attributes
-      void setEventCallback(const eventCallbackFunction& callback);
-      void setVSync(Bool enabled);
-      Bool isSync() const;
+      void setVSync(bool enabled);
+      bool isSync() const;
 
    private:
-      std::unique_ptr<WindowImpl> data;
+      std::unique_ptr<WindowImpl> m_data;
    };
 }

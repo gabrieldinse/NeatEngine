@@ -1,8 +1,7 @@
 #include "Neat/Core/Window.h"
 #include "Neat/Core/Log.h"
-#include "Neat/Events/MouseEvent.h"
-#include "Neat/Events/KeyEvent.h"
-#include "Neat/Events/ApplicationEvent.h"
+#include "Neat/Core/Application.h"
+#include "Neat/Events/Event.h"
 #include "Neat/Renderer/GraphicsContext.h"
 #include "Neat/Debug/Instrumentator.h"
 
@@ -12,7 +11,7 @@
 
 namespace Neat
 {
-   static void GLFWErrorCallback(Int error, const Char* description)
+   static void GLFWErrorCallback(Int error, const char* description)
    {
       NT_CORE_ERROR("GLFW Error ({0}); {1}", error, description);
    }
@@ -28,8 +27,8 @@ namespace Neat
    void mouseButtonActionCallback(
       GLFWwindow* window, Int button, Int action, Int mods);
    void mouseScrollCallback(
-      GLFWwindow* window, Double xOffset, Double yOffset);
-   void mouseMoveCallback(GLFWwindow* window, Double xPos, Double yPos);
+      GLFWwindow* window, double xOffset, double yOffset);
+   void mouseMoveCallback(GLFWwindow* window, double xPos, double yPos);
 
 
    // Defines a personalized std::unique_ptr for GLFWwindow
@@ -51,12 +50,15 @@ namespace Neat
       WindowProps props;
       GLFWwindowUniquePtr window;
       std::unique_ptr<GraphicsContext> context;
-      Bool minimized = false;
-      Bool vSync = false;
-      eventCallbackFunction eventCallback;
 
-      WindowImpl(const WindowProps& props)
-         : props(props)
+      EventManager& events;
+
+      bool minimized = false;
+      bool vSync = false;
+
+
+      WindowImpl(EventManager& eventManager, const WindowProps& props)
+         : events(eventManager), props(props)
       {
          static Int windowCount = 0;
          NT_PROFILE_FUNCTION();
@@ -72,8 +74,8 @@ namespace Neat
          {
             NT_PROFILE_SCOPE("GLFW initialization");
 
-            this->window = GLFWwindowUniquePtr(glfwCreateWindow(
-               (Int)this->props.width, (Int)this->props.height,
+            window = GLFWwindowUniquePtr(glfwCreateWindow(
+               (Int)props.width, (Int)props.height,
                props.title.c_str(), NULL, NULL));
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
@@ -83,14 +85,14 @@ namespace Neat
 
          {
             NT_PROFILE_SCOPE("OpenGL context initialization");
-            this->context = std::make_unique<GraphicsContext>(this->window.get());
+            context = std::make_unique<GraphicsContext>(window.get());
          }
       }
    };
 
 
-   Window::Window(const WindowProps& props)
-      : data(std::make_unique<WindowImpl>(props))
+   Window::Window(EventManager& eventManager, const WindowProps& props)
+      : m_data(std::make_unique<WindowImpl>(eventManager, props))
    {
       NT_PROFILE_FUNCTION();
 
@@ -99,38 +101,33 @@ namespace Neat
          props.width,
          props.height);
 
-      this->data->context->init();
+      m_data->context->init();
 
-      glfwSetWindowUserPointer(this->data->window.get(), this->data.get());
-      this->setVSync(true);
+      glfwSetWindowUserPointer(m_data->window.get(), m_data.get());
+      setVSync(true);
 
-      glfwSetWindowSizeCallback(this->data->window.get(), windowResizeCallback);
-      glfwSetWindowCloseCallback(this->data->window.get(), windowCloseCallback);
-      glfwSetKeyCallback(this->data->window.get(), keyActionCallback);
-      glfwSetCharCallback(this->data->window.get(), keyTypeCallback);
-      glfwSetMouseButtonCallback(this->data->window.get(), mouseButtonActionCallback);
-      glfwSetScrollCallback(this->data->window.get(), mouseScrollCallback);
-      glfwSetCursorPosCallback(this->data->window.get(), mouseMoveCallback);
+      glfwSetWindowSizeCallback(m_data->window.get(), windowResizeCallback);
+      glfwSetWindowCloseCallback(m_data->window.get(), windowCloseCallback);
+      glfwSetKeyCallback(m_data->window.get(), keyActionCallback);
+      glfwSetCharCallback(m_data->window.get(), keyTypeCallback);
+      glfwSetMouseButtonCallback(m_data->window.get(), mouseButtonActionCallback);
+      glfwSetScrollCallback(m_data->window.get(), mouseScrollCallback);
+      glfwSetCursorPosCallback(m_data->window.get(), mouseMoveCallback);
    }
 
    Int Window::getWidth() const
    {
-      return this->data->props.width;
+      return m_data->props.width;
    }
 
    Int Window::getHeight() const
    {
-      return this->data->props.height;
+      return m_data->props.height;
    }
 
    void* Window::getNativeWindow() const
    {
-      return this->data->window.get();
-   }
-
-   void Window::setEventCallback(const eventCallbackFunction& callback)
-   {
-      this->data->eventCallback = callback;
+      return m_data->window.get();
    }
 
    Window::~Window()
@@ -142,15 +139,15 @@ namespace Neat
       NT_PROFILE_FUNCTION();
 
       glfwPollEvents();
-      this->data->context->swapBuffers();
+      m_data->context->swapBuffers();
    }
 
-   Bool Window::isMinimized() const
+   bool Window::isMinimized() const
    {
-      return this->data->minimized;
+      return m_data->minimized;
    }
 
-   void Window::setVSync(Bool enabled)
+   void Window::setVSync(bool enabled)
    {
       NT_PROFILE_FUNCTION();
 
@@ -158,12 +155,12 @@ namespace Neat
          glfwSwapInterval(1);
       else
          glfwSwapInterval(0);
-      this->data->vSync = enabled;
+      m_data->vSync = enabled;
    }
 
-   Bool Window::isSync() const
+   bool Window::isSync() const
    {
-      return this->data->vSync;
+      return m_data->vSync;
    }
 
    // -------------------------------------------------------------------------
@@ -174,6 +171,7 @@ namespace Neat
       NT_PROFILE_FUNCTION();
 
       auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+
       data.props.width = width;
       data.props.height = height;
 
@@ -182,8 +180,7 @@ namespace Neat
       else
          data.minimized = false;
 
-      WindowResizeEvent event(width, height);
-      data.eventCallback(event);
+      data.events.publish<WindowResizeEvent>(width, height);
    }
 
    void windowCloseCallback(GLFWwindow* window)
@@ -191,8 +188,7 @@ namespace Neat
       NT_PROFILE_FUNCTION();
 
       auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
-      WindowCloseEvent event;
-      data.eventCallback(event);
+      data.events.publish<WindowCloseEvent>();
    }
 
    void keyActionCallback(
@@ -206,20 +202,17 @@ namespace Neat
       {
          case GLFW_PRESS:
          {
-            KeyPressedEvent event(static_cast<KeyCode>(key), 0);
-            data.eventCallback(event);
+            data.events.publish<KeyPressedEvent>(static_cast<KeyCode>(key), 0);
             break;
          }
          case GLFW_RELEASE:
          {
-            KeyReleasedEvent event(static_cast<KeyCode>(key));
-            data.eventCallback(event);
+            data.events.publish<KeyReleasedEvent>(static_cast<KeyCode>(key));
             break;
          }
          case GLFW_REPEAT:
          {
-            KeyPressedEvent event(static_cast<KeyCode>(key), 1);
-            data.eventCallback(event);
+            data.events.publish<KeyPressedEvent>(static_cast<KeyCode>(key), 1);
             break;
          }
       }
@@ -230,8 +223,7 @@ namespace Neat
       NT_PROFILE_FUNCTION();
 
       auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
-      KeyTypedEvent event(static_cast<KeyCode>(key));
-      data.eventCallback(event);
+      data.events.publish<KeyTypedEvent>(static_cast<KeyCode>(key));
    }
 
    void mouseButtonActionCallback(
@@ -246,35 +238,39 @@ namespace Neat
          case GLFW_PRESS:
          {
             MouseButtonPressedEvent event(static_cast<MouseCode>(button));
-            data.eventCallback(event);
+            data.events.publish<MouseButtonPressedEvent>(
+               static_cast<MouseCode>(button));
             break;
          }
          case GLFW_RELEASE:
          {
             MouseButtonReleasedEvent event(static_cast<MouseCode>(button));
-            data.eventCallback(event);
+            data.events.publish<MouseButtonReleasedEvent>(
+               static_cast<MouseCode>(button));
             break;
          }
       }
    }
 
    void mouseScrollCallback(
-      GLFWwindow* window, Double xOffset, Double yOffset)
+      GLFWwindow* window, double xOffset, double yOffset)
    {
       NT_PROFILE_FUNCTION();
 
       auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
-      MouseScrolledEvent event((Float)xOffset, (Float)yOffset);
-      data.eventCallback(event);
+
+      MouseScrolledEvent event((float)xOffset, (float)yOffset);
+      data.events.publish<MouseScrolledEvent>((float)xOffset, (float)yOffset);
    }
 
    void mouseMoveCallback(
-      GLFWwindow* window, Double xPos, Double yPos)
+      GLFWwindow* window, double xPos, double yPos)
    {
       NT_PROFILE_FUNCTION();
 
       auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
-      MouseMovedEvent event((Float)xPos, (Float)yPos);
-      data.eventCallback(event);
+
+      MouseMovedEvent event((float)xPos, (float)yPos);
+      data.events.publish<MouseMovedEvent>((float)xPos, (float)yPos);
    }
 }

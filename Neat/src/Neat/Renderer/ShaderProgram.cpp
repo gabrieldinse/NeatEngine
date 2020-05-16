@@ -57,7 +57,7 @@ namespace Neat
 		NT_PROFILE_FUNCTION();
 
 		std::unordered_map<UInt, std::string> shader_sources;
-		const Char* type_token = "#type";
+		const char* type_token = "#type";
 		auto type_token_lenght = strlen(type_token);
 		auto pos = source.find(type_token, 0);
 		while (pos != std::string::npos)
@@ -94,8 +94,8 @@ namespace Neat
 		auto source = readFile(filepath);
 		auto shader_sources = preprocessShaderSource(source);
 		compile(shader_sources);
-		this->name = std::filesystem::path(filepath).stem().string();
-		this->uniformLibrary = std::make_unique<UniformLibrary>(this->id);
+		m_name = std::filesystem::path(filepath).stem().string();
+		m_uniformLibrary = std::make_unique<UniformLibrary>(m_id);
 	}
 
 	ShaderProgram::ShaderProgram(const std::string& name,
@@ -106,8 +106,8 @@ namespace Neat
 		auto source = readFile(filepath);
 		auto shader_sources = preprocessShaderSource(source);
 		compile(shader_sources);
-		this->name = name;
-		this->uniformLibrary = std::make_unique<UniformLibrary>(this->id);
+		m_name = name;
+		m_uniformLibrary = std::make_unique<UniformLibrary>(m_id);
 	}
 
 	ShaderProgram::ShaderProgram(
@@ -121,14 +121,14 @@ namespace Neat
 		shader_sources[GL_VERTEX_SHADER] = vertexSource;
 		shader_sources[GL_FRAGMENT_SHADER] = fragmentSource;
 		compile(shader_sources);
-		this->uniformLibrary = std::make_unique<UniformLibrary>(this->id);
+		m_uniformLibrary = std::make_unique<UniformLibrary>(m_id);
 	}
 
 	ShaderProgram::~ShaderProgram()
 	{
 		NT_PROFILE_FUNCTION();
 
-		glDeleteProgram(this->id);
+		glDeleteProgram(m_id);
 	}
 
 	void ShaderProgram::compile(const std::unordered_map<UInt,
@@ -206,14 +206,14 @@ namespace Neat
 		for (auto shader_id : shaders_id)
 			glDetachShader(program_id, shader_id);
 
-		this->id = program_id;
+		m_id = program_id;
 	}
 
 	void ShaderProgram::bind() const
 	{
 		NT_PROFILE_FUNCTION();
 
-		glUseProgram(this->id);
+		glUseProgram(m_id);
 	}
 
 	void ShaderProgram::unbind() const
@@ -231,17 +231,17 @@ namespace Neat
 		NT_PROFILE_FUNCTION();
 
 		auto& name = shader->getName();
-		NT_CORE_ASSERT(this->exists(name), "ShaderProgram already exists!");
-		this->shaders[name] = shader;
+		NT_CORE_ASSERT(exists(name), "ShaderProgram already exists!");
+		m_shaders[name] = shader;
 	}
 
 	void ShaderLibrary::add(const std::string& name, const std::shared_ptr<ShaderProgram>& shader)
 	{
 		NT_PROFILE_FUNCTION();
 
-		NT_CORE_ASSERT(this->exists(name), "ShaderProgram already exists!");
+		NT_CORE_ASSERT(exists(name), "ShaderProgram already exists!");
 		shader->setName(name);
-		this->shaders[name] = shader;
+		m_shaders[name] = shader;
 	}
 
 	std::shared_ptr<ShaderProgram> ShaderLibrary::load(const std::string& filepath)
@@ -249,7 +249,7 @@ namespace Neat
 		NT_PROFILE_FUNCTION();
 
 		auto shader = std::make_shared<ShaderProgram>(filepath);
-		this->add(shader);
+		add(shader);
 
 		return shader;
 	}
@@ -261,7 +261,7 @@ namespace Neat
 		NT_PROFILE_FUNCTION();
 
 		auto shader = std::make_shared<ShaderProgram>(name, filepath);
-		this->add(shader);
+		add(shader);
 
 		return shader;
 	}
@@ -270,16 +270,16 @@ namespace Neat
 	{
 		NT_PROFILE_FUNCTION();
 
-		NT_CORE_ASSERT(this->exists(name), "ShaderProgram not found!");
+		NT_CORE_ASSERT(exists(name), "ShaderProgram not found!");
 
-		return this->shaders[name];
+		return m_shaders[name];
 	}
 
-	Bool ShaderLibrary::exists(const std::string& name) const
+	bool ShaderLibrary::exists(const std::string& name) const
 	{
 		NT_PROFILE_FUNCTION();
 
-		return (this->shaders.find(name) != this->shaders.end());
+		return (m_shaders.find(name) != m_shaders.end());
 	}
 
 }

@@ -8,36 +8,36 @@
 
 namespace Neat
 {
-   OrthographicCamera::OrthographicCamera(Float left, Float right, Float bottom, Float top)
-      : projectionMatrix(orthographic(left, right, bottom, top, -1.0f, 1.0f))
-      , viewMatrix(1.0f)
-      , viewProjectionMatrix(this->projectionMatrix * this->viewMatrix)
+   OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
+      : m_projectionMatrix(orthographic(left, right, bottom, top, -1.0f, 1.0f))
+      , m_viewMatrix(1.0f)
+      , m_viewProjectionMatrix(m_projectionMatrix * m_viewMatrix)
    {
       NT_PROFILE_FUNCTION();
    }
 
-   void OrthographicCamera::setProjection(Float left, Float right, Float bottom, Float top)
+   void OrthographicCamera::setProjection(float left, float right, float bottom, float top)
    {
       NT_PROFILE_FUNCTION();
 
-      this->projectionMatrix = orthographic(left, right, bottom, top, -1.0f, 1.0f);
-      this->viewProjectionMatrix = this->projectionMatrix * this->viewMatrix;
+      m_projectionMatrix = orthographic(left, right, bottom, top, -1.0f, 1.0f);
+      m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
    }
 
    void OrthographicCamera::setPosition(const Vec3& position)
    {
       NT_PROFILE_FUNCTION();
 
-      this->position = position;
-      this->recalculateViewMatrix();
+      m_position = position;
+      recalculateViewMatrix();
    }
 
-   void OrthographicCamera::setRotation(Float rotation)
+   void OrthographicCamera::setRotation(float rotation)
    {
       NT_PROFILE_FUNCTION();
 
-      this->rotation = rotation;
-      this->recalculateViewMatrix();
+      m_rotation = rotation;
+      recalculateViewMatrix();
    }
 
    void OrthographicCamera::recalculateViewMatrix()
@@ -45,10 +45,10 @@ namespace Neat
       NT_PROFILE_FUNCTION();
 
       Mat4 transform =
-         translate(this->position) * 
-         rotate(degreesToRadians(this->rotation), { 0, 0, 1});
+         translate(m_position) * 
+         rotate(degreesToRadians(m_rotation), { 0, 0, 1});
 
-      this->viewMatrix = inverse(transform);
-      this->viewProjectionMatrix = this->projectionMatrix * this->viewMatrix;
+      m_viewMatrix = inverse(transform);
+      m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
    }
 }

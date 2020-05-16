@@ -16,21 +16,21 @@ namespace Neat
    public:
       Log() = default;
       ~Log() = default;
-      static void init(const Char* pattern = "%^[%T] %n: %v%$");
+      static void init(const char* pattern = "%^[%T] %n: %v%$");
 
       inline static std::shared_ptr<spdlog::logger>& getCoreLogger()
       {
-         return Log::coreLogger;
+         return Log::s_coreLogger;
       }
 
       inline static std::shared_ptr<spdlog::logger>& getClientLogger()
       {
-         return Log::clientLogger;
+         return Log::s_clientLogger;
       }
 
    private:
-      static std::shared_ptr<spdlog::logger> coreLogger;
-      static std::shared_ptr<spdlog::logger> clientLogger;
+      static std::shared_ptr<spdlog::logger> s_coreLogger;
+      static std::shared_ptr<spdlog::logger> s_clientLogger;
    };
 }
 

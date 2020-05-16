@@ -3,35 +3,35 @@
 #include "Neat/Core/Core.h"
 #include "Neat/Core/Window.h"
 #include "Neat/Core/LayerGroup.h"
-#include "Neat/Events/ApplicationEvent.h"
-#include "Neat/Core/Timestep.h"
-#include "Neat/ECS/EntityManager.h"
+#include "Neat/Events/EventManager.h"
+#include "Neat/Events/Event.h"
 
 
 namespace Neat
 {
-   class Event;
+   class AppEvent;
+   class WindowCloseReceiver;
+   class WindowResizeReceiver;
 
-
-   class  Application
+   class Application : public EventReceiver<Application>
    {
    public:
       Application();
       virtual ~Application();
 
       void run();
-      void onEvent(Event& e);
+      void stop();
 
       template <typename T, typename... Args>
       void pushLayer(Args&&... args)
       {
-         this->pushLayer(std::make_unique<T>(std::forward<Args>(args)...));
+         pushLayer(std::make_unique<T>(std::forward<Args>(args)...));
       }
 
       template <typename T, typename... Args>
       void pushOverlay(Args&&... args)
       {
-         this->pushOverlay(std::make_unique<T>(std::forward<Args>(args)...));
+         pushOverlay(std::make_unique<T>(std::forward<Args>(args)...));
       }
 
       void pushLayer(std::unique_ptr<Layer>&& layer);
@@ -41,27 +41,29 @@ namespace Neat
       std::unique_ptr<Layer> popOverlay(Int position);
       std::unique_ptr<Layer> popOverlay(const std::string& name);
 
-      void setUpdateRate(Float rate) { this->deltaTime = 1.0f / rate; }
+      void setUpdateRate(Timestep rate) { m_deltaTime = 1.0f / rate; }
 
-      static Application& get() { return *instance; }
-      Window& getWindow() { return this->window; }
+      static Application& get() { return *s_instance; }
+      Window& getWindow() { return *m_window; }
+
+      // Events receiving
+      bool receive(const WindowCloseEvent& event);
+      bool receive(const WindowResizeEvent& event);
+
+      EventManager events;
 
    private:
       void updateLoop();
       void renderLoop();
 
-      // Callbacks
-      Bool onWindowClose(WindowCloseEvent& event);
-      Bool onWindowResize(WindowResizeEvent& event);
-
    private:
-      static Application* instance;
+      static Application* s_instance;
 
-      Window window;
-      LayerGroup layerGroup;
-      Float deltaTime = 1.0f / 120.0f;
+      std::unique_ptr<Window> m_window;
+      LayerGroup m_layerGroup;
+      Timestep m_deltaTime = 1.0f / 120.0f;
 
-      Bool running = false;
+      bool m_running = false;
    };
 
    std::unique_ptr<Application> createApplication();

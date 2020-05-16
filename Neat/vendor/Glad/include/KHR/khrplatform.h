@@ -249,7 +249,7 @@ typedef unsigned long  int     khronos_usize_t;
 
 #if KHRONOS_SUPPORT_FLOAT
 /*
- * Float type
+ * float type
  */
 typedef          float         khronos_float_t;
 #endif

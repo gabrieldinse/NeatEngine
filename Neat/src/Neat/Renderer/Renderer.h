@@ -29,6 +29,6 @@ namespace Neat
       };
 
    private:
-      static std::unique_ptr<SceneData> sceneData;
+      static std::unique_ptr<SceneData> m_sceneData;
    };
 }

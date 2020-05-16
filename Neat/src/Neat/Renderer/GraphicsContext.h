@@ -19,6 +19,6 @@ namespace Neat
       void swapBuffers();
 
    private:
-      GLFWwindow* window;
+      GLFWwindow* m_window;
    };
 }

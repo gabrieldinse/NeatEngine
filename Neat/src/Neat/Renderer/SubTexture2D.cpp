@@ -6,7 +6,7 @@ namespace Neat
    SubTexture2D::SubTexture2D(const Texture2D& texture,
       const Vec2& bottomLeftCoordinate, const Vec2& upperRightCoordinate)
       : Texture2D(texture)
-      , textureCoordinates{
+      , m_textureCoordinates{
          bottomLeftCoordinate,
          {upperRightCoordinate.x, bottomLeftCoordinate.y},
          upperRightCoordinate,

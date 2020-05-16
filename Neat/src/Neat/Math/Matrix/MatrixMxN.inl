@@ -3,16 +3,16 @@
 
 namespace Neat
 {
-   template <SizeType M, SizeType N, typename T>
+   template <std::size_t M, std::size_t N, typename T>
    std::ostream& operator<<(std::ostream& os, const Mat<M, N, T>& m)
    {
       os << "[[";
-      for (SizeType i = 0; i < M; ++i)
+      for (std::size_t i = 0; i < M; ++i)
       {
          if (i > 0)
             std::cout << "\n [";
 
-         for (SizeType j = 0; j < N; ++j)
+         for (std::size_t j = 0; j < N; ++j)
          {
             if (j < N - 1)
                os << std::setw(10) << std::setprecision(6)

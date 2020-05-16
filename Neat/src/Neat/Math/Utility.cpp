@@ -3,13 +3,13 @@
 
 namespace Neat
 {
-   Float degreesToRadians(Float angleDegrees)
+   float degreesToRadians(float angleDegrees)
    {
-      return angleDegrees * pi / 180.0f;
+      return angleDegrees * NT_PI / 180.0f;
    }
 
-   Float radiansToDegrees(Float angleRadians)
+   float radiansToDegrees(float angleRadians)
    {
-      return angleRadians * 180.0f / pi;
+      return angleRadians * 180.0f / NT_PI;
    }
 }

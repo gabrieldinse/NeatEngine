@@ -30,17 +30,17 @@ namespace Neat
       std::unique_ptr<Layer> popLayer(const std::string& name);
       std::unique_ptr<Layer> popOverlay(const std::string& name);
 
-      LayerVectorIt begin() { return this->layers.begin(); }
-      LayerVectorIt end() { return this->layers.end(); }
-      LayerVectorConstIt begin() const { return this->layers.begin(); }
-      LayerVectorConstIt end() const { return this->layers.end(); }
-      LayerVectorRevIt rbegin() { return this->layers.rbegin(); }
-      LayerVectorRevIt rend() { return this->layers.rend(); }
-      LayerVectorConstRevIt rbegin() const { return this->layers.rbegin(); }
-      LayerVectorConstRevIt rend() const { return this->layers.rend(); }
+      LayerVectorIt begin() { return m_layers.begin(); }
+      LayerVectorIt end() { return m_layers.end(); }
+      LayerVectorConstIt begin() const { return m_layers.begin(); }
+      LayerVectorConstIt end() const { return m_layers.end(); }
+      LayerVectorRevIt rbegin() { return m_layers.rbegin(); }
+      LayerVectorRevIt rend() { return m_layers.rend(); }
+      LayerVectorConstRevIt rbegin() const { return m_layers.rbegin(); }
+      LayerVectorConstRevIt rend() const { return m_layers.rend(); }
 
    private:
-      LayerVector layers;
-      LayerVector::size_type insertIndex;
+      LayerVector m_layers;
+      LayerVector::size_type m_insertIndex;
    };
 }

@@ -88,9 +88,9 @@ namespace Neat
    constexpr
    Vec<3, T>& Vec<3, T>::operator=(const Vec<4, T>& other)
    {
-      this->x = other.x;
-      this->y = other.y;
-      this->z = other.z;
+      x = other.x;
+      y = other.y;
+      z = other.z;
 
       return *this;
    }
@@ -99,9 +99,9 @@ namespace Neat
    constexpr
    Vec<3, T>& Vec<3, T>::operator=(const Vec<3, T>& other)
    {
-      this->x = other.x;
-      this->y = other.y;
-      this->z = other.z;
+      x = other.x;
+      y = other.y;
+      z = other.z;
 
       return *this;
    }
@@ -110,9 +110,9 @@ namespace Neat
    constexpr
    Vec<3, T>& Vec<3, T>::operator=(const Vec<2, T>& other)
    {
-      this->x = other.x;
-      this->y = other.y;
-      this->z = static_cast<T>(0);
+      x = other.x;
+      y = other.y;
+      z = static_cast<T>(0);
 
       return *this;
    }
@@ -121,9 +121,9 @@ namespace Neat
    constexpr
    Vec<3, T>& Vec<3, T>::operator=(const Vec<1, T>& other)
    {
-      this->x = other.x;
-      this->y = static_cast<T>(0);
-      this->z = static_cast<T>(0);
+      x = other.x;
+      y = static_cast<T>(0);
+      z = static_cast<T>(0);
 
       return *this;
    }
@@ -134,9 +134,9 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<3, T>& Vec<3, T>::operator+=(const Vec<3, U>& v)
    {
-      this->x += v.x;
-      this->y += v.y;
-      this->z += v.z;
+      x += v.x;
+      y += v.y;
+      z += v.z;
 
       return *this;
    }
@@ -145,9 +145,9 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<3, T>& Vec<3, T>::operator-=(const Vec<3, U>& v)
    {
-      this->x -= v.x;
-      this->y -= v.y;
-      this->z -= v.z;
+      x -= v.x;
+      y -= v.y;
+      z -= v.z;
 
       return *this;
    }
@@ -156,9 +156,9 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<3, T>& Vec<3, T>::operator*=(const Vec<3, U>& v)
    {
-      this->x *= v.x;
-      this->y *= v.y;
-      this->z *= v.z;
+      x *= v.x;
+      y *= v.y;
+      z *= v.z;
 
       return *this;
    }
@@ -167,9 +167,9 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<3, T>& Vec<3, T>::operator*=(U scalar)
    {
-      this->x *= scalar;
-      this->y *= scalar;
-      this->z *= scalar;
+      x *= scalar;
+      y *= scalar;
+      z *= scalar;
 
       return *this;
    }
@@ -178,9 +178,9 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<3, T>& Vec<3, T>::operator/=(U scalar)
    {
-      this->x /= scalar;
-      this->y /= scalar;
-      this->z /= scalar;
+      x /= scalar;
+      y /= scalar;
+      z /= scalar;
 
       return *this;
    }
@@ -188,7 +188,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-      Vec<3, T>::operator Bool() const
+      Vec<3, T>::operator bool() const
    {
       return (norm(*this) > static_cast<T>(0));
    }
@@ -196,30 +196,30 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   T& Vec<3, T>::operator[](SizeType pos)
+   T& Vec<3, T>::operator[](std::size_t pos)
    {
       switch (pos)
       {
-         case 0: return this->x;
-         case 1: return this->y;
-         case 2: return this->z;
+         case 0: return x;
+         case 1: return y;
+         case 2: return z;
       }
 
-      throw VecDimensionError("Wrong Vec dimension being acessed!");
+      throw VecDimensionError();
    }
 
    template <typename T>
    inline constexpr
-   const T& Vec<3, T>::operator[](SizeType pos) const
+   const T& Vec<3, T>::operator[](std::size_t pos) const
    {
       switch (pos)
       {
-         case 0: return this->x;
-         case 1: return this->y;
-         case 2: return this->z;
+         case 0: return x;
+         case 1: return y;
+         case 2: return z;
       }
 
-      throw VecDimensionError("Wrong Vec dimension being acessed!");
+      throw VecDimensionError();
    }
 
 

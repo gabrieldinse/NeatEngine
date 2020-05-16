@@ -5,5 +5,5 @@
 
 namespace Neat
 {
-   using EntityId = UInt;
+   constexpr std::size_t NT_MAX_COMPONENTS = 64;
 }

@@ -20,7 +20,7 @@ namespace Neat
    template <typename T>
    T dotProduct(const Vec<4, T>& va, const Vec<4, T>& vb);
 
-   template <typename T, SizeType N>
+   template <typename T, std::size_t N>
    T innerProduct(const Vec<N, T>& va, const Vec<N, T>& vb);
 
    // Cross product

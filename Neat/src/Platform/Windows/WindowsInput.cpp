@@ -7,7 +7,8 @@
 
 namespace Neat
 {
-   Bool isKeyPressed(KeyCode key)
+
+   bool Input::isKeyPressed(KeyCode key)
    {
       NT_PROFILE_FUNCTION();
 
@@ -17,7 +18,7 @@ namespace Neat
       return (state == GLFW_PRESS || state == GLFW_REPEAT);
    }
 
-   Bool isMouseButtonPressed(MouseCode button)
+   bool Input::isMouseButtonPressed(MouseCode button)
    {
       NT_PROFILE_FUNCTION();
 
@@ -27,25 +28,25 @@ namespace Neat
       return (state == GLFW_PRESS);
    }
 
-   Vec2 getMousePosition()
+   Vec2 Input::getMousePosition()
    {
       NT_PROFILE_FUNCTION();
 
       auto window = static_cast<GLFWwindow*>(
          Application::get().getWindow().getNativeWindow());
-      Double xPos, yPos;
+      double xPos, yPos;
       glfwGetCursorPos(window, &xPos, &yPos);
-      return { (Float)xPos, (Float)yPos };
+      return { (float)xPos, (float)yPos };
    }
 
-   Float getMouseX()
+   float Input::getMouseX()
    {
       NT_PROFILE_FUNCTION();
 
       return getMousePosition().x;
    }
 
-   Float getMouseY()
+   float Input::getMouseY()
    {
       NT_PROFILE_FUNCTION();
 

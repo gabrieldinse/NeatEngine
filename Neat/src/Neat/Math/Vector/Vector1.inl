@@ -52,7 +52,7 @@ namespace Neat
    constexpr
    Vec<1, T>& Vec<1, T>::operator=(T scalar)
    {
-      this->x = scalar;
+      x = scalar;
 
       return *this;
    }
@@ -61,7 +61,7 @@ namespace Neat
    constexpr
    Vec<1, T>& Vec<1, T>::operator=(const Vec<4, T>& other)
    {
-      this->x = other.x;
+      x = other.x;
 
       return *this;
    }
@@ -70,7 +70,7 @@ namespace Neat
    constexpr
    Vec<1, T>& Vec<1, T>::operator=(const Vec<3, T>& other)
    {
-      this->x = other.x;
+      x = other.x;
 
       return *this;
    }
@@ -79,7 +79,7 @@ namespace Neat
    constexpr
    Vec<1, T>& Vec<1, T>::operator=(const Vec<2, T>& other)
    {
-      this->x = other.x;
+      x = other.x;
 
       return *this;
    }
@@ -88,7 +88,7 @@ namespace Neat
    constexpr
    Vec<1, T>& Vec<1, T>::operator=(const Vec<1, T>& other)
    {
-      this->x = other.x;
+      x = other.x;
 
       return *this;
    }
@@ -98,7 +98,7 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<1, T>& Vec<1, T>::operator+=(const Vec<1, U>& v)
    {
-      this->x += v.x;
+      x += v.x;
 
       return *this;
    }
@@ -107,7 +107,7 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<1, T>& Vec<1, T>::operator-=(const Vec<1, U>& v)
    {
-      this->x -= v.x;
+      x -= v.x;
 
       return *this;
    }
@@ -116,7 +116,7 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<1, T>& Vec<1, T>::operator*=(const Vec<1, U>& v)
    {
-      this->x *= v.x;
+      x *= v.x;
 
 
       return *this;
@@ -126,7 +126,7 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<1, T>& Vec<1, T>::operator*=(U scalar)
    {
-      this->x *= scalar;
+      x *= scalar;
 
       return *this;
    }
@@ -135,7 +135,7 @@ namespace Neat
    template<typename U>
    inline constexpr Vec<1, T>& Vec<1, T>::operator/=(U scalar)
    {
-      this->x /= scalar;
+      x /= scalar;
 
       return *this;
    }
@@ -143,34 +143,34 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-      Vec<1, T>::operator Bool() const
+      Vec<1, T>::operator bool() const
    {
-      return (this->x > 0);
+      return (x > 0);
    }
 
 
    template<typename T>
    inline  constexpr
-   T& Vec<1, T>::operator[](SizeType pos)
+   T& Vec<1, T>::operator[](std::size_t pos)
    {
       switch (pos)
       {
-         case static_cast<T>(0): return this->x;
+         case static_cast<T>(0): return x;
       }
 
-      throw VecDimensionError("Wrong Vec dimension being acessed!");
+      throw VecDimensionError();
    }
 
    template<typename T>
    inline constexpr
-   const T& Vec<1, T>::operator[](SizeType pos) const
+   const T& Vec<1, T>::operator[](std::size_t pos) const
    {
       switch (pos)
       {
-         case 0: return this->x;
+         case 0: return x;
       }
 
-      throw VecDimensionError("Wrong Vec dimension being acessed!");
+      throw VecDimensionError();
    }
 
 
