@@ -9,11 +9,7 @@
 
 namespace Neat
 {
-   class AppEvent;
-   class WindowCloseReceiver;
-   class WindowResizeReceiver;
-
-   class Application : public EventReceiver<Application>
+   class Application : public EventSubscriber<Application>
    {
    public:
       Application();

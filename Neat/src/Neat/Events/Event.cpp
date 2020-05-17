@@ -1,5 +1,4 @@
 #include "Neat/Events/Event.h"
-//#include "SimpleSignal.h"
 
 
 namespace Neat

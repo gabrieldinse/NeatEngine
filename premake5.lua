@@ -17,7 +17,6 @@ IncludeDir["GLFW"] = "Neat/vendor/GLFW/include"
 IncludeDir["Glad"] = "Neat/vendor/Glad/include"
 IncludeDir["ImGui"] = "Neat/vendor/ImGui"
 IncludeDir["stb_image"] = "Neat/vendor/stb_image"
-IncludeDir["SimpleSignal"] = "Neat/vendor/SimpleSignal"
 IncludeDir["spdlog"] = "Neat/vendor/spdlog/include"
 
 group "Dependencies"
@@ -50,8 +49,7 @@ project "Neat"
         "%{prj.name}/src/*.hpp",
         "%{prj.name}/src/*.cpp",
         "%{prj.name}/vendor/stb_image/**.h",
-        "%{prj.name}/vendor/stb_image/**.cpp",
-        "%{prj.name}/vendor/SimpleSignal/**.h"
+        "%{prj.name}/vendor/stb_image/**.cpp"
     }
 
 
@@ -63,8 +61,7 @@ project "Neat"
         "%{IncludeDir.Glad}",
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.spdlog}",
-        "%{IncludeDir.stb_image}",
-        "%{IncludeDir.SimpleSignal}"
+        "%{IncludeDir.stb_image}"
     }
 
     links
@@ -130,8 +127,7 @@ project "Sandbox"
         -- Same as the VS project configs
         "Neat/vendor/spdlog/include",
         "Neat/src",
-        "Neat/vendor",
-        "%{IncludeDir.SimpleSignal}"
+        "Neat/vendor"
     }
 
     links

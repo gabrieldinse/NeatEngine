@@ -13,11 +13,18 @@ namespace Neat
    class Input
    {
    public:
+      struct InputImpl;
+
+   public:
+      static void init(void* window);
       static bool isKeyPressed(KeyCode key);
       static bool isMouseButtonPressed(MouseCode button);
       static Vec2 getMousePosition();
       static float getMouseX();
       static float getMouseY();
+
+   private:
+      static std::unique_ptr<InputImpl> s_data;
    };
    
 }

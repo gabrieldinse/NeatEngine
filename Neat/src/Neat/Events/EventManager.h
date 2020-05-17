@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <utility>
 #include <functional>
 
 #include "Neat/Core/Exceptions.h"
@@ -17,27 +18,22 @@ namespace Neat
       virtual ~EventManager() = default;
 
       EventManager(const EventManager&) = delete;
-      EventManager& operator = (const EventManager &) = delete;
+      EventManager& operator=(const EventManager &) = delete;
 
 
       template <typename E, typename Receiver>
       void subscribe(Receiver& receiver)
       {
-         bool (Receiver::*receive)(const E&) = &Receiver::receive;
+         auto event_subscription = getEventCallback(Event<E>::getFamily());
+         auto event_subscription_id = event_subscription->add<E>(receiver);
 
-         auto signal = getEventSignal(Event<E>::getFamily());
-
-         auto event_callback_wrapper = EventCallback<E>(
-            std::bind(receive, &receiver, std::placeholders::_1));
-         auto connection = signal->connect(event_callback_wrapper);
-
-         BaseEventReceiver& base = receiver;
-         base.m_connections.insert(
+         BaseEventSubscriber& base = receiver;
+         base.m_subscriptions.insert(
             std::make_pair(
                Event<E>::getFamily(),
                std::make_pair(
-                  std::weak_ptr<EventSignal>(signal),
-                  connection
+                  std::weak_ptr<EventSubscription>(event_subscription),
+                  event_subscription_id
                )
             )
          );
@@ -46,83 +42,72 @@ namespace Neat
       template <typename E, typename Receiver>
       void unsubscribe(Receiver& receiver)
       {
-         BaseEventReceiver& base = receiver;
+         BaseEventSubscriber& base = receiver;
 
-         if (base.m_connections.find(Event<E>::getFamily()) 
-            == base.m_connections.end())
+         if (base.m_subscriptions.find(Event<E>::getFamily())
+            == base.m_subscriptions.end())
             throw EventSubscriptionError();
 
-         auto connection_pair = base.m_connections[Event<E>::getFamily()];
-         auto connection = connection_pair.second;
-         auto signal = connection_pair.first;
+         auto event_subscription_pair =
+            base.m_subscriptions[Event<E>::getFamily()];
+         auto event_subscription_id = event_subscription_pair.second;
+         auto event_subscription = event_subscription_pair.first;
 
-         if (!signal.expired())
-            signal.lock()->disconnect(connection);
+         if (!event_subscription.expired())
+            event_subscription.lock()->remove(event_subscription_id);
 
-         base.m_connections.erase(Event<E>::getFamily());
+         base.m_subscriptions.erase(Event<E>::getFamily());
       }
 
 
       template <typename E>
       void publish(const E& event)
       {
-         auto signal = getEventSignal(Event<E>::getFamily());
-         signal->emit(&event);
+         auto event_subscription = getEventCallback(Event<E>::getFamily());
+         event_subscription->publish<E>(event);
       }
 
       template <typename E>
       void publish(std::unique_ptr<E> event)
       {
-         auto signal = getEventSignal(Event<E>::getFamily());
-         signal->emit(event.get());
+         auto event_subscription = getEventCallback(Event<E>::getFamily());
+         event_subscription->publish<E>(event);
       }
 
       template <typename E, typename... Args>
       void publish(Args&&... args)
       {
-         E event(std::forward<Args>(args)...);
-
-         auto signal = getEventSignal(Event<E>::getFamily());
-         signal->emit(&event);
+         auto event_subscription = getEventCallback(Event<E>::getFamily());
+         event_subscription->publish<E>(std::forward<Args>(args)...);
       }
 
 
-      std::size_t getNumberOfConnectedReceivers() const
+      std::size_t getNumberOfSubscribers() const
       {
          std::size_t count = 0;
-         for (std::shared_ptr<EventSignal> signal : m_eventSignals)
-            if (signal)
-               count += signal->size();
+         for (auto& event_subscription : m_eventSubscriptions)
+            if (event_subscription)
+               count += event_subscription->size();
 
          return count;
       }
 
    private:
-      std::shared_ptr<EventSignal>& getEventSignal(BaseEvent::Family family)
+      std::shared_ptr<EventSubscription>& getEventCallback(
+         BaseEvent::Family family)
       {
-         if (family >= m_eventSignals.size())
-            m_eventSignals.resize(family + 1);
-         if (!m_eventSignals[family])
-            m_eventSignals[family] = std::make_shared<EventSignal>();
+         if (family >= m_eventSubscriptions.size())
+            m_eventSubscriptions.resize(family + 1);
 
-         return m_eventSignals[family];
+         if (!m_eventSubscriptions[family])
+            m_eventSubscriptions[family] = std::make_shared<EventSubscription>();
+
+         return m_eventSubscriptions[family];
       }
 
-      template <typename E>
-      struct EventCallback
-      {
-         std::function<bool(const E&)> callback;
-
-         EventCallback(std::function<bool(const E&)> callback)
-            : callback(callback) {}
-
-         bool operator()(const void* event)
-         {
-            return callback(*(static_cast<const E*>(event)));
-         }
-      };
-
    private:
-      std::vector<std::shared_ptr<EventSignal>> m_eventSignals;
+      std::vector<std::shared_ptr<EventSubscription>> m_eventSubscriptions;
    };
+
+
 }

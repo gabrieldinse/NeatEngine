@@ -16,24 +16,26 @@ namespace Neat
 {
    class Application;
 
-   struct WindowImpl;
-
-   struct WindowProps
-   {
-      std::string title;
-      Int width;
-      Int height;
-
-      WindowProps(const std::string& title = "Neat Engine",
-                  Int width = 1280,
-                  Int height = 720)
-         : title(title), width(width), height(height)
-      {
-      }
-   };
 
    class Window
    {
+   public:
+      struct WindowImpl;
+
+      struct WindowProps
+      {
+         std::string title;
+         Int width;
+         Int height;
+
+         WindowProps(const std::string& title = "Neat Engine",
+                     Int width = 1280,
+                     Int height = 720)
+            : title(title), width(width), height(height)
+         {
+         }
+      };
+
    public:
       Window(EventManager& eventManager,
          const WindowProps& props = WindowProps());

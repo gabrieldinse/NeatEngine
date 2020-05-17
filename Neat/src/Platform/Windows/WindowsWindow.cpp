@@ -45,7 +45,7 @@ namespace Neat
    // -------------------------------------------------------------------------
    // Window ------------------------------------------------------------------
    // -------------------------------------------------------------------------
-   struct WindowImpl
+   struct Window::WindowImpl
    {
       WindowProps props;
       GLFWwindowUniquePtr window;
@@ -170,7 +170,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
 
       data.props.width = width;
       data.props.height = height;
@@ -187,7 +187,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
       data.events.publish<WindowCloseEvent>();
    }
 
@@ -196,7 +196,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *(WindowImpl*)glfwGetWindowUserPointer(window);
+      auto& data = *(Window::WindowImpl*)glfwGetWindowUserPointer(window);
 
       switch (action)
       {
@@ -222,7 +222,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
       data.events.publish<KeyTypedEvent>(static_cast<KeyCode>(key));
    }
 
@@ -231,7 +231,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
 
       switch (action)
       {
@@ -257,7 +257,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
 
       MouseScrolledEvent event((float)xOffset, (float)yOffset);
       data.events.publish<MouseScrolledEvent>((float)xOffset, (float)yOffset);
@@ -268,7 +268,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *static_cast<WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
 
       MouseMovedEvent event((float)xPos, (float)yPos);
       data.events.publish<MouseMovedEvent>((float)xPos, (float)yPos);

@@ -9,7 +9,7 @@
 namespace Neat
 {
    class OrthographicCameraController
-      : public EventReceiver<OrthographicCameraController>
+      : public EventSubscriber<OrthographicCameraController>
    {
    public:
       OrthographicCameraController(float aspectRatio,

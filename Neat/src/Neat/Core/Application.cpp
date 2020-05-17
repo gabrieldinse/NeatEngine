@@ -2,6 +2,7 @@
 #include <thread>
 
 #include "Neat/Core/Application.h"
+#include "Neat/Core/Input.h"
 #include "Neat/Core/Log.h"
 #include "Neat/Core/Timer.h"
 #include "Neat/Events/Event.h"
@@ -29,6 +30,7 @@ namespace Neat
 
       Renderer::init();
       ImGuiRender::init();
+      Input::init(m_window->getNativeWindow());
    }
 
    Application::~Application()
