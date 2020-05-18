@@ -23,10 +23,10 @@ namespace Neat
    Matrix<4, 4, T> translate(const Matrix<4, 4, T>& m, const Vector<3, T>& v)
    {
       Matrix<4, 4, T> result(m);
-      result(0, 3) = v.x * m(0, 0) + v.y * m(0, 1) + v.z * m(0, 2) + m(0, 3);
-      result(1, 3) = v.x * m(1, 0) + v.y * m(1, 1) + v.z * m(1, 2) + m(1, 3);
-      result(2, 3) = v.x * m(2, 0) + v.y * m(2, 1) + v.z * m(2, 2) + m(2, 3);
-      result(3, 3) = v.x * m(3, 0) + v.y * m(3, 1) + v.z * m(3, 2) + m(3, 3);
+      result[0][3] = v.x * m[0][0] + v.y * m[0][1] + v.z * m[0][2] + m[0][3];
+      result[1][3] = v.x * m[1][0] + v.y * m[1][1] + v.z * m[1][2] + m[1][3];
+      result[2][3] = v.x * m[2][0] + v.y * m[2][1] + v.z * m[2][2] + m[2][3];
+      result[3][3] = v.x * m[3][0] + v.y * m[3][1] + v.z * m[3][2] + m[3][3];
 
       return result;
    }
@@ -96,18 +96,18 @@ namespace Neat
       T r22 = z2c + c;
 
       return Matrix<4, 4, T>(
-         r00 * m(0, 0) + r01 * m(1, 0) + r02 * m(2, 0),
-         r00 * m(0, 1) + r01 * m(1, 1) + r02 * m(2, 1),
-         r00 * m(0, 2) + r01 * m(1, 2) + r02 * m(2, 2),
-         r00 * m(0, 3) + r01 * m(1, 3) + r02 * m(2, 3),
-         r10 * m(0, 0) + r11 * m(1, 0) + r12 * m(2, 0),
-         r10 * m(0, 1) + r11 * m(1, 1) + r12 * m(2, 1),
-         r10 * m(0, 2) + r11 * m(1, 2) + r12 * m(2, 2),
-         r10 * m(0, 3) + r11 * m(1, 3) + r12 * m(2, 3),
-         r20 * m(0, 0) + r21 * m(1, 0) + r22 * m(2, 0),
-         r20 * m(0, 1) + r21 * m(1, 1) + r22 * m(2, 1),
-         r20 * m(0, 2) + r21 * m(1, 2) + r22 * m(2, 2),
-         r20 * m(0, 3) + r21 * m(1, 3) + r22 * m(2, 3),
+         r00 * m[0][0] + r01 * m[1][0] + r02 * m[2][0],
+         r00 * m[0][1] + r01 * m[1][1] + r02 * m[2][1],
+         r00 * m[0][2] + r01 * m[1][2] + r02 * m[2][2],
+         r00 * m[0][3] + r01 * m[1][3] + r02 * m[2][3],
+         r10 * m[0][0] + r11 * m[1][0] + r12 * m[2][0],
+         r10 * m[0][1] + r11 * m[1][1] + r12 * m[2][1],
+         r10 * m[0][2] + r11 * m[1][2] + r12 * m[2][2],
+         r10 * m[0][3] + r11 * m[1][3] + r12 * m[2][3],
+         r20 * m[0][0] + r21 * m[1][0] + r22 * m[2][0],
+         r20 * m[0][1] + r21 * m[1][1] + r22 * m[2][1],
+         r20 * m[0][2] + r21 * m[1][2] + r22 * m[2][2],
+         r20 * m[0][3] + r21 * m[1][3] + r22 * m[2][3],
          static_cast<T>(0),
          static_cast<T>(0),
          static_cast<T>(0),
@@ -130,10 +130,10 @@ namespace Neat
    Matrix<4, 4, T> scale(const Matrix<4, 4, T>& m, const Vector<3, T>& v)
    {
       return Matrix<4, 4, T>(
-         m(0, 0) * v.x, m(0, 1) * v.y, m(0, 2) * v.z, m(0, 3),
-         m(1, 0) * v.x, m(1, 1) * v.y, m(1, 2) * v.z, m(1, 3),
-         m(2, 0) * v.x, m(2, 1) * v.y, m(2, 2) * v.z, m(2, 3),
-         m(3, 0) * v.x, m(3, 1) * v.y, m(3, 2) * v.z, m(3, 3)
+         m[0][0] * v.x, m[0][1] * v.y, m[0][2] * v.z, m[0][3],
+         m[1][0] * v.x, m[1][1] * v.y, m[1][2] * v.z, m[1][3],
+         m[2][0] * v.x, m[2][1] * v.y, m[2][2] * v.z, m[2][3],
+         m[3][0] * v.x, m[3][1] * v.y, m[3][2] * v.z, m[3][3]
          );
    }
 
@@ -141,12 +141,12 @@ namespace Neat
    Matrix<4, 4, T> orthographic(T left, T right, T bottom, T top, T zNear, T zFar)
    {
       Matrix<4, 4, T>  result(static_cast<T>(1));
-      result(0, 0) = static_cast<T>(2) / (right - left);
-      result(1, 1) = static_cast<T>(2) / (top - bottom);
-      result(2, 2) = -static_cast<T>(2) / (zFar - zNear);
-      result(0, 3) = -(right + left) / (right - left);
-      result(1, 3) = -(top + bottom) / (top - bottom);
-      result(2, 3) = -(zFar + zNear) / (zFar - zNear);
+      result[0][0] = static_cast<T>(2) / (right - left);
+      result[1][1] = static_cast<T>(2) / (top - bottom);
+      result[2][2] = -static_cast<T>(2) / (zFar - zNear);
+      result[0][3] = -(right + left) / (right - left);
+      result[1][3] = -(top + bottom) / (top - bottom);
+      result[2][3] = -(zFar + zNear) / (zFar - zNear);
 
       return result;
    }

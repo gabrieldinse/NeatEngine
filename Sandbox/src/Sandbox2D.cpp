@@ -23,7 +23,6 @@ void Sandbox2D::onAttach()
 
 void Sandbox2D::onDetach()
 {
-
 }
 
 void Sandbox2D::onUpdate(Neat::Timestep dt)

@@ -16,24 +16,26 @@ namespace Neat
 
    // Basic Constructors
    template <typename T>
-   constexpr
-   Vector<4, T>::Vector(T scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
+   inline constexpr
+   Vector<4, T>::Vector(T scalar)
+      : x(scalar), y(scalar), z(scalar), w(scalar) {}
 
    template <typename T>
-   constexpr
+   inline constexpr
    Vector<4, T>::Vector(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
 
 
    // Copy Constructor
    template <typename T>
-   constexpr
-   Vector<4, T>::Vector(const Vector<4, T>& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
+   inline constexpr
+   Vector<4, T>::Vector(const Vector<4, T>& v)
+      : x(v.x), y(v.y), z(v.z), w(v.w) {}
 
 
    // Conversion constructors
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<4, T>::Vector(const Vector<4, U>& v)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(v.y))
@@ -42,7 +44,7 @@ namespace Neat
 
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<4, T>::Vector(const Vector<3, U>& v)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(v.y))
@@ -51,7 +53,7 @@ namespace Neat
 
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<4, T>::Vector(const Vector<2, U>& v)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(v.y))
@@ -60,7 +62,7 @@ namespace Neat
 
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<4, T>::Vector(const Vector<1, U>& v)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(0))
@@ -69,7 +71,7 @@ namespace Neat
 
    template <typename T>
    template <typename A, typename B>
-   constexpr
+   inline constexpr
    Vector<4, T>::Vector(const Vector<3, A>& v, B scalar)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(v.y))
@@ -78,7 +80,7 @@ namespace Neat
 
    template <typename T>
    template <typename A, typename B, typename C>
-   constexpr
+   inline constexpr
    Vector<4, T>::Vector(const Vector<2, A>& v, B scalar1, C scalar2)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(v.y))
@@ -87,7 +89,7 @@ namespace Neat
 
    template <typename T>
    template <typename A, typename B, typename C, typename D>
-   constexpr
+   inline constexpr
    Vector<4, T>::Vector(const Vector<1, A>& v, B scalar1, C scalar2, D scalar3)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(scalar1))
@@ -96,7 +98,7 @@ namespace Neat
 
    template <typename T>
    template <typename X, typename Y, typename Z, typename W>
-   constexpr
+   inline constexpr
    Vector<4, T>::Vector(X x, Y y, Z z, W w)
       : x(static_cast<T>(x))
       , y(static_cast<T>(y))
@@ -107,7 +109,7 @@ namespace Neat
    // Assignment operators
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<4, T>& Vector<4, T>::operator=(const Vector<4, U>& other)
    {
       x = other.x;

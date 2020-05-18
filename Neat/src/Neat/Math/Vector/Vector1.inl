@@ -4,52 +4,52 @@ namespace Neat
 {
    // Default constructor
    template <typename T>
-   constexpr
+   inline constexpr
    Vector<1, T>::Vector() : x(static_cast<T>(0)) {}
 
 
    // Basic Constructors
    template <typename T>
-   constexpr
+   inline constexpr
    Vector<1, T>::Vector(T scalar) : x(scalar) {}
 
 
    // Copy Constructor
    template <typename T>
-   constexpr
+   inline constexpr
    Vector<1, T>::Vector(const Vector<1, T>& v) : x(v.x) {}
 
 
    // Conversion constructors
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<1, T>::Vector(const Vector<1, U>& v) : x(static_cast<T>(v.x)) {}
 
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<1, T>::Vector(const Vector<4, U>& v) : x(static_cast<T>(v.x)) {}
 
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<1, T>::Vector(const Vector<3, U>& v) : x(static_cast<T>(v.x)) {}
 
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<1, T>::Vector(const Vector<2, U>& v) : x(static_cast<T>(v.x)) {}
 
    template <typename T>
    template <typename X>
-   constexpr
+   inline constexpr
    Vector<1, T>::Vector(X x) : x(static_cast<T>(x)) {}
 
 
    // Assignment operators
    template <typename T>
-   constexpr
+   inline constexpr
    Vector<1, T>& Vector<1, T>::operator=(T scalar)
    {
       x = scalar;
@@ -59,7 +59,7 @@ namespace Neat
 
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<1, T>& Vector<1, T>::operator=(const Vector<1, U>& other)
    {
       x = other.x;

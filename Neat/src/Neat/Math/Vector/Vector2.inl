@@ -5,67 +5,67 @@ namespace Neat
 {
    // Default constructor
    template <typename T>
-   constexpr
+   inline constexpr
    Vector<2, T>::Vector() : x(static_cast<T>(0)), y(static_cast<T>(0)) {}
 
 
    // Basic Constructors
    template <typename T>
-   constexpr
+   inline constexpr
    Vector<2, T>::Vector(T scalar) : x(scalar), y(scalar) {}
 
    template <typename T>
-   constexpr
+   inline constexpr
    Vector<2, T>::Vector(T x, T y) : x(x), y(y) {}
 
 
    // Copy Constructor
    template <typename T>
-   constexpr
+   inline constexpr
    Vector<2, T>::Vector(const Vector<2, T>& v) : x(v.x), y(v.y) {}
 
 
    // Conversion constructors
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<2, T>::Vector(const Vector<2, U>& v)
       : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
 
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<2, T>::Vector(const Vector<4, U>& v)
       : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
 
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<2, T>::Vector(const Vector<3, U>& v)
       : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
 
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<2, T>::Vector(const Vector<1, U>& v)
       : x(static_cast<T>(v.x)), y(static_cast<T>(0)) {}
 
    template <typename T>
    template <typename A, typename B>
-   constexpr
+   inline constexpr
    Vector<2, T>::Vector(const Vector<1, A>& v, B scalar1)
       : x(static_cast<T>(v.x)), y(static_cast<T>(scalar1)) {}
 
    template <typename T>
    template <typename X, typename Y>
-   constexpr
+   inline constexpr
    Vector<2, T>::Vector(X x, Y y) : x(static_cast<T>(x)), y(static_cast<T>(y)) {}
 
 
    // Assignment operators
    template <typename T>
    template <typename U>
-   constexpr
+   inline constexpr
    Vector<2, T>& Vector<2, T>::operator=(const Vector<2, U>& other)
    {
       x = other.x;

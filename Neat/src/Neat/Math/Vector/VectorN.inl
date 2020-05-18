@@ -52,7 +52,7 @@ namespace Neat
    template <typename T, UInt N>
    std::ostream& operator<<(std::ostream& os, const Vector<N, T>& v)
    {
-      os << "[";
+      os << "Vector<" << N << ", " << typeid(T).name() << "> [";
       for (std::size_t i = 0; i < N; ++i)
       {
          if (i < N - 1)
