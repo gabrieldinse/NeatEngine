@@ -56,16 +56,11 @@ namespace Neat
       Vector<1, T>& operator=(T scalar);
 
       constexpr
-      Vector<1, T>& operator=(const Vector<4, T>& other);
+      Vector<1, T>& operator=(const Vector<1, T>& other) = default;
 
+      template <typename U>
       constexpr
-      Vector<1, T>& operator=(const Vector<3, T>& other);
-
-      constexpr
-      Vector<1, T>& operator=(const Vector<2, T>& other);
-
-      constexpr
-      Vector<1, T>& operator=(const Vector<1, T>& other);
+      Vector<1, T>& operator=(const Vector<1, U>& other);
 
 
       // Compound assignment operators

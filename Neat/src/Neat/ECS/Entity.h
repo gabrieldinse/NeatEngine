@@ -13,9 +13,10 @@
 namespace Neat
 {
    class EntityManager;
-
    template <typename C, typename EM = EntityManager>
    class ComponentHandle;
+
+   using ComponentMask = std::bitset<NT_MAX_COMPONENTS>;
 
 
    struct Entity
@@ -100,7 +101,7 @@ namespace Neat
 
       void destroy();
 
-      std::bitset<NT_MAX_COMPONENTS> getComponentMask() const;
+      ComponentMask getComponentMask() const;
 
    private:
       bool checkIsValid() const;

@@ -39,7 +39,7 @@ namespace Neat
       return (state == GLFW_PRESS);
    }
 
-   Vec2 Input::getMousePosition()
+   Vector2 Input::getMousePosition()
    {
       NT_PROFILE_FUNCTION();
 

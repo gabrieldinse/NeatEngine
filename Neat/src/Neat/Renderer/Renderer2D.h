@@ -107,7 +107,7 @@ namespace Neat
          {
             for (std::size_t i = 0; i < 4; ++i)
             {
-               currentPos->position = transform * defaultPositions[i];
+               currentPos->position = Vector3(transform * defaultPositions[i]);
                currentPos->color = color;
                currentPos->textureCoordinate = textureCoordinates[i];
                currentPos->textureIndex = textureIndex;

@@ -211,11 +211,11 @@ namespace Neat
    // ---------------------------------------------------------------------- //
    struct MouseButtonEvent
    {
-      MouseCode m_button;
+      MouseCode button;
 
    protected:
       MouseButtonEvent(MouseCode button)
-         : m_button(button) {}
+         : button(button) {}
    };
 
 
@@ -259,17 +259,16 @@ namespace Neat
    // ---------------------------------------------------------------------- //
    struct KeyEvent
    {
-      KeyCode m_keyCode;
+      KeyCode keyCode;
 
    protected:
       KeyEvent(KeyCode keyCode)
-         : m_keyCode(keyCode) {}
+         : keyCode(keyCode) {}
    };
 
 
    struct KeyPressedEvent : public KeyEvent
    {
-   public:
       KeyPressedEvent(KeyCode keyCode, Int repeatCount = 0)
          : KeyEvent(keyCode), repeatCount(repeatCount) {}
 

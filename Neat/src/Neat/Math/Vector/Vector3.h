@@ -65,16 +65,11 @@ namespace Neat
 
       // Assignment operators
       constexpr
-      Vector<3, T>& operator=(const Vector<4, T>& other);
+      Vector<3, T>& operator=(const Vector<3, T>& other) = default;
 
+      template <typename U>
       constexpr
-      Vector<3, T>& operator=(const Vector<3, T>& other);
-
-      constexpr
-      Vector<3, T>& operator=(const Vector<2, T>& other);
-
-      constexpr
-      Vector<3, T>& operator=(const Vector<1, T>& other);
+      Vector<3, T>& operator=(const Vector<3, U>& other);
 
 
       // Compound assignment operators

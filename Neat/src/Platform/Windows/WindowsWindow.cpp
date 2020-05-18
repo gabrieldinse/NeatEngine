@@ -170,7 +170,8 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(
+         glfwGetWindowUserPointer(window));
 
       data.props.width = width;
       data.props.height = height;
@@ -187,7 +188,8 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(
+         glfwGetWindowUserPointer(window));
       data.events.publish<WindowCloseEvent>();
    }
 
@@ -222,7 +224,8 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(
+         glfwGetWindowUserPointer(window));
       data.events.publish<KeyTypedEvent>(static_cast<KeyCode>(key));
    }
 
@@ -231,7 +234,8 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(
+         glfwGetWindowUserPointer(window));
 
       switch (action)
       {

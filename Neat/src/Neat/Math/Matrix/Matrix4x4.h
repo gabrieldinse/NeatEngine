@@ -101,6 +101,7 @@ namespace Neat
 
       // Assignment operators
 
+
       constexpr std::size_t size() const { return 4 * 4; }
 
       // Elements acessing

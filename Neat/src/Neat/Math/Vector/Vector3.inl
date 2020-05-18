@@ -84,46 +84,15 @@ namespace Neat
 
 
    // Assignment operators
+
    template <typename T>
+   template <typename U>
    constexpr
-   Vector<3, T>& Vector<3, T>::operator=(const Vector<4, T>& other)
+   Vector<3, T>& Vector<3, T>::operator=(const Vector<3, U>& other)
    {
       x = other.x;
       y = other.y;
       z = other.z;
-
-      return *this;
-   }
-
-   template <typename T>
-   constexpr
-   Vector<3, T>& Vector<3, T>::operator=(const Vector<3, T>& other)
-   {
-      x = other.x;
-      y = other.y;
-      z = other.z;
-
-      return *this;
-   }
-
-   template <typename T>
-   constexpr
-   Vector<3, T>& Vector<3, T>::operator=(const Vector<2, T>& other)
-   {
-      x = other.x;
-      y = other.y;
-      z = static_cast<T>(0);
-
-      return *this;
-   }
-
-   template <typename T>
-   constexpr
-   Vector<3, T>& Vector<3, T>::operator=(const Vector<1, T>& other)
-   {
-      x = other.x;
-      y = static_cast<T>(0);
-      z = static_cast<T>(0);
 
       return *this;
    }

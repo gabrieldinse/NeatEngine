@@ -58,40 +58,15 @@ namespace Neat
    }
 
    template <typename T>
+   template <typename U>
    constexpr
-   Vector<1, T>& Vector<1, T>::operator=(const Vector<4, T>& other)
+   Vector<1, T>& Vector<1, T>::operator=(const Vector<1, U>& other)
    {
       x = other.x;
 
       return *this;
    }
 
-   template <typename T>
-   constexpr
-   Vector<1, T>& Vector<1, T>::operator=(const Vector<3, T>& other)
-   {
-      x = other.x;
-
-      return *this;
-   }
-
-   template <typename T>
-   constexpr
-   Vector<1, T>& Vector<1, T>::operator=(const Vector<2, T>& other)
-   {
-      x = other.x;
-
-      return *this;
-   }
-
-   template <typename T>
-   constexpr
-   Vector<1, T>& Vector<1, T>::operator=(const Vector<1, T>& other)
-   {
-      x = other.x;
-
-      return *this;
-   }
 
    // Compound assignment operators
    template<typename T>

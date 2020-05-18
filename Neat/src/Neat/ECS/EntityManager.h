@@ -1,6 +1,7 @@
 #pragma  once
 
 #include <vector>
+#include <queue>
 #include <bitset>
 
 #include "Neat/Core/Log.h"
@@ -23,43 +24,45 @@ namespace Neat
    // ---------------------------------------------------------------------- //
    struct EntityCreatedEvent
    {
-      Entity entity;
-
-      explicit EntityCreatedEvent(const Entity& entity) : entity(entity) {}
+      explicit EntityCreatedEvent(const Entity& entity)
+         : entity(entity) {}
       virtual ~EntityCreatedEvent() {}
+
+      Entity entity;
    };
 
 
    struct EntityDestroyedEvent
    {
-      Entity entity;
-
-      explicit EntityDestroyedEvent(const Entity& entity) : entity(entity) {}
+      explicit EntityDestroyedEvent(const Entity& entity)
+         : entity(entity) {}
       virtual ~EntityDestroyedEvent() {}
+
+      Entity entity;
    };
 
 
    template <typename C>
    struct ComponentAddedEvent
    {
-     ComponentAddedEvent(const Entity& entity,
-        const ComponentHandle<C>& component) :
-         entity(entity), component(component) {}
+      ComponentAddedEvent(const Entity& entity,
+         const ComponentHandle<C>& component)
+         : entity(entity), component(component) {}
 
-     Entity entity;
-     ComponentHandle<C> component;
+      Entity entity;
+      ComponentHandle<C> component;
    };
 
 
    template <typename C>
    struct ComponentRemovedEvent
    {
-     ComponentRemovedEvent(const Entity& entity,
-        const ComponentHandle<C>& component) :
-         entity(entity), component(component) {}
+      ComponentRemovedEvent(const Entity& entity,
+         const ComponentHandle<C>& component)
+         : entity(entity), component(component) {}
 
-     Entity entity;
-     ComponentHandle<C> component;
+      Entity entity;
+      ComponentHandle<C> component;
    };
 
 
@@ -69,7 +72,7 @@ namespace Neat
    class EntityManager
    {
    public:
-      using ComponentMask = std::bitset<NT_MAX_COMPONENTS>;
+
 
    public:
       EntityManager(EventManager& eventManager)
@@ -82,11 +85,73 @@ namespace Neat
          reset();
       }
 
+      UInt size() const
+      {
+         return
+            (UInt)(m_entityComponentMasks.size() - m_freeEntityIdsList.size());
+      }
+
+      UInt capacity() const
+      {
+         return (UInt)(m_entityComponentMasks.size());
+      }
+
       bool isValid(Entity::Id id)
       {
          return
             id.index() < m_entityIdsVersion.size() &&
             m_entityIdsVersion[id.index()] == id.version();
+      }
+
+
+      Entity create()
+      {
+         UInt index;
+         UInt version;
+
+         if (m_freeEntityIdsList.empty())
+         {
+            index = m_indexCounter++;
+            accomodateEntity(index);
+            version = m_entityIdsVersion[index] = 1;
+         }
+         else
+         {
+            index = m_freeEntityIdsList.front();
+            m_freeEntityIdsList.pop();
+            version = m_entityIdsVersion[index];
+         }
+
+         Entity entity(this, Entity::Id(index, version));
+         m_eventManager.publish<EntityCreatedEvent>(entity);
+
+         return entity;
+      }
+
+      void destroy(Entity::Id id)
+      {
+         checkIsValid(id);
+
+         UInt index = id.index();
+         auto component_mask = m_entityComponentMasks[index];
+
+         m_eventManager.publish<EntityDestroyedEvent>(Entity(this, id));
+
+         for (std::size_t i = 0; i < m_componentArrays.size(); ++i)
+         {
+            BaseMemoryPool* component_array = m_componentArrays[i];
+            if ((component_array != nullptr) && component_mask.test(i))
+               component_array->destroy(index);
+         }
+
+         m_entityComponentMasks[index].reset();
+         ++m_entityIdsVersion[index];
+         m_freeEntityIdsList.push(index);
+      }
+
+      Entity get(Entity::id id)
+      {
+
       }
       
    private:
@@ -209,6 +274,6 @@ namespace Neat
       std::vector<BaseMemoryPool*> m_componentArrays;
       std::vector<ComponentMask> m_entityComponentMasks;
       std::vector<UInt> m_entityIdsVersion;
-      std::vector<UInt> m_freeEntityIdsList;
+      std::queue<UInt> m_freeEntityIdsList;
    };
 }
