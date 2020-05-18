@@ -9,49 +9,49 @@ namespace Neat
 {
    // Inner/Dot product
    template <typename T>
-   T dotProduct(const Vec<1, T>& va, const Vec<1, T>& vb);
+   T dotProduct(const Vector<1, T>& va, const Vector<1, T>& vb);
 
    template <typename T>
-   T dotProduct(const Vec<2, T>& va, const Vec<2, T>& vb);
+   T dotProduct(const Vector<2, T>& va, const Vector<2, T>& vb);
 
    template <typename T>
-   T dotProduct(const Vec<3, T>& va, const Vec<3, T>& vb);
+   T dotProduct(const Vector<3, T>& va, const Vector<3, T>& vb);
 
    template <typename T>
-   T dotProduct(const Vec<4, T>& va, const Vec<4, T>& vb);
+   T dotProduct(const Vector<4, T>& va, const Vector<4, T>& vb);
 
-   template <typename T, std::size_t N>
-   T innerProduct(const Vec<N, T>& va, const Vec<N, T>& vb);
+   template <typename T, UInt N>
+   T innerProduct(const Vector<N, T>& va, const Vector<N, T>& vb);
 
    // Cross product
    template <typename T>
-   Vec<3, T> crossProduct(const Vec<3, T>& va, const Vec<3, T>& vb);
+   Vector<3, T> crossProduct(const Vector<3, T>& va, const Vector<3, T>& vb);
 
    // Norm
    template <typename T>
-   T norm(const Vec<1, T>& v);
+   T norm(const Vector<1, T>& v);
 
    template <typename T>
-   T norm(const Vec<2, T>& v);
+   T norm(const Vector<2, T>& v);
 
    template <typename T>
-   T norm(const Vec<3, T>& v);
+   T norm(const Vector<3, T>& v);
 
    template <typename T>
-   T norm(const Vec<4, T>& v);
+   T norm(const Vector<4, T>& v);
 
    // Normalize
    template <typename T>
-   Vec<1, T> normalize(const Vec<1, T>& v);
+   Vector<1, T> normalize(const Vector<1, T>& v);
 
    template <typename T>
-   Vec<2, T> normalize(const Vec<2, T>& v);
+   Vector<2, T> normalize(const Vector<2, T>& v);
 
    template <typename T>
-   Vec<3, T> normalize(const Vec<3, T>& v);
+   Vector<3, T> normalize(const Vector<3, T>& v);
 
    template <typename T>
-   Vec<4, T> normalize(const Vec<4, T>& v);
+   Vector<4, T> normalize(const Vector<4, T>& v);
 }
 
 #include "Neat/Math/VectorOperations.inl"

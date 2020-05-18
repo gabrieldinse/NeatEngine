@@ -6,11 +6,11 @@
 namespace Neat
 {
    template <typename T>
-   struct Mat<4, 3, T>
+   struct Matrix<4, 3, T>
    {
-      constexpr Mat() : m_flattened{} {}
+      constexpr Matrix() : m_flattened{} {}
 
-      constexpr Mat(
+      constexpr Matrix(
          T m00, T m01, T m02,
          T m10, T m11, T m12,
          T m20, T m21, T m22,
@@ -22,7 +22,7 @@ namespace Neat
             m30, m31, m32
             } {}
 
-      constexpr explicit Mat(T scalar)
+      constexpr explicit Matrix(T scalar)
          : m_flattened{
             scalar, static_cast<T>(0), static_cast<T>(0),
             static_cast<T>(0), scalar, static_cast<T>(0),
@@ -30,7 +30,7 @@ namespace Neat
             static_cast<T>(0), static_cast<T>(0), static_cast<T>(0)
             } {}
 
-      constexpr Mat(const Mat<4, 3, T>& m)
+      constexpr Matrix(const Matrix<4, 3, T>& m)
          : m_flattened{
             m[0], m[1], m[2],
             m[3], m[4], m[5],
@@ -65,11 +65,11 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Mat<4, 3, T> operator+(const Mat<4, 3, T>& ma, const Mat<4, 3, T>& mb);
+   Matrix<4, 3, T> operator+(const Matrix<4, 3, T>& ma, const Matrix<4, 3, T>& mb);
 
    template <typename T>
    inline constexpr
-   Mat<4, 3, T> operator-(const Mat<4, 3, T>& ma, const Mat<4, 3, T>& mb);
+   Matrix<4, 3, T> operator-(const Matrix<4, 3, T>& ma, const Matrix<4, 3, T>& mb);
 }
 
 #include "Neat/Math/Matrix/Matrix4x3.inl"

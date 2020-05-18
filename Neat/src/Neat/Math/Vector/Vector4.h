@@ -8,7 +8,7 @@
 namespace Neat
 {
    template <typename T>
-   struct Vec<4, T>
+   struct Vector<4, T>
    {
       // Class Data
       union { T x, r, i, s; };
@@ -19,94 +19,94 @@ namespace Neat
 
       // Default constructor
       constexpr
-      Vec();
+      Vector();
 
 
       // Basic Constructors
       constexpr explicit
-      Vec(T scalar);
+      Vector(T scalar);
 
       constexpr
-      Vec(T x, T y, T z, T w);
+      Vector(T x, T y, T z, T w);
 
 
       // Copy Constructor
       constexpr
-      Vec(const Vec<4, T>& v);
+      Vector(const Vector<4, T>& v);
 
 
       // Conversion constructors
       template <typename U>
       constexpr explicit
-      Vec(const Vec<4, U>& v);
+      Vector(const Vector<4, U>& v);
       
       template <typename U>
       constexpr explicit
-      Vec(const Vec<3, U>& v);
+      Vector(const Vector<3, U>& v);
 
       template <typename U>
       constexpr explicit
-      Vec(const Vec<2, U>& v);
+      Vector(const Vector<2, U>& v);
 
       template <typename U>
       constexpr explicit
-       Vec(const Vec<1, U>& v);
+       Vector(const Vector<1, U>& v);
 
       template <typename A, typename B>
       constexpr explicit
-      Vec(const Vec<3, A>& v, B scalar);
+      Vector(const Vector<3, A>& v, B scalar);
 
       template <typename A, typename B, typename C>
       constexpr explicit
-      Vec(const Vec<2, A>& v, B scalar1, C scalar2);
+      Vector(const Vector<2, A>& v, B scalar1, C scalar2);
 
       template <typename A, typename B, typename C, typename D>
       constexpr explicit
-      Vec(const Vec<1, A>& v, B scalar1, C scalar2, D scalar3);
+      Vector(const Vector<1, A>& v, B scalar1, C scalar2, D scalar3);
 
       template <typename X, typename Y, typename Z, typename W>
       constexpr
-      Vec(X x, Y y, Z z, W w);
+      Vector(X x, Y y, Z z, W w);
 
 
       // Assignment operators
       constexpr
-      Vec<4, T>& operator=(const Vec<4, T>& other);
+      Vector<4, T>& operator=(const Vector<4, T>& other);
 
       constexpr
-      Vec<4, T>& operator=(const Vec<3, T>& other);
+      Vector<4, T>& operator=(const Vector<3, T>& other);
 
       constexpr
-      Vec<4, T>& operator=(const Vec<2, T>& other);
+      Vector<4, T>& operator=(const Vector<2, T>& other);
 
       constexpr
-      Vec<4, T>& operator=(const Vec<1, T>& other);
+      Vector<4, T>& operator=(const Vector<1, T>& other);
 
 
       // Compound assignment operators
       template <typename U>
       constexpr
-      Vec<4, T>& operator+=(const Vec<4, U>& v);
+      Vector<4, T>& operator+=(const Vector<4, U>& v);
 
       template <typename U>
       constexpr
-      Vec<4, T>& operator-=(const Vec<4, U>& v);
+      Vector<4, T>& operator-=(const Vector<4, U>& v);
 
       template <typename U>
       constexpr
-      Vec<4, T>& operator*=(const Vec<4, U>& v);
+      Vector<4, T>& operator*=(const Vector<4, U>& v);
 
       template <typename U>
       constexpr
-      Vec<4, T>& operator*=(const Vec<1, U>& v);
+      Vector<4, T>& operator*=(const Vector<1, U>& v);
 
       template <typename U>
       constexpr
-      Vec<4, T>& operator*=(U scalar);
+      Vector<4, T>& operator*=(U scalar);
 
       template <typename U>
       constexpr
-      Vec<4, T>& operator/=(U scalar);
+      Vector<4, T>& operator/=(U scalar);
 
 
       constexpr explicit
@@ -141,39 +141,39 @@ namespace Neat
    // Nom member operators
    template <typename T>
    inline constexpr
-   Vec<4, T> operator+(const Vec<4, T>& va, const Vec<4, T>& vb);
+   Vector<4, T> operator+(const Vector<4, T>& va, const Vector<4, T>& vb);
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator-(const Vec<4, T>& v);
+   Vector<4, T> operator-(const Vector<4, T>& v);
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator-(const Vec<4, T>& va, const Vec<4, T>& vb);
+   Vector<4, T> operator-(const Vector<4, T>& va, const Vector<4, T>& vb);
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator*(const Vec<4, T>& va, const Vec<4, T>& vb);
+   Vector<4, T> operator*(const Vector<4, T>& va, const Vector<4, T>& vb);
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator*(const Vec<4, T>& va, const Vec<1, T>& vb);
+   Vector<4, T> operator*(const Vector<4, T>& va, const Vector<1, T>& vb);
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator*(const Vec<1, T>& va, const Vec<4, T>& vb);
+   Vector<4, T> operator*(const Vector<1, T>& va, const Vector<4, T>& vb);
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator*(T scalar, const Vec<4, T>& v);
+   Vector<4, T> operator*(T scalar, const Vector<4, T>& v);
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator*(const Vec<4, T>& v, T scalar);
+   Vector<4, T> operator*(const Vector<4, T>& v, T scalar);
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator/(const Vec<4, T>& v, T scalar);
+   Vector<4, T> operator/(const Vector<4, T>& v, T scalar);
 
 
 }

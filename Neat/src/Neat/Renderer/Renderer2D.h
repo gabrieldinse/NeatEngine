@@ -23,34 +23,34 @@ namespace Neat
 
       // Primitives -----------------------------------------------------------
       // Quads
-      static void drawQuad(const Vec2& position, const Vec2& size,
-         const Vec4 color);
+      static void drawQuad(const Vector2& position, const Vector2& size,
+         const Vector4 color);
 
-      static void drawQuad(const Vec3& position, const Vec2& size,
-         const Vec4 color);
+      static void drawQuad(const Vector3& position, const Vector2& size,
+         const Vector4 color);
 
-      static void drawQuad(const Vec2& position, const Vec2& size,
+      static void drawQuad(const Vector2& position, const Vector2& size,
          const std::shared_ptr<Texture2D>& texture,
-         const Vec4& tint = Vec4(1.0f), float tilingFactor = 1.0f);
+         const Vector4& tint = Vector4(1.0f), float tilingFactor = 1.0f);
 
-      static void drawQuad(const Vec3& position, const Vec2& size,
+      static void drawQuad(const Vector3& position, const Vector2& size,
          const std::shared_ptr<Texture2D>& texture,
-         const Vec4& tint = Vec4(1.0f), float tilingFactor = 1.0f);
+         const Vector4& tint = Vector4(1.0f), float tilingFactor = 1.0f);
 
       // Rotated Quads
-      static void drawRotatedQuad(const Vec2& position, const Vec2& size,
-         float angleDegrees, const Vec4 color);
+      static void drawRotatedQuad(const Vector2& position, const Vector2& size,
+         float angleDegrees, const Vector4 color);
 
-      static void drawRotatedQuad(const Vec3& position, const Vec2& size,
-         float angleDegrees, const Vec4 color);
+      static void drawRotatedQuad(const Vector3& position, const Vector2& size,
+         float angleDegrees, const Vector4 color);
 
-      static void drawRotatedQuad(const Vec2& position, const Vec2& size,
+      static void drawRotatedQuad(const Vector2& position, const Vector2& size,
          float angleDegrees, const std::shared_ptr<Texture2D>& texture,
-         const Vec4& tint = Vec4(1.0f), float tilingFactor = 1.0f);
+         const Vector4& tint = Vector4(1.0f), float tilingFactor = 1.0f);
 
-      static void drawRotatedQuad(const Vec3& position, const Vec2& size,
+      static void drawRotatedQuad(const Vector3& position, const Vector2& size,
          float angleDegrees, const std::shared_ptr<Texture2D>& texture,
-         const Vec4& tint = Vec4(1.0f), float tilingFactor = 1.0f);
+         const Vector4& tint = Vector4(1.0f), float tilingFactor = 1.0f);
       // ----------------------------------------------------------------------
 
       struct Statistics
@@ -72,9 +72,9 @@ namespace Neat
    private:
       struct QuadVertexData
       {
-         Vec3 position;
-         Vec4 color;
-         Vec2 textureCoordinate;
+         Vector3 position;
+         Vector4 color;
+         Vector2 textureCoordinate;
          Int textureIndex;
          float tilingFactor;
       };
@@ -84,7 +84,7 @@ namespace Neat
          static constexpr UInt maxQuads = 10000;
          static constexpr UInt maxVertices = maxQuads * 4;
          static constexpr UInt maxIndexes = maxQuads * 6;
-         static constexpr Vec4 defaultPositions[4] = {
+         static constexpr Vector4 defaultPositions[4] = {
                { -0.5f, -0.5f, 0.0f, 1.0f },
                { 0.5f, -0.5f, 0.0f, 1.0f },
                { 0.5f,  0.5f, 0.0f, 1.0f },
@@ -101,8 +101,8 @@ namespace Neat
          {
          }
 
-         void addQuad(const Mat4& transform, const Vec4& color,
-            const Vec2* textureCoordinates, Int textureIndex,
+         void addQuad(const Matrix4& transform, const Vector4& color,
+            const Vector2* textureCoordinates, Int textureIndex,
             float tilingFactor)
          {
             for (std::size_t i = 0; i < 4; ++i)

@@ -11,39 +11,39 @@
 
 namespace Neat
 {
-   // Vec class template
-   template <std::size_t N, typename T>
-   struct Vec;
+   // Vector class template
+   template <UInt N, typename T>
+   struct Vector;
 
 
    // Relational operators
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator>(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator>(const Vector<N, T>& va, const Vector<N, T>& vb);
 
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator<(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator<(const Vector<N, T>& va, const Vector<N, T>& vb);
 
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator==(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator==(const Vector<N, T>& va, const Vector<N, T>& vb);
 
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator!=(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator!=(const Vector<N, T>& va, const Vector<N, T>& vb);
 
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator>=(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator>=(const Vector<N, T>& va, const Vector<N, T>& vb);
 
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator<=(const Vec<N, T>& va, const Vec<N, T>& vb);
+   bool operator<=(const Vector<N, T>& va, const Vector<N, T>& vb);
 
 
-   template <typename T, std::size_t N>
-   std::ostream& operator<<(std::ostream& os, const Vec<N, T>& v);
+   template <typename T, UInt N>
+   std::ostream& operator<<(std::ostream& os, const Vector<N, T>& v);
 }
 
 #include "Neat/Math/Vector/VectorN.inl"

@@ -11,11 +11,11 @@ namespace Neat
 		switch (type)
 		{
 			case ShaderDataType::Float:    return 4;
-			case ShaderDataType::Vec2:   return 4 * 2;
-			case ShaderDataType::Vec3:   return 4 * 3;
-			case ShaderDataType::Vec4:   return 4 * 4;
-			case ShaderDataType::Mat3:     return 4 * 3 * 3;
-			case ShaderDataType::Mat4:     return 4 * 4 * 4;
+			case ShaderDataType::Vector2:   return 4 * 2;
+			case ShaderDataType::Vector3:   return 4 * 3;
+			case ShaderDataType::Vector4:   return 4 * 4;
+			case ShaderDataType::Matrix3:     return 4 * 3 * 3;
+			case ShaderDataType::Matrix4:     return 4 * 4 * 4;
 			case ShaderDataType::Int:      return 4;
 			case ShaderDataType::Int2:     return 4 * 2;
 			case ShaderDataType::Int3:     return 4 * 3;
@@ -32,11 +32,11 @@ namespace Neat
 		switch (type)
 		{
 			case ShaderDataType::Float:    return 1;
-			case ShaderDataType::Vec2:   return 2;
-			case ShaderDataType::Vec3:   return 3;
-			case ShaderDataType::Vec4:   return 4;
-			case ShaderDataType::Mat3:     return 3 * 3;
-			case ShaderDataType::Mat4:     return 4 * 4;
+			case ShaderDataType::Vector2:   return 2;
+			case ShaderDataType::Vector3:   return 3;
+			case ShaderDataType::Vector4:   return 4;
+			case ShaderDataType::Matrix3:     return 3 * 3;
+			case ShaderDataType::Matrix4:     return 4 * 4;
 			case ShaderDataType::Int:      return 1;
 			case ShaderDataType::Int2:     return 2;
 			case ShaderDataType::Int3:     return 3;
@@ -53,11 +53,11 @@ namespace Neat
 		switch (type)
 		{
 			case ShaderDataType::Float:    return GL_FLOAT;
-			case ShaderDataType::Vec2:   return GL_FLOAT;
-			case ShaderDataType::Vec3:   return GL_FLOAT;
-			case ShaderDataType::Vec4:   return GL_FLOAT;
-			case ShaderDataType::Mat3:     return GL_FLOAT;
-			case ShaderDataType::Mat4:     return GL_FLOAT;
+			case ShaderDataType::Vector2:   return GL_FLOAT;
+			case ShaderDataType::Vector3:   return GL_FLOAT;
+			case ShaderDataType::Vector4:   return GL_FLOAT;
+			case ShaderDataType::Matrix3:     return GL_FLOAT;
+			case ShaderDataType::Matrix4:     return GL_FLOAT;
 			case ShaderDataType::Int:      return GL_INT;
 			case ShaderDataType::Int2:     return GL_INT;
 			case ShaderDataType::Int3:     return GL_INT;
@@ -74,11 +74,11 @@ namespace Neat
 		switch (type)
 		{
 			case ShaderDataType::Float:    return GL_FLOAT;
-			case ShaderDataType::Vec2:   return GL_FLOAT_VEC2;
-			case ShaderDataType::Vec3:   return GL_FLOAT_VEC3;
-			case ShaderDataType::Vec4:   return GL_FLOAT_VEC4;
-			case ShaderDataType::Mat3:     return GL_FLOAT_MAT3;
-			case ShaderDataType::Mat4:     return GL_FLOAT_MAT4;
+			case ShaderDataType::Vector2:   return GL_FLOAT_VEC2;
+			case ShaderDataType::Vector3:   return GL_FLOAT_VEC3;
+			case ShaderDataType::Vector4:   return GL_FLOAT_VEC4;
+			case ShaderDataType::Matrix3:     return GL_FLOAT_MAT3;
+			case ShaderDataType::Matrix4:     return GL_FLOAT_MAT4;
 			case ShaderDataType::Int:      return GL_INT;
 			case ShaderDataType::Int2:     return GL_INT_VEC2;
 			case ShaderDataType::Int3:     return GL_INT_VEC3;
@@ -98,23 +98,23 @@ namespace Neat
 
 		if (type == GL_FLOAT_VEC2)
 			if (count == 1)
-				return ShaderDataType::Vec2;
+				return ShaderDataType::Vector2;
 
 		if (type == GL_FLOAT_VEC3) 
 			if (count == 1)
-				return ShaderDataType::Vec3;
+				return ShaderDataType::Vector3;
 
 		if (type == GL_FLOAT_VEC4)
 			if (count == 1)
-				return ShaderDataType::Vec4;
+				return ShaderDataType::Vector4;
 
 		if (type == GL_FLOAT_MAT3)
 			if (count == 1)
-				return ShaderDataType::Mat3;
+				return ShaderDataType::Matrix3;
 
 		if (type == GL_FLOAT_MAT4)
 			if (count == 1)
-				return ShaderDataType::Mat4;
+				return ShaderDataType::Matrix4;
 
 		if (type == GL_INT)
 			if (count == 1)

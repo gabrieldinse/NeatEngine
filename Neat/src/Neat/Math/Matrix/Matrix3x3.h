@@ -7,16 +7,16 @@
 namespace Neat
 {
    template <typename T>
-   struct Mat<3, 3, T>
+   struct Matrix<3, 3, T>
    {
       // Default constructor
       constexpr
-      Mat() : m_flattened{} {}
+      Matrix() : m_flattened{} {}
 
 
       // Basic constructors
       constexpr
-      Mat(
+      Matrix(
          T m00, T m01, T m02,
          T m10, T m11, T m12,
          T m20, T m21, T m22)
@@ -27,7 +27,7 @@ namespace Neat
             } {}
 
       constexpr explicit
-      Mat(T scalar)
+      Matrix(T scalar)
          : m_flattened{
             scalar, static_cast<T>(0), static_cast<T>(0),
             static_cast<T>(0), scalar, static_cast<T>(0),
@@ -37,7 +37,7 @@ namespace Neat
 
       // Copy constrcutor
       constexpr
-      Mat(const Mat<3, 3, T>& m)
+      Matrix(const Matrix<3, 3, T>& m)
          : m_flattened{
             m[0], m[1], m[2],
             m[3], m[4], m[5],
@@ -51,7 +51,7 @@ namespace Neat
          typename X2, typename Y2, typename Z2,
          typename X3, typename Y3, typename Z3>
       constexpr
-      Mat(
+      Matrix(
          X1 m00, Y1 m01, Z1 m02,
          X2 m10, Y2 m11, Z2 m12,
          X3 m20, Y3 m21, Z3 m22)
@@ -63,7 +63,7 @@ namespace Neat
 
       template <typename U>
       constexpr explicit
-      Mat(const Mat<3, 3, U>& m)
+      Matrix(const Matrix<3, 3, U>& m)
          : m_flattened{
             static_cast<T>(m[0]), static_cast<T>(m[1]), static_cast<T>(m[2]),
             static_cast<T>(m[3]), static_cast<T>(m[4]), static_cast<T>(m[5]),
@@ -72,7 +72,7 @@ namespace Neat
 
       template <typename U>
       constexpr explicit
-      Mat(const Mat<4, 4, U>& m)
+      Matrix(const Matrix<4, 4, U>& m)
          : m_flattened{
             static_cast<T>(m[0]), static_cast<T>(m[1]), static_cast<T>(m[2]),
             static_cast<T>(m[4]), static_cast<T>(m[5]), static_cast<T>(m[6]),
@@ -81,7 +81,7 @@ namespace Neat
 
       template <typename U>
       constexpr explicit
-         Mat(const Mat<2, 2, U>& m)
+         Matrix(const Matrix<2, 2, U>& m)
          : m_flattened{
             static_cast<T>(m[0]), static_cast<T>(m[1]), static_cast<T>(0),
             static_cast<T>(m[2]), static_cast<T>(m[3]), static_cast<T>(0),
@@ -115,27 +115,27 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Mat<3, 3, T> operator+(const Mat<3, 3, T>& ma, const Mat<3, 3, T>& mb);
+   Matrix<3, 3, T> operator+(const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb);
 
    template <typename T>
    inline constexpr
-   Mat<3, 3, T> operator-(const Mat<3, 3, T>& ma, const Mat<3, 3, T>& mb);
+   Matrix<3, 3, T> operator-(const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb);
 
    template <typename T>
    inline constexpr
-   Mat<3, 3, T> operator*(const Mat<3, 3, T>& ma, const Mat<3, 3, T>& mb);
+   Matrix<3, 3, T> operator*(const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb);
 
    template <typename T>
    inline constexpr
-   Mat<3, 3, T> operator*(T scalar, const Mat<3, 3, T>& m);
+   Matrix<3, 3, T> operator*(T scalar, const Matrix<3, 3, T>& m);
 
    template <typename T>
    inline constexpr
-   Mat<3, 3, T> operator*(const Mat<3, 3, T>& m, T scalar);
+   Matrix<3, 3, T> operator*(const Matrix<3, 3, T>& m, T scalar);
 
    template <typename T>
    inline constexpr
-   Vec<3, T> operator*(const Mat<3, 3, T>& m, const Vec<3, T>& v);
+   Vector<3, T> operator*(const Matrix<3, 3, T>& m, const Vector<3, T>& v);
 }
 
 #include "Neat/Math/Matrix/Matrix3x3.inl"

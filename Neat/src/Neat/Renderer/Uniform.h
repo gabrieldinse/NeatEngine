@@ -70,24 +70,24 @@ namespace Neat
 	};
 
 	template<>
-	struct Uniform<ShaderDataType::Vec2> : public UniformBase
+	struct Uniform<ShaderDataType::Vector2> : public UniformBase
 	{
 		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
-		void set(Vec2 values);
+		void set(Vector2 values);
 	};
 
 	template<>
-	struct Uniform<ShaderDataType::Vec3> : public UniformBase
+	struct Uniform<ShaderDataType::Vector3> : public UniformBase
 	{
 		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
-		void set(Vec3 values);
+		void set(Vector3 values);
 	};
 
 	template<>
-	struct Uniform<ShaderDataType::Vec4> : public UniformBase
+	struct Uniform<ShaderDataType::Vector4> : public UniformBase
 	{
 		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
-		void set(Vec4 values);
+		void set(Vector4 values);
 	};
 
 	template<>
@@ -105,16 +105,16 @@ namespace Neat
 	};
 
 	template<>
-	struct Uniform<ShaderDataType::Mat3> : public UniformBase
+	struct Uniform<ShaderDataType::Matrix3> : public UniformBase
 	{
 		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
-		void set(Mat3 matrix);
+		void set(Matrix3 matrix);
 	};
 
 	template<>
-	struct Uniform<ShaderDataType::Mat4> : public UniformBase
+	struct Uniform<ShaderDataType::Matrix4> : public UniformBase
 	{
 		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
-		void set(Mat4 matrix);
+		void set(Matrix4 matrix);
 	};
 }

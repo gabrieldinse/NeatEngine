@@ -5,9 +5,9 @@ namespace Neat
 {
    template <typename T>
    inline constexpr
-   Mat<4, 4, T> operator+(const Mat<4, 4, T>& ma, const Mat<4, 4, T>& mb)
+   Matrix<4, 4, T> operator+(const Matrix<4, 4, T>& ma, const Matrix<4, 4, T>& mb)
    {
-      return Mat<4, 4, T>(
+      return Matrix<4, 4, T>(
          ma[0] + mb[0], ma[1] + mb[1], ma[2] + mb[2], ma[3] + mb[3],
          ma[4] + mb[4], ma[5] + mb[5], ma[6] + mb[6], ma[7] + mb[7],
          ma[8] + mb[8], ma[9] + mb[9], ma[10] + mb[10], ma[11] + mb[11],
@@ -17,9 +17,9 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Mat<4, 4, T> operator-(const Mat<4, 4, T>& ma, const Mat<4, 4, T>& mb)
+   Matrix<4, 4, T> operator-(const Matrix<4, 4, T>& ma, const Matrix<4, 4, T>& mb)
    {
-      return Mat<4, 4, T>(
+      return Matrix<4, 4, T>(
          ma[0] - mb[0], ma[1] - mb[1], ma[2] - mb[2], ma[3] - mb[3],
          ma[4] - mb[4], ma[5] - mb[5], ma[6] - mb[6], ma[7] - mb[7],
          ma[8] - mb[8], ma[9] - mb[9], ma[10] - mb[10], ma[11] - mb[11],
@@ -29,9 +29,9 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Mat<4, 4, T> operator*(const Mat<4, 4, T>& ma, const Mat<4, 4, T>& mb)
+   Matrix<4, 4, T> operator*(const Matrix<4, 4, T>& ma, const Matrix<4, 4, T>& mb)
    {
-      return Mat<4, 4, T>(
+      return Matrix<4, 4, T>(
          ma(0, 0) * mb(0, 0) + ma(0, 1) * mb(1, 0) + ma(0, 2) * mb(2, 0) + ma(0, 3) * mb(3, 0),
          ma(0, 0) * mb(0, 1) + ma(0, 1) * mb(1, 1) + ma(0, 2) * mb(2, 1) + ma(0, 3) * mb(3, 1),
          ma(0, 0) * mb(0, 2) + ma(0, 1) * mb(1, 2) + ma(0, 2) * mb(2, 2) + ma(0, 3) * mb(3, 2),
@@ -53,9 +53,9 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Mat<4, 4, T> operator*(T scalar, const Mat<4, 4, T>& m)
+   Matrix<4, 4, T> operator*(T scalar, const Matrix<4, 4, T>& m)
    {
-      return Mat<4, 4, T>(
+      return Matrix<4, 4, T>(
          scalar * m[0],  scalar * m[1],  scalar * m[2],  scalar * m[3],
          scalar * m[4],  scalar * m[5],  scalar * m[6],  scalar * m[7],
          scalar * m[8],  scalar * m[9],  scalar * m[10], scalar * m[11],
@@ -65,7 +65,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-      Mat<4, 4, T> operator*(const Mat<4, 4, T>& m, T scalar)
+      Matrix<4, 4, T> operator*(const Matrix<4, 4, T>& m, T scalar)
    {
       return scalar * m;
    }
@@ -74,9 +74,9 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator*(const Mat<4, 4, T>& m, const Vec<4, T>& v)
+   Vector<4, T> operator*(const Matrix<4, 4, T>& m, const Vector<4, T>& v)
    {
-      return Vec<4, T>(
+      return Vector<4, T>(
          m[0]  * v[0] + m[1]  * v[1] + m[2]  * v[2] + m[3]  * v[3],
          m[4]  * v[0] + m[5]  * v[1] + m[6]  * v[2] + m[7]  * v[3],
          m[8]  * v[0] + m[9]  * v[1] + m[10] * v[2] + m[11] * v[3],

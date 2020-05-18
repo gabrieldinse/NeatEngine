@@ -11,8 +11,8 @@ namespace Neat
    enum class ShaderDataType
    {
       None = 0,
-      Float, Vec2, Vec3, Vec4,
-      Mat3, Mat4, Int, Int2, Int3, Int4,
+      Float, Vector2, Vector3, Vector4,
+      Matrix3, Matrix4, Int, Int2, Int3, Int4,
       Bool,
       Sampler2DArray,
       IntArray

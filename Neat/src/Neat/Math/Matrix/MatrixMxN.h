@@ -11,11 +11,11 @@
 
 namespace Neat
 {
-   template <std::size_t M, std::size_t N, typename T>
-   struct Mat;
+   template <UInt M, UInt N, typename T>
+   struct Matrix;
 
-   template <std::size_t M, std::size_t N, typename T>
-   std::ostream& operator<<(std::ostream& os, const Mat<M, N, T>& m);
+   template <UInt M, UInt N, typename T>
+   std::ostream& operator<<(std::ostream& os, const Matrix<M, N, T>& m);
 }
 
 #include "Neat/Math/Matrix/MatrixMxN.inl"

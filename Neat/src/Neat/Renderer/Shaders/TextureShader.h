@@ -16,7 +16,7 @@ namespace Neat
          m_uniformTextures.set(values, count);
       }
 
-      void setviewProjection(const Mat4& viewProjection)
+      void setviewProjection(const Matrix4& viewProjection)
       {
          bind();
          m_uniformViewProjection.set(viewProjection);
@@ -25,7 +25,7 @@ namespace Neat
    private:
       Uniform<ShaderDataType::IntArray> m_uniformTextures{
          "u_textures[0]", getUniformLibrary()};
-      Uniform<ShaderDataType::Mat4> m_uniformViewProjection{
+      Uniform<ShaderDataType::Matrix4> m_uniformViewProjection{
          "u_viewProjection", getUniformLibrary()};
    };
 }

@@ -7,16 +7,16 @@
 namespace Neat
 {
    template <typename T>
-   struct Mat<2, 2, T>
+   struct Matrix<2, 2, T>
    {
       // Default constructor
       constexpr
-      Mat() : m_flattened{} {}
+      Matrix() : m_flattened{} {}
 
 
       // Basic constructors
       constexpr
-      Mat(
+      Matrix(
          T m00, T m01,
          T m10, T m11)
          : m_flattened{
@@ -26,14 +26,14 @@ namespace Neat
       {}
 
       constexpr explicit
-      Mat(T scalar)
+      Matrix(T scalar)
          : m_flattened{
             scalar, static_cast<T>(0),
             static_cast<T>(0), scalar
             } {}
 
       constexpr
-      Mat(const Mat<2, 2, T>& m)
+      Matrix(const Matrix<2, 2, T>& m)
          : m_flattened{
             m[0], m[1],
             m[2], m[3]
@@ -45,7 +45,7 @@ namespace Neat
          typename X1, typename Y1,
          typename X2, typename Y2>
       constexpr
-      Mat(
+      Matrix(
          X1 m00, Y1 m01,
          X2 m10, Y2 m11)
          : m_flattened{
@@ -56,7 +56,7 @@ namespace Neat
 
       template <typename U>
       constexpr explicit
-      Mat(const Mat<2, 2, U>& m)
+      Matrix(const Matrix<2, 2, U>& m)
          : m_flattened{
             static_cast<T(m[0]), static_cast<T(m[1]),
             static_cast<T(m[2]), static_cast<T(m[3])
@@ -64,7 +64,7 @@ namespace Neat
 
       template <typename U>
       constexpr explicit
-      Mat(const Mat<4, 4, U>& m)
+      Matrix(const Matrix<4, 4, U>& m)
          : m_flattened{
             static_cast<T(m[0]), static_cast<T(m[1]),
             static_cast<T(m[4]), static_cast<T(m[5])
@@ -72,14 +72,14 @@ namespace Neat
 
       template <typename U>
       constexpr explicit
-      Mat(const Mat<3, 3, U>& m)
+      Matrix(const Matrix<3, 3, U>& m)
          : m_flattened{
             static_cast<T(m[0]), static_cast<T(m[1]),
             static_cast<T(m[3]), static_cast<T(m[4])
             } {}
 
 
-      constexpr std::size_t size() const { return 2 * 2; }
+      constexpr UInt size() const { return 2 * 2; }
 
       // Elements acessing
       constexpr T* dataPointer() { return m_flattened; }
@@ -105,27 +105,27 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Mat<2, 2, T> operator+(const Mat<2, 2, T>& ma, const Mat<2, 2, T>& mb);
+   Matrix<2, 2, T> operator+(const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb);
 
    template <typename T>
    inline constexpr
-   Mat<2, 2, T> operator-(const Mat<2, 2, T>& ma, const Mat<2, 2, T>& mb);
+   Matrix<2, 2, T> operator-(const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb);
 
    template <typename T>
    inline constexpr
-   Mat<2, 2, T> operator*(const Mat<2, 2, T>& ma, const Mat<2, 2, T>& mb);
+   Matrix<2, 2, T> operator*(const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb);
 
    template <typename T>
    inline constexpr
-   Mat<2, 2, T> operator*(T scalar, const Mat<2, 2, T>& m);
+   Matrix<2, 2, T> operator*(T scalar, const Matrix<2, 2, T>& m);
 
    template <typename T>
    inline constexpr
-   Mat<2, 2, T> operator*(const Mat<2, 2, T>& m, T scalar);
+   Matrix<2, 2, T> operator*(const Matrix<2, 2, T>& m, T scalar);
 
    template <typename T>
    inline constexpr
-   Vec<2, T> operator*(const Mat<2, 2, T>& m, const Vec<2, T>& v);
+   Vector<2, T> operator*(const Matrix<2, 2, T>& m, const Vector<2, T>& v);
 }
 
 #include "Neat/Math/Matrix/Matrix2x2.inl"

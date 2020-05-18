@@ -18,14 +18,14 @@ namespace Neat
 
       //static void submit(const std::shared_ptr<ShaderProgram>& shader,
       //   const std::shared_ptr<VertexArray>& vertexArray,
-      //   const Mat4& transform = Mat4(1.0f));
+      //   const Matrix4& transform = Matrix4(1.0f));
 
       static void onWindowResize(UInt width, UInt height);
 
    private:
       struct SceneData
       {
-         Mat4 viewProjectionMatrix;
+         Matrix4 viewProjectionMatrix;
       };
 
    private:

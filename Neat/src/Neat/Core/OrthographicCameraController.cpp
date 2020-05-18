@@ -92,7 +92,7 @@ namespace Neat
       if ((Input::isKeyPressed(KeyCode::LeftControl) ||
          Input::isKeyPressed(KeyCode::RightControl)))
       {
-         m_zoomLevel -= event.getYOffset() * 0.2f;
+         m_zoomLevel -= event.yOffset * 0.2f;
          m_zoomLevel = std::max(m_zoomLevel, 0.25f);
          m_cameraTranslationSpeed = 2.0f * m_zoomLevel;
          m_camera.setProjection(
@@ -108,7 +108,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      Vec2 current_mouse_position(event.getX(), event.getY());
+      Vector2 current_mouse_position(event.xPos, event.yPos);
 
       if ((Input::isKeyPressed(KeyCode::LeftControl) ||
          Input::isKeyPressed(KeyCode::RightControl)) &&
@@ -122,10 +122,10 @@ namespace Neat
             current_mouse_position - m_lastMousePosition;
          auto screen_position_offset = 
             rotate(degreesToRadians(m_cameraRotation), { 0, 0, 1 }) *
-            scale(Vec3(-scale_factor, scale_factor, 1.0f)) *
-            Vec4(mouse_possition_offset, 0.0f, 1.0f);
+            scale(Vector3(-scale_factor, scale_factor, 1.0f)) *
+            Vector4(mouse_possition_offset, 0.0f, 1.0f);
 
-         m_cameraPosition = m_cameraPosition + Vec3(screen_position_offset);
+         m_cameraPosition = m_cameraPosition + Vector3(screen_position_offset);
          m_camera.setPosition(m_cameraPosition);
       }
 
@@ -138,7 +138,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      m_aspectRatio = (float)event.getWidth() / (float)event.getHeight();
+      m_aspectRatio = (float)event.width / (float)event.height;
       m_camera.setProjection(
          -m_aspectRatio * m_zoomLevel,
           m_aspectRatio * m_zoomLevel,

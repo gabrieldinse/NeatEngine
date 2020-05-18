@@ -6,51 +6,51 @@
 namespace Neat
 {
    // Relational operators
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator>(const Vec<N, T>& va, const Vec<N, T>& vb)
+   bool operator>(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return (norm(va) > norm(vb));
    }
 
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator<(const Vec<N, T>& va, const Vec<N, T>& vb)
+   bool operator<(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return (vb > va);
    }
 
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator==(const Vec<N, T>& va, const Vec<N, T>& vb)
+   bool operator==(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return (norm(va) == norm(vb));
    }
 
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator!=(const Vec<N, T>& va, const Vec<N, T>& vb)
+   bool operator!=(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return !(va == vb);
    }
 
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator>=(const Vec<N, T>& va, const Vec<N, T>& vb)
+   bool operator>=(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return !(va < vb);
    }
 
-   template <typename T, std::size_t N>
+   template <typename T, UInt N>
    inline constexpr
-   bool operator<=(const Vec<N, T>& va, const Vec<N, T>& vb)
+   bool operator<=(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return !(va > vb);
    }
 
 
-   template <typename T, std::size_t N>
-   std::ostream& operator<<(std::ostream& os, const Vec<N, T>& v)
+   template <typename T, UInt N>
+   std::ostream& operator<<(std::ostream& os, const Vector<N, T>& v)
    {
       os << "[";
       for (std::size_t i = 0; i < N; ++i)

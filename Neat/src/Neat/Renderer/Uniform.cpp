@@ -129,24 +129,24 @@ namespace Neat
 		m_data = std::make_unique<UniformData>(uniformLibrary[name]);
 	}
 
-	Uniform<ShaderDataType::Vec2>::Uniform(
+	Uniform<ShaderDataType::Vector2>::Uniform(
 		const std::string& name, const UniformLibrary& uniformLibrary)
 	{
-		checkUniform(ShaderDataType::Vec2, name, uniformLibrary);
+		checkUniform(ShaderDataType::Vector2, name, uniformLibrary);
 		m_data = std::make_unique<UniformData>(uniformLibrary[name]);
 	}
 
-	Uniform<ShaderDataType::Vec3>::Uniform(
+	Uniform<ShaderDataType::Vector3>::Uniform(
 		const std::string& name, const UniformLibrary& uniformLibrary)
 	{
-		checkUniform(ShaderDataType::Vec3, name, uniformLibrary);
+		checkUniform(ShaderDataType::Vector3, name, uniformLibrary);
 		m_data = std::make_unique<UniformData>(uniformLibrary[name]);
 	}
 
-	Uniform<ShaderDataType::Vec4>::Uniform(
+	Uniform<ShaderDataType::Vector4>::Uniform(
 		const std::string& name, const UniformLibrary& uniformLibrary)
 	{
-		checkUniform(ShaderDataType::Vec4, name, uniformLibrary);
+		checkUniform(ShaderDataType::Vector4, name, uniformLibrary);
 		m_data = std::make_unique<UniformData>(uniformLibrary[name]);
 	}
 
@@ -164,17 +164,17 @@ namespace Neat
 		m_data = std::make_unique<UniformData>(uniformLibrary[name]);
 	}
 
-	Uniform<ShaderDataType::Mat3>::Uniform(
+	Uniform<ShaderDataType::Matrix3>::Uniform(
 		const std::string& name, const UniformLibrary& uniformLibrary)
 	{
-		checkUniform(ShaderDataType::Mat3, name, uniformLibrary);
+		checkUniform(ShaderDataType::Matrix3, name, uniformLibrary);
 		m_data = std::make_unique<UniformData>(uniformLibrary[name]);
 	}
 
-	Uniform<ShaderDataType::Mat4>::Uniform(
+	Uniform<ShaderDataType::Matrix4>::Uniform(
 		const std::string& name, const UniformLibrary& uniformLibrary)
 	{
-		checkUniform(ShaderDataType::Mat4, name, uniformLibrary);
+		checkUniform(ShaderDataType::Matrix4, name, uniformLibrary);
 		m_data = std::make_unique<UniformData>(uniformLibrary[name]);
 	}
 
@@ -183,17 +183,17 @@ namespace Neat
       glUniform1f(m_data->location, value);
    }
 
-   void Uniform<ShaderDataType::Vec2>::set(Vec2 values)
+   void Uniform<ShaderDataType::Vector2>::set(Vector2 values)
    {
       glUniform2f(m_data->location, values.x, values.y);
    }
 
-   void Uniform<ShaderDataType::Vec3>::set(Vec3 values)
+   void Uniform<ShaderDataType::Vector3>::set(Vector3 values)
    {
       glUniform3f(m_data->location, values.x, values.y, values.z);
    }
 
-   void Uniform<ShaderDataType::Vec4>::set(Vec4 values)
+   void Uniform<ShaderDataType::Vector4>::set(Vector4 values)
    {
       glUniform4f(
 			m_data->location, values.x, values.y, values.z, values.w);
@@ -209,13 +209,13 @@ namespace Neat
       glUniform1iv(m_data->location, count, values);
    }
 
-   void Uniform<ShaderDataType::Mat3>::set(Mat3 matrix)
+   void Uniform<ShaderDataType::Matrix3>::set(Matrix3 matrix)
    {
       glUniformMatrix3fv(
 			m_data->location, 1, GL_TRUE, matrix.dataPointer());
    }
 
-   void Uniform<ShaderDataType::Mat4>::set(Mat4 matrix)
+   void Uniform<ShaderDataType::Matrix4>::set(Matrix4 matrix)
    {
       glUniformMatrix4fv(
 			m_data->location, 1, GL_TRUE, matrix.dataPointer());

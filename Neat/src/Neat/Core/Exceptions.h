@@ -20,13 +20,13 @@ namespace Neat
 
    struct VecDimensionError : public MathError
    {
-      VecDimensionError(const char* msg = "Wrong Vec dimension being acessed.")
+      VecDimensionError(const char* msg = "Wrong Vector dimension being acessed.")
          : MathError(msg) {}
    };
 
    struct MatDimensionError : public MathError
    {
-      MatDimensionError(const char* msg = "Wrong Mat dimension being acessed.")
+      MatDimensionError(const char* msg = "Wrong Matrix dimension being acessed.")
          : MathError(msg) {}
    };
    // -------------------------------------------------------------------------

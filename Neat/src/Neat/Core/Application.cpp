@@ -167,7 +167,7 @@ namespace Neat
    bool Application::receive(const WindowResizeEvent& event)
    {
       if (!m_window->isMinimized())
-         Renderer::onWindowResize(event.getWidth(), event.getHeight());
+         Renderer::onWindowResize(event.width, event.height);
 
       return false;
    }

@@ -24,7 +24,7 @@ namespace Neat
       m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
    }
 
-   void OrthographicCamera::setPosition(const Vec3& position)
+   void OrthographicCamera::setPosition(const Vector3& position)
    {
       NT_PROFILE_FUNCTION();
 
@@ -44,7 +44,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      Mat4 transform =
+      Matrix4 transform =
          translate(m_position) * 
          rotate(degreesToRadians(m_rotation), { 0, 0, 1});
 

@@ -7,7 +7,7 @@ namespace Neat
    // Default constructor
    template <typename T>
    constexpr
-   Vec<4, T>::Vec()
+   Vector<4, T>::Vector()
       : x(static_cast<T>(0))
       , y(static_cast<T>(0))
       , z(static_cast<T>(0))
@@ -17,24 +17,24 @@ namespace Neat
    // Basic Constructors
    template <typename T>
    constexpr
-   Vec<4, T>::Vec(T scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
+   Vector<4, T>::Vector(T scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
 
    template <typename T>
    constexpr
-   Vec<4, T>::Vec(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
+   Vector<4, T>::Vector(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
 
 
    // Copy Constructor
    template <typename T>
    constexpr
-   Vec<4, T>::Vec(const Vec<4, T>& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
+   Vector<4, T>::Vector(const Vector<4, T>& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 
 
    // Conversion constructors
    template <typename T>
    template <typename U>
    constexpr
-   Vec<4, T>::Vec(const Vec<4, U>& v)
+   Vector<4, T>::Vector(const Vector<4, U>& v)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(v.y))
       , z(static_cast<T>(v.z))
@@ -43,7 +43,7 @@ namespace Neat
    template <typename T>
    template <typename U>
    constexpr
-   Vec<4, T>::Vec(const Vec<3, U>& v)
+   Vector<4, T>::Vector(const Vector<3, U>& v)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(v.y))
       , z(static_cast<T>(v.z))
@@ -52,7 +52,7 @@ namespace Neat
    template <typename T>
    template <typename U>
    constexpr
-   Vec<4, T>::Vec(const Vec<2, U>& v)
+   Vector<4, T>::Vector(const Vector<2, U>& v)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(v.y))
       , z(static_cast<T>(0))
@@ -61,7 +61,7 @@ namespace Neat
    template <typename T>
    template <typename U>
    constexpr
-   Vec<4, T>::Vec(const Vec<1, U>& v)
+   Vector<4, T>::Vector(const Vector<1, U>& v)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(0))
       , z(static_cast<T>(0))
@@ -70,7 +70,7 @@ namespace Neat
    template <typename T>
    template <typename A, typename B>
    constexpr
-   Vec<4, T>::Vec(const Vec<3, A>& v, B scalar)
+   Vector<4, T>::Vector(const Vector<3, A>& v, B scalar)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(v.y))
       , z(static_cast<T>(v.z))
@@ -79,7 +79,7 @@ namespace Neat
    template <typename T>
    template <typename A, typename B, typename C>
    constexpr
-   Vec<4, T>::Vec(const Vec<2, A>& v, B scalar1, C scalar2)
+   Vector<4, T>::Vector(const Vector<2, A>& v, B scalar1, C scalar2)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(v.y))
       , z(static_cast<T>(scalar1))
@@ -88,7 +88,7 @@ namespace Neat
    template <typename T>
    template <typename A, typename B, typename C, typename D>
    constexpr
-   Vec<4, T>::Vec(const Vec<1, A>& v, B scalar1, C scalar2, D scalar3)
+   Vector<4, T>::Vector(const Vector<1, A>& v, B scalar1, C scalar2, D scalar3)
       : x(static_cast<T>(v.x))
       , y(static_cast<T>(scalar1))
       , z(static_cast<T>(scalar2))
@@ -97,7 +97,7 @@ namespace Neat
    template <typename T>
    template <typename X, typename Y, typename Z, typename W>
    constexpr
-   Vec<4, T>::Vec(X x, Y y, Z z, W w)
+   Vector<4, T>::Vector(X x, Y y, Z z, W w)
       : x(static_cast<T>(x))
       , y(static_cast<T>(y))
       , z(static_cast<T>(z))
@@ -107,7 +107,7 @@ namespace Neat
    // Assignment operators
    template <typename T>
    constexpr
-   Vec<4, T>& Vec<4, T>::operator=(const Vec<4, T>& other)
+   Vector<4, T>& Vector<4, T>::operator=(const Vector<4, T>& other)
    {
       x = other.x;
       y = other.y;
@@ -119,7 +119,7 @@ namespace Neat
 
    template <typename T>
    constexpr
-   Vec<4, T>& Vec<4, T>::operator=(const Vec<3, T>& other)
+   Vector<4, T>& Vector<4, T>::operator=(const Vector<3, T>& other)
    {
       x = other.x;
       y = other.y;
@@ -131,7 +131,7 @@ namespace Neat
 
    template <typename T>
    constexpr
-   Vec<4, T>& Vec<4, T>::operator=(const Vec<2, T>& other)
+   Vector<4, T>& Vector<4, T>::operator=(const Vector<2, T>& other)
    {
       x = other.x;
       y = other.y;
@@ -143,7 +143,7 @@ namespace Neat
 
    template <typename T>
    constexpr
-   Vec<4, T>& Vec<4, T>::operator=(const Vec<1, T>& other)
+   Vector<4, T>& Vector<4, T>::operator=(const Vector<1, T>& other)
    {
       x = other.x;
       y = static_cast<T>(0);
@@ -158,7 +158,7 @@ namespace Neat
    template<typename T>
    template<typename U>
    inline constexpr
-   Vec<4, T>& Vec<4, T>::operator+=(const Vec<4, U>& v)
+   Vector<4, T>& Vector<4, T>::operator+=(const Vector<4, U>& v)
    {
       x += v.x;
       y += v.y;
@@ -171,7 +171,7 @@ namespace Neat
    template<typename T>
    template<typename U>
    inline constexpr
-   Vec<4, T>& Vec<4, T>::operator-=(const Vec<4, U>& v)
+   Vector<4, T>& Vector<4, T>::operator-=(const Vector<4, U>& v)
    {
       x -= v.x;
       y -= v.y;
@@ -184,7 +184,7 @@ namespace Neat
    template<typename T>
    template<typename U>
    inline constexpr
-   Vec<4, T>& Vec<4, T>::operator*=(const Vec<4, U>& v)
+   Vector<4, T>& Vector<4, T>::operator*=(const Vector<4, U>& v)
    {
       x *= v.x;
       y *= v.y;
@@ -197,7 +197,7 @@ namespace Neat
    template<typename T>
    template<typename U>
    inline constexpr
-   Vec<4, T>& Vec<4, T>::operator*=(U scalar)
+   Vector<4, T>& Vector<4, T>::operator*=(U scalar)
    {
       x *= scalar;
       y *= scalar;
@@ -210,7 +210,7 @@ namespace Neat
    template<typename T>
    template<typename U>
    inline constexpr
-   Vec<4, T>& Vec<4, T>::operator/=(U scalar)
+   Vector<4, T>& Vector<4, T>::operator/=(U scalar)
    {
       x /= static_cast<T>(scalar);
       y /= static_cast<T>(scalar);
@@ -223,7 +223,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Vec<4, T>::operator bool() const
+   Vector<4, T>::operator bool() const
    {
       return (norm(*this) > static_cast<T>(0));
    }
@@ -231,7 +231,7 @@ namespace Neat
 
    template<typename T>
    inline constexpr
-   T& Vec<4, T>::operator[](std::size_t pos)
+   T& Vector<4, T>::operator[](std::size_t pos)
    {
       switch (pos)
       {
@@ -246,7 +246,7 @@ namespace Neat
 
    template<typename T>
    inline constexpr
-   const T& Vec<4, T>::operator[](std::size_t pos) const
+   const T& Vector<4, T>::operator[](std::size_t pos) const
    {
       switch (pos)
       {
@@ -263,64 +263,64 @@ namespace Neat
    // Non member operators
    template <typename T>
    inline constexpr
-   Vec<4, T> operator+(const Vec<4, T>& va, const Vec<4, T>& vb)
+   Vector<4, T> operator+(const Vector<4, T>& va, const Vector<4, T>& vb)
    {
-      return Vec<4, T>(va) += vb;
+      return Vector<4, T>(va) += vb;
    }
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator-(const Vec<4, T>& v)
+   Vector<4, T> operator-(const Vector<4, T>& v)
    {
-      return Vec<4, T>(-v.x, -v.y, -v.z, -v.w);
+      return Vector<4, T>(-v.x, -v.y, -v.z, -v.w);
    }
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator-(const Vec<4, T>& va, const Vec<4, T>& vb)
+   Vector<4, T> operator-(const Vector<4, T>& va, const Vector<4, T>& vb)
    {
-      return Vec<4, T>(va) -= vb;
+      return Vector<4, T>(va) -= vb;
    }
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator*(const Vec<4, T>& va, const Vec<4, T>& vb)
+   Vector<4, T> operator*(const Vector<4, T>& va, const Vector<4, T>& vb)
    {
-      return Vec<4, T>(va) *= vb;
+      return Vector<4, T>(va) *= vb;
    }
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator*(const Vec<4, T>& va, const Vec<1, T>& vb)
+   Vector<4, T> operator*(const Vector<4, T>& va, const Vector<1, T>& vb)
    {
-      return Vec<4, T>(va) *= vb.x;
+      return Vector<4, T>(va) *= vb.x;
    }
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator*(const Vec<1, T>& va, const Vec<4, T>& vb)
+   Vector<4, T> operator*(const Vector<1, T>& va, const Vector<4, T>& vb)
    {
-      return Vec<4, T>(vb) *= va.x;
+      return Vector<4, T>(vb) *= va.x;
    }
 
    template <typename T>
    inline constexpr
-   Vec<4, T> operator*(T scalar, const Vec<4, T>& v)
+   Vector<4, T> operator*(T scalar, const Vector<4, T>& v)
    {
-      return Vec<4, T>(v) *= scalar;
+      return Vector<4, T>(v) *= scalar;
    }
 
    template <typename T>
    inline constexpr
-      Vec<4, T> operator*(const Vec<4, T>& v, T scalar)
+      Vector<4, T> operator*(const Vector<4, T>& v, T scalar)
    {
-      return Vec<4, T>(v) *= scalar;
+      return Vector<4, T>(v) *= scalar;
    }
 
    template <typename T>
    inline constexpr
-      Vec<4, T> operator/(const Vec<4, T>& v, T scalar)
+      Vector<4, T> operator/(const Vector<4, T>& v, T scalar)
    {
-      return Vec<4, T>(v) /= scalar;
+      return Vector<4, T>(v) /= scalar;
    }
 }

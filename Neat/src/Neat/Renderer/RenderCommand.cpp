@@ -16,7 +16,7 @@ namespace Neat
       glEnable(GL_DEPTH_TEST);
    }
 
-   void RenderCommand::setClearColor(const Vec4 color)
+   void RenderCommand::setClearColor(const Vector4 color)
    {
       glClearColor(color.r, color.g, color.b, color.a);
    }

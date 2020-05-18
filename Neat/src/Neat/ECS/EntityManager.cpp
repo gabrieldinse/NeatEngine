@@ -1,11 +1,4 @@
 #include "Neat/ECS/EntityManager.h"
-#include "Neat/ECS/Config.h"
-#include "Neat/ECS/Entity.h"
-#include "Neat/ECS/MemoryPool.h"
-#include "Neat/ECS/Component.h"
-#include "Neat/ECS/ComponentHandle.h"
-#include "Neat/Events/Event.h"
-#include "Neat/Events/EventManager.h"
 
 
 namespace Neat

@@ -4,7 +4,7 @@
 namespace Neat
 {
    SubTexture2D::SubTexture2D(const Texture2D& texture,
-      const Vec2& bottomLeftCoordinate, const Vec2& upperRightCoordinate)
+      const Vector2& bottomLeftCoordinate, const Vector2& upperRightCoordinate)
       : Texture2D(texture)
       , m_textureCoordinates{
          bottomLeftCoordinate,
@@ -16,14 +16,14 @@ namespace Neat
    }
 
    std::shared_ptr<SubTexture2D> SubTexture2D::createFromIndex(
-      const Texture2D& texture, const Vec2& indexes,
-      const Vec2& cellSize, const Vec2& subTextureSizeInCells)
+      const Texture2D& texture, const Vector2& indexes,
+      const Vector2& cellSize, const Vector2& subTextureSizeInCells)
    {
-      Vec2 bottom_left_coordinate(
+      Vector2 bottom_left_coordinate(
          indexes.i * cellSize.x / texture.getWidth(),
          indexes.j * cellSize.y / texture.getHeight()
       );
-      Vec2 upper_right_coordinate(
+      Vector2 upper_right_coordinate(
          (indexes.i + subTextureSizeInCells.x) * cellSize.x / texture.getWidth(),
          (indexes.j + subTextureSizeInCells.y) * cellSize.y / texture.getHeight()
       );

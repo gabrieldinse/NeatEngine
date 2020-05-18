@@ -35,8 +35,8 @@ namespace Neat
 
       EventManager& m_events;
 
-      Vec3 m_cameraPosition = {0.0f, 0.0f, 0.0f};
-      Vec2 m_lastMousePosition;
+      Vector3 m_cameraPosition = {0.0f, 0.0f, 0.0f};
+      Vector2 m_lastMousePosition;
       float m_cameraTranslationSpeed = 1.0f;
       float m_cameraRotation = 0.0f;
       float m_cameraRotationSpeed = 90.0f;

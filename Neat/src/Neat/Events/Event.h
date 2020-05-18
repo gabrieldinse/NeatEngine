@@ -55,22 +55,21 @@ namespace Neat
    using EventCallback = std::function<bool (const void*)>;
 
 
-
    class EventSubscription
    {
    public:
       EventSubscription() = default;
 
-      template <typename E, typename Receiver>
-      std::size_t add(Receiver& receiver)
+      template <typename E, typename Subscriber>
+      std::size_t add(Subscriber& subscriber)
       {
-         bool (Receiver::*receive)(const E&) = &Receiver::receive;
+         bool (Subscriber::*receive)(const E&) = &Subscriber::receive;
 
-         auto event_callback_wrapper = EventCallbackWrapper<E>(
-            std::bind(receive, &receiver, std::placeholders::_1));
+         auto callback = EventCallbackWrapper<E>(
+            std::bind(receive, &subscriber, std::placeholders::_1));
 
          m_callbacks.emplace_back(
-            std::make_shared<EventCallback>(event_callback_wrapper));
+            std::make_shared<EventCallback>(callback));
          
          return (std::size_t)m_callbacks.back().get();
       }
@@ -92,24 +91,24 @@ namespace Neat
       template <typename E>
       void publish(const E& event)
       {
-         callCallbacks(&event);
+         executeCallbacks(&event);
       }
 
       template <typename E>
       void publish(std::unique_ptr<E> event)
       {
-         callCallbacks(event.get());
+         executeCallbacks(event.get());
       }
 
       template <typename E, typename... Args>
       void publish(Args&&... args)
       {
          E event(std::forward<Args>(args)...);
-         callCallbacks(&event);
+         executeCallbacks(&event);
       }
 
 
-      std::size_t size() const { return m_callbacks.size(); }
+      UInt size() const { return (UInt)m_callbacks.size(); }
 
    private:
       template <typename E>
@@ -126,12 +125,15 @@ namespace Neat
          }
       };
 
-      void callCallbacks(const void* event)
+      void executeCallbacks(const void* event)
       {
          for (auto& callback : m_callbacks)
             if (callback)
-               if ((*callback)(event))
+            {
+               bool handled = (*callback)(event);
+               if (handled)
                   break;
+            }
       }
 
    private:
@@ -147,19 +149,19 @@ namespace Neat
    public:
       BaseEventSubscriber::~BaseEventSubscriber()
       {
-         for (auto& event_subscription_pair : m_subscriptions)
+         for (auto& subscription_pair : m_subscriptions)
          {
-            auto& subscription = event_subscription_pair.second.first;
+            auto& subscription = subscription_pair.second.first;
             if (!subscription.expired())
-               subscription.lock()->remove(event_subscription_pair.second.second);
+               subscription.lock()->remove(subscription_pair.second.second);
          }
       }
 
-      std::size_t BaseEventSubscriber::getNumberOfConnectedSignals() const
+      UInt BaseEventSubscriber::getNumberOfConnectedSignals() const
       {
-         std::size_t count = 0;
-         for (auto& event_subscription_pair : m_subscriptions)
-            if (!event_subscription_pair.second.first.expired())
+         UInt count = 0;
+         for (auto& subscription_pair : m_subscriptions)
+            if (!subscription_pair.second.first.expired())
                ++count;
 
          return count;
@@ -179,9 +181,8 @@ namespace Neat
    // EventSubscriber -------------------------------------------------------- //
    // ---------------------------------------------------------------------- //
    template <typename Derived>
-   class EventSubscriber : public BaseEventSubscriber
+   struct EventSubscriber : public BaseEventSubscriber
    {
-   public:
       virtual ~EventSubscriber() {}
    };
 
@@ -189,24 +190,18 @@ namespace Neat
    // ---------------------------------------------------------------------- //
    // Window events -------------------------------------------------------- //
    // ---------------------------------------------------------------------- //
-   class WindowResizeEvent
+   struct WindowResizeEvent
    {
-   public:
       WindowResizeEvent(UInt width, UInt height)
-         : m_width(width), m_height(height) {}
+         : width(width), height(height) {}
 
-      UInt getWidth() const { return m_width; }
-      UInt getHeight() const { return m_height; }
-
-   private:
-      UInt m_width;
-      UInt m_height;
+      UInt width;
+      UInt height;
    };
 
 
-   class WindowCloseEvent
+   struct WindowCloseEvent
    {
-   public:
       WindowCloseEvent() = default;
    };
 
@@ -214,105 +209,83 @@ namespace Neat
    // ---------------------------------------------------------------------- //
    // Mouse events --------------------------------------------------------- //
    // ---------------------------------------------------------------------- //
-   class MouseButtonEvent
+   struct MouseButtonEvent
    {
-   public:
-      MouseCode getButton() const { return m_button; }
+      MouseCode m_button;
 
    protected:
       MouseButtonEvent(MouseCode button)
          : m_button(button) {}
-
-      MouseCode m_button;
    };
 
 
-   class MouseButtonPressedEvent : public MouseButtonEvent
+   struct MouseButtonPressedEvent : public MouseButtonEvent
    {
-   public:
       MouseButtonPressedEvent(MouseCode button)
          : MouseButtonEvent(button) {}
    };
 
 
-   class MouseButtonReleasedEvent : public MouseButtonEvent
+   struct MouseButtonReleasedEvent : public MouseButtonEvent
    {
-   public:
       MouseButtonReleasedEvent(MouseCode button)
          : MouseButtonEvent(button) {}
    };
 
 
-   class MouseMovedEvent
+   struct MouseMovedEvent
    {
-   public:
-      MouseMovedEvent(float mouseX, float mouseY)
-         : m_mouseX(mouseX), m_mouseY(mouseY) {}
+      MouseMovedEvent(float xPos, float yPos)
+         : xPos(xPos), yPos(yPos) {}
 
-      float getX() const { return m_mouseX; }
-      float getY() const { return m_mouseY; }
-
-   private:
-      float m_mouseX;
-      float m_mouseY;
+      float xPos;
+      float yPos;
    };
 
 
-   class  MouseScrolledEvent
+   struct MouseScrolledEvent
    {
    public:
-      MouseScrolledEvent(float offsetX, float offsetY)
-         : m_offsetX(offsetX), m_offsetY(offsetY) {}
-      
-      float getXOffset() const { return m_offsetX; }
-      float getYOffset() const { return m_offsetY; }
+      MouseScrolledEvent(float xOffset, float yOffset)
+         : xOffset(xOffset), yOffset(yOffset) {}
 
-   private:
-      float m_offsetX;
-      float m_offsetY;
+      float xOffset;
+      float yOffset;
    };
 
 
    // ---------------------------------------------------------------------- //
    // Key events ----------------------------------------------------------- //
    // ---------------------------------------------------------------------- //
-   class KeyEvent
+   struct KeyEvent
    {
-   public:
-      inline KeyCode getKeyCode() const { return m_keyCode; }
+      KeyCode m_keyCode;
 
    protected:
       KeyEvent(KeyCode keyCode)
          : m_keyCode(keyCode) {}
-
-      KeyCode m_keyCode;
    };
 
 
-   class KeyPressedEvent : public KeyEvent
+   struct KeyPressedEvent : public KeyEvent
    {
    public:
       KeyPressedEvent(KeyCode keyCode, Int repeatCount = 0)
-         : KeyEvent(keyCode), m_repeatCount(repeatCount) {}
+         : KeyEvent(keyCode), repeatCount(repeatCount) {}
 
-      Int getRepeatCount() const { return m_repeatCount; }
-
-   private:
-      Int m_repeatCount;
+      Int repeatCount;
    };
 
 
-   class  KeyReleasedEvent : public KeyEvent
+   struct KeyReleasedEvent : public KeyEvent
    {
-   public:
       KeyReleasedEvent(KeyCode keycode)
-         : KeyEvent(m_keyCode) {}
+         : KeyEvent(keycode) {}
    };
 
 
-   class  KeyTypedEvent : public KeyEvent
+   struct KeyTypedEvent : public KeyEvent
    {
-   public:
       KeyTypedEvent(KeyCode keyCode)
          : KeyEvent(keyCode) {}
    };

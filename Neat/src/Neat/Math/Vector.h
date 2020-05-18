@@ -9,25 +9,30 @@
 
 namespace Neat
 {
-   // Predefined Vec names
-   using Vec1 = Vec<1, float>;
-   using Vec2 = Vec<2, float>;
-   using Vec3 = Vec<3, float>;
-   using Vec4 = Vec<4, float>;
+   // Predefined Vector names
+   using Vector1     = Vector<1, float>;
+   using Vector2     = Vector<2, float>;
+   using Vector3     = Vector<3, float>;
+   using Vector4     = Vector<4, float>;
+                    
+   using IVector1    = Vector<1, Int>;
+   using IVector2    = Vector<2, Int>;
+   using IVector3    = Vector<3, Int>;
+   using IVector4    = Vector<4, Int>;
 
-   using IVec1 = Vec<1, Int>;
-   using IVec2 = Vec<2, Int>;
-   using IVec3 = Vec<3, Int>;
-   using IVec4 = Vec<4, Int>;
-
-   using BVec1 = Vec<1, bool>;
-   using BVec2 = Vec<2, bool>;
-   using BVec3 = Vec<3, bool>;
-   using BVec4 = Vec<4, bool>;
-
-   using DVec1 = Vec<1, double>;
-   using DVec2 = Vec<2, double>;
-   using DVec3 = Vec<3, double>;
-   using DVec4 = Vec<4, double>;
+   using UIVector1   = Vector<1, UInt>;
+   using UIVector2   = Vector<2, UInt>;
+   using UIVector3   = Vector<3, UInt>;
+   using UIVector4   = Vector<4, UInt>;
+                    
+   using BVector1    = Vector<1, bool>;
+   using BVector2    = Vector<2, bool>;
+   using BVector3    = Vector<3, bool>;
+   using BVector4    = Vector<4, bool>;
+                     
+   using DVector1    = Vector<1, double>;
+   using DVector2    = Vector<2, double>;
+   using DVector3    = Vector<3, double>;
+   using DVector4    = Vector<4, double>;
 }
 

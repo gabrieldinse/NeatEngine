@@ -4,13 +4,13 @@ namespace Neat
 {
    // Determinant
    template <typename T>
-   T determinant(const Mat<2, 2, T>& m)
+   T determinant(const Matrix<2, 2, T>& m)
    {
       return m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1);
    }
 
    template <typename T>
-   T determinant(const Mat<3, 3, T>& m)
+   T determinant(const Matrix<3, 3, T>& m)
    {
       return
          + m(0, 0) * (m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2))
@@ -19,7 +19,7 @@ namespace Neat
    }
 
    template <typename T>
-   T determinant(const Mat<4, 4, T>& m)
+   T determinant(const Matrix<4, 4, T>& m)
    {
       T sub1 = m(2, 2) * m(3, 3) - m(2, 3) * m(3, 2);
       T sub2 = m(2, 3) * m(3, 1) - m(2, 1) * m(3, 3);
@@ -42,18 +42,18 @@ namespace Neat
 
    // Transpose
    template <typename T>
-   Mat<2, 2, T> transpose(const Mat<2, 2, T>& m)
+   Matrix<2, 2, T> transpose(const Matrix<2, 2, T>& m)
    {
-      return Mat<2, 2, T>(
+      return Matrix<2, 2, T>(
          m(0, 0), m(1, 0),
          m(0, 1), m(1, 1)
          );
    }
 
    template <typename T>
-   Mat<3, 2, T> transpose(const Mat<2, 3, T>& m)
+   Matrix<3, 2, T> transpose(const Matrix<2, 3, T>& m)
    {
-      return Mat<3, 2, T>(
+      return Matrix<3, 2, T>(
          m(0, 0), m(1, 0),
          m(0, 1), m(1, 1),
          m(0, 2), m(1, 2)
@@ -61,18 +61,18 @@ namespace Neat
    }
 
    template <typename T>
-   Mat<2, 3, T> transpose(const Mat<3, 2, T>& m)
+   Matrix<2, 3, T> transpose(const Matrix<3, 2, T>& m)
    {
-      return Mat<2, 3, T>(
+      return Matrix<2, 3, T>(
          m(0, 0), m(1, 0), m(2, 0),
          m(0, 1), m(1, 1), m(2, 1)
          );
    }
 
    template <typename T>
-   Mat<3, 3, T> transpose(const Mat<3, 3, T>& m)
+   Matrix<3, 3, T> transpose(const Matrix<3, 3, T>& m)
    {
-      return Mat<3, 3, T>(
+      return Matrix<3, 3, T>(
          m(0, 0), m(1, 0), m(2, 0),
          m(0, 1), m(1, 1), m(2, 1),
          m(0, 2), m(1, 2), m(2, 2)
@@ -80,18 +80,18 @@ namespace Neat
    }
 
    template <typename T>
-   Mat<2, 4, T> transpose(const Mat<4, 2, T>& m)
+   Matrix<2, 4, T> transpose(const Matrix<4, 2, T>& m)
    {
-      return Mat<2, 4, T>(
+      return Matrix<2, 4, T>(
          m(0, 0), m(1, 0), m(2, 0), m(3, 0),
          m(0, 1), m(1, 1), m(2, 1), m(3, 1)
          );
    }
 
    template <typename T>
-   Mat<4, 2, T> transpose(const Mat<2, 4, T>& m)
+   Matrix<4, 2, T> transpose(const Matrix<2, 4, T>& m)
    {
-      return Mat<4, 2, T>(
+      return Matrix<4, 2, T>(
          m(0, 0), m(1, 0),
          m(0, 1), m(1, 1),
          m(0, 2), m(1, 2),
@@ -100,9 +100,9 @@ namespace Neat
    }
 
    template <typename T>
-   Mat<3, 4, T> transpose(const Mat<4, 3, T>& m)
+   Matrix<3, 4, T> transpose(const Matrix<4, 3, T>& m)
    {
-      return Mat<3, 4, T>(
+      return Matrix<3, 4, T>(
          m(0, 0), m(1, 0), m(2, 0), m(3, 0),
          m(0, 1), m(1, 1), m(2, 1), m(3, 1),
          m(0, 2), m(1, 2), m(2, 2), m(3, 2)
@@ -110,9 +110,9 @@ namespace Neat
    }
 
    template <typename T>
-   Mat<4, 3, T> transpose(const Mat<3, 4, T>& m)
+   Matrix<4, 3, T> transpose(const Matrix<3, 4, T>& m)
    {
-      return Mat<4, 3, T>(
+      return Matrix<4, 3, T>(
          m(0, 0), m(1, 0), m(2, 0),
          m(0, 1), m(1, 1), m(2, 1),
          m(0, 2), m(1, 2), m(2, 2),
@@ -121,9 +121,9 @@ namespace Neat
    }
 
    template <typename T>
-   Mat<4, 4, T> transpose(const Mat<4, 4, T>& m)
+   Matrix<4, 4, T> transpose(const Matrix<4, 4, T>& m)
    {
-      return Mat<4, 4, T>(
+      return Matrix<4, 4, T>(
          m(0, 0), m(1, 0), m(2, 0), m(3, 0),
          m(0, 1), m(1, 1), m(2, 1), m(3, 1),
          m(0, 2), m(1, 2), m(2, 2), m(3, 2),
@@ -134,23 +134,23 @@ namespace Neat
 
    // Inverse
    template <typename T>
-   Mat<2, 2, T> inverse(const Mat<2, 2, T>& m)
+   Matrix<2, 2, T> inverse(const Matrix<2, 2, T>& m)
    {
       T one_over_determinant =
          static_cast<T>(1) / (m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1));
 
-      return Mat<2, 2, T>(
+      return Matrix<2, 2, T>(
          m(1, 1) * one_over_determinant, -m(0, 1) * one_over_determinant,
          -m(1, 0) * one_over_determinant, m(0, 0) * one_over_determinant
          );
    }
 
    template <typename T>
-   Mat<3, 3, T> inverse(const Mat<3, 3, T>& m)
+   Matrix<3, 3, T> inverse(const Matrix<3, 3, T>& m)
    {
       T one_over_determinant = static_cast<T>(1) / determinant(m);
 
-      return Mat<3, 3, T>(
+      return Matrix<3, 3, T>(
           (m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2)) * one_over_determinant,
          -(m(0, 1) * m(2, 2) - m(2, 1) * m(0, 2)) * one_over_determinant,
           (m(0, 1) * m(1, 2) - m(1, 1) * m(0, 2)) * one_over_determinant,
@@ -164,7 +164,7 @@ namespace Neat
    }
 
    template <typename T>
-   Mat<4, 4, T> inverse(const Mat<4, 4, T>& m)
+   Matrix<4, 4, T> inverse(const Matrix<4, 4, T>& m)
    {
       T pre_inv0 =
          m[5] * m[10] * m[15] -
@@ -298,7 +298,7 @@ namespace Neat
            m[0] * pre_inv0 + m[1] * pre_inv4
          + m[2] * pre_inv8 + m[3] * pre_inv12);
 
-      return Mat<4, 4, T>(
+      return Matrix<4, 4, T>(
          pre_inv0 * one_over_determinant,
          pre_inv1 * one_over_determinant,
          pre_inv2 * one_over_determinant,

@@ -3,8 +3,8 @@
 
 namespace Neat
 {
-   template <std::size_t M, std::size_t N, typename T>
-   std::ostream& operator<<(std::ostream& os, const Mat<M, N, T>& m)
+   template <UInt M, UInt N, typename T>
+   std::ostream& operator<<(std::ostream& os, const Matrix<M, N, T>& m)
    {
       os << "[[";
       for (std::size_t i = 0; i < M; ++i)
