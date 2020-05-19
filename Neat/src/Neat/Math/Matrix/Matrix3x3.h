@@ -56,12 +56,44 @@ namespace Neat
       constexpr explicit
       Matrix(const Matrix<2, 2, U>& m);
 
+      template <typename V1, typename V2, typename V3>
+      constexpr
+      Matrix(
+         const Vector<3, V1> row1,
+         const Vector<3, V2> row2,
+         const Vector<3, V3> row3);
+
 
       // Assignment operators
-      Matrix<3, 3, T>& operator=(const Matrix<3, 3, T>& m) = default;
-
       template <typename U>
+      constexpr
       Matrix<3, 3, T>& operator=(const Matrix<3, 3, U>& m);
+
+
+      // Compound assigment operators
+	   template<typename U>
+      constexpr
+      Matrix<3, 3, T>& operator+=(Matrix<3, 3, U> const& m);
+
+	   template<typename U>
+	   constexpr
+      Matrix<3, 3, T> & operator-=(U scalar);
+
+	   template<typename U>
+	   constexpr
+      Matrix<3, 3, T> & operator-=(Matrix<3, 3, U> const& m);
+
+	   template<typename U>
+	   constexpr
+      Matrix<3, 3, T> & operator*=(U scalar);
+
+	   template<typename U>
+	   constexpr
+      Matrix<3, 3, T>& operator*=(Matrix<3, 3, U> const& m);
+
+	   template<typename U>
+	   constexpr
+      Matrix<3, 3, T>& operator/=(U scalar);
 
 
       constexpr std::size_t size() const { return 3 * 3; }

@@ -51,72 +51,12 @@ namespace Neat
    }
 
    template <typename T>
-   Matrix<3, 2, T> transpose(const Matrix<2, 3, T>& m)
-   {
-      return Matrix<3, 2, T>(
-         m[0][0], m[1][0],
-         m[0][1], m[1][1],
-         m[0][2], m[1][2]
-         );
-   }
-
-   template <typename T>
-   Matrix<2, 3, T> transpose(const Matrix<3, 2, T>& m)
-   {
-      return Matrix<2, 3, T>(
-         m[0][0], m[1][0], m[2][0],
-         m[0][1], m[1][1], m[2][1]
-         );
-   }
-
-   template <typename T>
    Matrix<3, 3, T> transpose(const Matrix<3, 3, T>& m)
    {
       return Matrix<3, 3, T>(
          m[0][0], m[1][0], m[2][0],
          m[0][1], m[1][1], m[2][1],
          m[0][2], m[1][2], m[2][2]
-         );
-   }
-
-   template <typename T>
-   Matrix<2, 4, T> transpose(const Matrix<4, 2, T>& m)
-   {
-      return Matrix<2, 4, T>(
-         m[0][0], m[1][0], m[2][0], m[3][0],
-         m[0][1], m[1][1], m[2][1], m[3][1]
-         );
-   }
-
-   template <typename T>
-   Matrix<4, 2, T> transpose(const Matrix<2, 4, T>& m)
-   {
-      return Matrix<4, 2, T>(
-         m[0][0], m[1][0],
-         m[0][1], m[1][1],
-         m[0][2], m[1][2],
-         m[0][3], m[1][3]
-         );
-   }
-
-   template <typename T>
-   Matrix<3, 4, T> transpose(const Matrix<4, 3, T>& m)
-   {
-      return Matrix<3, 4, T>(
-         m[0][0], m[1][0], m[2][0], m[3][0],
-         m[0][1], m[1][1], m[2][1], m[3][1],
-         m[0][2], m[1][2], m[2][2], m[3][2]
-         );
-   }
-
-   template <typename T>
-   Matrix<4, 3, T> transpose(const Matrix<3, 4, T>& m)
-   {
-      return Matrix<4, 3, T>(
-         m[0][0], m[1][0], m[2][0],
-         m[0][1], m[1][1], m[2][1],
-         m[0][2], m[1][2], m[2][2],
-         m[0][3], m[1][3], m[2][3]
          );
    }
 
@@ -148,18 +88,18 @@ namespace Neat
    template <typename T>
    Matrix<3, 3, T> inverse(const Matrix<3, 3, T>& m)
    {
-      T one_over_determinant = static_cast<T>(1) / determinant(m);
+      T inverse_determinant = static_cast<T>(1) / determinant(m);
 
       return Matrix<3, 3, T>(
-          (m[1][1] * m[2][2] - m[2][1] * m[1][2]) * one_over_determinant,
-         -(m[0][1] * m[2][2] - m[2][1] * m[0][2]) * one_over_determinant,
-          (m[0][1] * m[1][2] - m[1][1] * m[0][2]) * one_over_determinant,
-         -(m[1][0] * m[2][2] - m[2][0] * m[1][2]) * one_over_determinant,
-          (m[0][0] * m[2][2] - m[2][0] * m[0][2]) * one_over_determinant,
-         -(m[0][0] * m[1][2] - m[1][0] * m[0][2]) * one_over_determinant,
-          (m[1][0] * m[2][1] - m[2][0] * m[1][1]) * one_over_determinant,
-         -(m[0][0] * m[2][1] - m[2][0] * m[0][1]) * one_over_determinant,
-          (m[0][0] * m[1][1] - m[1][0] * m[0][1]) * one_over_determinant
+          (m[1][1] * m[2][2] - m[2][1] * m[1][2]) * inverse_determinant,
+         -(m[0][1] * m[2][2] - m[2][1] * m[0][2]) * inverse_determinant,
+          (m[0][1] * m[1][2] - m[1][1] * m[0][2]) * inverse_determinant,
+         -(m[1][0] * m[2][2] - m[2][0] * m[1][2]) * inverse_determinant,
+          (m[0][0] * m[2][2] - m[2][0] * m[0][2]) * inverse_determinant,
+         -(m[0][0] * m[1][2] - m[1][0] * m[0][2]) * inverse_determinant,
+          (m[1][0] * m[2][1] - m[2][0] * m[1][1]) * inverse_determinant,
+         -(m[0][0] * m[2][1] - m[2][0] * m[0][1]) * inverse_determinant,
+          (m[0][0] * m[1][1] - m[1][0] * m[0][1]) * inverse_determinant
          );
    }
 
@@ -182,9 +122,6 @@ namespace Neat
 
       T inverse_determinant = static_cast<T>(1) /
          (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
-
-      Vector4 v = m[1];
-      T var = v[1];
 
       return Matrix<4, 4, T>(
          ( m[1][1] * c5 - m[1][2] * c4 + m[1][3] * c3) * inverse_determinant,

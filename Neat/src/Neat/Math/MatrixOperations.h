@@ -20,25 +20,7 @@ namespace Neat
    Matrix <2, 2, T> transpose(const Matrix<2, 2, T>& m);
 
    template <typename T>
-   Matrix<3, 2, T> transpose(const Matrix<2, 3, T>& m);
-
-   template <typename T>
-   Matrix<2, 3, T> transpose(const Matrix<3, 2, T>& m);
-
-   template <typename T>
    Matrix<3, 3, T> transpose(const Matrix<3, 3, T>& m);
-
-   template <typename T>
-   Matrix<2, 4, T> transpose(const Matrix<4, 2, T>& m);
-
-   template <typename T>
-   Matrix<4, 2, T> transpose(const Matrix<2, 4, T>& m);
-
-   template <typename T>
-   Matrix<3, 4, T> transpose(const Matrix<4, 3, T>& m);
-
-   template <typename T>
-   Matrix<4, 3, T> transpose(const Matrix<3, 4, T>& m);
 
    template <typename T>
    Matrix<4, 4, T> transpose(const Matrix<4, 4, T>& m);

@@ -71,7 +71,8 @@ namespace Neat
    // Compound assignment operators
    template<typename T>
    template<typename U>
-   inline constexpr Vector<1, T>& Vector<1, T>::operator+=(const Vector<1, U>& v)
+   inline constexpr
+   Vector<1, T>& Vector<1, T>::operator+=(const Vector<1, U>& v)
    {
       x += v.x;
 
@@ -80,7 +81,8 @@ namespace Neat
 
    template<typename T>
    template<typename U>
-   inline constexpr Vector<1, T>& Vector<1, T>::operator-=(const Vector<1, U>& v)
+   inline constexpr
+   Vector<1, T>& Vector<1, T>::operator-=(const Vector<1, U>& v)
    {
       x -= v.x;
 
@@ -89,7 +91,8 @@ namespace Neat
 
    template<typename T>
    template<typename U>
-   inline constexpr Vector<1, T>& Vector<1, T>::operator*=(const Vector<1, U>& v)
+   inline constexpr
+   Vector<1, T>& Vector<1, T>::operator*=(const Vector<1, U>& v)
    {
       x *= v.x;
 
@@ -99,7 +102,8 @@ namespace Neat
 
    template<typename T>
    template<typename U>
-   inline constexpr Vector<1, T>& Vector<1, T>::operator*=(U scalar)
+   inline constexpr
+   Vector<1, T>& Vector<1, T>::operator*=(U scalar)
    {
       x *= scalar;
 
@@ -108,7 +112,8 @@ namespace Neat
 
    template<typename T>
    template<typename U>
-   inline constexpr Vector<1, T>& Vector<1, T>::operator/=(U scalar)
+   inline constexpr
+   Vector<1, T>& Vector<1, T>::operator/=(U scalar)
    {
       x /= scalar;
 
@@ -118,7 +123,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-      Vector<1, T>::operator bool() const
+   Vector<1, T>::operator bool() const
    {
       return (x > 0);
    }

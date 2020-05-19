@@ -101,7 +101,8 @@ namespace Neat
    // Compound assigment operators
    template<typename T>
    template<typename U>
-   inline constexpr Vector<3, T>& Vector<3, T>::operator+=(const Vector<3, U>& v)
+   inline constexpr
+   Vector<3, T>& Vector<3, T>::operator+=(const Vector<3, U>& v)
    {
       x += v.x;
       y += v.y;
@@ -112,7 +113,8 @@ namespace Neat
 
    template<typename T>
    template<typename U>
-   inline constexpr Vector<3, T>& Vector<3, T>::operator-=(const Vector<3, U>& v)
+   inline constexpr
+   Vector<3, T>& Vector<3, T>::operator-=(const Vector<3, U>& v)
    {
       x -= v.x;
       y -= v.y;
@@ -123,7 +125,8 @@ namespace Neat
 
    template<typename T>
    template<typename U>
-   inline constexpr Vector<3, T>& Vector<3, T>::operator*=(const Vector<3, U>& v)
+   inline constexpr
+   Vector<3, T>& Vector<3, T>::operator*=(const Vector<3, U>& v)
    {
       x *= v.x;
       y *= v.y;
@@ -134,7 +137,8 @@ namespace Neat
 
    template<typename T>
    template<typename U>
-   inline constexpr Vector<3, T>& Vector<3, T>::operator*=(U scalar)
+   inline constexpr
+   Vector<3, T>& Vector<3, T>::operator*=(U scalar)
    {
       x *= scalar;
       y *= scalar;
@@ -145,7 +149,8 @@ namespace Neat
 
    template<typename T>
    template<typename U>
-   inline constexpr Vector<3, T>& Vector<3, T>::operator/=(U scalar)
+   inline constexpr
+   Vector<3, T>& Vector<3, T>::operator/=(U scalar)
    {
       x /= scalar;
       y /= scalar;

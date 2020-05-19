@@ -51,12 +51,43 @@ namespace Neat
       constexpr explicit
       Matrix(const Matrix<3, 3, U>& m);
 
+      template <typename V1, typename V2>
+      constexpr
+      Matrix(
+         const Vector<2, V1> row1,
+         const Vector<2, V2> row2);
+
 
       // Assignment operators
-      Matrix<2, 2, T>& operator=(const Matrix<2, 2, T>& m) = default;
-
       template <typename U>
+      constexpr
       Matrix<2, 2, T>& operator=(const Matrix<2, 2, U>& m);
+
+
+      // Compound assigment operators
+	   template<typename U>
+      constexpr
+      Matrix<2, 2, T>& operator+=(Matrix<2, 2, U> const& m);
+
+	   template<typename U>
+	   constexpr
+      Matrix<2, 2, T> & operator-=(U scalar);
+
+	   template<typename U>
+	   constexpr
+      Matrix<2, 2, T> & operator-=(Matrix<2, 2, U> const& m);
+
+	   template<typename U>
+	   constexpr
+      Matrix<2, 2, T> & operator*=(U scalar);
+
+	   template<typename U>
+	   constexpr
+      Matrix<2, 2, T>& operator*=(Matrix<2, 2, U> const& m);
+
+	   template<typename U>
+	   constexpr
+      Matrix<2, 2, T>& operator/=(U scalar);
 
 
       constexpr UInt size() const { return 2 * 2; }

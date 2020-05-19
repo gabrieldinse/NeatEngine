@@ -25,7 +25,7 @@ namespace Neat
       template <typename E, typename Subscriber>
       void subscribe(Subscriber& subscriber)
       {
-         auto event_subscription = getEventCallback(Event<E>::getFamily());
+         auto event_subscription = getSubscription(Event<E>::getFamily());
          auto subscription_id = event_subscription->add<E>(subscriber);
 
          BaseEventSubscriber& base = subscriber;
@@ -64,21 +64,21 @@ namespace Neat
       template <typename E>
       void publish(const E& event)
       {
-         auto event_subscription = getEventCallback(Event<E>::getFamily());
+         auto event_subscription = getSubscription(Event<E>::getFamily());
          event_subscription->publish<E>(event);
       }
 
       template <typename E>
       void publish(std::unique_ptr<E> event)
       {
-         auto event_subscription = getEventCallback(Event<E>::getFamily());
+         auto event_subscription = getSubscription(Event<E>::getFamily());
          event_subscription->publish<E>(event);
       }
 
       template <typename E, typename... Args>
       void publish(Args&&... args)
       {
-         auto event_subscription = getEventCallback(Event<E>::getFamily());
+         auto event_subscription = getSubscription(Event<E>::getFamily());
          event_subscription->publish<E>(std::forward<Args>(args)...);
       }
 
@@ -86,7 +86,7 @@ namespace Neat
       UInt getNumberOfSubscribers() const
       {
          UInt count = 0;
-         for (auto& event_subscription : m_eventSubscriptions)
+         for (auto& event_subscription : m_subscriptions)
             if (event_subscription)
                count += event_subscription->size();
 
@@ -94,20 +94,20 @@ namespace Neat
       }
 
    private:
-      std::shared_ptr<EventSubscription>& getEventCallback(
+      std::shared_ptr<EventSubscription>& getSubscription(
          BaseEvent::Family family)
       {
-         if (family >= m_eventSubscriptions.size())
-            m_eventSubscriptions.resize(family + 1);
+         if (family >= m_subscriptions.size())
+            m_subscriptions.resize(family + 1);
 
-         if (!m_eventSubscriptions[family])
-            m_eventSubscriptions[family] = std::make_shared<EventSubscription>();
+         if (!m_subscriptions[family])
+            m_subscriptions[family] = std::make_shared<EventSubscription>();
 
-         return m_eventSubscriptions[family];
+         return m_subscriptions[family];
       }
 
    private:
-      std::vector<std::shared_ptr<EventSubscription>> m_eventSubscriptions;
+      std::vector<std::shared_ptr<EventSubscription>> m_subscriptions;
    };
 
 

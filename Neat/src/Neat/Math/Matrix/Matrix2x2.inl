@@ -15,27 +15,23 @@ namespace Neat
    Matrix<2, 2, T>::Matrix(
       T m00, T m01,
       T m10, T m11)
-      : m_flattened{
-         m00, m01,
-         m10, m11
-      }
-   {}
+      : m_rows{
+         RowType(m00, m01),
+         RowType(m10, m11)
+         } {}
 
    template <typename T>
    inline constexpr
    Matrix<2, 2, T>::Matrix(T scalar)
-      : m_flattened{
-         scalar, static_cast<T>(0),
-         static_cast<T>(0), scalar
+      : m_rows{
+         RowType(scalar, 0),
+         RowType(0, scalar)
          } {}
 
    template <typename T>
    inline constexpr
    Matrix<2, 2, T>::Matrix(const Matrix<2, 2, T>& m)
-      : m_flattened{
-         m[0][0], m[0][1],
-         m[1][0], m[1][1]
-         } {}
+      : m_rows{m[0], m[1]} {}
 
 
    // Conversion constructors
@@ -47,38 +43,49 @@ namespace Neat
    Matrix<2, 2, T>::Matrix(
       X1 m00, Y1 m01,
       X2 m10, Y2 m11)
-      : m_flattened{
-         static_cast<T(m00), static_cast<T(m01),
-         static_cast<T(m10), static_cast<T(m11)
-      }
-   {}
+      : m_rows{
+         RowType(m00, m01),
+         RowType(m10, m11)
+         } {}
 
    template <typename T>
    template <typename U>
    inline constexpr
    Matrix<2, 2, T>::Matrix(const Matrix<2, 2, U>& m)
-      : m_flattened{
-         static_cast<T>(m[0][0]), static_cast<T>(m[0][1]),
-         static_cast<T>(m[1][0]), static_cast<T>(m[1][1]),
+      : m_rows{
+         RowType(m[0]),
+         RowType(m[1])
          } {}
 
    template <typename T>
    template <typename U>
    inline constexpr
    Matrix<2, 2, T>::Matrix(const Matrix<4, 4, U>& m)
-      : m_flattened{
-         static_cast<T>(m[0][0]), static_cast<T>(m[0][1]),
-         static_cast<T>(m[1][0]), static_cast<T>(m[1][1]),
+      : m_rows{
+         RowType(m[0]),
+         RowType(m[1])
          } {}
 
    template <typename T>
    template <typename U>
    inline constexpr
    Matrix<2, 2, T>::Matrix(const Matrix<3, 3, U>& m)
-      : m_flattened{
-         static_cast<T>(m[0][0]), static_cast<T>(m[0][1]),
-         static_cast<T>(m[1][0]), static_cast<T>(m[1][1])
+      : m_rows{
+         RowType(m[0]),
+         RowType(m[1])
          } {}
+
+   template<typename T>
+   template<typename V1, typename V2>
+   inline constexpr
+   Matrix<2, 2, T>::Matrix(
+      const Vector<2, V1> row1,
+      const Vector<2, V2> row2)
+      : m_rows{
+         RowType(row1),
+         RowType(row2)
+         } {}
+
 
    // Non member operators
    template <typename T>
@@ -86,8 +93,8 @@ namespace Neat
    Matrix<2, 2, T> operator+(const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb)
    {
       return Matrix<2, 2, T>(
-         ma[0][0] + mb[0][0], ma[0][1] + mb[0][1],
-         ma[1][0] + mb[1][0], ma[1][1] + mb[1][1]
+         ma[0] + mb[0],
+         ma[1] + mb[1]
          );
    }
 
@@ -96,8 +103,8 @@ namespace Neat
    Matrix<2, 2, T> operator-(const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb)
    {
       return Matrix<2, 2, T>(
-         ma[0][0] - mb[0][0], ma[0][1] - mb[0][1],
-         ma[1][0] - mb[1][0], ma[1][1] - mb[1][1]
+         ma[0] - mb[0],
+         ma[1] - mb[1]
          );
    }
 
@@ -118,8 +125,8 @@ namespace Neat
    Matrix<2, 2, T> operator*(T scalar, const Matrix<2, 2, T>& m)
    {
       return Matrix<2, 2, T>(
-         m[0][0] * scalar + m[0][1] * scalar,
-         m[1][0] * scalar + m[1][1] * scalar
+         scalar * m[0],
+         scalar * m[1]
          );
    }
 
@@ -139,6 +146,89 @@ namespace Neat
          m[1][0] * v[0] + m[1][1] * v[1]
          );
    }
+
+
+   // Assignment operators
+   template <typename T>
+   template <typename U>
+   inline constexpr
+   Matrix<2, 2, T>& Matrix<2, 2, T>::operator=(const Matrix<2, 2, U>& m)
+   {
+      this->m_rows[0] = m[0];
+      this->m_rows[1] = m[1];
+
+      return *this
+   }
+
+
+   // Compound assigment operators
+   template<typename T>
+	template<typename U>
+   inline constexpr
+   Matrix<2, 2, T>& Matrix<2, 2, T>::operator+=(Matrix<2, 2, U> const& m)
+	{
+		this->m_rows[0] += m[0];
+		this->m_rows[1] += m[1];
+		this->m_rows[2] += m[2];
+
+		return *this;
+	}
+
+	template<typename T>
+	template<typename U>
+	inline constexpr
+   Matrix<2, 2, T> & Matrix<2, 2, T>::operator-=(U scalar)
+	{
+		this->m_rows[0] -= scalar;
+		this->m_rows[1] -= scalar;
+		this->m_rows[2] -= scalar;
+
+		return *this;
+	}
+
+	template<typename T>
+	template<typename U>
+	inline constexpr
+   Matrix<2, 2, T> & Matrix<2, 2, T>::operator-=(Matrix<2, 2, U> const& m)
+	{
+		this->m_rows[0] -= m[0];
+		this->m_rows[1] -= m[1];
+		this->m_rows[2] -= m[2];
+
+		return *this;
+	}
+
+	template<typename T>
+	template<typename U>
+	inline constexpr
+   Matrix<2, 2, T> & Matrix<2, 2, T>::operator*=(U scalar)
+	{
+		this->m_rows[0] *= scalar;
+		this->m_rows[1] *= scalar;
+		this->m_rows[2] *= scalar;
+
+		return *this;
+	}
+
+	template<typename T>
+	template<typename U>
+	inline constexpr
+   Matrix<2, 2, T> & Matrix<2, 2, T>::operator*=(Matrix<2, 2, U> const& m)
+	{
+		return (*this = *this * m);
+	}
+
+	template<typename T>
+	template<typename U>
+	inline constexpr
+   Matrix<2, 2, T> & Matrix<2, 2, T>::operator/=(U scalar)
+	{
+		this->m_rows[0] /= scalar;
+		this->m_rows[1] /= scalar;
+		this->m_rows[2] /= scalar;
+
+		return *this;
+	}
 
 
    // Element accessing

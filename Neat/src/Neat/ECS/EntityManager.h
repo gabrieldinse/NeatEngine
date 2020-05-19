@@ -88,7 +88,7 @@ namespace Neat
       UInt size() const
       {
          return
-            (UInt)(m_entityComponentMasks.size() - m_freeEntityIdsList.size());
+            (UInt)(m_entityComponentMasks.size() - m_freeEntityIds.size());
       }
 
       UInt capacity() const
@@ -109,7 +109,7 @@ namespace Neat
          UInt index;
          UInt version;
 
-         if (m_freeEntityIdsList.empty())
+         if (m_freeEntityIds.empty())
          {
             index = m_indexCounter++;
             accomodateEntity(index);
@@ -117,8 +117,8 @@ namespace Neat
          }
          else
          {
-            index = m_freeEntityIdsList.front();
-            m_freeEntityIdsList.pop();
+            index = m_freeEntityIds.front();
+            m_freeEntityIds.pop();
             version = m_entityIdsVersion[index];
          }
 
@@ -146,7 +146,7 @@ namespace Neat
 
          m_entityComponentMasks[index].reset();
          ++m_entityIdsVersion[index];
-         m_freeEntityIdsList.push(index);
+         m_freeEntityIds.push(index);
       }
 
       Entity get(Entity::id id)
@@ -264,7 +264,7 @@ namespace Neat
             m_componentArrays[family] = component_array;
          }
 
-         return static_cast<Pool<C>*>(m_componentArrays[family]);
+         return static_cast<MemoryPool<C>*>(m_componentArrays[family]);
       }
 
    private:
@@ -274,6 +274,6 @@ namespace Neat
       std::vector<BaseMemoryPool*> m_componentArrays;
       std::vector<ComponentMask> m_entityComponentMasks;
       std::vector<UInt> m_entityIdsVersion;
-      std::queue<UInt> m_freeEntityIdsList;
+      std::queue<UInt> m_freeEntityIds;
    };
 }

@@ -3,8 +3,6 @@
 #include "Neat/Math/VectorOperations.h"
 #include "Neat/Math/Utility.h"
 
-#include <iostream>
-
 
 namespace Neat
 {
