@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <cstddef>
+#include <string>
 
 #include "Neat/Core/Types.h"
 
@@ -23,4 +24,5 @@ namespace Neat
    UInt shaderDataTypeToOpenGLBaseType(ShaderDataType type);
    UInt shaderDataTypeToOpenGLType(ShaderDataType type);
    ShaderDataType openGLTypeToShaderDataType(UInt type, Int count);
+   UInt stringToOpenGLShaderType(const std::string& type);
 }

@@ -120,15 +120,18 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<3, 3, T> operator+(const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb);
+   Matrix<3, 3, T> operator+(
+      const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb);
 
    template <typename T>
    inline constexpr
-   Matrix<3, 3, T> operator-(const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb);
+   Matrix<3, 3, T> operator-(
+      const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb);
 
    template <typename T>
    inline constexpr
-   Matrix<3, 3, T> operator*(const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb);
+   Matrix<3, 3, T> operator*(
+      const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb);
 
    template <typename T>
    inline constexpr
@@ -141,6 +144,10 @@ namespace Neat
    template <typename T>
    inline constexpr
    Vector<3, T> operator*(const Matrix<3, 3, T>& m, const Vector<3, T>& v);
+
+   template <typename T>
+   inline constexpr
+   Matrix<3, 3, T> operator/(const Matrix<3, 3, T>& m, T scalar);
 }
 
 #include "Neat/Math/Matrix/Matrix3x3.inl"

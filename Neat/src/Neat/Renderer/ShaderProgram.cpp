@@ -7,6 +7,7 @@
 
 #include "Neat/Core/Log.h"
 #include "Neat/Renderer/ShaderProgram.h"
+#include "Neat/Renderer/ShaderDataTypes.h"
 #include "Neat/Math/MatrixOperations.h"
 #include "Neat/Debug/Instrumentator.h"
 
@@ -15,19 +16,7 @@
 
 namespace Neat
 {
-	static UInt stringToOpenGLShaderType(const std::string& type)
-	{
-		NT_PROFILE_FUNCTION();
 
-		if (type == "vertex")
-			return GL_VERTEX_SHADER;
-
-		if (type == "fragment" || type == "pixel")
-			return GL_FRAGMENT_SHADER;
-
-		NT_CORE_ASSERT(false, "Unkown shader type!");
-		return 0;
-	}
 
 	std::string readFile(const std::string& filepath)
 	{
@@ -67,8 +56,9 @@ namespace Neat
 			auto shader_type_end = source.find_first_of(
 				" \t\r\n", shader_type_begin);
 			auto eol_pos = source.find_first_of("\r\n", shader_type_end);
-			NT_CORE_ASSERT(
-				eol_pos != std::string::npos, "ShaderProgram source syntax error!");
+
+			NT_CORE_ASSERT(eol_pos != std::string::npos,
+				"ShaderProgram source syntax error.");
 
 			auto shader_type = source.substr(
 				shader_type_begin, shader_type_end - shader_type_begin);
@@ -84,9 +74,10 @@ namespace Neat
 		return shader_sources;
 	}
 
-	// -------------------------------------------------------------------------
-	// ShaderProgram ------------------------------------------------------------
-	// -------------------------------------------------------------------------
+
+	// ---------------------------------------------------------------------- //
+	// ShaderProgram -------------------------------------------------------- //
+	// ---------------------------------------------------------------------- //
 	ShaderProgram::ShaderProgram(const std::string& filepath)
 	{
 		NT_PROFILE_FUNCTION();
@@ -136,40 +127,41 @@ namespace Neat
 	{
 		NT_PROFILE_FUNCTION();
 
-		auto program_id = glCreateProgram();
 		NT_CORE_ASSERT(shaderSources.size() <= 2,
 			"The maximum number of supported shaders is 2.");
-		std::array<GLenum, 2> shaders_id;
+
+		auto program_id = glCreateProgram();
+
+		std::array<UInt, 2> shaders_id;
 		Int shaders_id_index = 0;
 		for (auto& shader_info : shaderSources)
 		{
 			auto type = shader_info.first;
 			const auto& shader_source = shader_info.second;
 
-			// Create an empty vertex shader handle
-			GLuint shader_id = glCreateShader(type);
+			UInt shader_id = glCreateShader(type);
 
 			// Send the vertex shader source code to GL
 			// Note that std::string's .c_str is NULL character terminated.
-			const GLchar* source = shader_source.c_str();
+			const char* source = shader_source.c_str();
 			glShaderSource(shader_id, 1, &source, 0);
 
 			glCompileShader(shader_id);
 
-			GLint compiled = 0;
+			Int compiled = 0;
 			glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compiled);
 			if (compiled == GL_FALSE)
 			{
-				GLint max_length = 0;
+				Int max_length = 0;
 				glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &max_length);
 
-				std::vector<GLchar> info_log(max_length);
+				std::vector<char> info_log(max_length);
 				glGetShaderInfoLog(shader_id, max_length, &max_length, &info_log[0]);
 
 				glDeleteShader(shader_id);
 
 				NT_CORE_ERROR("{0}", info_log.data());
-				NT_CORE_ASSERT(false, "ShaderProgram compilation failure!");
+				NT_CORE_ASSERT(false, "ShaderProgram compilation failure.");
 				return;
 			}
 
@@ -182,14 +174,14 @@ namespace Neat
 		glLinkProgram(program_id);
 
 		// Note the different functions here: glGetProgram* instead of glGetShader*.
-		GLint linked = 0;
+		Int linked = 0;
 		glGetProgramiv(program_id, GL_LINK_STATUS, (Int*)&linked);
 		if (linked == GL_FALSE)
 		{
-			GLint max_length = 0;
+			Int max_length = 0;
 			glGetProgramiv(program_id, GL_INFO_LOG_LENGTH, &max_length);
 
-			std::vector<GLchar> info_log(max_length);
+			std::vector<char> info_log(max_length);
 			glGetProgramInfoLog(program_id, max_length, &max_length, &info_log[0]);
 
 			glDeleteProgram(program_id);
@@ -198,7 +190,7 @@ namespace Neat
 				glDeleteShader(shader_id);
 
 			NT_CORE_ERROR("{0}", info_log.data());
-			NT_CORE_ASSERT(false, "ShaderProgram program_id link failure!");
+			NT_CORE_ASSERT(false, "ShaderProgram program_id link failure.");
 			return;
 		}
 

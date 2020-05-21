@@ -109,11 +109,7 @@ namespace Neat
 
 
       constexpr
-      std::size_t size() const
-      {
-         return std::extent<decltype(m_data)>::value;
-      }
-
+      UInt size() const { return 4; }
 
       // Element acessing
       constexpr

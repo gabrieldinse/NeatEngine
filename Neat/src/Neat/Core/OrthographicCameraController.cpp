@@ -31,7 +31,7 @@ namespace Neat
       m_events.unsubscribe<WindowResizeEvent>(*this);
    }
 
-   void OrthographicCameraController::onUpdate(Timestep deltaTime)
+   void OrthographicCameraController::onUpdate(double deltaTime)
    {
       NT_PROFILE_FUNCTION();
 

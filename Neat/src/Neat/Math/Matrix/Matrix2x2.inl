@@ -90,7 +90,8 @@ namespace Neat
    // Non member operators
    template <typename T>
    inline constexpr
-   Matrix<2, 2, T> operator+(const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb)
+   Matrix<2, 2, T> operator+(
+      const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb)
    {
       return Matrix<2, 2, T>(
          ma[0] + mb[0],
@@ -100,7 +101,8 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<2, 2, T> operator-(const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb)
+   Matrix<2, 2, T> operator-(
+      const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb)
    {
       return Matrix<2, 2, T>(
          ma[0] - mb[0],
@@ -110,7 +112,8 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<2, 2, T> operator*(const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb)
+   Matrix<2, 2, T> operator*(
+      const Matrix<2, 2, T>& ma, const Matrix<2, 2, T>& mb)
    {
       return Matrix<2, 2, T>(
          ma[0][0] * mb[0][0] + ma[0][1] * mb[1][0],
@@ -147,6 +150,16 @@ namespace Neat
          );
    }
 
+   template <typename T>
+   inline constexpr
+   Matrix<2, 2, T> operator/(const Matrix<2, 2, T>& m, T scalar)
+   {
+      return Matrix<2, 2, T>(
+         m[0] / scalar,
+         m[1] / scalar
+         );
+   }
+
 
    // Assignment operators
    template <typename T>
@@ -154,8 +167,8 @@ namespace Neat
    inline constexpr
    Matrix<2, 2, T>& Matrix<2, 2, T>::operator=(const Matrix<2, 2, U>& m)
    {
-      this->m_rows[0] = m[0];
-      this->m_rows[1] = m[1];
+      m_rows[0] = m[0];
+      m_rows[1] = m[1];
 
       return *this
    }
@@ -167,9 +180,8 @@ namespace Neat
    inline constexpr
    Matrix<2, 2, T>& Matrix<2, 2, T>::operator+=(Matrix<2, 2, U> const& m)
 	{
-		this->m_rows[0] += m[0];
-		this->m_rows[1] += m[1];
-		this->m_rows[2] += m[2];
+		m_rows[0] += m[0];
+		m_rows[1] += m[1];
 
 		return *this;
 	}
@@ -177,11 +189,10 @@ namespace Neat
 	template<typename T>
 	template<typename U>
 	inline constexpr
-   Matrix<2, 2, T> & Matrix<2, 2, T>::operator-=(U scalar)
+   Matrix<2, 2, T>& Matrix<2, 2, T>::operator-=(U scalar)
 	{
-		this->m_rows[0] -= scalar;
-		this->m_rows[1] -= scalar;
-		this->m_rows[2] -= scalar;
+		m_rows[0] -= scalar;
+		m_rows[1] -= scalar;
 
 		return *this;
 	}
@@ -189,11 +200,10 @@ namespace Neat
 	template<typename T>
 	template<typename U>
 	inline constexpr
-   Matrix<2, 2, T> & Matrix<2, 2, T>::operator-=(Matrix<2, 2, U> const& m)
+   Matrix<2, 2, T>& Matrix<2, 2, T>::operator-=(Matrix<2, 2, U> const& m)
 	{
-		this->m_rows[0] -= m[0];
-		this->m_rows[1] -= m[1];
-		this->m_rows[2] -= m[2];
+		m_rows[0] -= m[0];
+		m_rows[1] -= m[1];
 
 		return *this;
 	}
@@ -201,11 +211,10 @@ namespace Neat
 	template<typename T>
 	template<typename U>
 	inline constexpr
-   Matrix<2, 2, T> & Matrix<2, 2, T>::operator*=(U scalar)
+   Matrix<2, 2, T>& Matrix<2, 2, T>::operator*=(U scalar)
 	{
-		this->m_rows[0] *= scalar;
-		this->m_rows[1] *= scalar;
-		this->m_rows[2] *= scalar;
+		m_rows[0] *= scalar;
+		m_rows[1] *= scalar;
 
 		return *this;
 	}
@@ -213,7 +222,7 @@ namespace Neat
 	template<typename T>
 	template<typename U>
 	inline constexpr
-   Matrix<2, 2, T> & Matrix<2, 2, T>::operator*=(Matrix<2, 2, U> const& m)
+   Matrix<2, 2, T>& Matrix<2, 2, T>::operator*=(Matrix<2, 2, U> const& m)
 	{
 		return (*this = *this * m);
 	}
@@ -221,11 +230,10 @@ namespace Neat
 	template<typename T>
 	template<typename U>
 	inline constexpr
-   Matrix<2, 2, T> & Matrix<2, 2, T>::operator/=(U scalar)
+   Matrix<2, 2, T>& Matrix<2, 2, T>::operator/=(U scalar)
 	{
-		this->m_rows[0] /= scalar;
-		this->m_rows[1] /= scalar;
-		this->m_rows[2] /= scalar;
+		m_rows[0] /= scalar;
+		m_rows[1] /= scalar;
 
 		return *this;
 	}

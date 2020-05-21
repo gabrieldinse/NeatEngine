@@ -7,17 +7,17 @@
 #include "Neat/Core/Log.h"
 #include "Neat/Core/Exceptions.h"
 #include "Neat/ECS/System.h"
+#include "Neat/Helper/NonCopyable.h"
 
 
 namespace Neat
 {
-   class SystemManager
+   class SystemManager : public NonCopyable
    {
+   public:
       SystemManager(EntityManager& entityManager, EventManager& eventManager)
          : m_entityManager(entityManager), m_eventManager(eventManager) {}
 
-      SystemManager(const SystemManager&) = delete;
-      SystemManager& operator = (const SystemManager &) = delete;
 
       void init()
       {

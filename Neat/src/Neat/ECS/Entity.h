@@ -1,27 +1,40 @@
 #pragma once
 
 #include <type_traits>
-#include <tuple>
 #include <ostream>
 #include <bitset>
+#include <tuple>
+#include <queue>
+#include <vector>
+#include <string>
 
 #include "Neat/Core/Log.h"
 #include "Neat/Core/Types.h"
 #include "Neat/ECS/Config.h"
+#include "Neat/ECS/Component.h"
+#include "Neat/Events/Event.h"
+#include "Neat/Events/EventManager.h"
+#include "Neat/Helper/NonCopyable.h"
+#include "Neat/Helper/MemoryPool.h"
 
 
 namespace Neat
 {
    class EntityManager;
+
    template <typename C, typename EM = EntityManager>
    class ComponentHandle;
 
    using ComponentMask = std::bitset<NT_MAX_COMPONENTS>;
 
 
+   // ---------------------------------------------------------------------- //
+   // Entity --------------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
    struct Entity
    {
    public:
+      // Id ---------------------------------------------------------------- //
       class Id
       { 
       public:
@@ -44,21 +57,26 @@ namespace Neat
       };
 
       static const Id INVALID_ID;
+      // ------------------------------------------------------------------- //
 
    public:
       Entity() = default;
       Entity(EntityManager* manager, Id id) : m_entityManager(manager), m_id(id) {}
       Entity(const Entity& entity) = default;
 
-      Entity& operator=(const Entity& entity);
+      Entity& operator=(const Entity& entity) = default;
 
-      explicit operator bool() const;
 
-      bool operator==(const Entity &other) const;
-      bool operator!=(const Entity &other) const;
-      bool operator<(const Entity &other) const;
+      explicit operator bool() const { return isValid(); }
 
-      Id id() const;
+      bool operator==(const Entity &other) const
+      {
+         return other.m_entityManager == m_entityManager && other.m_id == m_id;
+      }
+      bool operator!=(const Entity &other) const { return !(other == *this); }
+      bool operator<(const Entity &other) const { return other.m_id < m_id; }
+
+      Id id() const { return m_id; }
 
       bool isValid() const;
       void invalidate();
@@ -111,7 +129,6 @@ namespace Neat
       Id m_id = INVALID_ID;
    };
 
-
    std::ostream& operator<<(std::ostream& os, const Entity& entity)
    {
       return os << "Entity(" << entity.id() << ")";
@@ -121,4 +138,538 @@ namespace Neat
    {
       return os << "Entity::Id(" << id.index() << "." << id.version() << ")";
    }
+
+
+   // ---------------------------------------------------------------------- //
+   // ComponentHandle ------------------------------------------------------ //
+   // ---------------------------------------------------------------------- //
+   template <typename C, typename EM>
+   class ComponentHandle
+   {
+   public:
+      ComponentHandle() : m_entityManager(nullptr) {}
+
+      explicit operator bool() const { return isValid(); }
+
+      bool isValid() const;
+
+      C* operator->();
+      const C* operator->() const;
+      C* get();
+      const C* get() const;
+      void remove();
+
+
+      bool operator==(const ComponentHandle<C>& other) const
+      {
+         return m_entityManager == other.m_entityManager && m_id == other.m_id;
+      }
+
+      bool operator!=(const ComponentHandle<C>& other) const
+      {
+         return !(*this == other);
+      }
+
+   private:
+      friend class EntityManager;
+
+      ComponentHandle(EM* entityManager, Entity::Id id)
+         : m_entityManager(entityManager), m_id(id) {}
+
+      void checkIsValid() const;
+
+   private:
+      EM* m_entityManager;
+      Entity::Id m_id;
+   };
+
+
+   // ---------------------------------------------------------------------- //
+   // ECS events ----------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+   struct EntityCreatedEvent
+   {
+      explicit EntityCreatedEvent(const Entity& entity)
+         : entity(entity) {}
+      virtual ~EntityCreatedEvent() {}
+
+      Entity entity;
+   };
+
+
+   struct EntityDestroyedEvent
+   {
+      explicit EntityDestroyedEvent(const Entity& entity)
+         : entity(entity) {}
+      virtual ~EntityDestroyedEvent() {}
+
+      Entity entity;
+   };
+
+
+   template <typename C>
+   struct ComponentAddedEvent
+   {
+      ComponentAddedEvent(const Entity& entity,
+         const ComponentHandle<C>& component)
+         : entity(entity), component(component) {}
+
+      Entity entity;
+      ComponentHandle<C> component;
+   };
+
+
+   template <typename C>
+   struct ComponentRemovedEvent
+   {
+      ComponentRemovedEvent(const Entity& entity,
+         const ComponentHandle<C>& component)
+         : entity(entity), component(component) {}
+
+      Entity entity;
+      ComponentHandle<C> component;
+   };
+
+
+   // ---------------------------------------------------------------------- //
+   // EntityManager -------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+   class EntityManager : public NonCopyable
+   {
+   public:
+
+
+   public:
+      EntityManager(EventManager& eventManager)
+         : m_eventManager(eventManager)
+      {
+      }
+
+      ~EntityManager()
+      {
+         reset();
+      }
+
+      UInt size() const
+      {
+         return
+            (UInt)(m_entityComponentMasks.size() - m_freeEntityIds.size());
+      }
+
+      UInt capacity() const
+      {
+         return (UInt)(m_entityComponentMasks.size());
+      }
+
+      bool isValid(Entity::Id id)
+      {
+         return
+            id.index() < m_entityIdsVersion.size() &&
+            m_entityIdsVersion[id.index()] == id.version();
+      }
+
+
+      Entity create()
+      {
+         UInt index;
+         UInt version;
+
+         if (m_freeEntityIds.empty())
+         {
+            index = m_indexCounter++;
+            accomodateEntity(index);
+            version = m_entityIdsVersion[index] = 1;
+         }
+         else
+         {
+            index = m_freeEntityIds.front();
+            m_freeEntityIds.pop();
+            version = m_entityIdsVersion[index];
+         }
+
+         Entity entity(this, Entity::Id(index, version));
+         m_eventManager.publish<EntityCreatedEvent>(entity);
+
+         return entity;
+      }
+
+      void destroy(Entity::Id id)
+      {
+         checkIsValid(id);
+
+         UInt index = id.index();
+         auto component_mask = m_entityComponentMasks[index];
+
+         m_eventManager.publish<EntityDestroyedEvent>(Entity(this, id));
+
+         for (std::size_t i = 0; i < m_componentArrays.size(); ++i)
+         {
+            BaseMemoryPool* component_array = m_componentArrays[i];
+            if ((component_array != nullptr) && component_mask.test(i))
+               component_array->destroy(index);
+         }
+
+         m_entityComponentMasks[index].reset();
+         ++m_entityIdsVersion[index];
+         m_freeEntityIds.push(index);
+      }
+
+      Entity get(Entity::Id id)
+      {
+         checkIsValid(id);
+
+         return Entity(this, id);
+      }
+      
+   private:
+      friend class Entity;
+
+      template <typename C, typename EM>
+      friend class ComponentHandle;
+
+
+      void checkIsValid(Entity::Id id)
+      {
+         if (id.index() >= m_entityIdsVersion.size())
+            throw InvalidEntityIdIndexError();
+
+         if (m_entityIdsVersion[id.index()] != id.version())
+            throw InvalidEntityIdVersionError();
+      }
+
+
+      template <typename C>
+      C* getComponentPtr(Entity::Id id)
+      {
+         checkIsValid(id);
+
+         auto* component_array = m_componentArrays[getComponentFamily<C>()];
+         NT_CORE_ASSERT(component_array != nullptr,
+            "Entity does not have this component.");
+
+         return static_cast<C*>(component_array[id.index()]);
+      }
+
+      template <typename C>
+      const C* getComponentPtr(Entity::Id id) const
+      {
+         checkIsValid(id);
+
+         auto* component_array = m_componentArrays[getComponentFamily<C>()];
+         NT_CORE_ASSERT(component_array != nullptr,
+            "Entity does not have this component.");
+
+         return static_cast<const C*>(component_array[id.index()]);
+      }
+
+
+      ComponentMask getComponentMask(Entity::Id id)
+      {
+         checkIsValid(id);
+
+         return m_entityComponentMasks.at(id.index());
+      }
+
+      template <typename C>
+      ComponentMask createComponentMask()
+      {
+         ComponentMask mask;
+         mask.set(getComponentFamily<C>());
+
+         return mask;
+      }
+
+      template <typename C1, typename C2, typename... Others>
+      ComponentMask createComponentMask()
+      {
+         return
+            createComponentMask<C1>() | createComponentMask<C2, Others...>();
+      }
+
+      template <typename C>
+      ComponentMask createComponentMask(
+         const ComponentHandle<C>& componentHandle)
+      {
+         return createComponentMask<C>();
+      }
+
+      template <typename C1, typename... Others>
+      ComponentMask createComponentMask(
+         const ComponentHandle<C1>& componentHandle1,
+         const ComponentHandle<Others>&... others)
+      {
+         return createComponentMask<C1, Others...>();
+      }
+
+
+      void accomodateEntity(UInt index)
+      {
+         if (m_entityComponentMasks.size() <= index)
+         {
+            m_entityComponentMasks.resize(index + 1);
+            m_entityIdsVersion.resize(index + 1);
+
+            for (BaseMemoryPool* component_array : m_componentArrays)
+               if (component_array)
+                  component_array->resize(index + 1);
+         }
+      }
+
+      template <typename C>
+      MemoryPool<C>* accomodateComponent()
+      {
+         BaseComponent::Family family = getComponentFamily<C>();
+
+         if (m_componentArrays.size() <= family)
+            m_componentArrays.resize(family + 1, nullptr);
+
+         if (m_componentArrays[family] == nullptr)
+         {
+            auto* component_array = new MemoryPool<C>();
+            component_array->resize(m_indexCounter);
+            m_componentArrays[family] = component_array;
+         }
+
+         return static_cast<MemoryPool<C>*>(m_componentArrays[family]);
+      }
+
+   private:
+      UInt m_indexCounter = 0;
+
+      EventManager& m_eventManager;
+      std::vector<BaseMemoryPool*> m_componentArrays;
+      std::vector<ComponentMask> m_entityComponentMasks;
+      std::vector<UInt> m_entityIdsVersion;
+      std::queue<UInt> m_freeEntityIds;
+   };
+   // ---------------------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+
+
+
+   // ---------------------------------------------------------------------- //
+   // Methods definitions -------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+
+   // Entity methods ------------------------------------------------------- //
+   inline
+   bool Entity::isValid() const
+   {
+      return m_entityManager != nullptr && m_entityManager->isValid(m_id);
+   }
+
+   inline
+   bool Entity::checkIsValid() const
+   {
+      if (m_entityManager == nullptr)
+         throw InvalidEntityError("Assigned EntityManager is null.");
+
+      m_entityManager->checkIsValid(m_id);
+   }
+
+   inline
+   void Entity::invalidate()
+   {
+      m_id = INVALID_ID;
+      m_entityManager = nullptr;
+   }
+
+   template <typename C, typename... Args>
+   inline
+   ComponentHandle<C> Entity::add(Args&&... args)
+   {
+      checkIsValid();
+
+      return m_entityManager->add<C>(m_id, std::forward<Args>(args)...);
+   }
+
+   template <typename C, typename... Args>
+   inline
+   ComponentHandle<C> Entity::addFromCopy(const C& component)
+   {
+      checkIsValid();
+
+      return m_entityManager->add<C>(m_id, std::forward<const C&>(component));
+   }
+
+   template <typename C, typename... Args>
+   inline
+   ComponentHandle<C> Entity::replace(Args&&... args)
+   {
+      checkIsValid();
+
+      auto component_handle = getComponent<C>();
+      if (component_handle)
+         *(component_handle.get()) = C(std::forward<Args>(args)...);
+      else // Does not exist -> add new component to entity
+         component_handle = m_entityManager->add<C>(
+            m_id, std::forward<Args>(args)...);
+
+      return component_handle;
+   }
+
+   template <typename C>
+   inline
+   void Entity::remove()
+   {
+      NT_CORE_ASSERT(checkIsValid() && hasComponent<C>());
+      m_entityManager->remove<C>(m_id);
+   }
+      
+   template <typename C, typename>
+   inline
+   ComponentHandle<C> Entity::getComponent()
+   {
+      checkIsValid();
+
+      return m_entityManager->getComponent<C>(m_id);
+   }
+
+   template <typename C, typename>
+   inline
+   const ComponentHandle<C, const EntityManager> Entity::getComponent() const
+   {
+      checkIsValid();
+
+      return
+         const_cast<const EntityManager*>(
+            m_entityManager)->getComponent<const C>(m_id);
+   }
+
+   template <typename... Components>
+   inline
+   std::tuple<ComponentHandle<Components>...> Entity::getComponents()
+   {
+      checkIsValid();
+
+      return m_entityManager->getComponents<Components...>(m_id);
+   }
+
+   template <typename... Components>
+   inline
+   std::tuple<ComponentHandle<const Components, const EntityManager>...>
+   Entity::getComponents() const
+   {
+      checkIsValid();
+
+      return
+         const_cast<const EntityManager*>(
+            m_entityManager)->getComponents<const Components...>(m_id);
+   }
+
+   template <typename C>
+   inline
+   bool Entity::hasComponent() const
+   {
+      checkIsValid();
+
+      return m_entityManager->hasComponent<C>(m_id);
+   }
+
+   template<typename C1, typename... OtherComponents>
+   inline
+   void Entity::unpack(ComponentHandle<C1>& c1,
+      ComponentHandle<OtherComponents>&... others)
+   {
+      checkIsValid();
+
+      m_entityManager->unpack(m_id, c1, others...);
+   }
+
+   inline
+   void Entity::destroy()
+   {
+      checkIsValid();
+
+      m_entityManager->destroy(m_id);
+      invalidate();
+   }
+
+   inline
+   std::bitset<NT_MAX_COMPONENTS> Entity::getComponentMask() const
+   {
+      return m_entityManager->getComponentMask(m_id);
+   }
+   // ---------------------------------------------------------------------- //
+
+
+   // ComponentHandle methods ---------------------------------------------- //
+   template <typename C, typename EM>
+   inline
+   bool ComponentHandle<C, EM>::isValid() const
+   {
+      return
+         m_entityManager != nullptr &&
+         !m_entityManager->isValid(m_id) &&
+         m_entityManager->hasComponent<C>(m_id);
+   }
+
+   template <typename C, typename EM>
+   inline
+   void ComponentHandle<C, EM>::checkIsValid() const
+   {
+      if (m_entityManager == nullptr)
+         throw InvalidComponentError("Assigned EntityManager is null.");
+
+      try
+      {
+         m_entityManager->checkIsValid(m_id);
+      }
+      catch (const EntityError& e)
+      {
+         throw InvalidComponentError(
+            "Assigned Entity is invalid.\n" + e.what());
+      }
+
+      if (!m_entityManager->hasComponent<C>(m_id))
+         throw InvalidComponentError();
+   }
+
+
+   template <typename C, typename EM>
+   inline
+   C* ComponentHandle<C, EM>::operator->()
+   {
+      checkIsValid();
+
+      return m_entityManager->getComponentPtr<C>(m_id);
+   }
+
+   template <typename C, typename EM>
+   inline
+   const C* ComponentHandle<C, EM>::operator->() const
+   {
+      checkIsValid();
+
+      return m_entityManager->getComponentPtr<C>(m_id);
+   }
+
+   template <typename C, typename EM>
+   inline
+   C* ComponentHandle<C, EM>::get()
+   {
+      checkIsValid();
+
+      return m_entityManager->getComponentPtr<C>(m_id);
+   }
+
+   template <typename C, typename EM>
+   inline
+   const C* ComponentHandle<C, EM>::get() const
+   {
+      checkIsValid();
+
+      return m_entityManager->getComponentPtr<C>(m_id);
+   }
+
+
+   template <typename C, typename EM>
+   inline
+   void ComponentHandle<C, EM>::remove()
+   {
+      checkIsValid();
+
+      m_entityManager->remove<C>(m_id);
+   }
+   // ---------------------------------------------------------------------- //
 }

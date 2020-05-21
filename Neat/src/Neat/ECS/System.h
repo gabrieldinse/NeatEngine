@@ -2,27 +2,24 @@
 
 #include "Neat/Core/Types.h"
 #include "Neat/Events/EventManager.h"
+#include "Neat/Helper/NonCopyable.h"
 
 
 namespace Neat
 {
    class SystemManager;
-   class EventManager;
    class EntityManager;
+
 
    // ---------------------------------------------------------------------- //
    // BaseSystem ----------------------------------------------------------- //
    // ---------------------------------------------------------------------- //
-   class BaseSystem
+   class BaseSystem : public NonCopyable
    {
    public:
       using Family = UIntLong;
 
-      BaseSystem() = default;
       virtual ~BaseSystem() = default;
-
-      BaseSystem(const BaseSystem&) = delete;
-      BaseSystem& operator = (const BaseSystem &) = delete;
 
       virtual void init(EventManager& eventManager) {}
       virtual void update(EntityManager& entityManager,

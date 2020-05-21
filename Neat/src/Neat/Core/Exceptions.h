@@ -1,85 +1,132 @@
 #pragma once
 
 #include <stdexcept>
+#include <string>
 
 
 namespace Neat
 {
    // Base common exception
-   struct Exception : public std::runtime_error
+   struct Exception : public std::exception
    {
-      Exception(const char* msg) : std::runtime_error(msg) {}
+      Exception(const std::string& msg) : what(msg) {}
+
+      std::string what;
    };
 
 
    // Math exceptions ---------------------------------------------------------
    struct MathError : public Exception
    {
-      MathError(const char* msg) : Exception(msg) {}
+      MathError(const std::string& msg) : Exception(msg) {}
    };
 
-   struct VecDimensionError : public MathError
+   // Vectors
+   struct VectorDimensionError : public MathError
    {
-      VecDimensionError(const char* msg = "Wrong Vector dimension being acessed.")
+      VectorDimensionError(
+         const std::string& msg = "Wrong Vector dimension being acessed.")
          : MathError(msg) {}
    };
 
-   struct MatDimensionError : public MathError
+   // Matrices
+   struct MatrixDimensionError : public MathError
    {
-      MatDimensionError(const char* msg = "Wrong Matrix dimension being acessed.")
+      MatrixDimensionError(
+         const std::string& msg = "Wrong Matrix dimension being acessed.")
          : MathError(msg) {}
    };
    // -------------------------------------------------------------------------
 
+
+   // Event exceptions --------------------------------------------------------
+   struct EventError : public Exception
+   {
+      EventError(const std::string& msg) : Exception(msg) {}
+   };
+
+   // Event subscriptions
+   struct EventSubscriptionError : public EventError
+   {
+      EventSubscriptionError(
+         const std::string& msg = "Event is not subscribed.")
+         : EventError(msg) {}
+   };
+   // -------------------------------------------------------------------------
+
+
    // ECS exceptions ----------------------------------------------------------
    struct ECSError : public Exception
    {
-      ECSError(const char* msg) : Exception(msg) {}
+      ECSError(const std::string& msg) : Exception(msg) {}
    };
 
-   struct BadComponentAllocationError : public ECSError
+   // Components
+   struct ComponentError : public ECSError
+   {
+      ComponentError(const std::string& msg) : ECSError(msg) {}
+   };
+
+   struct BadComponentAllocationError : public ComponentError
    {
       BadComponentAllocationError(
-         const char* msg = "You should not delete components directly. "
+         const std::string& msg = "You should not delete components directly. "
                            "Use Entity::destroy() instead.")
-         : ECSError(msg) {}
+         : ComponentError(msg) {}
    };
 
-   struct InvalidEntityError : public ECSError
+   struct InvalidComponentError : public ComponentError
    {
-      InvalidEntityError(const char* msg = "Acessed entity is invalid.")
-         : ECSError(msg) {}
+      InvalidComponentError(
+         const std::string& msg = "Acessed component is invalid.")
+         : ComponentError(msg) {}
    };
 
-   struct InvalidComponentError : public ECSError
-   {
-      InvalidComponentError(const char* msg = "Acessed component is invalid.")
-         : ECSError(msg) {}
-   };
-
-   struct MaximumNumberOfComponentsError : public ECSError
+   struct MaximumNumberOfComponentsError : public ComponentError
    {
       MaximumNumberOfComponentsError(
-         const char* msg = "Maximum number of components reached.")
-         : ECSError(msg) {}
+         const std::string& msg = "Maximum number of components reached.")
+         : ComponentError(msg) {}
    };
 
-   struct EventSubscriptionError : public ECSError
+   // Entities
+   struct EntityError : public ECSError
    {
-      EventSubscriptionError(const char* msg = "Event is not subscribed.")
-         : ECSError(msg) {}
+      EntityError(const std::string& msg) : ECSError(msg) {}
    };
 
+   struct InvalidEntityError : public EntityError
+   {
+      InvalidEntityError(
+         const std::string& msg = "Acessed Entity is invalid.")
+         : EntityError(msg) {}
+   };
+   
+   struct InvalidEntityIdIndexError : public InvalidEntityError
+   {
+      InvalidEntityIdIndexError(
+         const std::string& msg = "Entity::Id outside Entity vector range.")
+         : InvalidEntityError(msg) {}
+   };
+
+   struct InvalidEntityIdVersionError : public InvalidEntityError
+   {
+      InvalidEntityIdVersionError(
+         const std::string& msg = "Attempt to access Entity via a stale Entity::Id.")
+         : InvalidEntityError(msg) {}
+   };
+   
+   // Systems
    struct SystemManagerNotInitializedError : public ECSError
    {
       SystemManagerNotInitializedError(
-         const char* msg = "SystemManager::init() not called.")
+         const std::string& msg = "SystemManager::init() not called.")
          : ECSError(msg) {}
    };
 
    struct InvalidSystemError : public ECSError
    {
-      InvalidSystemError(const char* msg = "System does not exist.")
+      InvalidSystemError(const std::string& msg = "System does not exist.")
          : ECSError(msg) {}
    };
    

@@ -18,7 +18,7 @@ namespace Neat
 
       virtual void onAttach() {}
       virtual void onDetach() {}
-      virtual void onUpdate(Timestep deltaTime) {}
+      virtual void onUpdate(double deltaTime) {}
       virtual void onRender() {}
       virtual void onImGuiRender() {}
 

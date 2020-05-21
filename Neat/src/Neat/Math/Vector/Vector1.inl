@@ -138,7 +138,7 @@ namespace Neat
          case static_cast<T>(0): return x;
       }
 
-      throw VecDimensionError();
+      throw VectorDimensionError();
    }
 
    template<typename T>
@@ -150,7 +150,7 @@ namespace Neat
          case 0: return x;
       }
 
-      throw VecDimensionError();
+      throw VectorDimensionError();
    }
 
 

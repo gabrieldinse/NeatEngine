@@ -2,14 +2,10 @@
 
 #include "Neat/Core/Types.h"
 #include "Neat/Core/Exceptions.h"
-#include "Neat/ECS/Config.h"
 
 
 namespace Neat
-{ 
-   class EntityManager;
-
-
+{
    // ---------------------------------------------------------------------- //
    // BaseComponent -------------------------------------------------------- //
    // ---------------------------------------------------------------------- //
@@ -21,10 +17,7 @@ namespace Neat
       void operator delete[](void* ptr) { fail(); }
 
    protected:
-      static void fail()
-      {
-         throw BadComponentAllocationError();
-      }
+      static void fail() { throw BadComponentAllocationError(); }
 
       static Family s_familyCounter;
    };

@@ -150,7 +150,7 @@ namespace Neat
          case 1: return y;
       }
 
-      throw VecDimensionError();
+      throw VectorDimensionError();
    }
 
    template<typename T>
@@ -163,7 +163,7 @@ namespace Neat
          case 1: return y;
       }
 
-      throw VecDimensionError();
+      throw VectorDimensionError();
    }
 
 

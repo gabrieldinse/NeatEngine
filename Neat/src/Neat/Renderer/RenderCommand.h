@@ -14,6 +14,7 @@ namespace Neat
 
       static void setClearColor(const Vector4 color);
       static void clear();
+      static void clearWithColor(const Vector4 color);
 
       static void drawIndexed(const std::shared_ptr<VertexArray>& vertexArray,
          UInt indexCount = 0);

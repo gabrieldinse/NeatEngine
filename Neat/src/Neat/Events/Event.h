@@ -288,5 +288,4 @@ namespace Neat
       KeyTypedEvent(KeyCode keyCode)
          : KeyEvent(keyCode) {}
    };
-
 }

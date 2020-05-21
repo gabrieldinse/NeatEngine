@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Neat/Core/Types.h"
-#include "Neat/Renderer/Buffer.h"
+#include "Neat/Renderer/Buffers.h"
 
 
 namespace Neat

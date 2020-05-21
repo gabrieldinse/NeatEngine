@@ -179,7 +179,7 @@ namespace Neat
          case 2: return z;
       }
 
-      throw VecDimensionError();
+      throw VectorDimensionError();
    }
 
    template <typename T>
@@ -193,7 +193,7 @@ namespace Neat
          case 2: return z;
       }
 
-      throw VecDimensionError();
+      throw VectorDimensionError();
    }
 
 

@@ -4,11 +4,12 @@
 #include "Neat/Core/Application.h"
 #include "Neat/Core/Input.h"
 #include "Neat/Core/Log.h"
-#include "Neat/Core/Timer.h"
+#include "Neat/Core/Chronometer.h"
 #include "Neat/Events/Event.h"
 #include "Neat/ImGui/ImGuiRender.h"
 #include "Neat/Renderer/Renderer.h"
 #include "Neat/Debug/Instrumentator.h"
+#include "Neat/Helper/FPSCounter.h"
 
 
 namespace Neat
@@ -61,34 +62,37 @@ namespace Neat
 
    void Application::updateLoop()
    {
-      Timer timer;
-      Timestep accumulator = 0.0f;
-
-      timer.start();
+      Chronometer chronometer;
+      double accumulator = 0.0f;
+      chronometer.start();
 
       while (m_running)
       {
          NT_PROFILE_SCOPE("Update loop");
 
-         timer.reset();
-         accumulator += timer.getDeltaTime();
+         accumulator += chronometer.restartAndGetSeconds();
 
-         while (accumulator >= m_deltaTime)
+         while (accumulator >= m_updatePeriod)
          {
             NT_PROFILE_SCOPE("LayerGroup onUpdate");
 
             for (auto& layer : m_layerGroup)
-               layer->onUpdate(m_deltaTime);
-            accumulator -= m_deltaTime;
+               layer->onUpdate(m_updatePeriod);
+            accumulator -= m_updatePeriod;
          }
       }
    }
 
    void Application::renderLoop()
    {
+      FPSCounter fps_counter;
+      fps_counter.start();
+
       while (m_running)
       {
          NT_PROFILE_SCOPE("Render loop");
+
+         fps_counter.addFrame();
 
          if (!m_window->isMinimized())
          {

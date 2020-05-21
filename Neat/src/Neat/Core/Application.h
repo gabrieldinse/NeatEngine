@@ -37,7 +37,7 @@ namespace Neat
       std::unique_ptr<Layer> popOverlay(Int position);
       std::unique_ptr<Layer> popOverlay(const std::string& name);
 
-      void setUpdateRate(Timestep rate) { m_deltaTime = 1.0f / rate; }
+      void setUpdateRate(double rate) { m_updatePeriod = 1.0f / rate; }
 
       static Application& get() { return *s_instance; }
       Window& getWindow() { return *m_window; }
@@ -57,7 +57,7 @@ namespace Neat
 
       std::unique_ptr<Window> m_window;
       LayerGroup m_layerGroup;
-      Timestep m_deltaTime = 1.0f / 120.0f;
+      double m_updatePeriod = 1.0f / 120.0f;
 
       bool m_running = false;
    };

@@ -26,6 +26,13 @@ namespace Neat
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    }
 
+   void RenderCommand::clearWithColor(const Vector4 color)
+   {
+      static constexpr float one = 1.0f;
+      glClearBufferfv(GL_COLOR, 0, color.dataPointer());
+      glClearBufferfv(GL_DEPTH, 0, &one);
+   }
+
    void RenderCommand::drawIndexed(
       const std::shared_ptr<VertexArray>& vertexArray, UInt indexCount)
    {

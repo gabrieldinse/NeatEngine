@@ -112,6 +112,7 @@ namespace Neat
       constexpr T& operator()(std::size_t pos);
       constexpr const T& operator()(std::size_t pos) const;
 
+   private:
       // Class data
       union
       {
@@ -123,15 +124,18 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<4, 4, T> operator+(const Matrix<4, 4, T>& ma, const Matrix<4, 4, T>& mb);
+   Matrix<4, 4, T> operator+(
+      const Matrix<4, 4, T>& ma, const Matrix<4, 4, T>& mb);
 
    template <typename T>
    inline constexpr
-   Matrix<4, 4, T> operator-(const Matrix<4, 4, T>& ma, const Matrix<4, 4, T>& mb);
+   Matrix<4, 4, T> operator-(
+      const Matrix<4, 4, T>& ma, const Matrix<4, 4, T>& mb);
 
    template <typename T>
    inline constexpr
-   Matrix<4, 4, T> operator*(const Matrix<4, 4, T>& ma, const Matrix<4, 4, T>& mb);
+   Matrix<4, 4, T> operator*(
+      const Matrix<4, 4, T>& ma, const Matrix<4, 4, T>& mb);
 
    template <typename T>
    inline constexpr
@@ -144,6 +148,10 @@ namespace Neat
    template <typename T>
    inline constexpr
    Vector<4, T> operator*(const Matrix<4, 4, T>& m, const Vector<4, T>& v);
+
+   template <typename T>
+   inline constexpr
+   Matrix<4, 4, T> operator/(const Matrix<4, 4, T>& m, T scalar);
 }
 
 #include "Neat/Math/Matrix/Matrix4x4.inl"
