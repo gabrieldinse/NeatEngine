@@ -16,65 +16,6 @@
 
 namespace Neat
 {
-
-
-	std::string readFile(const std::string& filepath)
-	{
-		NT_PROFILE_FUNCTION();
-
-		std::string file_content;
-		std::ifstream input(filepath, std::ios::in | std::ios::binary);
-		if (input)
-		{
-			input.seekg(0, std::ios::end);
-			file_content.resize(input.tellg());
-			input.seekg(0, std::ios::beg);
-			input.read(&file_content[0], file_content.size());
-			input.close();
-		}
-		else
-		{
-			NT_CORE_ERROR("Could not open file \"{0}\"", filepath);
-		}
-
-		return file_content;
-	}
-
-	std::unordered_map<UInt, std::string> preprocessShaderSource(
-		const std::string& source)
-	{
-		NT_PROFILE_FUNCTION();
-
-		std::unordered_map<UInt, std::string> shader_sources;
-		const char* type_token = "#type";
-		auto type_token_lenght = strlen(type_token);
-		auto pos = source.find(type_token, 0);
-		while (pos != std::string::npos)
-		{
-			auto shader_type_begin = source.find_first_not_of(
-				" \t", pos + type_token_lenght);
-			auto shader_type_end = source.find_first_of(
-				" \t\r\n", shader_type_begin);
-			auto eol_pos = source.find_first_of("\r\n", shader_type_end);
-
-			NT_CORE_ASSERT(eol_pos != std::string::npos,
-				"ShaderProgram source syntax error.");
-
-			auto shader_type = source.substr(
-				shader_type_begin, shader_type_end - shader_type_begin);
-			auto gl_type = stringToOpenGLShaderType(shader_type);
-
-			auto next_line_pos = source.find_first_not_of("\r\n", eol_pos);
-			pos = source.find(type_token, next_line_pos);
-			shader_sources[gl_type] =
-				source.substr(next_line_pos,
-					(pos == std::string::npos ? pos : pos - next_line_pos));
-		}
-
-		return shader_sources;
-	}
-
-
 	// ---------------------------------------------------------------------- //
 	// ShaderProgram -------------------------------------------------------- //
 	// ---------------------------------------------------------------------- //
@@ -120,6 +61,62 @@ namespace Neat
 		NT_PROFILE_FUNCTION();
 
 		glDeleteProgram(m_id);
+	}
+
+	std::string ShaderProgram::readFile(const std::string& filepath)
+	{
+		NT_PROFILE_FUNCTION();
+
+		std::string file_content;
+		std::ifstream input(filepath, std::ios::in | std::ios::binary);
+		if (input)
+		{
+			input.seekg(0, std::ios::end);
+			file_content.resize(input.tellg());
+			input.seekg(0, std::ios::beg);
+			input.read(&file_content[0], file_content.size());
+			input.close();
+		}
+		else
+		{
+			NT_CORE_ERROR("Could not open file \"{0}\"", filepath);
+		}
+
+		return file_content;
+	}
+
+	std::unordered_map<UInt, std::string> ShaderProgram::preprocessShaderSource(
+		const std::string& source)
+	{
+		NT_PROFILE_FUNCTION();
+
+		std::unordered_map<UInt, std::string> shader_sources;
+		const char* type_token = "#type";
+		auto type_token_lenght = strlen(type_token);
+		auto pos = source.find(type_token, 0);
+		while (pos != std::string::npos)
+		{
+			auto shader_type_begin = source.find_first_not_of(
+				" \t", pos + type_token_lenght);
+			auto shader_type_end = source.find_first_of(
+				" \t\r\n", shader_type_begin);
+			auto eol_pos = source.find_first_of("\r\n", shader_type_end);
+
+			NT_CORE_ASSERT(eol_pos != std::string::npos,
+				"ShaderProgram source syntax error.");
+
+			auto shader_type = source.substr(
+				shader_type_begin, shader_type_end - shader_type_begin);
+			auto gl_type = stringToOpenGLShaderType(shader_type);
+
+			auto next_line_pos = source.find_first_not_of("\r\n", eol_pos);
+			pos = source.find(type_token, next_line_pos);
+			shader_sources[gl_type] =
+				source.substr(next_line_pos,
+					(pos == std::string::npos ? pos : pos - next_line_pos));
+		}
+
+		return shader_sources;
 	}
 
 	void ShaderProgram::compile(const std::unordered_map<UInt,

@@ -37,6 +37,9 @@ namespace Neat
    private:
       void compile(
          const std::unordered_map<UInt, std::string>& shaderSources);
+      std::string readFile(const std::string& filepath);
+      std::unordered_map<UInt, std::string> preprocessShaderSource(
+         const std::string& source);
 
    private:
       UInt m_id = 0;

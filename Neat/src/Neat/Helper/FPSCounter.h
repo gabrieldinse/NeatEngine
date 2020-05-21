@@ -21,7 +21,7 @@ namespace Neat
       {
          ++m_frameCount;
 
-         if (m_chronometer.secondsPassed() > m_interval)
+         if (m_chronometer.getTimePassed() > m_interval)
          {
             m_chronometer.restart();
             m_fps = m_frameCount / m_interval;

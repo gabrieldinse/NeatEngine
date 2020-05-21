@@ -1,12 +1,26 @@
 #pragma once
 
 #include <chrono>
+#include <utility>
 
 #include "Neat/Core/Types.h"
+#include "Neat/Core/Exceptions.h"
 
 
 namespace Neat
 {
+   enum class TimeUnit : UIntShort
+   {
+      None = 0,
+      Nanoseconds,
+      Microseconds,
+      Milliseconds,
+      Seconds,
+      Minutes,
+      Hours,
+      Days
+   };
+
    class Chronometer
    {
    public:
@@ -15,79 +29,122 @@ namespace Neat
       void start()
       {
          m_startTicks = std::chrono::high_resolution_clock::now();
+
+         if (!m_started)
+            m_started = true;
       }
 
-      void restart()
+      template <typename T = double>
+      T stop(TimeUnit timeUnit = TimeUnit::Seconds)
       {
-         start();
+         if (m_started)
+         {
+            auto time_passed = getTimePassed<T>(timeUnit);
+            m_started = false;
+
+            return time_passed;
+         }
+
+         throw ChronometerNotStartedError();
       }
 
-      double restartAndGetSeconds()
+      template <typename T = double>
+      T restart(TimeUnit timeUnit = TimeUnit::Seconds)
       {
-         auto seconds_passed = secondsPassed();
-         m_startTicks = m_currentTicks;
+         if (m_started)
+         {
+            auto time_passed = getTimePassed<T>(timeUnit);
+            m_startTicks = m_currentTicks;
 
-         return seconds_passed;
+            return time_passed;
+         }
+
+         throw ChronometerNotStartedError();
       }
 
-      double restartAndGetMilliseconds()
-      {
-         auto seconds_passed = millisecondsPassed();
-         m_startTicks = m_currentTicks;
-
-         return seconds_passed;
-      }
-
-      double restartAndGetNanoseconds()
-      {
-         auto seconds_passed = nanosecondsPassed();
-         m_startTicks = m_currentTicks;
-
-         return seconds_passed;
-      }
-
-      double restartAndGetMinutes()
-      {
-         auto seconds_passed = minutesPassed();
-         m_startTicks = m_currentTicks;
-
-         return seconds_passed;
-      }
-
-      double secondsPassed()
+      template <typename T = double>
+      T getTimePassed(TimeUnit timeUnit = TimeUnit::Seconds)
       {
          m_currentTicks = std::chrono::high_resolution_clock::now();
 
-         return 
-            std::chrono::duration<double>(
+         if (m_started)
+         {
+            switch (timeUnit)
+            {
+               case TimeUnit::Nanoseconds:    return nanosecondsPassed<T>();
+               case TimeUnit::Microseconds:   return microsecondsPassed<T>();
+               case TimeUnit::Milliseconds:   return millisecondsPassed<T>();
+               case TimeUnit::Seconds:        return secondsPassed<T>();
+               case TimeUnit::Minutes:        return minutesPassed<T>();
+               case TimeUnit::Hours:          return hoursPassed<T>();
+               case TimeUnit::Days:           return daysPassed<T>();
+            }
+
+            throw WrongTimeUnitError();
+         }
+
+         throw ChronometerNotStartedError();
+      }
+
+   private:
+      template <typename T>
+      T nanosecondsPassed()
+      {
+         return
+            std::chrono::duration<T, std::ratio<1, 1000000000>>(
                (m_currentTicks - m_startTicks)).count();
       }
 
-      double millisecondsPassed()
+      template <typename T>
+      T microsecondsPassed()
       {
-         m_currentTicks = std::chrono::high_resolution_clock::now();
-
-         return 
-            std::chrono::duration<double, std::milli>(
+         return
+            std::chrono::duration<T, std::ratio<1, 1000000>>(
                (m_currentTicks - m_startTicks)).count();
       }
 
-      double nanosecondsPassed()
+      template <typename T>
+      T millisecondsPassed()
       {
-         m_currentTicks = std::chrono::high_resolution_clock::now();
-
-         return 
-            std::chrono::duration<double, std::nano>(
+         return
+            std::chrono::duration<T, std::ratio<1, 1000>>(
                (m_currentTicks - m_startTicks)).count();
       }
 
-      double minutesPassed()
+      template <typename T>
+      T secondsPassed()
       {
-         return secondsPassed() / 60.0;
+         return
+            std::chrono::duration<T>((m_currentTicks - m_startTicks)).count();
+      }
+
+      template <typename T>
+      T minutesPassed()
+      {
+         return
+            std::chrono::duration<T, std::ratio<60, 1>>(
+               (m_currentTicks - m_startTicks)).count();
+      }
+
+      template <typename T>
+      T hoursPassed()
+      {
+         return
+            std::chrono::duration<T, std::ratio<3600, 1>>(
+               (m_currentTicks - m_startTicks)).count();
+      }
+
+      template <typename T>
+      T daysPassed()
+      {
+         return
+            std::chrono::duration<T, std::ratio<86400, 1>>(
+               (m_currentTicks - m_startTicks)).count();
       }
 
    private:
       std::chrono::steady_clock::time_point m_startTicks;
       std::chrono::steady_clock::time_point m_currentTicks;
+      bool m_started = false;
    };
 }

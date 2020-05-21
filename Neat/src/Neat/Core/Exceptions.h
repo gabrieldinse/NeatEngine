@@ -15,6 +15,27 @@ namespace Neat
    };
 
 
+   // Core features exceptions ------------------------------------------------
+   struct ChronometerError : Exception
+   {
+      ChronometerError(const std::string& msg) : Exception(msg) {}
+   };
+
+   struct WrongTimeUnitError : public ChronometerError
+   {
+      WrongTimeUnitError(
+         const std::string& msg = "Wrong TimeUnit.")
+         : ChronometerError(msg) {}
+   };
+
+   struct ChronometerNotStartedError : public ChronometerError
+   {
+      ChronometerNotStartedError(
+         const std::string& msg = "Chronometer has not been started.")
+         : ChronometerError(msg) {}
+   };
+   // -------------------------------------------------------------------------
+
    // Math exceptions ---------------------------------------------------------
    struct MathError : public Exception
    {

@@ -70,7 +70,7 @@ namespace Neat
       {
          NT_PROFILE_SCOPE("Update loop");
 
-         accumulator += chronometer.restartAndGetSeconds();
+         accumulator += chronometer.resetAndStart();
 
          while (accumulator >= m_updatePeriod)
          {
