@@ -21,7 +21,7 @@ namespace Neat
       OrthographicCamera& getCamera() { return m_camera; }
       const OrthographicCamera& getCamera() const { return m_camera; }
 
-      void onUpdate(double deltaTime);
+      void onUpdate(DeltaTime deltaTime);
 
       bool receive(const MouseScrolledEvent& event);
       bool receive(const MouseMovedEvent& event);

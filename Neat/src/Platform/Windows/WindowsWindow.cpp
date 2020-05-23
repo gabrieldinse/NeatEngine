@@ -16,9 +16,9 @@ namespace Neat
       NT_CORE_ERROR("GLFW Error ({0}); {1}", error, description);
    }
 
-   // -------------------------------------------------------------------------
-   // GLFW callbacks ----------------------------------------------------------
-   // -------------------------------------------------------------------------
+   // ---------------------------------------------------------------------- //
+   // GLFW callbacks ------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
    void windowResizeCallback(GLFWwindow* window, Int width, Int height);
    void windowCloseCallback(GLFWwindow* window);
    void keyActionCallback(
@@ -42,9 +42,9 @@ namespace Neat
 
    using GLFWwindowUniquePtr = std::unique_ptr<GLFWwindow, GLFWwindowDeleter>;
 
-   // -------------------------------------------------------------------------
-   // Window ------------------------------------------------------------------
-   // -------------------------------------------------------------------------
+   // ---------------------------------------------------------------------- //
+   // Window --------------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
    struct Window::WindowImpl
    {
       WindowProps props;
@@ -104,7 +104,7 @@ namespace Neat
       m_data->context->init();
 
       glfwSetWindowUserPointer(m_data->window.get(), m_data.get());
-      setVSync(true);
+      setVSync(m_data->vSync);
 
       glfwSetWindowSizeCallback(m_data->window.get(), windowResizeCallback);
       glfwSetWindowCloseCallback(m_data->window.get(), windowCloseCallback);
@@ -163,9 +163,9 @@ namespace Neat
       return m_data->vSync;
    }
 
-   // -------------------------------------------------------------------------
-   // GLFW callbacks ----------------------------------------------------------
-   // -------------------------------------------------------------------------
+   // ---------------------------------------------------------------------- //
+   // GLFW callbacks ------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
    void windowResizeCallback(GLFWwindow* window, Int width, Int height)
    {
       NT_PROFILE_FUNCTION();

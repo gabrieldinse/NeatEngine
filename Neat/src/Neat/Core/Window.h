@@ -22,6 +22,7 @@ namespace Neat
    public:
       struct WindowImpl;
 
+      // WindowProps ----------------------------------------------------------
       struct WindowProps
       {
          std::string title;
@@ -35,6 +36,7 @@ namespace Neat
          {
          }
       };
+      // ----------------------------------------------------------------------
 
    public:
       Window(EventManager& eventManager,
@@ -50,7 +52,6 @@ namespace Neat
 
       bool isMinimized() const;
 
-      // Window attributes
       void setVSync(bool enabled);
       bool isSync() const;
 

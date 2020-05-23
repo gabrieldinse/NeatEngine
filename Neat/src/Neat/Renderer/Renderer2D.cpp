@@ -1,6 +1,6 @@
 #include "Neat/Renderer/Renderer2D.h"
 #include "Neat/Renderer/RenderCommand.h"
-#include "Neat/Renderer/ShaderDataTypes.h"
+#include "Neat/Renderer/ShaderDataType.h"
 #include "Neat/Debug/Instrumentator.h"
 #include "Neat/Math/Transforms.h"
 #include "Neat/Math/Vector.h"
@@ -19,11 +19,11 @@ namespace Neat
          QuadVextexDataBuffer::maxVertices * (UInt)sizeof(QuadVertexData));
 
       s_data.quadVertexBuffer->setLayout({
-         { ShaderDataType::Vector3, "a_position" },
-         { ShaderDataType::Vector4, "a_color"},
-         { ShaderDataType::Vector2, "a_textureCoordinate"},
-         { ShaderDataType::Float, "a_textureIndex"},
-         { ShaderDataType::Float, "a_tilingFactor"}
+         { ShaderDataType::Vector4, "position" },
+         { ShaderDataType::Vector4, "color"},
+         { ShaderDataType::Vector2, "textureCoordinate"},
+         { ShaderDataType::Float, "textureIndex"},
+         { ShaderDataType::Float, "tilingFactor"}
          });
       s_data.quadVertexArray->addVertexBuffer(s_data.quadVertexBuffer);
 
@@ -71,7 +71,7 @@ namespace Neat
    {
       NT_PROFILE_FUNCTION();
 
-      s_data.textureShader->setviewProjection(camera.getViewProjectionMatrix());
+      s_data.textureShader->setProjectionViewMatrix(camera.getViewProjectionMatrix());
 
       startNewBatch();
    }
@@ -91,14 +91,18 @@ namespace Neat
 
    void Renderer2D::draw()
    {
-      s_data.quadVertexBuffer->setData(s_data.quadVextexDataBuffer.m_data.get(),
+      s_data.textureShader->bind();
+
+      s_data.quadVertexBuffer->setData(
+         s_data.quadVextexDataBuffer.m_data.get(),
          s_data.quadVextexDataBuffer.getDataSize());
 
       UInt index = 0;
       for (std::size_t i = 0; i < s_data.textureSlotIndex; ++i, ++index)
          s_data.textureSlots[i]->bind(index);
 
-      RenderCommand::drawIndexed(s_data.quadVertexArray, s_data.quadVextexDataBuffer.indexCount);
+      RenderCommand::drawIndexed(
+         s_data.quadVertexArray, s_data.quadVextexDataBuffer.indexCount);
 
       s_data.stats.drawCalls++;
    }

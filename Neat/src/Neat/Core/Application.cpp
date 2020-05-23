@@ -4,7 +4,7 @@
 #include "Neat/Core/Application.h"
 #include "Neat/Core/Input.h"
 #include "Neat/Core/Log.h"
-#include "Neat/Core/Chronometer.h"
+#include "Neat/Core/Stopwatch.h"
 #include "Neat/Events/Event.h"
 #include "Neat/ImGui/ImGuiRender.h"
 #include "Neat/Renderer/Renderer.h"
@@ -62,15 +62,15 @@ namespace Neat
 
    void Application::updateLoop()
    {
-      Chronometer chronometer;
+      Stopwatch stopwatch;
       double accumulator = 0.0f;
-      chronometer.start();
+      stopwatch.start();
 
       while (m_running)
       {
          NT_PROFILE_SCOPE("Update loop");
 
-         accumulator += chronometer.resetAndStart();
+         accumulator += stopwatch.restart();
 
          while (accumulator >= m_updatePeriod)
          {

@@ -23,7 +23,7 @@ namespace Neat
    class BaseEvent
    {
    public:
-      using Family = UIntLong;
+      using Family = UInt;
 
       virtual ~BaseEvent() {}
 
@@ -50,18 +50,18 @@ namespace Neat
 
 
    // ---------------------------------------------------------------------- //
-   // EventSubscription ---------------------------------------------------- //
+   // EventSubscriberGroup ------------------------------------------------- //
    // ---------------------------------------------------------------------- //
    using EventCallback = std::function<bool (const void*)>;
 
 
-   class EventSubscription
+   class EventSubscriberGroup
    {
    public:
-      EventSubscription() = default;
+      EventSubscriberGroup() = default;
 
       template <typename E, typename Subscriber>
-      std::size_t add(Subscriber& subscriber)
+      std::size_t addSubscriber(Subscriber& subscriber)
       {
          bool (Subscriber::*receive)(const E&) = &Subscriber::receive;
 
@@ -74,7 +74,7 @@ namespace Neat
          return (std::size_t)m_callbacks.back().get();
       }
 
-      bool remove(std::size_t id)
+      bool removeSubscriber(std::size_t id)
       {
          auto it = std::remove_if(m_callbacks.begin(), m_callbacks.end(),
             [id](const std::shared_ptr<EventCallback>& callback)
@@ -149,18 +149,19 @@ namespace Neat
    public:
       BaseEventSubscriber::~BaseEventSubscriber()
       {
-         for (auto& subscription_pair : m_subscriptions)
+         for (auto& subscription_pair : m_subscriptions_map)
          {
             auto& subscription = subscription_pair.second.first;
             if (!subscription.expired())
-               subscription.lock()->remove(subscription_pair.second.second);
+               subscription.lock()->removeSubscriber(
+                  subscription_pair.second.second);
          }
       }
 
       UInt BaseEventSubscriber::getNumberOfConnectedSignals() const
       {
          UInt count = 0;
-         for (auto& subscription_pair : m_subscriptions)
+         for (auto& subscription_pair : m_subscriptions_map)
             if (!subscription_pair.second.first.expired())
                ++count;
 
@@ -172,13 +173,13 @@ namespace Neat
 
       std::unordered_map<
          BaseEvent::Family,
-         std::pair<std::weak_ptr<EventSubscription>, std::size_t>
-         > m_subscriptions;
+         std::pair<std::weak_ptr<EventSubscriberGroup>, std::size_t>
+         > m_subscriptions_map;
    };
 
 
    // ---------------------------------------------------------------------- //
-   // EventSubscriber -------------------------------------------------------- //
+   // EventSubscriber ------------------------------------------------------ //
    // ---------------------------------------------------------------------- //
    template <typename Derived>
    struct EventSubscriber : public BaseEventSubscriber

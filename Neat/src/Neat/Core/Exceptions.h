@@ -6,35 +6,39 @@
 
 namespace Neat
 {
-   // Base common exception
+   // -------------------------------------------------------------------------
+   // Base common exception ---------------------------------------------------
    struct Exception : public std::exception
    {
       Exception(const std::string& msg) : what(msg) {}
 
       std::string what;
    };
+   // -------------------------------------------------------------------------
+   // -------------------------------------------------------------------------
 
 
-   // Core features exceptions ------------------------------------------------
-   struct ChronometerError : Exception
+   // Stopwatch exceptions --------------------------------------------------
+   struct StopwatchError : Exception
    {
-      ChronometerError(const std::string& msg) : Exception(msg) {}
+      StopwatchError(const std::string& msg) : Exception(msg) {}
    };
 
-   struct WrongTimeUnitError : public ChronometerError
+   struct WrongTimeUnitError : public StopwatchError
    {
       WrongTimeUnitError(
          const std::string& msg = "Wrong TimeUnit.")
-         : ChronometerError(msg) {}
+         : StopwatchError(msg) {}
    };
 
-   struct ChronometerNotStartedError : public ChronometerError
+   struct StopwatchNotStartedError : public StopwatchError
    {
-      ChronometerNotStartedError(
-         const std::string& msg = "Chronometer has not been started.")
-         : ChronometerError(msg) {}
+      StopwatchNotStartedError(
+         const std::string& msg = "Stopwatch has not been started.")
+         : StopwatchError(msg) {}
    };
    // -------------------------------------------------------------------------
+
 
    // Math exceptions ---------------------------------------------------------
    struct MathError : public Exception
@@ -92,7 +96,7 @@ namespace Neat
    {
       BadComponentAllocationError(
          const std::string& msg = "You should not delete components directly. "
-                           "Use Entity::destroy() instead.")
+                           "Use Entity::destroyEntity() instead.")
          : ComponentError(msg) {}
    };
 
@@ -136,6 +140,20 @@ namespace Neat
          const std::string& msg = "Attempt to access Entity via a stale Entity::Id.")
          : InvalidEntityError(msg) {}
    };
+
+   struct ComponentAlreadyAddedError : public EntityError
+   {
+      ComponentAlreadyAddedError(
+         const std::string& msg = "Component already added to Entity.")
+         : EntityError(msg) {}
+   };
+
+   struct ComponentNotPresentError : public EntityError
+   {
+      ComponentNotPresentError(
+         const std::string& msg = "Component is not present in the Entity.")
+         : EntityError(msg) {}
+   };
    
    // Systems
    struct SystemManagerNotInitializedError : public ECSError
@@ -150,6 +168,5 @@ namespace Neat
       InvalidSystemError(const std::string& msg = "System does not exist.")
          : ECSError(msg) {}
    };
-   
    // -------------------------------------------------------------------------
 }

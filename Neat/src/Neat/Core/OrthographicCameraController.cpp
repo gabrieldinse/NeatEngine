@@ -12,9 +12,9 @@ namespace Neat
 {
    OrthographicCameraController::OrthographicCameraController(
       float aspectRatio, EventManager& eventManager, bool rotationEnabled)
-      : m_camera(-aspectRatio * m_zoomLevel, aspectRatio * m_zoomLevel,
-         -m_zoomLevel, m_zoomLevel)
-      , m_aspectRatio(aspectRatio)
+      : m_aspectRatio(aspectRatio)
+      , m_camera(-m_aspectRatio * m_zoomLevel, m_aspectRatio* m_zoomLevel,
+         -m_zoomLevel, m_zoomLevel, -m_zoomLevel)
       , m_rotationEnabled(rotationEnabled)
       , m_events(eventManager)
       , m_lastMousePosition(Input::getMouseX(), Input::getMouseY())
@@ -31,11 +31,10 @@ namespace Neat
       m_events.unsubscribe<WindowResizeEvent>(*this);
    }
 
-   void OrthographicCameraController::onUpdate(double deltaTime)
+   void OrthographicCameraController::onUpdate(DeltaTime deltaTime)
    {
       NT_PROFILE_FUNCTION();
 
-      // Camera --------------------------------------
       if (!((Input::isKeyPressed(KeyCode::LeftControl) ||
          Input::isKeyPressed(KeyCode::RightControl)) &&
          Input::isMouseButtonPressed(MouseCode::ButtonLeft)))
@@ -96,9 +95,9 @@ namespace Neat
          m_zoomLevel = std::max(m_zoomLevel, 0.25f);
          m_cameraTranslationSpeed = 2.0f * m_zoomLevel;
          m_camera.setProjection(
-            -m_aspectRatio * m_zoomLevel,
-             m_aspectRatio * m_zoomLevel,
-            -m_zoomLevel, m_zoomLevel);
+            -m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel,
+            -m_zoomLevel, m_zoomLevel,
+            -m_zoomLevel);
       }
 
       return false;
@@ -140,9 +139,9 @@ namespace Neat
 
       m_aspectRatio = (float)event.width / (float)event.height;
       m_camera.setProjection(
-         -m_aspectRatio * m_zoomLevel,
-          m_aspectRatio * m_zoomLevel,
-         -m_zoomLevel, m_zoomLevel);
+         -m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel,
+         -m_zoomLevel, m_zoomLevel,
+         -m_zoomLevel);
 
       return false;
    }

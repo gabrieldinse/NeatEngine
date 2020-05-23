@@ -2,6 +2,8 @@
 
 #include <type_traits>
 #include <ostream>
+#include <algorithm>
+#include <iterator>
 #include <bitset>
 #include <tuple>
 #include <queue>
@@ -39,13 +41,14 @@ namespace Neat
       { 
       public:
          Id() : m_id(0) {}
-         explicit Id(UIntLong id) : m_id(id) {}
          Id(UInt index, UInt version)
-            : m_id(UIntLong(index) | UIntLong(version) << UIntLong(32)) {}
+            : m_id(UIntLong(index) | UIntLong(version) << (UIntLong)32) {}
+         explicit Id(UIntLong id) : m_id(id) {}
+         
 
          UIntLong id() const { return m_id; }
          UInt index() const { return m_id & NT_UINT_MAX; }
-         UInt version() const { return m_id >> 32; }
+         UInt version() const { return (UInt)(m_id >> 32); }
 
          bool operator==(const Id &other) const { return m_id == other.m_id; }
          bool operator!=(const Id &other) const { return m_id != other.m_id; }
@@ -53,6 +56,8 @@ namespace Neat
 
       private:
          friend class EntityManager;
+
+      private:
          UIntLong m_id;
       };
 
@@ -61,20 +66,20 @@ namespace Neat
 
    public:
       Entity() = default;
-      Entity(EntityManager* manager, Id id) : m_entityManager(manager), m_id(id) {}
+      Entity(EntityManager* entityManager, Id id)
+         : m_entityManager(entityManager), m_id(id) {}
       Entity(const Entity& entity) = default;
 
       Entity& operator=(const Entity& entity) = default;
 
-
       explicit operator bool() const { return isValid(); }
 
-      bool operator==(const Entity &other) const
+      bool operator==(const Entity& other) const
       {
          return other.m_entityManager == m_entityManager && other.m_id == m_id;
       }
-      bool operator!=(const Entity &other) const { return !(other == *this); }
-      bool operator<(const Entity &other) const { return other.m_id < m_id; }
+      bool operator!=(const Entity& other) const { return !(other == *this); }
+      bool operator<(const Entity& other) const { return other.m_id < m_id; }
 
       Id id() const { return m_id; }
 
@@ -82,16 +87,16 @@ namespace Neat
       void invalidate();
 
       template <typename C, typename... Args>
-      ComponentHandle<C> add(Args&&... args);
+      ComponentHandle<C> addComponent(Args&&... args);
 
       template <typename C, typename... Args>
-      ComponentHandle<C> addFromCopy(const C& component);
+      ComponentHandle<C> addComponentFromCopy(const C& component);
 
       template <typename C, typename... Args>
-      ComponentHandle<C> replace(Args&&... args);
+      ComponentHandle<C> replaceComponent(Args&&... args);
 
       template <typename C>
-      void remove();
+      void removeComponent();
 
       template <
          typename C,
@@ -237,13 +242,259 @@ namespace Neat
    class EntityManager : public NonCopyable
    {
    public:
+      // ViewIterator ---------------------------------------------------------
+      template <class Delegate, bool IterateOverAll = false>
+      class ViewIterator
+      {
+      public:
+         using iterator_category = std::input_iterator_tag;
+         using value_type = Entity::Id;
+         using difference_type = std::ptrdiff_t;
+         using pointer = value_type*;
+         using reference = value_type&;
 
+      public:
+         Delegate& operator++()
+         {
+            ++m_pos;
+            next();
+
+            return *static_cast<Delegate*>(this);
+         }
+
+         Entity operator*()
+         {
+            return Entity(m_entityManager, m_entityManager->create_id(m_pos));
+         }
+
+         const Entity operator*() const
+         {
+            return Entity(m_entityManager, m_entityManager->create_id(m_pos));
+         }
+
+
+         bool operator==(const Delegate& rhs) const
+         {
+            return m_pos == rhs.m_pos;
+         }
+
+         bool operator!=(const Delegate& rhs) const
+         {
+            return m_pos != rhs.m_pos;
+         }
+
+      protected:
+         ViewIterator(EntityManager* entityManager, UInt pos)
+            : m_entityManager(entityManager)
+            , m_pos(pos)
+            , m_capacity(m_entityManager->capacity())
+            , m_freeCursor(NT_UINT_MAX)
+         {
+            if (IterateOverAll)
+            {
+               std::sort(m_entityManager->m_freeEntityIds.begin(),
+                  m_entityManager->m_freeEntityIds.end());
+               m_freeCursor = 0;
+            }
+         }
+
+         ViewIterator(EntityManager* entityManager,
+            const ComponentMask componentMask,
+            UInt pos)
+            : m_entityManager(entityManger)
+            , m_componentMask(componentMask)
+            , m_pos(pos)
+            , m_capacity(m_entityManager->m_freeEntityIds.size())
+            , m_freeCursor(NT_UINT_MAX)
+         {
+            if (IterateOverAll)
+            {
+               std::sort(m_entityManager->m_freeEntityIds.begin(),
+                  m_entityManager->m_freeEntityIds.end());
+               m_freeCursor = 0;
+            }
+         }
+
+         void next()
+         {
+            while (m_pos < m_capacity &&
+               !((IterateOverAll || IsValidEntity()) && !matchComponentMask())
+               )
+               ++m_pos;
+
+            if (m_pos < m_capacity)
+            {
+               Entity entity = m_entityManager->getEntity(
+                  m_entityManager->createId(m_pos));
+               static_cast<Delegate*>(this)->nextEntity(entity);
+            }
+         }
+
+         bool matchComponentMask() const
+         {
+            return
+               (m_entityManager->m_entityComponentMasks[m_pos] & m_componentMask)
+               == m_componentMask;
+         }
+
+         bool IsValidEntity()
+         {
+            if (m_freeCursor < m_entityManager->m_freeEntityIds.size() &&
+               m_entityManager->m_freeEntityIds[m_freeCursor] == m_pos)
+            {
+               ++m_freeCursor;
+               return false;
+            }
+
+            return true;
+         }
+         
+      protected:
+         EntityManager* m_entityManager;
+         ComponentMask m_componentMask;
+         UInt m_pos;
+         UInt m_capacity;
+         UInt m_freeCursor;
+      };
+      // ----------------------------------------------------------------------
+
+
+      // View -----------------------------------------------------------------
+      class View
+      {
+      public:
+         // Iterator ----------------------------------------------------------
+         class Iterator : public ViewIterator<Iterator>
+         {
+         public:
+            Iterator(EntityManager* entityManager,
+               const ComponentMask componentMask, UInt pos)
+               : ViewIterator<Iterator>(entityManager, componentMask, pos)
+            {
+               ViewIterator<Iterator>::next();
+            }
+
+            void nextEntity(Entity& entity) {}
+         };
+         // -------------------------------------------------------------------
+
+      public:
+         Iterator begin()
+         {
+            return Iterator(m_entityManager, m_componentMask, 0);
+         }
+
+         Iterator end()
+         {
+            return
+               Iterator(m_entityManager, m_componentMask,
+                  m_entityManager->capacity());
+         }
+
+         const Iterator begin() const
+         {
+            return Iterator(m_entityManager, m_componentMask, 0);
+         }
+
+         const Iterator end() const
+         {
+            return
+               Iterator(m_entityManager, m_componentMask,
+                  m_entityManager->capacity());
+         }
+
+      private:
+         friend class EntityManager;
+
+         explicit View(EntityManager* entityManager)
+            : m_entityManager(entityManager)
+         {
+            m_componentMask.set();
+         }
+
+         View(EntityManager* entityManager, ComponentMask componentMask)
+            : m_entityManager(entityManager)
+            , m_componentMask(componentMask) {}
+
+      private:
+         EntityManager* m_entityManager;
+         ComponentMask m_componentMask;
+      };
+      // ----------------------------------------------------------------------
+
+
+      // UnpackingView --------------------------------------------------------
+      template <typename... Components>
+      class UnpackingView
+      {
+      public:
+         // Unpacker ----------------------------------------------------------
+         class Unpacker
+         {
+         public:
+            explicit Unpacker(ComponentHandle<Components>&... componentHandles)
+               : m_componentHandles(
+                  std::tuple<ComponentHandle<Components>&...>(handles...)) {}
+
+            void unpack(Entity& entity) const
+            {
+               unpackN<0, Components...>(entity);
+            }
+
+         private:
+            template <std::size_t N, typename C>
+            void unpackN(Entity& entity) const
+            {
+               std::get<N>(m_componentHandles) = entity.getComponent<C>();
+            }
+
+            template <std::size_t N, typename C1, typename C2, typename... Cn>
+            void unpackN(Entity& entity) const
+            {
+               std::get<N>(m_componentHandles) = entity.getComponent<C1>();
+               unpackN<N + 1, C2, Cn...>(entity);
+            }
+
+         private:
+            std::tuple<ComponentHandle<Components>&...> m_componentHandles;
+         };
+         // -------------------------------------------------------------------
+
+
+         // Iterator ----------------------------------------------------------
+         class Iterator : public ViewIterator<Iterator>
+         {
+         public:
+
+
+         private:
+            const Unpacker& m_unpacker;
+         };
+         // -------------------------------------------------------------------
+
+      public:
+
+
+      private:
+         friend class EntityManager;
+
+         UnpackingView(EntityManager* entityManager,
+            ComponentMask componentMask,
+            ComponentHandle<Components>&... handles)
+            : m_entityManager(entityManager)
+            , m_componentMask(componentMask)
+            , m_unpacker(handles...) {}
+
+      private:
+         EntityManager* m_entityManager;
+         ComponentMask m_componentMask;
+         Unpacker m_unpacker;
+      };
+      // ----------------------------------------------------------------------
 
    public:
       EntityManager(EventManager& eventManager)
-         : m_eventManager(eventManager)
-      {
-      }
+         : m_eventManager(eventManager) {}
 
       ~EntityManager()
       {
@@ -269,7 +520,7 @@ namespace Neat
       }
 
 
-      Entity create()
+      Entity createEntity()
       {
          UInt index;
          UInt version;
@@ -282,8 +533,8 @@ namespace Neat
          }
          else
          {
-            index = m_freeEntityIds.front();
-            m_freeEntityIds.pop();
+            index = m_freeEntityIds.back();
+            m_freeEntityIds.pop_back();
             version = m_entityIdsVersion[index];
          }
 
@@ -293,7 +544,7 @@ namespace Neat
          return entity;
       }
 
-      void destroy(Entity::Id id)
+      void destroyEntity(Entity::Id id)
       {
          checkIsValid(id);
 
@@ -311,15 +562,121 @@ namespace Neat
 
          m_entityComponentMasks[index].reset();
          ++m_entityIdsVersion[index];
-         m_freeEntityIds.push(index);
+         m_freeEntityIds.push_back(index);
       }
 
-      Entity get(Entity::Id id)
+      Entity getEntity(Entity::Id id)
       {
          checkIsValid(id);
 
          return Entity(this, id);
       }
+
+      Entity::Id createId(UInt index) const
+      {
+         return Entity::Id(index, m_entityIdsVersion[index]);
+      }
+
+      template <typename C, typename... Args>
+      ComponentHandle<C> addComponent(Entity::Id id, Args&&... args)
+      {
+         checkIsValid(id);
+
+         const BaseComponent::Family family = getComponentFamily<C>();
+
+         if (!m_entityComponentMasks[id.index()].test(family))
+            throw ComponentAlreadyAddedError();
+
+         MemoryPool<C>* component_array = accomodateComponent<C>();
+         new (component_array[id.index()]) C(std::forward<Args>(args)...);
+
+         m_entityComponentMasks[id.index()].set(family);
+
+         ComponentHandle<C> component(this, id);
+         m_eventManager.publish<ComponentAddedEvent<C>>(
+            Entity(this, id), component);
+
+         return component;
+      }
+
+      template <typename C>
+      void removeComponent(Entity::Id id)
+      {
+         checkIsValid(id);
+
+         const BaseComponent::Family family = getComponentFamily<C>();
+
+         BaseMemoryPool* component_array = m_componentArrays[family];
+         ComponentHandle<C> component(this, id);
+         m_eventManager.publish<ComponentRemovedEvent<C>>(
+            Entity(this, id), component);
+
+         m_entityComponentMasks[id.index()].reset(family);
+
+         component_array->destroy(id.index());
+      }
+
+      template <typename C>
+      bool hasComponent(Entity::Id id) const
+      {
+         checkIsValid(id);
+
+         std::size_t family = getComponentFamily<C>();
+
+         if (family >= m_componentArrays.size())
+            return false;
+
+         BaseMemoryPool* component_array = m_componentArrays[family];
+
+         if (component_array == nullptr || 
+            m_entityComponentMasks[id.index()][family] == nullptr)
+            return false;
+
+         return true;
+      }
+
+      template <
+         typename C,
+         typename std::enable_if<!std::is_const<C>::valaue>::type
+      >
+      ComponentHandle<C> getComponent(Entity::Id id)
+      {
+         checkIsValid(id);
+
+         if (!hasComponent<C>())
+            return ComponentHandle<C>(); // invalid Component
+
+         return ComponentHandle<C>(this, id);
+      }
+
+      template <
+         typename C, 
+         typename std::enable_if<std::is_const<C>::valaue>::type
+      >
+      const ComponentHandle<C, const EntityManager>
+      getComponent(Entity::Id id) const
+      {
+         checkIsValid(id);
+
+         if (!hasComponent<C>())
+            return ComponentHandle<C, const EntityManager>(); // invalid Component
+
+         return ComponentHandle<C, const EntityManager>(this, id);
+      }
+
+      template <typename... Components>
+      std::tuple<ComponentHandle<Components>...> getComponents(Entity::Id id)
+      {
+         return std::make_tuple(getComponent<Components>(id)...);
+      }
+
+      template <typename... Components>
+      std::tuple<ComponentHandle<const Components, const EntityManager>...>
+      getComponents(Entity::Id id) const
+      {
+         return std::make_tuple(getComponent<const Components>(id)...);
+      }
+
       
    private:
       friend class Entity;
@@ -379,11 +736,11 @@ namespace Neat
          return mask;
       }
 
-      template <typename C1, typename C2, typename... Others>
+      template <typename C1, typename C2, typename... Cn>
       ComponentMask createComponentMask()
       {
          return
-            createComponentMask<C1>() | createComponentMask<C2, Others...>();
+            createComponentMask<C1>() | createComponentMask<C2, Cn...>();
       }
 
       template <typename C>
@@ -393,12 +750,12 @@ namespace Neat
          return createComponentMask<C>();
       }
 
-      template <typename C1, typename... Others>
+      template <typename C1, typename... Cn>
       ComponentMask createComponentMask(
          const ComponentHandle<C1>& componentHandle1,
-         const ComponentHandle<Others>&... others)
+         const ComponentHandle<Cn>&... others)
       {
-         return createComponentMask<C1, Others...>();
+         return createComponentMask<C1, Cn...>();
       }
 
 
@@ -440,7 +797,7 @@ namespace Neat
       std::vector<BaseMemoryPool*> m_componentArrays;
       std::vector<ComponentMask> m_entityComponentMasks;
       std::vector<UInt> m_entityIdsVersion;
-      std::queue<UInt> m_freeEntityIds;
+      std::vector<UInt> m_freeEntityIds;
    };
    // ---------------------------------------------------------------------- //
    // ---------------------------------------------------------------------- //
@@ -476,25 +833,25 @@ namespace Neat
 
    template <typename C, typename... Args>
    inline
-   ComponentHandle<C> Entity::add(Args&&... args)
+   ComponentHandle<C> Entity::addComponent(Args&&... args)
    {
       checkIsValid();
 
-      return m_entityManager->add<C>(m_id, std::forward<Args>(args)...);
+      return m_entityManager->addComponent<C>(m_id, std::forward<Args>(args)...);
    }
 
    template <typename C, typename... Args>
    inline
-   ComponentHandle<C> Entity::addFromCopy(const C& component)
+   ComponentHandle<C> Entity::addComponentFromCopy(const C& component)
    {
       checkIsValid();
 
-      return m_entityManager->add<C>(m_id, std::forward<const C&>(component));
+      return m_entityManager->addComponent<C>(m_id, std::forward<const C&>(component));
    }
 
    template <typename C, typename... Args>
    inline
-   ComponentHandle<C> Entity::replace(Args&&... args)
+   ComponentHandle<C> Entity::replaceComponent(Args&&... args)
    {
       checkIsValid();
 
@@ -502,7 +859,7 @@ namespace Neat
       if (component_handle)
          *(component_handle.get()) = C(std::forward<Args>(args)...);
       else // Does not exist -> add new component to entity
-         component_handle = m_entityManager->add<C>(
+         component_handle = m_entityManager->addComponent<C>(
             m_id, std::forward<Args>(args)...);
 
       return component_handle;
@@ -510,10 +867,14 @@ namespace Neat
 
    template <typename C>
    inline
-   void Entity::remove()
+   void Entity::removeComponent()
    {
-      NT_CORE_ASSERT(checkIsValid() && hasComponent<C>());
-      m_entityManager->remove<C>(m_id);
+      checkIsValid();
+
+      if (!hasComponent<C>())
+         throw ComponentNotPresentError();
+
+      m_entityManager->removeComponent<C>(m_id);
    }
       
    template <typename C, typename>
@@ -581,7 +942,7 @@ namespace Neat
    {
       checkIsValid();
 
-      m_entityManager->destroy(m_id);
+      m_entityManager->destroyEntity(m_id);
       invalidate();
    }
 

@@ -52,7 +52,7 @@ namespace Neat
             std::shared_ptr<S>(std::static_pointer_cast<S>(it->second));
       }
 
-      void updateAll(Timestep deltaTime)
+      void updateAll(DeltaTime deltaTime)
       {
          if (!m_initialized)
             throw SystemManagerNotInitializedError();
@@ -61,7 +61,7 @@ namespace Neat
             pair.second->update(m_entityManager, m_eventManager, deltaTime);
       }
 
-      void renderAll(Timestep deltaTime)
+      void renderAll(DeltaTime deltaTime)
       {
          if (!m_initialized)
             throw SystemManagerNotInitializedError();

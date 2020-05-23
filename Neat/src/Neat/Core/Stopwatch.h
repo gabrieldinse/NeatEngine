@@ -21,10 +21,10 @@ namespace Neat
       Days
    };
 
-   class Chronometer
+   class Stopwatch
    {
    public:
-      Chronometer() = default;
+      Stopwatch() = default;
 
       void start()
       {
@@ -37,38 +37,28 @@ namespace Neat
       template <typename T = double>
       T stop(TimeUnit timeUnit = TimeUnit::Seconds)
       {
-         if (m_started)
-         {
-            auto time_passed = getTimePassed<T>(timeUnit);
-            m_started = false;
+         auto time_passed = mark<T>(timeUnit);
+         m_started = false;
 
-            return time_passed;
-         }
-
-         throw ChronometerNotStartedError();
+         return time_passed;
       }
 
       template <typename T = double>
       T restart(TimeUnit timeUnit = TimeUnit::Seconds)
       {
-         if (m_started)
-         {
-            auto time_passed = getTimePassed<T>(timeUnit);
-            m_startTicks = m_currentTicks;
+         auto time_passed = mark<T>(timeUnit);
+         m_startTicks = m_currentTicks;
 
-            return time_passed;
-         }
-
-         throw ChronometerNotStartedError();
+         return time_passed;
       }
 
       template <typename T = double>
-      T getTimePassed(TimeUnit timeUnit = TimeUnit::Seconds)
+      T mark(TimeUnit timeUnit = TimeUnit::Seconds)
       {
-         m_currentTicks = std::chrono::high_resolution_clock::now();
-
          if (m_started)
          {
+            m_currentTicks = std::chrono::high_resolution_clock::now();
+
             switch (timeUnit)
             {
                case TimeUnit::Nanoseconds:    return nanosecondsPassed<T>();
@@ -83,12 +73,12 @@ namespace Neat
             throw WrongTimeUnitError();
          }
 
-         throw ChronometerNotStartedError();
+         throw StopwatchNotStartedError();
       }
 
    private:
       template <typename T>
-      T nanosecondsPassed()
+      T nanosecondsPassed() const
       {
          return
             std::chrono::duration<T, std::ratio<1, 1000000000>>(
@@ -96,7 +86,7 @@ namespace Neat
       }
 
       template <typename T>
-      T microsecondsPassed()
+      T microsecondsPassed() const
       {
          return
             std::chrono::duration<T, std::ratio<1, 1000000>>(
@@ -104,7 +94,7 @@ namespace Neat
       }
 
       template <typename T>
-      T millisecondsPassed()
+      T millisecondsPassed() const
       {
          return
             std::chrono::duration<T, std::ratio<1, 1000>>(
@@ -112,14 +102,14 @@ namespace Neat
       }
 
       template <typename T>
-      T secondsPassed()
+      T secondsPassed() const
       {
          return
             std::chrono::duration<T>((m_currentTicks - m_startTicks)).count();
       }
 
       template <typename T>
-      T minutesPassed()
+      T minutesPassed() const
       {
          return
             std::chrono::duration<T, std::ratio<60, 1>>(
@@ -127,7 +117,7 @@ namespace Neat
       }
 
       template <typename T>
-      T hoursPassed()
+      T hoursPassed() const
       {
          return
             std::chrono::duration<T, std::ratio<3600, 1>>(
@@ -135,7 +125,7 @@ namespace Neat
       }
 
       template <typename T>
-      T daysPassed()
+      T daysPassed() const
       {
          return
             std::chrono::duration<T, std::ratio<86400, 1>>(

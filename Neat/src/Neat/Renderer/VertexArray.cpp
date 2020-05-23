@@ -53,7 +53,7 @@ namespace Neat
             element.componentCount,
             element.dataType,
             element.normalized,
-            layout.getStride(),
+            layout.getOffset(),
             static_cast<const void*>(static_cast<const char*>(0) + element.offset));
       }
 

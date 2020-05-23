@@ -7,7 +7,7 @@
 
 #include "Neat/Core/Core.h"
 #include "Neat/Core/Types.h"
-#include "Neat/Renderer/ShaderDataTypes.h"
+#include "Neat/Renderer/ShaderDataType.h"
 
 
 namespace Neat
@@ -46,19 +46,9 @@ namespace Neat
    public:
       BufferLayout() = default;
       
-      BufferLayout(const std::initializer_list<BufferElement>& elements)
-         : m_elements(elements)
-      {
-         UInt index = 0;
-         for (auto& element : m_elements)
-         {
-            element.index = index++;
-            element.offset = m_stride;
-            m_stride += element.size;
-         }
-      }
+      BufferLayout(const std::initializer_list<BufferElement>& elements);
 
-      UInt getStride() const { return m_stride; }
+      UInt getOffset() const { return m_offset; }
       const BufferElementsVector& getElements() const { return m_elements; }
 
       BufferElementsVectorIt begin() { return m_elements.begin(); }
@@ -68,7 +58,7 @@ namespace Neat
 
    private:
       BufferElementsVector m_elements;
-      UInt m_stride = 0;
+      UInt m_offset = 0;
    };
 
 

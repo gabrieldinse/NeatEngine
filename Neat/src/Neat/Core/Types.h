@@ -39,4 +39,8 @@ namespace Neat
    constexpr char            NT_CHAR_MIN         = CHAR_MIN;
    constexpr char            NT_CHAR_MAX         = CHAR_MAX;
    constexpr unsigned char   NT_UCHAR_MAX        = UCHAR_MAX;
+
+
+   // Custom types
+   using DeltaTime = double;
 }

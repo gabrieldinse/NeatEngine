@@ -8,20 +8,22 @@
 
 namespace Neat
 {
-   OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
-      : m_projectionMatrix(orthographic(left, right, bottom, top, -1.0f, 1.0f))
+   OrthographicCamera::OrthographicCamera(float left, float right,
+      float bottom, float top, float zNear, float zFar)
+      : m_projectionMatrix(orthographic(left, right, bottom, top, zNear, zFar))
       , m_viewMatrix(1.0f)
-      , m_viewProjectionMatrix(m_projectionMatrix * m_viewMatrix)
+      , m_projectionViewMatrix(m_projectionMatrix * m_viewMatrix)
    {
       NT_PROFILE_FUNCTION();
    }
 
-   void OrthographicCamera::setProjection(float left, float right, float bottom, float top)
+   void OrthographicCamera::setProjection(float left, float right,
+      float bottom, float top, float zNear, float zFar)
    {
       NT_PROFILE_FUNCTION();
 
-      m_projectionMatrix = orthographic(left, right, bottom, top, -1.0f, 1.0f);
-      m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
+      m_projectionMatrix = orthographic(left, right, bottom, top, zNear, zFar);
+      m_projectionViewMatrix = m_projectionMatrix * m_viewMatrix;
    }
 
    void OrthographicCamera::setPosition(const Vector3& position)
@@ -43,12 +45,11 @@ namespace Neat
    void OrthographicCamera::recalculateViewMatrix()
    {
       NT_PROFILE_FUNCTION();
-
       Matrix4 transform =
          translate(m_position) * 
-         rotate(degreesToRadians(m_rotation), { 0, 0, 1});
+         rotate(degreesToRadians(m_rotation), { 0, 0, 1 });
 
       m_viewMatrix = inverse(transform);
-      m_viewProjectionMatrix = m_projectionMatrix * m_viewMatrix;
+      m_projectionViewMatrix = m_projectionMatrix * m_viewMatrix;
    }
 }

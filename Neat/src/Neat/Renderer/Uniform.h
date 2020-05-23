@@ -7,12 +7,13 @@
 #include "Neat/Math/Vector.h"
 #include "Neat/Math/Matrix.h"
 #include "Neat/Math/MatrixOperations.h"
-#include "Neat/Renderer/ShaderDataTypes.h"
+#include "Neat/Renderer/ShaderDataType.h"
 
 
 namespace Neat
 {
    struct UniformData;
+	class ShaderProgram;
 
 
 	// ---------------------------------------------------------------------- //
@@ -21,7 +22,7 @@ namespace Neat
 	class UniformLibrary
 	{
 	public:
-		UniformLibrary(UInt shaderId);
+		UniformLibrary(ShaderProgram& shader);
 		UniformLibrary() = delete;
 		~UniformLibrary();
 
@@ -32,7 +33,7 @@ namespace Neat
 
 	private:
 		std::unordered_map<std::string, std::unique_ptr<UniformData>> uniforms;
-		UInt m_shaderId = 0;
+		ShaderProgram& m_shader;
 	};
 
 

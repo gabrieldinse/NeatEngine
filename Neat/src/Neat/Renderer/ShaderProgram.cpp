@@ -7,7 +7,7 @@
 
 #include "Neat/Core/Log.h"
 #include "Neat/Renderer/ShaderProgram.h"
-#include "Neat/Renderer/ShaderDataTypes.h"
+#include "Neat/Renderer/ShaderDataType.h"
 #include "Neat/Math/MatrixOperations.h"
 #include "Neat/Debug/Instrumentator.h"
 
@@ -27,7 +27,7 @@ namespace Neat
 		auto shader_sources = preprocessShaderSource(source);
 		compile(shader_sources);
 		m_name = std::filesystem::path(filepath).stem().string();
-		m_uniformLibrary = std::make_unique<UniformLibrary>(m_id);
+		m_uniformLibrary = std::make_unique<UniformLibrary>(*this);
 	}
 
 	ShaderProgram::ShaderProgram(const std::string& name,
@@ -39,7 +39,7 @@ namespace Neat
 		auto shader_sources = preprocessShaderSource(source);
 		compile(shader_sources);
 		m_name = name;
-		m_uniformLibrary = std::make_unique<UniformLibrary>(m_id);
+		m_uniformLibrary = std::make_unique<UniformLibrary>(*this);
 	}
 
 	ShaderProgram::ShaderProgram(
@@ -53,7 +53,7 @@ namespace Neat
 		shader_sources[GL_VERTEX_SHADER] = vertexSource;
 		shader_sources[GL_FRAGMENT_SHADER] = fragmentSource;
 		compile(shader_sources);
-		m_uniformLibrary = std::make_unique<UniformLibrary>(m_id);
+		m_uniformLibrary = std::make_unique<UniformLibrary>(*this);
 	}
 
 	ShaderProgram::~ShaderProgram()
@@ -105,13 +105,14 @@ namespace Neat
 			NT_CORE_ASSERT(eol_pos != std::string::npos,
 				"ShaderProgram source syntax error.");
 
-			auto shader_type = source.substr(
+			auto shader_type_name = source.substr(
 				shader_type_begin, shader_type_end - shader_type_begin);
-			auto gl_type = stringToOpenGLShaderType(shader_type);
+			auto shader_type = 
+				OpenGLTypeConverter::fromStringToShaderType(shader_type_name);
 
 			auto next_line_pos = source.find_first_not_of("\r\n", eol_pos);
 			pos = source.find(type_token, next_line_pos);
-			shader_sources[gl_type] =
+			shader_sources[shader_type] =
 				source.substr(next_line_pos,
 					(pos == std::string::npos ? pos : pos - next_line_pos));
 		}
@@ -131,11 +132,8 @@ namespace Neat
 
 		std::array<UInt, 2> shaders_id;
 		Int shaders_id_index = 0;
-		for (auto& shader_info : shaderSources)
+		for (auto&& [type, shader_source] : shaderSources)
 		{
-			auto type = shader_info.first;
-			const auto& shader_source = shader_info.second;
-
 			UInt shader_id = glCreateShader(type);
 
 			// Send the vertex shader source code to GL
@@ -270,5 +268,4 @@ namespace Neat
 
 		return (m_shaders.find(name) != m_shaders.end());
 	}
-
 }

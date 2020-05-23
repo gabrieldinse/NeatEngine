@@ -1,4 +1,5 @@
 #include "Neat/Renderer/Uniform.h"
+#include "Neat/Renderer/ShaderProgram.h"
 
 #include <glad/glad.h>
 
@@ -30,16 +31,16 @@ namespace Neat
 	// ---------------------------------------------------------------------- //
 	// UniformLibrary-------------------------------------------------------- //
 	// ---------------------------------------------------------------------- //
-	UniformLibrary::UniformLibrary(UInt shaderId)
-		: m_shaderId(shaderId)
+	UniformLibrary::UniformLibrary(ShaderProgram& shader)
+		: m_shader(shader)
 	{
 		GLint uniform_count;
 		GLint uniform_name_length;
 
 		glGetProgramiv(
-			m_shaderId, GL_ACTIVE_UNIFORMS, &uniform_count);
+			m_shader.getId(), GL_ACTIVE_UNIFORMS, &uniform_count);
 		glGetProgramiv(
-			m_shaderId, GL_ACTIVE_UNIFORM_MAX_LENGTH,
+			m_shader.getId(), GL_ACTIVE_UNIFORM_MAX_LENGTH,
 			&uniform_name_length);
 		std::vector<char> name_data(uniform_name_length);
 
@@ -49,13 +50,13 @@ namespace Neat
 			GLint size;
 
 			glGetActiveUniform(
-				m_shaderId, i, uniform_name_length, NULL, &size, &type,
+				m_shader.getId(), i, uniform_name_length, NULL, &size, &type,
 				&name_data[0]);
 
 			std::string name(&name_data[0]);
 
 			auto location = glGetUniformLocation(
-				m_shaderId, name.c_str());
+				m_shader.getId(), name.c_str());
 
 			NT_CORE_ASSERT(location != -1, "Uniform does not exist!");
 
@@ -114,7 +115,7 @@ namespace Neat
 		NT_CORE_ASSERT(uniformLibrary.exists(name), "Uniform was not found!");
 		auto uniform_data = uniformLibrary[name];
 
-		if (uniformType != openGLTypeToShaderDataType(
+		if (uniformType != OpenGLTypeConverter::toShaderDataType(
 			uniform_data.type, uniform_data.size))
 			NT_CORE_ASSERT(false, "Wrong Uniform type!");
 	}

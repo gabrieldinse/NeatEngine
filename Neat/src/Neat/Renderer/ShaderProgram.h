@@ -18,9 +18,7 @@ namespace Neat
    public:
       ShaderProgram(const std::string& filepath);
       ShaderProgram(const std::string& name, const std::string& filepath);
-      ShaderProgram(
-         const std::string& name,
-         const std::string& vertexSource,
+      ShaderProgram(const std::string& name, const std::string& vertexSource,
          const std::string& fragmentSource);
       virtual ~ShaderProgram();
 
@@ -30,7 +28,7 @@ namespace Neat
       const std::string& getName() const { return m_name; }
       void setName(const std::string& name) { m_name = name; }
 
-      UInt getRendererID() const { return m_id; }
+      UInt getId() const { return m_id; }
 
       const UniformLibrary& getUniformLibrary() const { return *m_uniformLibrary; }
 

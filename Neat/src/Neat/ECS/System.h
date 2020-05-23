@@ -17,13 +17,13 @@ namespace Neat
    class BaseSystem : public NonCopyable
    {
    public:
-      using Family = UIntLong;
+      using Family = UInt;
 
       virtual ~BaseSystem() = default;
 
       virtual void init(EventManager& eventManager) {}
       virtual void update(EntityManager& entityManager,
-         EventManager& eventManager, Timestep deltaTime) = 0;
+         EventManager& eventManager, DeltaTime deltaTime) = 0;
       virtual void render(EntityManager& entityManager,
          EventManager& eventManager) = 0;
 
@@ -42,7 +42,7 @@ namespace Neat
       virtual ~System() = default;
 
       virtual void update(EntityManager& entityManager,
-         EventManager& eventManager, Timestep deltaTime) override {}
+         EventManager& eventManager, DeltaTime deltaTime) override {}
       virtual void render(EntityManager& entityManager,
          EventManager& eventManager) override {}
 

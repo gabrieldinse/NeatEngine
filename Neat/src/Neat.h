@@ -11,6 +11,8 @@
 #include "Neat/Core/KeyCodes.h"
 #include "Neat/Core/MouseCodes.h"
 
+#include "Neat/Core/Stopwatch.h"
+
 #include "Neat/Core/OrthographicCameraController.h"
 
 #include "Neat/Events/Event.h"

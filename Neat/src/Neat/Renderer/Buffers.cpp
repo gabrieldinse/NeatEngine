@@ -13,11 +13,27 @@ namespace Neat
       bool normalized)
       : type(type)
       , name(name)
-      , size(shaderDataTypeSize(type))
-      , componentCount(shaderDataTypeComponentCount(type))
-      , dataType(shaderDataTypeToOpenGLBaseType(type))
+      , size(OpenGLTypeConverter::sizeInBytes(type))
+      , componentCount(OpenGLTypeConverter::componentCount(type))
+      , dataType(OpenGLTypeConverter::baseType(type))
       , normalized(normalized ? GL_TRUE : GL_FALSE)
    {}
+
+   // ---------------------------------------------------------------------- //
+   // BufferLayout --------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+   BufferLayout::BufferLayout(
+      const std::initializer_list<BufferElement>& elements)
+      : m_elements(elements)
+   {
+      UInt index = 0;
+      for (auto& element : m_elements)
+      {
+         element.index = index++;
+         element.offset = m_offset;
+         m_offset += element.size;
+      }
+   }
 
    // ---------------------------------------------------------------------- //
    // VertexBuffer --------------------------------------------------------- //
