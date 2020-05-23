@@ -282,11 +282,11 @@ namespace Neat
          {
             return m_pos != rhs.m_pos;
          }
-
+         
       protected:
-         ViewIterator(EntityManager* entityManager, UInt pos)
+         ViewIterator(EntityManager* entityManager, UInt index)
             : m_entityManager(entityManager)
-            , m_pos(pos)
+            , m_pos(index)
             , m_capacity(m_entityManager->capacity())
             , m_freeCursor(NT_UINT_MAX)
          {
@@ -300,10 +300,10 @@ namespace Neat
 
          ViewIterator(EntityManager* entityManager,
             const ComponentMask componentMask,
-            UInt pos)
+            UInt index)
             : m_entityManager(entityManger)
-            , m_componentMask(componentMask)
-            , m_pos(pos)
+            , m_componentGroupMask(componentMask)
+            , m_pos(index)
             , m_capacity(m_entityManager->m_freeEntityIds.size())
             , m_freeCursor(NT_UINT_MAX)
          {
@@ -315,12 +315,14 @@ namespace Neat
             }
          }
 
+
          void next()
          {
             while (m_pos < m_capacity &&
-               !((IterateOverAll || IsValidEntity()) && !matchComponentMask())
-               )
+               !((IterateOverAll || IsValidEntity()) && !matchComponentMask()))
+            {
                ++m_pos;
+            }
 
             if (m_pos < m_capacity)
             {
@@ -333,8 +335,8 @@ namespace Neat
          bool matchComponentMask() const
          {
             return
-               (m_entityManager->m_entityComponentMasks[m_pos] & m_componentMask)
-               == m_componentMask;
+               (m_entityManager->m_entityComponentMasks[m_pos] & m_componentGroupMask)
+               == m_componentGroupMask;
          }
 
          bool IsValidEntity()
@@ -351,7 +353,7 @@ namespace Neat
          
       protected:
          EntityManager* m_entityManager;
-         ComponentMask m_componentMask;
+         ComponentMask m_componentGroupMask;
          UInt m_pos;
          UInt m_capacity;
          UInt m_freeCursor;
@@ -360,18 +362,20 @@ namespace Neat
 
 
       // View -----------------------------------------------------------------
-      class View
+      template <bool IterateOverAll>
+      class BaseView
       {
       public:
          // Iterator ----------------------------------------------------------
-         class Iterator : public ViewIterator<Iterator>
+         class Iterator : public ViewIterator<Iterator, IterateOverAll>
          {
          public:
             Iterator(EntityManager* entityManager,
-               const ComponentMask componentMask, UInt pos)
-               : ViewIterator<Iterator>(entityManager, componentMask, pos)
+               const ComponentMask componentMask, UInt index)
+               : ViewIterator<Iterator, IterateOverAll>(
+                  entityManager, componentMask, index)
             {
-               ViewIterator<Iterator>::next();
+               ViewIterator<Iterator, IterateOverAll>::next();
             }
 
             void nextEntity(Entity& entity) {}
@@ -381,45 +385,48 @@ namespace Neat
       public:
          Iterator begin()
          {
-            return Iterator(m_entityManager, m_componentMask, 0);
+            return Iterator(m_entityManager, m_componentGroupMask, 0);
          }
 
          Iterator end()
          {
             return
-               Iterator(m_entityManager, m_componentMask,
+               Iterator(m_entityManager, m_componentGroupMask,
                   m_entityManager->capacity());
          }
 
          const Iterator begin() const
          {
-            return Iterator(m_entityManager, m_componentMask, 0);
+            return Iterator(m_entityManager, m_componentGroupMask, 0);
          }
 
          const Iterator end() const
          {
             return
-               Iterator(m_entityManager, m_componentMask,
+               Iterator(m_entityManager, m_componentGroupMask,
                   m_entityManager->capacity());
          }
 
       private:
          friend class EntityManager;
 
-         explicit View(EntityManager* entityManager)
+         explicit BaseView(EntityManager* entityManager)
             : m_entityManager(entityManager)
          {
-            m_componentMask.set();
+            m_componentGroupMask.set();
          }
 
-         View(EntityManager* entityManager, ComponentMask componentMask)
+         BaseView(EntityManager* entityManager, ComponentMask componentMask)
             : m_entityManager(entityManager)
-            , m_componentMask(componentMask) {}
+            , m_componentGroupMask(componentMask) {}
 
       private:
          EntityManager* m_entityManager;
-         ComponentMask m_componentMask;
+         ComponentMask m_componentGroupMask;
       };
+
+      using View = BaseView<false>;
+      using DebugView = BaseView<true>;
       // ----------------------------------------------------------------------
 
 
@@ -438,21 +445,21 @@ namespace Neat
 
             void unpack(Entity& entity) const
             {
-               unpackN<0, Components...>(entity);
+               unpackNComponents<0, Components...>(entity);
             }
 
          private:
             template <std::size_t N, typename C>
-            void unpackN(Entity& entity) const
+            void unpackNComponents(Entity& entity) const
             {
                std::get<N>(m_componentHandles) = entity.getComponent<C>();
             }
 
             template <std::size_t N, typename C1, typename C2, typename... Cn>
-            void unpackN(Entity& entity) const
+            void unpackNComponents(Entity& entity) const
             {
                std::get<N>(m_componentHandles) = entity.getComponent<C1>();
-               unpackN<N + 1, C2, Cn...>(entity);
+               unpackNComponents<N + 1, C2, Cn...>(entity);
             }
 
          private:
@@ -460,12 +467,19 @@ namespace Neat
          };
          // -------------------------------------------------------------------
 
-
          // Iterator ----------------------------------------------------------
          class Iterator : public ViewIterator<Iterator>
          {
          public:
-
+            Iterator(EntityManager* entityManager,
+               const ComponentMask componentMask,
+               Int index,
+               const Unpacker& unpacker)
+               : ViewIterator<Iterator>(entityManager, componentMask, index)
+               , m_unpacker(unpacker)
+            {
+               ViewIterator<Iterator>::next();
+            }
 
          private:
             const Unpacker& m_unpacker;
@@ -473,6 +487,31 @@ namespace Neat
          // -------------------------------------------------------------------
 
       public:
+         Iterator begin()
+         {
+            return Iterator(m_entityManager, m_componentGroupMask, 0,
+               m_unpacker);
+         }
+
+         Iterator end()
+         {
+            return
+               Iterator(m_entityManager, m_componentGroupMask,
+                  m_entityManager->capacity(), m_unpacker);
+         }
+
+         const Iterator begin() const
+         {
+            return Iterator(m_entityManager, m_componentGroupMask, 0,
+               m_unpacker);
+         }
+
+         const Iterator end() const
+         {
+            return
+               Iterator(m_entityManager, m_componentGroupMask,
+                  m_entityManager->capacity(), m_unpacker);
+         }
 
 
       private:
@@ -482,24 +521,20 @@ namespace Neat
             ComponentMask componentMask,
             ComponentHandle<Components>&... handles)
             : m_entityManager(entityManager)
-            , m_componentMask(componentMask)
+            , m_componentGroupMask(componentMask)
             , m_unpacker(handles...) {}
 
       private:
          EntityManager* m_entityManager;
-         ComponentMask m_componentMask;
+         ComponentMask m_componentGroupMask;
          Unpacker m_unpacker;
       };
       // ----------------------------------------------------------------------
 
    public:
-      EntityManager(EventManager& eventManager)
-         : m_eventManager(eventManager) {}
+      EntityManager(EventManager& eventManager);
 
-      ~EntityManager()
-      {
-         reset();
-      }
+      ~EntityManager();
 
       UInt size() const
       {
@@ -511,6 +546,10 @@ namespace Neat
       {
          return (UInt)(m_entityComponentMasks.size());
       }
+
+
+      void reset();
+
 
       bool isValid(Entity::Id id)
       {
@@ -565,6 +604,7 @@ namespace Neat
          m_freeEntityIds.push_back(index);
       }
 
+
       Entity getEntity(Entity::Id id)
       {
          checkIsValid(id);
@@ -576,6 +616,7 @@ namespace Neat
       {
          return Entity::Id(index, m_entityIdsVersion[index]);
       }
+
 
       template <typename C, typename... Args>
       ComponentHandle<C> addComponent(Entity::Id id, Args&&... args)
@@ -653,8 +694,8 @@ namespace Neat
          typename C, 
          typename std::enable_if<std::is_const<C>::valaue>::type
       >
-      const ComponentHandle<C, const EntityManager>
-      getComponent(Entity::Id id) const
+      const ComponentHandle<C, const EntityManager> getComponent(
+         Entity::Id id) const
       {
          checkIsValid(id);
 
@@ -677,7 +718,48 @@ namespace Neat
          return std::make_tuple(getComponent<const Components>(id)...);
       }
 
+
+      template <typename... Components>
+      View entitiesWithComponents()
+      {
+         auto component_mask = getComponentMask<Components...>();
+
+         return View(this, component_mask);
+      }
+
+      template <typename... Components>
+      UnpackingView<Components...> entitiesWithComponents(
+         ComponentHandle<Components>&... components)
+      {
+         auto component_mask = getComponentMask<Components...>();
+
+         return UnpackingView<Components...>(this, component_mask);
+      }
+
+      DebugView entitiesForDebugging()
+      {
+         return DebugView(this);
+      }
+
       
+      template <typename C>
+      void unpack(Entity::Id id, ComponentHandle<C>& component)
+      {
+         checkIsValid(id);
+         component = getComponent<C>(id);
+      }
+
+      template <typename C1, typename... Cn>
+      void unpack(Entity::Id id, ComponentHandle<C1>& component,
+         ComponentHandle<Cn>&... others)
+      {
+         checkIsValid(id);
+
+         component = getComponent<C1>(id);
+         unpack<Cn...>(id, others...);
+      }
+
+
    private:
       friend class Entity;
 
@@ -831,6 +913,7 @@ namespace Neat
       m_entityManager = nullptr;
    }
 
+
    template <typename C, typename... Args>
    inline
    ComponentHandle<C> Entity::addComponent(Args&&... args)
@@ -927,6 +1010,7 @@ namespace Neat
       return m_entityManager->hasComponent<C>(m_id);
    }
 
+
    template<typename C1, typename... OtherComponents>
    inline
    void Entity::unpack(ComponentHandle<C1>& c1,
@@ -937,6 +1021,7 @@ namespace Neat
       m_entityManager->unpack(m_id, c1, others...);
    }
 
+
    inline
    void Entity::destroy()
    {
@@ -945,6 +1030,7 @@ namespace Neat
       m_entityManager->destroyEntity(m_id);
       invalidate();
    }
+
 
    inline
    std::bitset<NT_MAX_COMPONENTS> Entity::getComponentMask() const
