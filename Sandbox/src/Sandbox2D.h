@@ -12,7 +12,7 @@ public:
 
    void onAttach() override;
    void onDetach() override;
-   void onUpdate(DeltaTime deltaTime) override;
+   void onUpdate(Neat::DeltaTime deltaTime) override;
    void onRender() override;
    virtual void onImGuiRender() override;
 
