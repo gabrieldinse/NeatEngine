@@ -451,7 +451,7 @@ namespace Neat
          public:
             explicit Unpacker(ComponentHandle<Components>&... componentHandles)
                : m_componentHandles(
-                  std::tuple<ComponentHandle<Components>&...>(handles...)) {}
+                  std::tuple<ComponentHandle<Components>&...>(componentHandles...)) {}
 
             void unpack(Entity& entity) const
             {
@@ -743,7 +743,8 @@ namespace Neat
       {
          auto component_mask = createComponentMask<Components...>();
 
-         return UnpackingView<Components...>(this, component_mask);
+         return
+            UnpackingView<Components...>(this, component_mask, components...);
       }
 
       DebugView entitiesForDebugging()
@@ -867,12 +868,12 @@ namespace Neat
       {
          if (m_entityComponentMasks.size() <= index)
          {
-            m_entityComponentMasks.resize(index + 1);
-            m_entityIdsVersion.resize(index + 1);
+            m_entityComponentMasks.resize((std::size_t)index + 1);
+            m_entityIdsVersion.resize((std::size_t)index + 1);
 
             for (BaseMemoryPool* component_array : m_componentArrays)
                if (component_array)
-                  component_array->resize(index + 1);
+                  component_array->resize((std::size_t)index + 1);
          }
       }
 
@@ -882,7 +883,7 @@ namespace Neat
          BaseComponent::Family family = getComponentFamily<C>();
 
          if (m_componentArrays.size() <= family)
-            m_componentArrays.resize(family + 1, nullptr);
+            m_componentArrays.resize((std::size_t)family + 1, nullptr);
 
          if (m_componentArrays[family] == nullptr)
          {
@@ -963,7 +964,7 @@ namespace Neat
       auto component_handle = getComponent<C>();
       if (component_handle)
          *(component_handle.get()) = C(std::forward<Args>(args)...);
-      else // Does not exist -> add new component to entity
+      else
          component_handle = m_entityManager->addComponent<C>(
             m_id, std::forward<Args>(args)...);
 

@@ -21,7 +21,7 @@ namespace Neat
 
       void init()
       {
-         for(auto& [_, system] : m_systems)
+         for(auto& [family, system] : m_systems)
             system->init(m_eventManager);
 
          m_initialized = true;
@@ -50,8 +50,10 @@ namespace Neat
          if (it == m_systems.end())
             throw InvalidSystemError();
 
+         auto& [family, system] = *it;
+
          return
-            std::shared_ptr<S>(std::static_pointer_cast<S>(it->second));
+            std::shared_ptr<S>(std::static_pointer_cast<S>(system));
       }
 
       void updateAll(DeltaTime deltaTime)
@@ -59,7 +61,7 @@ namespace Neat
          if (!m_initialized)
             throw SystemManagerNotInitializedError();
 
-         for (auto& [_, system] : m_systems)
+         for (auto& [family, system] : m_systems)
             system->update(m_entityManager, m_eventManager, deltaTime);
       }
 
@@ -68,7 +70,7 @@ namespace Neat
          if (!m_initialized)
             throw SystemManagerNotInitializedError();
 
-         for (auto& [_, system] : m_systems)
+         for (auto& [family, system] : m_systems)
             system->render(m_entityManager, m_eventManager);
       }
 
