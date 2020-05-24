@@ -137,7 +137,7 @@ namespace Neat
       ComponentMask getComponentMask() const;
 
    private:
-      bool checkIsValid() const;
+      void checkIsValid() const;
 
    private:
       EntityManager* m_entityManager = nullptr;
@@ -250,7 +250,7 @@ namespace Neat
 
    public:
       // ViewIterator ---------------------------------------------------------
-      template <class Delegate, bool IterateOverAll = false>
+      template <class DelegatedIterator, bool IterateOverAll = false>
       class ViewIterator
       {
       public:
@@ -261,12 +261,12 @@ namespace Neat
          using reference = value_type&;
 
       public:
-         Delegate& operator++()
+         DelegatedIterator& operator++()
          {
             ++m_pos;
             next();
 
-            return *static_cast<Delegate*>(this);
+            return *static_cast<DelegatedIterator*>(this);
          }
 
          Entity operator*()
@@ -280,12 +280,12 @@ namespace Neat
          }
 
 
-         bool operator==(const Delegate& rhs) const
+         bool operator==(const DelegatedIterator& rhs) const
          {
             return m_pos == rhs.m_pos;
          }
 
-         bool operator!=(const Delegate& rhs) const
+         bool operator!=(const DelegatedIterator& rhs) const
          {
             return m_pos != rhs.m_pos;
          }
@@ -312,7 +312,7 @@ namespace Neat
             : m_entityManager(entityManager)
             , m_componentGroupMask(componentGroupMask)
             , m_pos(index)
-            , m_capacity(m_entityManager->m_freeEntityIds.size())
+            , m_capacity(m_entityManager->capacity())
             , m_freeCursor(NT_UINT_MAX)
          {
             if (IterateOverAll)
@@ -326,9 +326,9 @@ namespace Neat
 
 
          void next()
-         {
+         { 
             while (m_pos < m_capacity &&
-               !((IterateOverAll && IsValidEntity()) || !matchComponentMask()))
+               !((IterateOverAll && IsValidEntity()) || matchComponentMask()))
             {
                ++m_pos;
             }
@@ -337,7 +337,7 @@ namespace Neat
             {
                Entity entity = m_entityManager->getEntity(
                   m_entityManager->createId(m_pos));
-               static_cast<Delegate*>(this)->nextEntity(entity);
+               static_cast<DelegatedIterator*>(this)->nextEntity(entity);
             }
          }
 
@@ -364,13 +364,13 @@ namespace Neat
          EntityManager* m_entityManager;
          ComponentMask m_componentGroupMask;
          UInt m_pos;
-         UInt m_capacity;
-         UInt m_freeCursor;
+         std::size_t m_capacity;
+         std::size_t m_freeCursor;
       };
       // ----------------------------------------------------------------------
 
 
-      // View -----------------------------------------------------------------
+      // BaseView -------------------------------------------------------------
       template <bool IterateOverAll>
       class BaseView
       {
@@ -401,7 +401,7 @@ namespace Neat
          {
             return
                Iterator(m_entityManager, m_componentGroupMask,
-                  m_entityManager->capacity());
+                  (UInt)m_entityManager->capacity());
          }
 
          const Iterator begin() const
@@ -413,7 +413,7 @@ namespace Neat
          {
             return
                Iterator(m_entityManager, m_componentGroupMask,
-                  m_entityManager->capacity());
+                  (UInt)m_entityManager->capacity());
          }
 
       private:
@@ -528,7 +528,6 @@ namespace Neat
                   m_entityManager->capacity(), m_unpacker);
          }
 
-
       private:
          friend class EntityManager;
 
@@ -547,15 +546,14 @@ namespace Neat
       // ----------------------------------------------------------------------
 
    public:
-      UInt size() const
+      std::size_t size() const
       {
-         return
-            (UInt)(m_entityComponentMasks.size() - m_freeEntityIds.size());
+         return m_entityComponentMasks.size() - m_freeEntityIds.size();
       }
 
-      UInt capacity() const
+      std::size_t capacity() const
       {
-         return (UInt)(m_entityComponentMasks.size());
+         return m_entityComponentMasks.size();
       }
 
 
@@ -734,7 +732,7 @@ namespace Neat
       template <typename... Components>
       View entitiesWithComponents()
       {
-         auto component_mask = getComponentMask<Components...>();
+         auto component_mask = createComponentMask<Components...>();
 
          return View(this, component_mask);
       }
@@ -743,7 +741,7 @@ namespace Neat
       UnpackingView<Components...> entitiesWithComponents(
          ComponentHandle<Components>&... components)
       {
-         auto component_mask = getComponentMask<Components...>();
+         auto component_mask = createComponentMask<Components...>();
 
          return UnpackingView<Components...>(this, component_mask);
       }
@@ -922,7 +920,7 @@ namespace Neat
    }
 
    inline
-   bool Entity::checkIsValid() const
+   void Entity::checkIsValid() const
    {
       if (m_entityManager == nullptr)
          throw InvalidEntityError("Assigned EntityManager is null.");
