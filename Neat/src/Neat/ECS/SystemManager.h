@@ -21,27 +21,29 @@ namespace Neat
 
       void init()
       {
-         for(auto& pair : m_systems)
-            pair.second->init(m_eventManager);
+         for(auto& [_, system] : m_systems)
+            system->init(m_eventManager);
 
          m_initialized = true;
       }
 
       template <typename S>
-      void add(std::shared_ptr<S> system)
+      void addSystem(std::shared_ptr<S> system)
       {
-         m_systems.insert(std::make_pair(S::getFamily(), system));
+         m_systems[S::getFamily()] = system;
       }
 
       template <typename S, typename... Args>
-      std::shared_ptr<S> add(Args&&... args)
+      std::shared_ptr<S> addSystem(Args&&... args)
       {
          auto system = std::make_shared<S>(std::forward<Args>(args)...);
-         add(system);
+         addSystem(system);
+
+         return system;
       }
 
       template <typename S>
-      std::shared_ptr<S> system()
+      std::shared_ptr<S> getSystem()
       {
          auto it = m_systems.find(S::getFamily());
 
@@ -57,17 +59,17 @@ namespace Neat
          if (!m_initialized)
             throw SystemManagerNotInitializedError();
 
-         for (auto& pair : m_systems)
-            pair.second->update(m_entityManager, m_eventManager, deltaTime);
+         for (auto& [_, system] : m_systems)
+            system->update(m_entityManager, m_eventManager, deltaTime);
       }
 
-      void renderAll(DeltaTime deltaTime)
+      void renderAll()
       {
          if (!m_initialized)
             throw SystemManagerNotInitializedError();
 
-         for (auto& pair : m_systems)
-            pair.second->render(m_entityManager, m_eventManager);
+         for (auto& [_, system] : m_systems)
+            system->render(m_entityManager, m_eventManager);
       }
 
    private:

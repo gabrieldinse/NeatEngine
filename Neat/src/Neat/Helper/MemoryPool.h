@@ -17,7 +17,16 @@ namespace Neat
       explicit BaseMemoryPool(std::size_t elementSize, std::size_t blockSize)
          : m_elementSize(elementSize), m_blockSize(blockSize) {}
 
-      ~BaseMemoryPool() = default;
+      ~BaseMemoryPool()
+      {
+         for (Byte* ptr : m_memoryBlocks)
+            delete [] ptr;
+      }
+
+
+      UInt size() const { return (UInt)m_size; }
+      UInt capacity() const { return (UInt)m_capacity; }
+      UInt chunks() const { return (UInt)m_memoryBlocks.size(); }
 
 
       void resize(std::size_t count)
@@ -35,30 +44,41 @@ namespace Neat
          while (m_capacity < count)
          {
             auto block = new Byte [m_elementSize * m_blockSize];
-            m_blocks.push_back(block);
+            m_memoryBlocks.push_back(block);
+            m_capacity += m_blockSize;
          }
       }
 
 
-      void* operator[](std::size_t n)
+      void* at(std::size_t n)
       {
          NT_CORE_ASSERT(n < m_size, "Memory pool index out of range!");
 
-         return &m_blocks[n / m_blockSize][(n % m_blockSize) * m_elementSize];
+         return &m_memoryBlocks[n / m_blockSize][(n % m_blockSize) * m_elementSize];
+      }
+
+      const void* at(std::size_t n) const
+      {
+         NT_CORE_ASSERT(n < m_size, "Memory pool index out of range!");
+
+         return &m_memoryBlocks[n / m_blockSize][(n % m_blockSize) * m_elementSize];
+      }
+
+      void* operator[](std::size_t n)
+      {
+         return at(n);
       }
 
       const void* operator[](std::size_t n) const
       {
-         NT_CORE_ASSERT(n < m_size, "Memory pool index out of range!");
-
-         return &m_blocks[n / m_blockSize][(n % m_blockSize) * m_elementSize];
+         return at(n);
       }
 
 
       virtual void destroy(std::size_t n) = 0;
 
    protected:
-      std::vector<Byte*> m_blocks;
+      std::vector<Byte*> m_memoryBlocks;
       std::size_t m_blockSize;
       std::size_t m_elementSize;
       std::size_t m_size = 0;
@@ -69,20 +89,19 @@ namespace Neat
    // ---------------------------------------------------------------------- //
    // MemoryPool ----------------------------------------------------------- //
    // ---------------------------------------------------------------------- //
-   template <typename T, std::size_t blockSize = 8192>
+   template <typename T, std::size_t BlockSize = 8192>
    class MemoryPool : public BaseMemoryPool
    {
    public:
-      MemoryPool() : BaseMemoryPool(sizeof(T), blockSize) {}
+      MemoryPool() : BaseMemoryPool(sizeof(T), BlockSize) {}
 
       virtual ~MemoryPool() = default;
-
 
       virtual void destroy(std::size_t n) override
       {
          NT_CORE_ASSERT(n < m_size, "Memory pool index out of range!");
 
-         T* ptr = static_cast<T*>(*this)[n]);
+         T* ptr = static_cast<T*>(this->at(n));
          ptr->~T();
       }
    };

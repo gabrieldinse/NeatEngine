@@ -6,6 +6,9 @@
 
 namespace Neat
 {
+   constexpr std::size_t NT_MAX_COMPONENTS = 64;
+
+
    // ---------------------------------------------------------------------- //
    // BaseComponent -------------------------------------------------------- //
    // ---------------------------------------------------------------------- //
@@ -35,7 +38,7 @@ namespace Neat
       static Family getFamily()
       {
          static Family family = s_familyCounter++;
-         if (family == NT_MAX_COMPONENTS)
+         if (family >= NT_MAX_COMPONENTS)
             throw MaximumNumberOfComponentsError();
 
          return family;

@@ -5,11 +5,21 @@ namespace Neat
 {
    float degreesToRadians(float angleDegrees)
    {
-      return angleDegrees * NT_PI / 180.0f;
+      return (float)((angleDegrees / 180.0) * NT_PI);
    }
 
    float radiansToDegrees(float angleRadians)
    {
-      return angleRadians * 180.0f / NT_PI;
+      return (float)((angleRadians / NT_PI) * 180.0);
+   }
+
+   double degreesToRadiansD(double angleDegrees)
+   {
+      return (angleDegrees / 180.0) * NT_PI;
+   }
+
+   double radiansToDegreesD(double angleRadians)
+   {
+      return (angleRadians / NT_PI) * 180.0;
    }
 }
