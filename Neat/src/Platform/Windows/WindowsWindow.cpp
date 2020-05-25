@@ -3,7 +3,6 @@
 #include "Neat/Core/Application.h"
 #include "Neat/Events/Event.h"
 #include "Neat/Renderer/GraphicsContext.h"
-#include "Neat/Debug/Instrumentator.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -61,32 +60,24 @@ namespace Neat
          : events(eventManager), props(props)
       {
          static Int windowCount = 0;
-         NT_PROFILE_FUNCTION();
+         
 
          if (windowCount == 0)
          {
-            NT_PROFILE_SCOPE("GLFW initialization");
             Int status = glfwInit();
             glfwSetErrorCallback(GLFWErrorCallback);
             NT_CORE_ASSERT(status, "Failed to initialize GLFW!");
          }
 
-         {
-            NT_PROFILE_SCOPE("GLFW initialization");
+         window = GLFWwindowUniquePtr(glfwCreateWindow(
+            (Int)props.width, (Int)props.height,
+            props.title.c_str(), NULL, NULL));
+         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+         windowCount++;
 
-            window = GLFWwindowUniquePtr(glfwCreateWindow(
-               (Int)props.width, (Int)props.height,
-               props.title.c_str(), NULL, NULL));
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-            windowCount++;
-         }
-
-         {
-            NT_PROFILE_SCOPE("OpenGL context initialization");
-            context = std::make_unique<GraphicsContext>(window.get());
-         }
+         context = std::make_unique<GraphicsContext>(window.get());
       }
    };
 
@@ -94,8 +85,6 @@ namespace Neat
    Window::Window(EventManager& eventManager, const WindowProps& props)
       : m_data(std::make_unique<WindowImpl>(eventManager, props))
    {
-      NT_PROFILE_FUNCTION();
-
       NT_CORE_INFO("Created window {0} ({1}, {2})",
          props.title,
          props.width,
@@ -134,10 +123,8 @@ namespace Neat
    {
    }
 
-   void Window::onUpdate()
+   void Window::update()
    {
-      NT_PROFILE_FUNCTION();
-
       glfwPollEvents();
       m_data->context->swapBuffers();
    }
@@ -149,8 +136,6 @@ namespace Neat
 
    void Window::setVSync(bool enabled)
    {
-      NT_PROFILE_FUNCTION();
-
       if (enabled)
          glfwSwapInterval(1);
       else
@@ -168,8 +153,6 @@ namespace Neat
    // ---------------------------------------------------------------------- //
    void windowResizeCallback(GLFWwindow* window, Int width, Int height)
    {
-      NT_PROFILE_FUNCTION();
-
       auto& data = *static_cast<Window::WindowImpl*>(
          glfwGetWindowUserPointer(window));
 
@@ -186,8 +169,6 @@ namespace Neat
 
    void windowCloseCallback(GLFWwindow* window)
    {
-      NT_PROFILE_FUNCTION();
-
       auto& data = *static_cast<Window::WindowImpl*>(
          glfwGetWindowUserPointer(window));
       data.events.publish<WindowCloseEvent>();
@@ -196,8 +177,6 @@ namespace Neat
    void keyActionCallback(
       GLFWwindow* window, Int key, Int scancode, Int action, Int mods)
    {
-      NT_PROFILE_FUNCTION();
-
       auto& data = *(Window::WindowImpl*)glfwGetWindowUserPointer(window);
 
       switch (action)
@@ -222,8 +201,6 @@ namespace Neat
 
    void keyTypeCallback(GLFWwindow* window, UInt key)
    {
-      NT_PROFILE_FUNCTION();
-
       auto& data = *static_cast<Window::WindowImpl*>(
          glfwGetWindowUserPointer(window));
       data.events.publish<KeyTypedEvent>(static_cast<KeyCode>(key));
@@ -232,8 +209,6 @@ namespace Neat
    void mouseButtonActionCallback(
       GLFWwindow* window, Int button, Int action, Int mods)
    {
-      NT_PROFILE_FUNCTION();
-
       auto& data = *static_cast<Window::WindowImpl*>(
          glfwGetWindowUserPointer(window));
 
@@ -259,8 +234,6 @@ namespace Neat
    void mouseScrollCallback(
       GLFWwindow* window, double xOffset, double yOffset)
    {
-      NT_PROFILE_FUNCTION();
-
       auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
 
       MouseScrolledEvent event((float)xOffset, (float)yOffset);
@@ -270,8 +243,6 @@ namespace Neat
    void mouseMoveCallback(
       GLFWwindow* window, double xPos, double yPos)
    {
-      NT_PROFILE_FUNCTION();
-
       auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
 
       MouseMovedEvent event((float)xPos, (float)yPos);
