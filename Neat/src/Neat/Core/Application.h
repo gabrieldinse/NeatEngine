@@ -46,12 +46,6 @@ namespace Neat
       bool receive(const WindowCloseEvent& event);
       bool receive(const WindowResizeEvent& event);
 
-      EventManager events;
-
-   private:
-      void updateLoop();
-      void renderLoop();
-
    private:
       static Application* s_instance;
 

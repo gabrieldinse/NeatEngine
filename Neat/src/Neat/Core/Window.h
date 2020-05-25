@@ -43,7 +43,7 @@ namespace Neat
          const WindowProps& props = WindowProps());
       ~Window();
 
-      void onUpdate();
+      void update();
 
       Int getWidth() const;
       Int getHeight() const;

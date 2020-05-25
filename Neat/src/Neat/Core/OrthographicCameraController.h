@@ -13,7 +13,7 @@ namespace Neat
    {
    public:
       OrthographicCameraController(float aspectRatio,
-         EventManager& eventManager = Application::get().events,
+         EventManager& eventManager = events(),
          bool rotationEnabled = true);
 
       ~OrthographicCameraController();
@@ -21,7 +21,7 @@ namespace Neat
       OrthographicCamera& getCamera() { return m_camera; }
       const OrthographicCamera& getCamera() const { return m_camera; }
 
-      void onUpdate(DeltaTime deltaTime);
+      void update(DeltaTime deltaTime);
 
       bool receive(const MouseScrolledEvent& event);
       bool receive(const MouseMovedEvent& event);

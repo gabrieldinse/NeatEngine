@@ -18,8 +18,8 @@ namespace Neat
 
       virtual void onAttach() {}
       virtual void onDetach() {}
-      virtual void onUpdate(DeltaTime deltaTime) {}
-      virtual void onRender() {}
+      virtual void update(DeltaTime deltaTime) {}
+      virtual void render() {}
       virtual void onImGuiRender() {}
 
    private:

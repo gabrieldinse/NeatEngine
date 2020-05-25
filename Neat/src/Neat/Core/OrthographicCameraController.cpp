@@ -4,7 +4,6 @@
 #include "Neat/Core/OrthographicCameraController.h"
 #include "Neat/Core/Input.h"
 #include "Neat/Core/Log.h"
-#include "Neat/Debug/Instrumentator.h"
 #include "Neat/Math/Transforms.h"
 
 
@@ -31,10 +30,8 @@ namespace Neat
       m_events.unsubscribe<WindowResizeEvent>(*this);
    }
 
-   void OrthographicCameraController::onUpdate(DeltaTime deltaTime)
+   void OrthographicCameraController::update(DeltaTime deltaTime)
    {
-      NT_PROFILE_FUNCTION();
-
       if (!((Input::isKeyPressed(KeyCode::LeftControl) ||
          Input::isKeyPressed(KeyCode::RightControl)) &&
          Input::isMouseButtonPressed(MouseCode::ButtonLeft)))
@@ -86,8 +83,6 @@ namespace Neat
 
    bool OrthographicCameraController::receive(const MouseScrolledEvent& event)
    {
-      NT_PROFILE_FUNCTION();
-
       if ((Input::isKeyPressed(KeyCode::LeftControl) ||
          Input::isKeyPressed(KeyCode::RightControl)))
       {
@@ -105,8 +100,6 @@ namespace Neat
 
    bool OrthographicCameraController::receive(const MouseMovedEvent& event)
    {
-      NT_PROFILE_FUNCTION();
-
       Vector2 current_mouse_position(event.xPos, event.yPos);
 
       if ((Input::isKeyPressed(KeyCode::LeftControl) ||
@@ -135,8 +128,6 @@ namespace Neat
 
    bool OrthographicCameraController::receive(const WindowResizeEvent& event)
    {
-      NT_PROFILE_FUNCTION();
-
       m_aspectRatio = (float)event.width / (float)event.height;
       m_camera.setProjection(
          -m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel,

@@ -8,7 +8,6 @@
 #include "Neat/Events/Event.h"
 #include "Neat/ImGui/ImGuiRender.h"
 #include "Neat/Renderer/Renderer.h"
-#include "Neat/Debug/Instrumentator.h"
 #include "Neat/Helper/FPSCounter.h"
 
 
@@ -18,16 +17,14 @@ namespace Neat
 
    Application::Application()
    {
-      NT_PROFILE_FUNCTION();
-
       // Check of there's another application running
       NT_CORE_ASSERT(!s_instance, "Application already exists!");
       s_instance = this;
 
-      m_window = std::make_unique<Window>(this->events);
+      m_window = std::make_unique<Window>(events());
 
-      events.subscribe<WindowCloseEvent>(*this);
-      events.subscribe<WindowResizeEvent>(*this);
+      events().subscribe<WindowCloseEvent>(*this);
+      events().subscribe<WindowResizeEvent>(*this);
 
       Renderer::init();
       ImGuiRender::init();
@@ -36,23 +33,11 @@ namespace Neat
 
    Application::~Application()
    {
-      NT_PROFILE_FUNCTION();
-
-      events.unsubscribe<WindowCloseEvent>(*this);
-      events.unsubscribe<WindowResizeEvent>(*this);
+      events().unsubscribe<WindowCloseEvent>(*this);
+      events().unsubscribe<WindowResizeEvent>(*this);
 
       Renderer::shutdown();
       ImGuiRender::shutdown();
-   }
-
-   void Application::run()
-   {
-      NT_PROFILE_FUNCTION();
-
-      m_running = true;
-      std::thread update_loop(&Application::updateLoop, this);
-      renderLoop();
-      update_loop.join();
    }
 
    void Application::stop()
@@ -60,104 +45,89 @@ namespace Neat
       m_running = false;
    }
 
-   void Application::updateLoop()
-   {
-      Stopwatch stopwatch;
-      double accumulator = 0.0f;
-      stopwatch.start();
-
-      while (m_running)
-      {
-         NT_PROFILE_SCOPE("Update loop");
-
-         accumulator += stopwatch.restart();
-
-         while (accumulator >= m_updatePeriod)
-         {
-            NT_PROFILE_SCOPE("LayerGroup onUpdate");
-
-            for (auto& layer : m_layerGroup)
-               layer->onUpdate(m_updatePeriod);
-            accumulator -= m_updatePeriod;
-         }
-      }
-   }
-
-   void Application::renderLoop()
+   void Application::run()
    {
       FPSCounter fps_counter;
+      Stopwatch stopwatch;
+      double accumulator = 0.0f;
+
+      m_running = true;
+
+      stopwatch.start();
       fps_counter.start();
 
       while (m_running)
       {
-         NT_PROFILE_SCOPE("Render loop");
-
+         accumulator += stopwatch.restart();
          fps_counter.addFrame();
+
+         while (accumulator >= m_updatePeriod)
+         {
+            for (auto& layer : m_layerGroup)
+               layer->update(m_updatePeriod);
+            accumulator -= m_updatePeriod;
+         }
 
          if (!m_window->isMinimized())
          {
-            NT_PROFILE_SCOPE("LayerGroup onRender");
-
             for (auto& layer : m_layerGroup)
-               layer->onRender();
+               layer->render();
          }
 
       #ifdef NT_IMGUI
          ImGuiRender::begin();
-         {
-            NT_PROFILE_SCOPE("LayerGroup onImGuiRender");
 
-            for (auto& layer : m_layerGroup)
-               layer->onImGuiRender();
-         }
+         for (auto& layer : m_layerGroup)
+            layer->onImGuiRender();
+
          ImGuiRender::end();
       #endif
 
-         m_window->onUpdate();
+         m_window->update();
       }
    }
 
    void Application::pushLayer(std::unique_ptr<Layer>&& layer)
    {
-      NT_PROFILE_FUNCTION();
-
       m_layerGroup.pushLayer(std::move(layer));
    }
 
    void Application::pushOverlay(std::unique_ptr<Layer>&& layer)
    {
-      NT_PROFILE_FUNCTION();
-
       m_layerGroup.pushOverlay(std::move(layer));
    }
 
    std::unique_ptr<Layer> Application::popLayer(Int position)
    {
-      NT_PROFILE_FUNCTION();
-
       return m_layerGroup.popLayer(position);
    }
 
    std::unique_ptr<Layer> Application::popLayer(const std::string& name)
    {
-      NT_PROFILE_FUNCTION();
-
       return m_layerGroup.popLayer(name);
    }
 
 
    std::unique_ptr<Layer> Application::popOverlay(Int position)
    {
-      NT_PROFILE_FUNCTION();
-
       return m_layerGroup.popOverlay(position);
    }
 
    std::unique_ptr<Layer> Application::popOverlay(const std::string& name)
    {
-      NT_PROFILE_FUNCTION();
-
       return m_layerGroup.popOverlay(name);
+   }
+
+   template <typename T, typename... Args>
+   void Application::pushLayer(Args&&... args)
+   {
+      pushLayer(std::make_unique<T>(std::forward<Args>(args)...));
+   }
+
+   template <typename T, typename... Args>
+   void Application::pushOverlay(Args&&... args)
+   {
+      pushOverlay(std::make_unique<T>(std::forward<Args>(args)...));
    }
 
 
