@@ -2,7 +2,7 @@
 #include "Neat/Core/Log.h"
 #include "Neat/Core/Application.h"
 #include "Neat/Events/Event.h"
-#include "Neat/Renderer/GraphicsContext.h"
+#include "Neat/Graphics/GraphicsContext.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

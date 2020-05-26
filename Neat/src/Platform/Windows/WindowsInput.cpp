@@ -8,6 +8,9 @@
 
 namespace Neat
 {
+   std::unique_ptr<Input::InputImpl> Input::s_data;
+
+
    struct Input::InputImpl
    {
       InputImpl(GLFWwindow* window) : window(window) {}
@@ -15,22 +18,24 @@ namespace Neat
       GLFWwindow* window;
    };
 
-   std::unique_ptr<Input::InputImpl> Input::s_data;
+   
 
-   void Input::init(void* window)
+   void Input::setWindow(GLFWwindow* window)
    {
-      s_data = std::make_unique<InputImpl>(static_cast<GLFWwindow*>(window));
+      s_data = std::make_unique<InputImpl>(window);
    }
 
    bool Input::isKeyPressed(KeyCode key)
    {
       auto state = glfwGetKey(s_data->window, static_cast<Int>(key));
+
       return (state == GLFW_PRESS || state == GLFW_REPEAT);
    }
 
    bool Input::isMouseButtonPressed(MouseCode button)
    {
       auto state = glfwGetMouseButton(s_data->window, static_cast<Int>(button));
+
       return (state == GLFW_PRESS);
    }
 
@@ -38,6 +43,7 @@ namespace Neat
    {
       double xPos, yPos;
       glfwGetCursorPos(s_data->window, &xPos, &yPos);
+
       return { (float)xPos, (float)yPos };
    }
 
