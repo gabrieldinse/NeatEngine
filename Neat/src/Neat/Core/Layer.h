@@ -11,18 +11,13 @@ namespace Neat
    class Layer
    {
    public:
-      Layer(const std::string& name = "Layer");
-      virtual ~Layer();
+      Layer() = default;
+      virtual ~Layer() = default;
 
-      const std::string& getName() const { return m_name; }
-
-      virtual void onAttach() {}
-      virtual void onDetach() {}
+      virtual void attach() {}
+      virtual void detach() {}
       virtual void update(DeltaTime deltaTime) {}
       virtual void render() {}
-      virtual void onImGuiRender() {}
-
-   private:
-      std::string m_name;
+      virtual void inGuiRender() {}
    };
 }

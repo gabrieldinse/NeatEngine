@@ -10,15 +10,19 @@ namespace Neat
    // Base common exception ---------------------------------------------------
    struct Exception : public std::exception
    {
-      Exception(const std::string& msg) : what(msg) {}
+      Exception(const std::string& msg) : m_msg(msg) {}
 
-      std::string what;
+      const std::string& msg() const { return m_msg; }
+      virtual const char* what() const override { return m_msg.c_str(); }
+
+   private:
+      std::string m_msg;
    };
    // -------------------------------------------------------------------------
    // -------------------------------------------------------------------------
 
 
-   // Stopwatch exceptions --------------------------------------------------
+   // Timer exceptions --------------------------------------------------
    struct StopwatchError : Exception
    {
       StopwatchError(const std::string& msg) : Exception(msg) {}
@@ -34,7 +38,7 @@ namespace Neat
    struct StopwatchNotStartedError : public StopwatchError
    {
       StopwatchNotStartedError(
-         const std::string& msg = "Stopwatch has not been started.")
+         const std::string& msg = "Timer has not been started.")
          : StopwatchError(msg) {}
    };
    // -------------------------------------------------------------------------

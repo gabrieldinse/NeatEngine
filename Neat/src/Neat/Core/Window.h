@@ -20,8 +20,6 @@ namespace Neat
    class Window
    {
    public:
-      struct WindowImpl;
-
       // WindowProps ----------------------------------------------------------
       struct WindowProps
       {
@@ -56,6 +54,7 @@ namespace Neat
       bool isSync() const;
 
    private:
+      struct WindowImpl;
       std::unique_ptr<WindowImpl> m_data;
    };
 }

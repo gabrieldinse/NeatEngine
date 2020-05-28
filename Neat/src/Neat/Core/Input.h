@@ -16,7 +16,7 @@ namespace Neat
       struct InputImpl;
 
    public:
-      static void init(void* window);
+      static void setWindow(void* window);
       static bool isKeyPressed(KeyCode key);
       static bool isMouseButtonPressed(MouseCode button);
       static Vector2 getMousePosition();

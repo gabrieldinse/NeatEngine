@@ -23,12 +23,14 @@ namespace Neat
       LayerGroup();
       ~LayerGroup();
 
+      template <typename T, typename... Args>
+      void pushLayer(Args&&... args);
+      template <typename T, typename... Args>
+      void pushOverlay(Args&&... args);
       void pushLayer(std::unique_ptr<Layer>&& layer);
       void pushOverlay(std::unique_ptr<Layer>&& layer);
       std::unique_ptr<Layer> popLayer(Int position);
       std::unique_ptr<Layer> popOverlay(Int position);
-      std::unique_ptr<Layer> popLayer(const std::string& name);
-      std::unique_ptr<Layer> popOverlay(const std::string& name);
 
       LayerVectorIt begin() { return m_layers.begin(); }
       LayerVectorIt end() { return m_layers.end(); }
@@ -43,4 +45,17 @@ namespace Neat
       LayerVector m_layers;
       LayerVector::size_type m_insertIndex;
    };
+
+
+   template <typename T, typename... Args>
+   void LayerGroup::pushLayer(Args&&... args)
+   {
+      pushLayer(std::make_unique<T>(std::forward<Args>(args)...));
+   }
+
+   template <typename T, typename... Args>
+   void LayerGroup::pushOverlay(Args&&... args)
+   {
+      pushOverlay(std::make_unique<T>(std::forward<Args>(args)...));
+   }
 }

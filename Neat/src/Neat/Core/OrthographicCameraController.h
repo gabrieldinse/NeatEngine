@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Renderer/OrthographicCamera.h"
+#include "Neat/Graphics/OrthographicCamera.h"
 #include "Neat/Events/Event.h"
 #include "Neat/Events/EventManager.h"
 #include "Neat/Math/Vector.h"
@@ -13,7 +13,7 @@ namespace Neat
    {
    public:
       OrthographicCameraController(float aspectRatio,
-         EventManager& eventManager = events(),
+         EventManager& eventManager = Application::get().events(),
          bool rotationEnabled = true);
 
       ~OrthographicCameraController();
@@ -32,8 +32,6 @@ namespace Neat
       float m_zoomLevel = 1.0f;
 
       OrthographicCamera m_camera;
-
-      EventManager& m_events;
 
       Vector3 m_cameraPosition = {0.0f, 0.0f, 0.0f};
       Vector2 m_lastMousePosition;

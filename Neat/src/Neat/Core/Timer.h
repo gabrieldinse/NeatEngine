@@ -12,19 +12,14 @@ namespace Neat
    enum class TimeUnit : UIntShort
    {
       None = 0,
-      Nanoseconds,
-      Microseconds,
-      Milliseconds,
-      Seconds,
-      Minutes,
-      Hours,
-      Days
+      Nanoseconds, Microseconds, Milliseconds, Seconds,
+      Minutes, Hours, Days
    };
 
-   class Stopwatch
+   class Timer
    {
    public:
-      Stopwatch() = default;
+      Timer() = default;
 
       void start()
       {
@@ -37,7 +32,7 @@ namespace Neat
       template <typename T = double>
       T stop(TimeUnit timeUnit = TimeUnit::Seconds)
       {
-         auto time_passed = mark<T>(timeUnit);
+         auto time_passed = elapsed<T>(timeUnit);
          m_started = false;
 
          return time_passed;
@@ -46,14 +41,14 @@ namespace Neat
       template <typename T = double>
       T restart(TimeUnit timeUnit = TimeUnit::Seconds)
       {
-         auto time_passed = mark<T>(timeUnit);
+         auto time_passed = elapsed<T>(timeUnit);
          m_startTicks = m_currentTicks;
 
          return time_passed;
       }
 
       template <typename T = double>
-      T mark(TimeUnit timeUnit = TimeUnit::Seconds)
+      T elapsed(TimeUnit timeUnit = TimeUnit::Seconds)
       {
          if (m_started)
          {

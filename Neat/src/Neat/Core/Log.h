@@ -11,7 +11,7 @@
 
 namespace Neat
 {
-   class  Log
+   class Log
    {
    public:
       Log() = default;

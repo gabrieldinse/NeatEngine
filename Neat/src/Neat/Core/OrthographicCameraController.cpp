@@ -15,19 +15,15 @@ namespace Neat
       , m_camera(-m_aspectRatio * m_zoomLevel, m_aspectRatio* m_zoomLevel,
          -m_zoomLevel, m_zoomLevel, -m_zoomLevel)
       , m_rotationEnabled(rotationEnabled)
-      , m_events(eventManager)
       , m_lastMousePosition(Input::getMouseX(), Input::getMouseY())
    {
-      m_events.subscribe<MouseMovedEvent>(*this);
-      m_events.subscribe<MouseScrolledEvent>(*this);
-      m_events.subscribe<WindowResizeEvent>(*this);
+      eventManager.subscribe<MouseMovedEvent>(*this);
+      eventManager.subscribe<MouseScrolledEvent>(*this);
+      eventManager.subscribe<WindowResizeEvent>(*this);
    }
 
    OrthographicCameraController::~OrthographicCameraController()
    {
-      m_events.unsubscribe<MouseMovedEvent>(*this);
-      m_events.unsubscribe<MouseScrolledEvent>(*this);
-      m_events.unsubscribe<WindowResizeEvent>(*this);
    }
 
    void OrthographicCameraController::update(DeltaTime deltaTime)
