@@ -20,9 +20,9 @@ namespace Neat
 
    
 
-   void Input::setWindow(GLFWwindow* window)
+   void Input::setWindow(void* window)
    {
-      s_data = std::make_unique<InputImpl>(window);
+      s_data = std::make_unique<InputImpl>(static_cast<GLFWwindow*>(window));
    }
 
    bool Input::isKeyPressed(KeyCode key)

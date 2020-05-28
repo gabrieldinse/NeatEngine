@@ -11,7 +11,7 @@
 #include "Neat/Core/KeyCodes.h"
 #include "Neat/Core/MouseCodes.h"
 
-#include "Neat/Core/Stopwatch.h"
+#include "Neat/Core/Timer.h"
 
 #include "Neat/Core/OrthographicCameraController.h"
 
@@ -19,13 +19,21 @@
 #include "Neat/Events/EventManager.h"
 // ----------------------------------------------------------------------------
 
-// Renderer -------------------------------------------------------------------
-#include "Neat/Renderer/Renderer.h"
-#include "Neat/Renderer/Renderer2D.h"
-#include "Neat/Renderer/RenderCommand.h"
+// Graphics -------------------------------------------------------------------
+#include "Neat/Graphics/Renderer.h"
+#include "Neat/Graphics/Renderer2D.h"
+#include "Neat/Graphics/RenderCommand.h"
 
-#include "Neat/Renderer/Texture.h"
-#include "Neat/Renderer/SubTexture2D.h"
+#include "Neat/Graphics/Texture.h"
+#include "Neat/Graphics/SubTexture2D.h"
+// ----------------------------------------------------------------------------
+
+// ECS ------------------------------------------------------------------------
+#include "Neat/ECS/SystemManager.h"
+#include "Neat/ECS/System.h"
+#include "Neat/ECS/Entity.h"
+#include "Neat/ECS/Systems.h"
+#include "Neat/ECS/Components.h"
 // ----------------------------------------------------------------------------
 
 // Math -----------------------------------------------------------------------
@@ -36,6 +44,3 @@
 #include "Neat/Math/Transforms.h"
 #include "Neat/Math/Utility.h"
 // ----------------------------------------------------------------------------
-
-// Debug ----------------------------------------------------------------------
-#include "Neat/Debug/Instrumentator.h"

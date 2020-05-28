@@ -108,6 +108,10 @@ namespace Neat
       constexpr T& operator()(std::size_t pos);
       constexpr const T& operator()(std::size_t pos) const;
 
+      // Static member functions
+      static constexpr
+      Matrix<3, 3, T> identity() { return Matrix<3, 3, T>(static_cast<T>(1)); }
+
    private:
       // Class data
       union

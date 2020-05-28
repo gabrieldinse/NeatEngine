@@ -56,6 +56,16 @@ namespace Neat
             std::shared_ptr<S>(std::static_pointer_cast<S>(system));
       }
 
+      template <typename S>
+      void update(DeltaTime deltaTime)
+      {
+         if (!m_initialized)
+            throw SystemManagerNotInitializedError();
+
+         auto system = getSystem<S>();
+         system->update(m_entityManager, m_eventManager, deltaTime);
+      }
+
       void updateAll(DeltaTime deltaTime)
       {
          if (!m_initialized)
@@ -63,15 +73,6 @@ namespace Neat
 
          for (auto& [family, system] : m_systems)
             system->update(m_entityManager, m_eventManager, deltaTime);
-      }
-
-      void renderAll()
-      {
-         if (!m_initialized)
-            throw SystemManagerNotInitializedError();
-
-         for (auto& [family, system] : m_systems)
-            system->render(m_entityManager, m_eventManager);
       }
 
    private:

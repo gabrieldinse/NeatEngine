@@ -90,17 +90,28 @@ namespace Neat
       Matrix<2, 2, T>& operator/=(U scalar);
 
 
-      constexpr UInt size() const { return 2 * 2; }
+      constexpr
+      UInt size() const { return 2 * 2; }
 
       // Elements acessing
-      constexpr T* dataPointer() { return m_flattened; }
-      constexpr const T* dataPointer() const { return m_flattened; }
+      constexpr
+      T* dataPointer() { return m_flattened; }
+      constexpr
+      const T* dataPointer() const { return m_flattened; }
 
-      constexpr RowType& operator[](std::size_t row);
-      constexpr const RowType& operator[](std::size_t row) const;
+      constexpr
+      RowType& operator[](std::size_t row);
+      constexpr
+      const RowType& operator[](std::size_t row) const;
 
-      constexpr T& operator()(std::size_t pos);
-      constexpr const T& operator()(std::size_t pos) const;
+      constexpr
+      T& operator()(std::size_t pos);
+      constexpr
+      const T& operator()(std::size_t pos) const;
+
+      // Static member functions
+      static constexpr
+      Matrix<2, 2, T> identity() { return Matrix<2, 2, T>(static_cast<T>(1)); }
 
    private:
       // Class data

@@ -52,6 +52,15 @@ namespace Neat
 
    template <typename T>
    Vector<4, T> normalize(const Vector<4, T>& v);
+
+   // Reflect
+   template <UInt N, typename T>
+   Vector<N, T> reflect(const Vector<N, T>& v, const Vector<N, T>& normal);
+
+   // Refract
+   template <UInt N, typename T>
+   Vector<N, T> refract(
+      const Vector<N, T>& v, const Vector<N, T>& normal, T eta);
 }
 
 #include "Neat/Math/VectorOperations.inl"

@@ -174,10 +174,11 @@ namespace Neat
       data.events.publish<WindowCloseEvent>();
    }
 
-   void keyActionCallback(
-      GLFWwindow* window, Int key, Int scancode, Int action, Int mods)
+   void keyActionCallback(GLFWwindow* window, Int key, Int scancode,
+      Int action, Int mods)
    {
-      auto& data = *(Window::WindowImpl*)glfwGetWindowUserPointer(window);
+      auto& data = *static_cast<Window::WindowImpl*>(
+         glfwGetWindowUserPointer(window));
 
       switch (action)
       {
@@ -231,19 +232,19 @@ namespace Neat
       }
    }
 
-   void mouseScrollCallback(
-      GLFWwindow* window, double xOffset, double yOffset)
+   void mouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
    {
-      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(
+         glfwGetWindowUserPointer(window));
 
       MouseScrolledEvent event((float)xOffset, (float)yOffset);
       data.events.publish<MouseScrolledEvent>((float)xOffset, (float)yOffset);
    }
 
-   void mouseMoveCallback(
-      GLFWwindow* window, double xPos, double yPos)
+   void mouseMoveCallback(GLFWwindow* window, double xPos, double yPos)
    {
-      auto& data = *static_cast<Window::WindowImpl*>(glfwGetWindowUserPointer(window));
+      auto& data = *static_cast<Window::WindowImpl*>(
+         glfwGetWindowUserPointer(window));
 
       MouseMovedEvent event((float)xPos, (float)yPos);
       data.events.publish<MouseMovedEvent>((float)xPos, (float)yPos);

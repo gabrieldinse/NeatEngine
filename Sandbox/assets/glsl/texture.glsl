@@ -23,7 +23,7 @@ void main()
 	vs_out.color = color;
 	vs_out.textureIndex = textureIndex;
 	vs_out.tilingFactor = tilingFactor;
-	gl_Position = u_projectionView * position;	
+	gl_Position = position * u_projectionView;	
 }
 
 #type fragment

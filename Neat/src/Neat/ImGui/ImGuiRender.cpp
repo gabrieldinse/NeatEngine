@@ -1,6 +1,5 @@
 #include "Neat/Core/Application.h"
 #include "Neat/ImGui/ImGuiRender.h"
-#include "Neat/Debug/Instrumentator.h"
 
 #include <imgui.h> // need to be before the next two includes
 #include "examples/imgui_impl_opengl3.h"
@@ -14,8 +13,6 @@ namespace Neat
 {
    void ImGuiRender::init()
    {
-      NT_PROFILE_FUNCTION();
-
       // Setup Dear ImGui context
       IMGUI_CHECKVERSION();
       ImGui::CreateContext();
@@ -50,8 +47,6 @@ namespace Neat
 
    void ImGuiRender::shutdown()
    {
-      NT_PROFILE_FUNCTION();
-
       ImGui_ImplOpenGL3_Shutdown();
       ImGui_ImplGlfw_Shutdown();
       ImGui::DestroyContext();
@@ -59,8 +54,6 @@ namespace Neat
 
    void ImGuiRender::begin()
    {
-      NT_PROFILE_FUNCTION();
-
       ImGui_ImplOpenGL3_NewFrame();
       ImGui_ImplGlfw_NewFrame();
       ImGui::NewFrame();
@@ -68,8 +61,6 @@ namespace Neat
 
    void ImGuiRender::end()
    {
-      NT_PROFILE_FUNCTION();
-
       auto& io = ImGui::GetIO();
       auto& app = Application::get();
       io.DisplaySize = ImVec2(

@@ -13,6 +13,29 @@
 
 namespace Neat
 {
+   // ---------------------------------------------------------------------- //
+   // ShaderProgramBuilder ------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
+   class ShaderProgramBuilder
+   {
+   public:
+      ShaderProgramBuilder(const std::string& filepath);
+      ShaderProgramBuilder(const std::string& vertexSource,
+         const std::string& fragmentSource);
+      UInt build();
+
+   private:
+      void preprocessShaderSource();
+
+   private:
+      std::string m_fileContent;
+      std::unordered_map<UInt, std::string> m_shaderSources;
+   };
+
+
+   // ---------------------------------------------------------------------- //
+   // ShaderProgram -------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
    class ShaderProgram
    {
    public:
@@ -30,22 +53,21 @@ namespace Neat
 
       UInt getId() const { return m_id; }
 
-      const UniformLibrary& getUniformLibrary() const { return *m_uniformLibrary; }
-
-   private:
-      void compile(
-         const std::unordered_map<UInt, std::string>& shaderSources);
-      std::string readFile(const std::string& filepath);
-      std::unordered_map<UInt, std::string> preprocessShaderSource(
-         const std::string& source);
+      const UniformLibrary& getUniformLibrary() const
+      {
+         return m_uniformLibrary;
+      }
 
    private:
       UInt m_id = 0;
-      std::unique_ptr<UniformLibrary> m_uniformLibrary;
+      UniformLibrary m_uniformLibrary;
       std::string m_name;
    };
 
 
+   // ---------------------------------------------------------------------- //
+   // ShaderLibrary -------------------------------------------------------- //
+   // ---------------------------------------------------------------------- //
    class ShaderLibrary
    {
    public:

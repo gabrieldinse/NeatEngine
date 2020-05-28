@@ -40,14 +40,14 @@ namespace Neat
    VertexBuffer::VertexBuffer(UInt size)
    {
       glCreateBuffers(1, &m_id);
-      glBindBuffer(GL_ARRAY_BUFFER, m_id);
+      bind();
       glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_DYNAMIC_DRAW);
    }
 
    VertexBuffer::VertexBuffer(float* vertices, UInt size)
    {
       glCreateBuffers(1, &m_id);
-      glBindBuffer(GL_ARRAY_BUFFER, m_id);
+      bind();
       glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
    }
 

@@ -110,16 +110,18 @@ namespace Neat
 
       template <
          typename C,
-         typename = typename std::enable_if_t<!std::is_const<C>::value>>
+         typename = typename std::enable_if_t<!std::is_const<C>::value>
+      >
       ComponentHandle<C> getComponent();
 
       template <
          typename C,
-         typename = typename std::enable_if_t<std::is_const<C>::value>>
+         typename = typename std::enable_if_t<std::is_const<C>::value>
+      >
       const ComponentHandle<C, const EntityManager> getComponent() const;
 
       template <typename... Components>
-      std::tuple<ComponentHandle<Components>...>  getComponents();
+      std::tuple<ComponentHandle<Components>...> getComponents();
 
       template <typename... Components>
       std::tuple<ComponentHandle<const Components, const EntityManager>...>
@@ -435,6 +437,7 @@ namespace Neat
          ComponentMask m_componentGroupMask;
       };
 
+
       using View = BaseView<false>;
       using DebugView = BaseView<true>;
       // ----------------------------------------------------------------------
@@ -483,7 +486,7 @@ namespace Neat
          public:
             Iterator(EntityManager* entityManager,
                const ComponentMask componentGroupMask,
-               Int index, const Unpacker& unpacker)
+               UInt index, const Unpacker& unpacker)
                : ViewIterator<Iterator>(entityManager, componentGroupMask,
                   index)
                , m_unpacker(unpacker)
@@ -512,7 +515,7 @@ namespace Neat
          {
             return
                Iterator(m_entityManager, m_componentGroupMask,
-                  m_entityManager->capacity(), m_unpacker);
+                  (UInt)m_entityManager->capacity(), m_unpacker);
          }
 
          const Iterator begin() const
@@ -525,7 +528,7 @@ namespace Neat
          {
             return
                Iterator(m_entityManager, m_componentGroupMask,
-                  m_entityManager->capacity(), m_unpacker);
+                  (UInt)m_entityManager->capacity(), m_unpacker);
          }
 
       private:
@@ -680,7 +683,7 @@ namespace Neat
          BaseMemoryPool* component_array = m_componentArrays[family];
 
          if (component_array == nullptr || 
-            m_entityComponentMasks[id.index()][family] == nullptr)
+            !m_entityComponentMasks[id.index()][family])
             return false;
 
          return true;
@@ -688,13 +691,13 @@ namespace Neat
 
       template <
          typename C,
-         typename std::enable_if_t<!std::is_const<C>::value>
+         typename = typename std::enable_if_t<!std::is_const<C>::value>
       >
       ComponentHandle<C> getComponent(Entity::Id id)
       {
          checkIsValid(id);
 
-         if (!hasComponent<C>())
+         if (!hasComponent<C>(id))
             return ComponentHandle<C>();
 
          return ComponentHandle<C>(this, id);
@@ -702,7 +705,7 @@ namespace Neat
 
       template <
          typename C, 
-         typename std::enable_if_t<std::is_const<C>::value>
+         typename = typename std::enable_if_t<std::is_const<C>::value>
       >
       const ComponentHandle<C, const EntityManager> getComponent(
          Entity::Id id) const
@@ -785,7 +788,7 @@ namespace Neat
       friend class ComponentHandle;
 
 
-      void checkIsValid(Entity::Id id)
+      void checkIsValid(Entity::Id id) const
       {
          if (id.index() >= m_entityIdsVersion.size())
             throw InvalidEntityIdIndexError();
@@ -1077,7 +1080,7 @@ namespace Neat
       return
          m_entityManager != nullptr &&
          !m_entityManager->isValid(m_id) &&
-         m_entityManager->hasComponent<C>(m_id);
+         m_entityManager->template hasComponent<C>(m_id);
    }
 
    template <typename C, typename EM>
@@ -1094,10 +1097,10 @@ namespace Neat
       catch (const EntityError& e)
       {
          throw InvalidComponentError(
-            "Assigned Entity is invalid.\n" + e.what());
+            "Assigned Entity is invalid.\n" + e.msg());
       }
 
-      if (!m_entityManager->hasComponent<C>(m_id))
+      if (!m_entityManager->template hasComponent<C>(m_id))
          throw InvalidComponentError();
    }
 
@@ -1108,7 +1111,7 @@ namespace Neat
    {
       checkIsValid();
 
-      return m_entityManager->getComponentPtr<C>(m_id);
+      return m_entityManager->template getComponentPtr<C>(m_id);
    }
 
    template <typename C, typename EM>
@@ -1117,7 +1120,7 @@ namespace Neat
    {
       checkIsValid();
 
-      return m_entityManager->getComponentPtr<C>(m_id);
+      return m_entityManager->template getComponentPtr<C>(m_id);
    }
 
    template <typename C, typename EM>
@@ -1126,7 +1129,7 @@ namespace Neat
    {
       checkIsValid();
 
-      return m_entityManager->getComponentPtr<C>(m_id);
+      return m_entityManager->template getComponentPtr<C>(m_id);
    }
 
    template <typename C, typename EM>
@@ -1135,7 +1138,7 @@ namespace Neat
    {
       checkIsValid();
 
-      return m_entityManager->getComponentPtr<C>(m_id);
+      return m_entityManager->template getComponentPtr<C>(m_id);
    }
 
 
@@ -1145,7 +1148,7 @@ namespace Neat
    {
       checkIsValid();
 
-      m_entityManager->remove<C>(m_id);
+      m_entityManager->template remove<C>(m_id);
    }
    // ---------------------------------------------------------------------- //
 

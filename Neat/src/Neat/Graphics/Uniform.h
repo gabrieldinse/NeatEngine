@@ -32,7 +32,7 @@ namespace Neat
 		const UniformData& operator[](const std::string& name) const;
 
 	private:
-		std::unordered_map<std::string, std::unique_ptr<UniformData>> uniforms;
+		std::unordered_map<std::string, std::unique_ptr<UniformData>> m_uniforms;
 		ShaderProgram& m_shader;
 	};
 
@@ -40,8 +40,9 @@ namespace Neat
 	// ---------------------------------------------------------------------- //
 	// UniformBase ---------------------------------------------------------- //
 	// ---------------------------------------------------------------------- //
-   struct UniformBase
+   class UniformBase
    {
+	public:
 		virtual ~UniformBase();
 
       const std::string& getName() const;
@@ -49,6 +50,7 @@ namespace Neat
       Int getSize() const;
       Int getLocation() const;
 
+	protected:
 		void checkUniform(ShaderDataType uniformType,
 			const std::string& name, const UniformLibrary& uniformLibrary);
 

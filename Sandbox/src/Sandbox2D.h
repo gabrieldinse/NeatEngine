@@ -10,11 +10,10 @@ class Sandbox2D : public Neat::Layer
 public:
    Sandbox2D();
 
-   void onAttach() override;
-   void onDetach() override;
-   void onUpdate(Neat::DeltaTime deltaTime) override;
-   void onRender() override;
-   virtual void onImGuiRender() override;
+   void attach() override;
+   void detach() override;
+   void update(Neat::DeltaTime deltaTime) override;
+   void render() override;
 
 private:
    Neat::OrthographicCameraController cameraController;

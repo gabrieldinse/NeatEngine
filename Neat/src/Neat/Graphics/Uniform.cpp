@@ -13,10 +13,7 @@ namespace Neat
 	{
 		UniformData(
 			const std::string& name, Int type, Int size, Int location)
-			: name(name)
-			, type(type)
-			, size(size)
-			, location(location)
+			: name(name), type(type), size(size), location(location)
 		{}
 		
 		UniformData() = default;
@@ -49,18 +46,16 @@ namespace Neat
 			GLenum type;
 			GLint size;
 
-			glGetActiveUniform(
-				m_shader.getId(), i, uniform_name_length, NULL, &size, &type,
-				&name_data[0]);
+			glGetActiveUniform(m_shader.getId(), i, uniform_name_length, NULL,
+				&size, &type, &name_data[0]);
 
 			std::string name(&name_data[0]);
 
-			auto location = glGetUniformLocation(
-				m_shader.getId(), name.c_str());
+			auto location = glGetUniformLocation(m_shader.getId(), name.c_str());
 
-			NT_CORE_ASSERT(location != -1, "Uniform does not exist!");
+			NT_CORE_ASSERT(location != -1, "Uniform does not exist.");
 
-			uniforms[std::string(name)] = std::make_unique<UniformData>(
+			m_uniforms[std::string(name)] = std::make_unique<UniformData>(
 				name, type, size, location);
 		}
 	}
@@ -71,17 +66,17 @@ namespace Neat
 
 	bool UniformLibrary::exists(const std::string& name) const
 	{
-		return (uniforms.find(name) != uniforms.end());
+		return (m_uniforms.find(name) != m_uniforms.end());
 	}
 
 	UniformData& UniformLibrary::operator[](const std::string& name)
 	{
-		return *uniforms.at(name);
+		return *m_uniforms.at(name);
 	}
 
 	const UniformData& UniformLibrary::operator[](const std::string& name) const
 	{
-		return *uniforms.at(name);
+		return *m_uniforms.at(name);
 	}
 
 
@@ -96,14 +91,17 @@ namespace Neat
 	{
 		return m_data->name;
 	}
+
 	Int UniformBase::getType() const
 	{
 		return m_data->type;
 	}
+
 	Int UniformBase::getSize() const
 	{
 		return m_data->size;
 	}
+
 	Int UniformBase::getLocation() const
 	{
 		return m_data->location;
@@ -112,12 +110,12 @@ namespace Neat
 	void UniformBase::checkUniform(ShaderDataType uniformType,
 		const std::string& name, const UniformLibrary& uniformLibrary)
 	{
-		NT_CORE_ASSERT(uniformLibrary.exists(name), "Uniform was not found!");
+		NT_CORE_ASSERT(uniformLibrary.exists(name), "Uniform was not found.");
 		auto uniform_data = uniformLibrary[name];
 
 		if (uniformType != OpenGLTypeConverter::toShaderDataType(
 			uniform_data.type, uniform_data.size))
-			NT_CORE_ASSERT(false, "Wrong Uniform type!");
+			NT_CORE_ASSERT(false, "Wrong Uniform type.");
 	}
 
 	// ---------------------------------------------------------------------- //
@@ -196,8 +194,8 @@ namespace Neat
 
    void Uniform<ShaderDataType::Vector4>::set(Vector4 values)
    {
-      glUniform4f(
-			m_data->location, values.x, values.y, values.z, values.w);
+      glUniform4f(m_data->location,
+			values.x, values.y, values.z, values.w);
    }
 
    void Uniform<ShaderDataType::Int>::set(Int value)
@@ -212,13 +210,11 @@ namespace Neat
 
    void Uniform<ShaderDataType::Matrix3>::set(Matrix3 matrix)
    {
-      glUniformMatrix3fv(
-			m_data->location, 1, GL_FALSE, matrix.dataPointer());
+      glUniformMatrix3fv(m_data->location, 1, GL_FALSE, matrix.dataPointer());
    }
 
    void Uniform<ShaderDataType::Matrix4>::set(Matrix4 matrix)
    {
-      glUniformMatrix4fv(
-			m_data->location, 1, GL_FALSE, matrix.dataPointer());
+      glUniformMatrix4fv(m_data->location, 1, GL_FALSE, matrix.dataPointer());
    }
 }

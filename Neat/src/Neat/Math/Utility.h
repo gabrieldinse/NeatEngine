@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Neat/Core/Types.h"
+#include "Neat/Math/Vector.h"
 
 
 namespace Neat
@@ -15,8 +16,24 @@ namespace Neat
    constexpr const double   NT_LOGE_10   = 2.30258509299404568402;
 
 
+   // Trigonometric
    float degreesToRadians(float angleDegrees);
    float radiansToDegrees(float angleRadians);
    double degreesToRadiansD(double angleDegrees);
    double radiansToDegreesD(double angleRadians);
+
+   // Interpolation
+   template<UInt N, typename T, typename U>
+   Vector<N, T> linearInterpolation(const Vector<N, T>& a,
+      const Vector<N, T>& b, U t);
+
+   template<UInt N, typename T, typename U>
+   Vector<N, T> quadraticBezier(const Vector<N, T>& a, const Vector<N, T>& b,
+      const Vector<N, T>& c, U t);
+
+   template<UInt N, typename T, typename U>
+   Vector<N, T> cubicBezier(const Vector<N, T>& a, const Vector<N, T>& b,
+      const Vector<N, T>& c, const Vector<N, T>& d, U t);
 }
+
+#include "Neat/Math/Utility.inl"

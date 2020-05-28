@@ -26,32 +26,34 @@ namespace Neat
       glBindVertexArray(0);
    }
 
-   void VertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+   void VertexArray::addVertexBuffer(
+      const std::shared_ptr<VertexBuffer>& vertexBuffer)
    {
       NT_CORE_ASSERT(vertexBuffer->getLayout().getElements().size(),
-         "VertexBuffer has no layout!");
-      glBindVertexArray(m_id);
+         "VertexBuffer has no layout.");
+
+      bind();
       vertexBuffer->bind();
 
       const auto& layout = vertexBuffer->getLayout();
+      glVertexArrayVertexBuffer(m_id, 0, vertexBuffer->getId(), 0,
+         layout.getOffset());
+      
       for (const auto& element : layout)
       {
+         glVertexArrayAttribBinding(m_id, element.index, 0);
+         glVertexArrayAttribFormat(m_id, element.index, element.componentCount,
+            element.dataType, element.normalized, element.offset);
          glEnableVertexAttribArray(element.index);
-         glVertexAttribPointer(
-            element.index,
-            element.componentCount,
-            element.dataType,
-            element.normalized,
-            layout.getOffset(),
-            static_cast<const void*>(static_cast<const char*>(0) + element.offset));
       }
 
       m_vertexBuffers.push_back(vertexBuffer);
    }
 
-   void VertexArray::setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+   void VertexArray::setIndexBuffer(
+      const std::shared_ptr<IndexBuffer>& indexBuffer)
    {
-      glBindVertexArray(m_id);
+      bind();
       indexBuffer->bind();
       m_indexBuffer = indexBuffer;
    }

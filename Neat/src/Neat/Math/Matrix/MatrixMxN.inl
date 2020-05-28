@@ -14,10 +14,10 @@ namespace Neat
          {
             if (j < N - 1)
                os << std::setw(10) << std::setprecision(6)
-                  << m(i * N + j) << ", ";
+                  << m[i][j] << ", ";
             else
                os << std::setw(10) << std::setprecision(6)
-                  << m(i * N + j);
+                  << m[i][j];
          }
          os << "]";
       }

@@ -1,3 +1,4 @@
+#include "VectorOperations.h"
 
 
 namespace Neat
@@ -105,5 +106,28 @@ namespace Neat
       return Vector<4, T>(
          v[0] / length, v[1] / length, v[2] / length, v[3] / length
          );
+   }
+
+   // Reflection
+   template<UInt N, typename T>
+   Vector<N, T> reflect(const Vector<N, T>& v, const Vector<N, T>& normal)
+   {
+      return v - static_cast<T>(2) * dotProduct(v, normal) * normal;
+   }
+
+   // Refract
+   template<UInt N, typename T>
+   Vector<N, T> refract(const Vector<N, T>& v, const Vector<N, T>& normal, T eta)
+   {
+      T const dot = dotProduct(normal, v);
+      T const k =
+         static_cast<T>(1) - eta * eta * (static_cast<T>(1) - dot * dot);
+
+      Vector<N, T> const result =
+         (k >= static_cast<T>(0))
+         ? eta * v - (eta * dot + static_cast<T>(std::sqrt(k))) * normal
+         : Vector<N, T>(0);
+      
+      return result;
    }
 }

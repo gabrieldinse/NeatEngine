@@ -6,22 +6,12 @@
 
 namespace Neat
 {
-   EntityManager& entities();
-   SystemManager& systems();
-
    struct ECS
    {
-      ECS(EventManager& eventManager = events())
+      ECS(EventManager& eventManager)
          : entities(eventManager), systems(entities, eventManager) {}
 
       EntityManager entities;
       SystemManager systems;
-
-   private:
-      friend EntityManager& entities();
-      friend SystemManager& systems();
-
-   private:
-      static std::unique_ptr<ECS> s_instance;
    };
 }

@@ -75,10 +75,12 @@ namespace Neat
       void bind() const;
       void unbind() const;
 
-      void setData(const void* m_data, IntLong size);
+      UInt getId() const { return m_id; }
 
       const BufferLayout& getLayout() const { return m_layout; }
       void setLayout(const BufferLayout& layout);
+
+      void setData(const void* m_data, IntLong size);
 
    private:
       UInt m_id = 0;

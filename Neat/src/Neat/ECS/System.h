@@ -24,8 +24,6 @@ namespace Neat
       virtual void init(EventManager& eventManager) {}
       virtual void update(EntityManager& entityManager,
          EventManager& eventManager, DeltaTime deltaTime) = 0;
-      virtual void render(EntityManager& entityManager,
-         EventManager& eventManager) = 0;
 
    protected:
       static Family s_familyCounter;
@@ -43,8 +41,6 @@ namespace Neat
 
       virtual void update(EntityManager& entityManager,
          EventManager& eventManager, DeltaTime deltaTime) override {}
-      virtual void render(EntityManager& entityManager,
-         EventManager& eventManager) override {}
 
    private:
       friend class SystemManager;
