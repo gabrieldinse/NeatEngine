@@ -34,10 +34,8 @@ namespace Neat
 		GLint uniform_count;
 		GLint uniform_name_length;
 
-		glGetProgramiv(
-			m_shader.getId(), GL_ACTIVE_UNIFORMS, &uniform_count);
-		glGetProgramiv(
-			m_shader.getId(), GL_ACTIVE_UNIFORM_MAX_LENGTH,
+		glGetProgramiv(m_shader.getId(), GL_ACTIVE_UNIFORMS, &uniform_count);
+		glGetProgramiv(m_shader.getId(), GL_ACTIVE_UNIFORM_MAX_LENGTH,
 			&uniform_name_length);
 		std::vector<char> name_data(uniform_name_length);
 
@@ -52,7 +50,7 @@ namespace Neat
 			std::string name(&name_data[0]);
 
 			auto location = glGetUniformLocation(m_shader.getId(), name.c_str());
-
+			NT_CORE_TRACE(name);
 			NT_CORE_ASSERT(location != -1, "Uniform does not exist.");
 
 			m_uniforms[std::string(name)] = std::make_unique<UniformData>(

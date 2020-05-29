@@ -23,8 +23,10 @@ namespace Neat
 
       m_window = std::make_unique<Window>(m_events);
 
-      m_events.subscribe<WindowCloseEvent>(*this);
-      m_events.subscribe<WindowResizeEvent>(*this);
+      m_events.subscribe<WindowCloseEvent>(
+         *this, EventPriority::Highest, true);
+      m_events.subscribe<WindowResizeEvent>(
+         *this, EventPriority::Highest, true);
 
       Renderer::init();
       ImGuiRender::init();

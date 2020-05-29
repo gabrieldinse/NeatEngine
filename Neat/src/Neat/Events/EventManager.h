@@ -1,13 +1,10 @@
 #pragma once
 
-#include <memory>
 #include <vector>
-#include <utility>
-#include <functional>
 
 #include "Neat/Core/Exceptions.h"
 #include "Neat/Core/Log.h"
-#include "Neat/Events/Event.h"
+#include "Neat/Events/EventSubscriber.h"
 
 
 namespace Neat
@@ -23,10 +20,13 @@ namespace Neat
 
 
       template <typename E, typename Subscriber>
-      void subscribe(Subscriber& subscriber)
+      void subscribe(Subscriber& subscriber,
+         EventPriority priority = EventPriority::Lowest,
+         bool ignoreIfHandled = false)
       {
          auto subscriber_group = getSubscriberGroup(Event<E>::getFamily());
-         auto subscription_id = subscriber_group->addSubscriber<E>(subscriber);
+         auto subscription_id = subscriber_group->addSubscriber<E>(
+            subscriber, priority, ignoreIfHandled);
 
          BaseEventSubscriber& base = subscriber;
          base.m_subscriptions_map.insert(

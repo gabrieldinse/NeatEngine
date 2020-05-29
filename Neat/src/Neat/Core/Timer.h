@@ -11,9 +11,13 @@ namespace Neat
 {
    enum class TimeUnit : UIntShort
    {
-      None = 0,
-      Nanoseconds, Microseconds, Milliseconds, Seconds,
-      Minutes, Hours, Days
+      Nanoseconds,
+      Microseconds,
+      Milliseconds,
+      Seconds,
+      Minutes,
+      Hours,
+      Days
    };
 
    class Timer

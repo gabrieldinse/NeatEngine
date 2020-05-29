@@ -328,7 +328,7 @@ namespace Neat
 
 
          void next()
-         { 
+         {
             while (m_pos < m_capacity &&
                !((IterateOverAll && IsValidEntity()) || matchComponentMask()))
             {
@@ -453,8 +453,7 @@ namespace Neat
          {
          public:
             explicit Unpacker(ComponentHandle<Components>&... componentHandles)
-               : m_componentHandles(
-                  std::tuple<ComponentHandle<Components>&...>(componentHandles...)) {}
+               : m_componentHandles(componentHandles...) {}
 
             void unpack(Entity& entity) const
             {

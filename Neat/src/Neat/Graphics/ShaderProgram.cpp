@@ -22,7 +22,7 @@ namespace Neat
 	{
 		std::ifstream input(filepath, std::ios::in | std::ios::binary);
 
-		if (input)
+		if (input.is_open())
 		{
 			input.seekg(0, std::ios::end);
 			m_fileContent.resize(input.tellg());
@@ -33,6 +33,7 @@ namespace Neat
 		else
 		{
 			NT_CORE_ERROR("Could not open file \"{0}\"", filepath);
+			NT_CORE_ASSERT(false, "");
 		}
 
 		preprocessShaderSource();
