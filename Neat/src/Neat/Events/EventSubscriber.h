@@ -22,12 +22,11 @@ namespace Neat
 
    enum class EventPriority : UIntShort
    {
-      Lowest,
-      Low,
-      High,
-      Normal,
-      Highest
+      Lowest, Low, High, Normal, Highest
    };
+
+   bool operator<(EventPriority priorityA, EventPriority priorityB);
+   bool operator==(EventPriority priorityA, EventPriority priorityB);
 
 
    struct CallbackElement
@@ -38,18 +37,10 @@ namespace Neat
          , priority(priority)
          , ignoreIfHandled(ignoreIfHandled) {}
 
-      bool operator<(UIntShort value) const
-      {
-         return static_cast<UIntShort>(priority) < value;
-      }
-
       std::shared_ptr<EventCallback> callback;
       EventPriority priority;
       bool ignoreIfHandled;
    };
-
-   bool compareEventPriority(const CallbackElement& callbackElemment,
-      UIntShort value);
 
 
    // ---------------------------------------------------------------------- //
@@ -72,12 +63,16 @@ namespace Neat
          auto callback_element = CallbackElement(
             std::make_shared<EventCallback>(callback), priority,
             ignoreIfHandled);
-         auto priority_value = static_cast<UIntShort>(priority);
 
          m_callbackElements.insert(
             std::lower_bound(
-               m_callbackElements.begin(), m_callbackElements.end(),
-               priority_value, compareEventPriority
+               m_callbackElements.begin(),
+               m_callbackElements.end(),
+               priority,
+               [](const CallbackElement& element, EventPriority priority)
+               {
+                  return !(element.priority < priority);
+               }
             ),
             callback_element
          );
@@ -85,18 +80,13 @@ namespace Neat
          return (std::size_t)m_callbackElements.back().callback.get();
       }
 
-      bool removeSubscriber(std::size_t id)
+      void removeSubscriber(std::size_t id)
       {
-         auto it = std::remove_if(m_callbackElements.begin(), m_callbackElements.end(),
-            [id](const CallbackElement& callbackElements)
+         m_callbackElements.remove_if(
+            [id](const CallbackElement& callbackElement)
             {
-               return (std::size_t)callbackElements.callback.get() == id;
+               return (std::size_t)callbackElement.callback.get() == id;
             });
-
-         bool removed = it != m_callbackElements.end();
-         m_callbackElements.erase(it, m_callbackElements.end());
-
-         return removed;
       }
 
       template <typename E>
@@ -119,7 +109,7 @@ namespace Neat
       }
 
 
-      UInt size() const { return (UInt)m_callbackElements.size(); }
+      std::size_t size() const { return m_callbackElements.size(); }
 
    private:
       template <typename E>
@@ -160,7 +150,7 @@ namespace Neat
    public:
       BaseEventSubscriber::~BaseEventSubscriber()
       {
-         for (auto& subscription_pair : m_subscriptions_map)
+         for (auto& subscription_pair : m_subscriptionsMap)
          {
             auto& subscription = subscription_pair.second.first;
             if (!subscription.expired())
@@ -172,7 +162,7 @@ namespace Neat
       UInt BaseEventSubscriber::getNumberOfConnectedSignals() const
       {
          UInt count = 0;
-         for (auto& subscription_pair : m_subscriptions_map)
+         for (auto& subscription_pair : m_subscriptionsMap)
             if (!subscription_pair.second.first.expired())
                ++count;
 
@@ -185,7 +175,7 @@ namespace Neat
       std::unordered_map<
          BaseEvent::Family,
          std::pair<std::weak_ptr<EventSubscriberGroup>, std::size_t>
-      > m_subscriptions_map;
+      > m_subscriptionsMap;
    };
 
 

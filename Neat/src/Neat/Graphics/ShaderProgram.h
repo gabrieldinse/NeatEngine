@@ -53,9 +53,10 @@ namespace Neat
 
       UInt getId() const { return m_id; }
 
-      const UniformLibrary& getUniformLibrary() const
+      template <ShaderDataType UniformType>
+      Uniform<UniformType> getUniform(const std::string& name)
       {
-         return m_uniformLibrary;
+         return Uniform<UniformType>(name, m_uniformLibrary);
       }
 
    private:

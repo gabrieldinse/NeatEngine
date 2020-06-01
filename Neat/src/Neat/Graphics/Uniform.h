@@ -12,6 +12,8 @@
 
 namespace Neat
 {
+	template <ShaderDataType UniformType>
+	struct Uniform;
    struct UniformData;
 	class ShaderProgram;
 
@@ -68,56 +70,80 @@ namespace Neat
 	template<>
 	struct Uniform<ShaderDataType::Float> : public UniformBase
 	{
-		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 		void set(float value);
+
+	private:
+		friend class ShaderProgram;
+		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 	};
 
 	template<>
 	struct Uniform<ShaderDataType::Vector2> : public UniformBase
 	{
-		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 		void set(Vector2 values);
+
+	private:
+		friend class ShaderProgram;
+		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 	};
 
 	template<>
 	struct Uniform<ShaderDataType::Vector3> : public UniformBase
 	{
-		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 		void set(Vector3 values);
+
+	private:
+		friend class ShaderProgram;
+		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 	};
 
 	template<>
 	struct Uniform<ShaderDataType::Vector4> : public UniformBase
 	{
-		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 		void set(Vector4 values);
+
+	private:
+		friend class ShaderProgram;
+		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 	};
 
 	template<>
 	struct Uniform<ShaderDataType::Int> : public UniformBase
 	{
-		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 		void set(Int value);
+
+	private:
+		friend class ShaderProgram;
+		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 	};
 
 	template<>
 	struct Uniform<ShaderDataType::IntArray> : public UniformBase
 	{
-		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 		void set(Int* values, Int count);
+
+	private:
+		friend class ShaderProgram;
+		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 	};
 
 	template<>
 	struct Uniform<ShaderDataType::Matrix3> : public UniformBase
 	{
-		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 		void set(Matrix3 matrix);
+
+	private:
+		friend class ShaderProgram;
+		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 	};
 
 	template<>
 	struct Uniform<ShaderDataType::Matrix4> : public UniformBase
 	{
-		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 		void set(Matrix4 matrix);
+
+	private:
+		friend class ShaderProgram;
+		Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
 	};
 }

@@ -136,7 +136,7 @@ namespace Neat
    }
 
    template <typename T>
-   Matrix<4, 4, T> orthographic(T left, T right, T bottom, T top, T zNear, T zFar)
+   Matrix<4, 4, T> orthographicProjection(T left, T right, T bottom, T top, T zNear, T zFar)
    {
       Matrix<4, 4, T>  result(static_cast<T>(1));
       result[0][0] = static_cast<T>(2) / (right - left);

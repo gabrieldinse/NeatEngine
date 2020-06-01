@@ -32,7 +32,8 @@
 #include "Neat/ECS/SystemManager.h"
 #include "Neat/ECS/System.h"
 #include "Neat/ECS/Entity.h"
-#include "Neat/ECS/Systems.h"
+#include "Neat/ECS/Systems/RenderSystem.h"
+#include "Neat/ECS/Systems/OrthographicCameraControllerSystem.h"
 #include "Neat/ECS/Components.h"
 // ----------------------------------------------------------------------------
 

@@ -40,7 +40,8 @@ namespace Neat
          const WindowProps& props = WindowProps());
       ~Window();
 
-      void update();
+      void swapBuffers();
+      void pollEvents();
 
       Int getWidth() const;
       Int getHeight() const;
@@ -53,6 +54,6 @@ namespace Neat
       bool isSync() const;
 
    private:
-      std::unique_ptr<WindowImpl> m_data;
+      std::unique_ptr<WindowImpl> m_impl;
    };
 }

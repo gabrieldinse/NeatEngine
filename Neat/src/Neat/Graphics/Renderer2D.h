@@ -5,7 +5,7 @@
 
 #include "Neat/Core/Types.h"
 #include "Neat/Graphics/OrthographicCamera.h"
-#include "Neat/Graphics/Shaders/TextureShader.h"
+#include "Neat/Graphics/Shaders.h"
 #include "Neat/Graphics/VertexArray.h"
 #include "Neat/Graphics/Texture.h"
 

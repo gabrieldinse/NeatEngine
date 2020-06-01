@@ -46,11 +46,9 @@ namespace Neat
 
 			glGetActiveUniform(m_shader.getId(), i, uniform_name_length, NULL,
 				&size, &type, &name_data[0]);
-
 			std::string name(&name_data[0]);
-
 			auto location = glGetUniformLocation(m_shader.getId(), name.c_str());
-			NT_CORE_TRACE(name);
+
 			NT_CORE_ASSERT(location != -1, "Uniform does not exist.");
 
 			m_uniforms[std::string(name)] = std::make_unique<UniformData>(

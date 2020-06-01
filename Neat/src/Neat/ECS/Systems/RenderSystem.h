@@ -4,6 +4,7 @@
 #include "Neat/ECS/Entity.h"
 #include "Neat/ECS/Components.h"
 #include "Neat/Graphics/Renderer2D.h"
+#include "Neat/Graphics/RenderCommand.h"
 #include "Neat/Graphics/OrthographicCamera.h"
 
 

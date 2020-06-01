@@ -3,9 +3,15 @@
 
 namespace Neat
 {
-   bool compareEventPriority(const CallbackElement& callbackElemment,
-      UIntShort value)
+   bool operator<(EventPriority priorityA, EventPriority priorityB)
    {
-      return callbackElemment < value;
+      return
+         static_cast<UIntShort>(priorityA) < static_cast<UIntShort>(priorityB);
+   }
+
+   bool operator==(EventPriority priorityA, EventPriority priorityB)
+   {
+      return
+         static_cast<UIntShort>(priorityA) == static_cast<UIntShort>(priorityB);
    }
 }

@@ -25,7 +25,8 @@ namespace Neat
    Matrix<4, 4, T> scale(const Matrix<4, 4, T>& m, const Vector<3, T>& v);
 
    template <typename T>
-   Matrix<4, 4, T> orthographic(T left, T right, T bottom, T top, T zNear, T zFar);
+   Matrix<4, 4, T> orthographicProjection(T left, T right, T bottom, T top,
+      T zNear, T zFar);
 }
 
 #include "Neat/Math/Transforms.inl"

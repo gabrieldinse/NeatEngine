@@ -9,6 +9,11 @@ layout(location = 4) in float tilingFactor;
 
 uniform mat4 u_projectionView;
 
+//layout (std140) uniform Block
+//{
+//	float scale;
+//} block;
+
 out VS_OUT
 {
 	vec2 textureCoordinate;
@@ -23,7 +28,7 @@ void main()
 	vs_out.color = color;
 	vs_out.textureIndex = textureIndex;
 	vs_out.tilingFactor = tilingFactor;
-	gl_Position = position * u_projectionView;	
+	gl_Position = position * u_projectionView;
 }
 
 #type fragment

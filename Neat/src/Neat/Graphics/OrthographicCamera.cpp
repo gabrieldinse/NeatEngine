@@ -9,15 +9,14 @@ namespace Neat
 {
    OrthographicCamera::OrthographicCamera(float left, float right,
       float bottom, float top, float zNear, float zFar)
-      : m_projectionMatrix(orthographic(left, right, bottom, top, zNear, zFar))
+      : m_projectionMatrix(orthographicProjection(left, right, bottom, top, zNear, zFar))
       , m_viewMatrix(1.0f)
-      , m_projectionViewMatrix(m_projectionMatrix * m_viewMatrix)
-   {   }
+      , m_projectionViewMatrix(m_projectionMatrix * m_viewMatrix) {}
 
    void OrthographicCamera::setProjection(float left, float right,
       float bottom, float top, float zNear, float zFar)
    {
-      m_projectionMatrix = orthographic(left, right, bottom, top, zNear, zFar);
+      m_projectionMatrix = orthographicProjection(left, right, bottom, top, zNear, zFar);
       m_projectionViewMatrix = m_projectionMatrix * m_viewMatrix;
    }
 

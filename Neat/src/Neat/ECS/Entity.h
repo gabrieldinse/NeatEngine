@@ -183,7 +183,7 @@ namespace Neat
    private:
       friend class EntityManager;
 
-      ComponentHandle(EM* entityManager, Entity::Id id)
+      ComponentHandle(EM* entityManager, const Entity::Id& id)
          : m_entityManager(entityManager), m_id(id) {}
 
       void checkIsValid() const;
@@ -562,7 +562,7 @@ namespace Neat
       void reset();
 
 
-      bool isValid(Entity::Id id)
+      bool isValid(const Entity::Id& id) const
       {
          return
             id.index() < m_entityIdsVersion.size() &&
@@ -594,7 +594,7 @@ namespace Neat
          return entity;
       }
 
-      void destroyEntity(Entity::Id id)
+      void destroyEntity(const Entity::Id& id)
       {
          checkIsValid(id);
 
@@ -616,7 +616,7 @@ namespace Neat
       }
 
 
-      Entity getEntity(Entity::Id id)
+      Entity getEntity(const Entity::Id& id)
       {
          checkIsValid(id);
 
@@ -630,7 +630,7 @@ namespace Neat
 
 
       template <typename C, typename... Args>
-      ComponentHandle<C> addComponent(Entity::Id id, Args&&... args)
+      ComponentHandle<C> addComponent(const Entity::Id& id, Args&&... args)
       {
          checkIsValid(id);
 
@@ -653,7 +653,7 @@ namespace Neat
       }
 
       template <typename C>
-      void removeComponent(Entity::Id id)
+      void removeComponent(const Entity::Id& id)
       {
          checkIsValid(id);
 
@@ -670,7 +670,7 @@ namespace Neat
       }
 
       template <typename C>
-      bool hasComponent(Entity::Id id) const
+      bool hasComponent(const Entity::Id& id) const
       {
          checkIsValid(id);
 
@@ -692,7 +692,7 @@ namespace Neat
          typename C,
          typename = typename std::enable_if_t<!std::is_const<C>::value>
       >
-      ComponentHandle<C> getComponent(Entity::Id id)
+      ComponentHandle<C> getComponent(const Entity::Id& id)
       {
          checkIsValid(id);
 
@@ -707,7 +707,7 @@ namespace Neat
          typename = typename std::enable_if_t<std::is_const<C>::value>
       >
       const ComponentHandle<C, const EntityManager> getComponent(
-         Entity::Id id) const
+         const Entity::Id& id) const
       {
          checkIsValid(id);
 
@@ -718,14 +718,14 @@ namespace Neat
       }
 
       template <typename... Components>
-      std::tuple<ComponentHandle<Components>...> getComponents(Entity::Id id)
+      std::tuple<ComponentHandle<Components>...> getComponents(const Entity::Id& id)
       {
          return std::make_tuple(getComponent<Components>(id)...);
       }
 
       template <typename... Components>
       std::tuple<ComponentHandle<const Components, const EntityManager>...>
-      getComponents(Entity::Id id) const
+      getComponents(const Entity::Id& id) const
       {
          return std::make_tuple(getComponent<const Components>(id)...);
       }
@@ -756,14 +756,14 @@ namespace Neat
 
       
       template <typename C>
-      void unpack(Entity::Id id, ComponentHandle<C>& component)
+      void unpack(const Entity::Id& id, ComponentHandle<C>& component)
       {
          checkIsValid(id);
          component = getComponent<C>(id);
       }
 
       template <typename C1, typename... Cn>
-      void unpack(Entity::Id id, ComponentHandle<C1>& component,
+      void unpack(const Entity::Id& id, ComponentHandle<C1>& component,
          ComponentHandle<Cn>&... others)
       {
          checkIsValid(id);
@@ -787,7 +787,7 @@ namespace Neat
       friend class ComponentHandle;
 
 
-      void checkIsValid(Entity::Id id) const
+      void checkIsValid(const Entity::Id& id) const
       {
          if (id.index() >= m_entityIdsVersion.size())
             throw InvalidEntityIdIndexError();
@@ -798,7 +798,7 @@ namespace Neat
 
 
       template <typename C>
-      C* getComponentPtr(Entity::Id id)
+      C* getComponentPtr(const Entity::Id& id)
       {
          checkIsValid(id);
 
@@ -812,7 +812,7 @@ namespace Neat
       }
 
       template <typename C>
-      const C* getComponentPtr(Entity::Id id) const
+      const C* getComponentPtr(const Entity::Id& id) const
       {
          checkIsValid(id);
 
@@ -826,7 +826,7 @@ namespace Neat
       }
 
 
-      ComponentMask getComponentMask(Entity::Id id)
+      ComponentMask getComponentMask(const Entity::Id& id)
       {
          checkIsValid(id);
 

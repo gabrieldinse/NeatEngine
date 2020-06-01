@@ -14,9 +14,6 @@ public:
    Sandbox()
       : entities(events())
       , systems(entities, events())
-      , cameraController(
-         (float)Neat::Application::get().getWindow().getWidth() /
-         (float)Neat::Application::get().getWindow().getHeight())
       , checkerboardTexture(std::make_shared<Neat::Texture2D>(
          "assets/textures/texture1.png"))
       , spritesheetTexture(std::make_shared<Neat::Texture2D>(
@@ -26,7 +23,11 @@ public:
       , stairsTexture2(Neat::SubTexture2D::createFromIndex(
          *spritesheetTexture, { 8, 6 }, { 64, 64 }))
    {
-      systems.addSystem<Neat::RenderSystem>(cameraController.getCamera());
+      auto camera_controller_system = 
+         systems.addSystem<Neat::OrthographicCameraControllerSystem>(
+         (float)getWindow().getWidth() / (float)getWindow().getHeight());
+      systems.addSystem<Neat::RenderSystem>(
+         camera_controller_system->getCamera());
       systems.init();
 
       for (std::size_t i = 0; i < this->numberOfLines; ++i)
@@ -54,7 +55,8 @@ public:
 
    virtual void update(Neat::DeltaTime deltaTime) override
    {
-      cameraController.update(deltaTime);
+      //cameraController.update(deltaTime);
+      systems.update<Neat::OrthographicCameraControllerSystem>(deltaTime);
       systems.update<Neat::RenderSystem>(deltaTime);
    }
 
@@ -81,8 +83,6 @@ private:
    Neat::SystemManager systems;
    Neat::EntityManager entities;
 
-   Neat::OrthographicCameraController cameraController;
-
    std::shared_ptr<Neat::Texture2D> checkerboardTexture;
    std::shared_ptr<Neat::Texture2D> spritesheetTexture;
    std::shared_ptr<Neat::SubTexture2D> stairsTexture;
@@ -97,5 +97,5 @@ private:
 
 std::unique_ptr<Neat::Application> Neat::createApplication()
 {
-	return std::make_unique<Sandbox>();
+   return std::make_unique<Sandbox>();
 }

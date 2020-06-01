@@ -24,8 +24,10 @@ namespace Neat
 
    private:
       Uniform<ShaderDataType::IntArray> m_uniformTextures{
-         "u_textures[0]", getUniformLibrary()};
+         getUniform<ShaderDataType::IntArray>("u_textures[0]")
+      };
       Uniform<ShaderDataType::Matrix4> m_uniformViewProjection{
-         "u_projectionView", getUniformLibrary()};
+         getUniform<ShaderDataType::Matrix4>("u_projectionView")
+      };
    };
 }

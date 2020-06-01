@@ -100,7 +100,7 @@ namespace Neat
    {
       BadComponentAllocationError(
          const std::string& msg = "You should not delete components directly. "
-                           "Use Entity::destroyEntity() instead.")
+            "Use Entity::destroyEntity() instead.")
          : ComponentError(msg) {}
    };
 
@@ -141,7 +141,8 @@ namespace Neat
    struct InvalidEntityIdVersionError : public InvalidEntityError
    {
       InvalidEntityIdVersionError(
-         const std::string& msg = "Attempt to access Entity via a stale Entity::Id.")
+         const std::string& msg = "Attempt to access Entity via a stale"
+            " Entity::Id.")
          : InvalidEntityError(msg) {}
    };
 

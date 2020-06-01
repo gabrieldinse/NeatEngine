@@ -11,10 +11,7 @@ namespace Neat
       : m_window(windowHandle)
    {
       NT_CORE_ASSERT(m_window, "Window is null!");
-   }
 
-   void GraphicsContext::init()
-   {
       glfwMakeContextCurrent(m_window);
 
       // Glad initialization (need to be after window creation)

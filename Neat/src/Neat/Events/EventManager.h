@@ -29,7 +29,7 @@ namespace Neat
             subscriber, priority, ignoreIfHandled);
 
          BaseEventSubscriber& base = subscriber;
-         base.m_subscriptions_map.insert(
+         base.m_subscriptionsMap.insert(
             std::make_pair(
                Event<E>::getFamily(),
                std::make_pair(
@@ -45,19 +45,17 @@ namespace Neat
       {
          BaseEventSubscriber& base = subscriber;
 
-         if (base.m_subscriptions_map.find(Event<E>::getFamily())
-            == base.m_subscriptions_map.end())
+         if (base.m_subscriptionsMap.find(Event<E>::getFamily())
+            == base.m_subscriptionsMap.end())
             throw EventSubscriptionError();
 
-         auto event_subscription_pair =
-            base.m_subscriptions_map[Event<E>::getFamily()];
-         auto subscription_id = event_subscription_pair.second;
-         auto subscriber_group = event_subscription_pair.first;
+         auto& [subscriber_group, subscription_id] =
+            base.m_subscriptionsMap[Event<E>::getFamily()];
 
          if (!subscriber_group.expired())
             subscriber_group.lock()->removeSubscriber(subscription_id);
 
-         base.m_subscriptions_map.erase(Event<E>::getFamily());
+         base.m_subscriptionsMap.erase(Event<E>::getFamily());
       }
 
 
@@ -88,7 +86,7 @@ namespace Neat
          UInt count = 0;
          for (auto& subscriber_group : m_subscriberGroups)
             if (subscriber_group)
-               count += subscriber_group->size();
+               count += (UInt)subscriber_group->size();
 
          return count;
       }

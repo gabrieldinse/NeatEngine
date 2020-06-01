@@ -9,7 +9,7 @@
 
 namespace Neat
 {
-   enum class ShaderDataType : UIntShort
+   enum class ShaderDataType
    {
       None = 0,
 

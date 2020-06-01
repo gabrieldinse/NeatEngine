@@ -66,7 +66,8 @@ namespace Neat
          ImGuiRender::end();
       #endif
 
-         m_window->update();
+         m_window->swapBuffers();
+         m_window->pollEvents();
       }
    }
 
