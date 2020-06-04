@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "Neat/Core/Core.h"
+#include "Neat/Core/Window.h"
 #include "Neat/Core/KeyCodes.h"
 #include "Neat/Core/MouseCodes.h"
 #include "Neat/Math/Vector.h"
@@ -16,7 +17,7 @@ namespace Neat
       struct InputImpl;
 
    public:
-      static void setWindow(void* window);
+      static void setWindow(Window& window);
       static bool isKeyPressed(KeyCode key);
       static bool isMouseButtonPressed(MouseCode button);
       static Vector2 getMousePosition();

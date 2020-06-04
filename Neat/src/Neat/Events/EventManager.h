@@ -4,7 +4,7 @@
 
 #include "Neat/Core/Exceptions.h"
 #include "Neat/Core/Log.h"
-#include "Neat/Events/EventSubscriber.h"
+#include "Neat/Events/EventListener.h"
 
 
 namespace Neat
@@ -19,93 +19,94 @@ namespace Neat
       EventManager& operator=(const EventManager &) = delete;
 
 
-      template <typename E, typename Subscriber>
-      void subscribe(Subscriber& subscriber,
+      template <typename E, typename Listener>
+      void addListener(Listener& listener,
          EventPriority priority = EventPriority::Lowest,
          bool ignoreIfHandled = false)
       {
-         auto subscriber_group = getSubscriberGroup(Event<E>::getFamily());
-         auto subscription_id = subscriber_group->addSubscriber<E>(
-            subscriber, priority, ignoreIfHandled);
+         auto event_connection = getEventConnection(Event<E>::getFamily());
+         auto connection_id = event_connection->addListener<E>(
+            listener, priority, ignoreIfHandled);
 
-         BaseEventSubscriber& base = subscriber;
-         base.m_subscriptionsMap.insert(
+         BaseEventListener& base = listener;
+         base.m_listenersMap.insert(
             std::make_pair(
                Event<E>::getFamily(),
                std::make_pair(
-                  std::weak_ptr<EventSubscriberGroup>(subscriber_group),
-                  subscription_id
+                  std::weak_ptr<EventConnection>(event_connection),
+                  connection_id
                )
             )
          );
+         NT_CORE_TRACE((std::size_t) & base.m_listenersMap);
       }
 
-      template <typename E, typename Subscriber>
-      void unsubscribe(Subscriber& subscriber)
+      template <typename E, typename Listener>
+      void removeListener(Listener& listener)
       {
-         BaseEventSubscriber& base = subscriber;
+         BaseEventListener& base = listener;
 
-         if (base.m_subscriptionsMap.find(Event<E>::getFamily())
-            == base.m_subscriptionsMap.end())
+         if (base.m_listenersMap.find(Event<E>::getFamily())
+            == base.m_listenersMap.end())
             throw EventSubscriptionError();
 
-         auto& [subscriber_group, subscription_id] =
-            base.m_subscriptionsMap[Event<E>::getFamily()];
+         auto& [event_connection, connection_id] =
+            base.m_listenersMap[Event<E>::getFamily()];
 
-         if (!subscriber_group.expired())
-            subscriber_group.lock()->removeSubscriber(subscription_id);
+         if (!event_connection.expired())
+            event_connection.lock()->removeListener(connection_id);
 
-         base.m_subscriptionsMap.erase(Event<E>::getFamily());
+         base.m_listenersMap.erase(Event<E>::getFamily());
       }
 
 
       template <typename E>
       void publish(const E& event)
       {
-         auto subscriber_group = getSubscriberGroup(Event<E>::getFamily());
-         subscriber_group->publish<E>(event);
+         auto event_connection = getEventConnection(Event<E>::getFamily());
+         event_connection->publishEvent<E>(event);
       }
 
       template <typename E>
       void publish(std::unique_ptr<E> event)
       {
-         auto subscriber_group = getSubscriberGroup(Event<E>::getFamily());
-         subscriber_group->publish<E>(event);
+         auto event_connection = getEventConnection(Event<E>::getFamily());
+         event_connection->publishEvent<E>(event);
       }
 
       template <typename E, typename... Args>
       void publish(Args&&... args)
       {
-         auto subscriber_group = getSubscriberGroup(Event<E>::getFamily());
-         subscriber_group->publish<E>(std::forward<Args>(args)...);
+         auto event_connection = getEventConnection(Event<E>::getFamily());
+         event_connection->publishEvent<E>(std::forward<Args>(args)...);
       }
 
 
-      UInt getNumberOfSubscribers() const
+      UInt getNumberOfListeners() const
       {
          UInt count = 0;
-         for (auto& subscriber_group : m_subscriberGroups)
-            if (subscriber_group)
-               count += (UInt)subscriber_group->size();
+         for (auto& event_connection : m_eventConnections)
+            if (event_connection)
+               count += (UInt)event_connection->size();
 
          return count;
       }
 
    private:
-      std::shared_ptr<EventSubscriberGroup>& getSubscriberGroup(
+      std::shared_ptr<EventConnection>& getEventConnection(
          BaseEvent::Family family)
       {
-         if (family >= m_subscriberGroups.size())
-            m_subscriberGroups.resize((std::size_t)family + 1);
+         if (family >= m_eventConnections.size())
+            m_eventConnections.resize((std::size_t)family + 1);
 
-         if (!m_subscriberGroups[family])
-            m_subscriberGroups[family] = std::make_shared<EventSubscriberGroup>();
+         if (!m_eventConnections[family])
+            m_eventConnections[family] = std::make_shared<EventConnection>();
 
-         return m_subscriberGroups[family];
+         return m_eventConnections[family];
       }
 
    private:
-      std::vector<std::shared_ptr<EventSubscriberGroup>> m_subscriberGroups;
+      std::vector<std::shared_ptr<EventConnection>> m_eventConnections;
    };
 
 

@@ -16,8 +16,6 @@ public:
    void render() override;
 
 private:
-   Neat::OrthographicCameraController cameraController;
-
    std::shared_ptr<Neat::Texture2D> checkerboardTexture;
    std::shared_ptr<Neat::Texture2D> spritesheetTexture;
    std::shared_ptr<Neat::SubTexture2D> stairsTexture;

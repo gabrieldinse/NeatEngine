@@ -23,14 +23,14 @@ namespace Neat
 
       m_window = std::make_unique<Window>(m_events);
 
-      m_events.subscribe<WindowCloseEvent>(
+      m_events.addListener<WindowCloseEvent>(
          *this, EventPriority::Highest, true);
-      m_events.subscribe<WindowResizeEvent>(
+      m_events.addListener<WindowResizeEvent>(
          *this, EventPriority::Highest, true);
 
       Renderer::init();
       ImGuiRender::init();
-      Input::setWindow(m_window->getNativeWindow());
+      Input::setWindow(*m_window);
    }
 
    Application::~Application()
@@ -48,7 +48,6 @@ namespace Neat
    {
       FPSCounter fps_counter;
       Timer timer;
-      double accumulator = 0.0f;
 
       m_running = true;
 
@@ -93,13 +92,13 @@ namespace Neat
 
 
    // Events receiving
-   bool Application::receive(const WindowCloseEvent& event)
+   bool Application::listenEvent(const WindowCloseEvent& event)
    {
       stop();
       return true;
    }
 
-   bool Application::receive(const WindowResizeEvent& event)
+   bool Application::listenEvent(const WindowResizeEvent& event)
    {
       if (!m_window->isMinimized())
          Renderer::onWindowResize(event.width, event.height);

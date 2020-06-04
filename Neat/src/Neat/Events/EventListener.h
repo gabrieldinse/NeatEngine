@@ -16,7 +16,7 @@ namespace Neat
 
 
    // ---------------------------------------------------------------------- //
-   // CallbackElement ------------------------------------------------------ //
+   // EventCallbackElement ------------------------------------------------- //
    // ---------------------------------------------------------------------- //
    using EventCallback = std::function<bool(const void*)>;
 
@@ -29,9 +29,9 @@ namespace Neat
    bool operator==(EventPriority priorityA, EventPriority priorityB);
 
 
-   struct CallbackElement
+   struct EventCallbackElement
    {
-      CallbackElement(const std::shared_ptr<EventCallback>& callback,
+      EventCallbackElement(const std::shared_ptr<EventCallback>& callback,
          EventPriority priority, bool ignoreIfHandled)
          : callback(callback)
          , priority(priority)
@@ -44,23 +44,23 @@ namespace Neat
 
 
    // ---------------------------------------------------------------------- //
-   // EventSubscriberGroup ------------------------------------------------- //
+   // EventConnection ------------------------------------------------------ //
    // ---------------------------------------------------------------------- //
-   class EventSubscriberGroup
+   class EventConnection
    {
    public:
-      EventSubscriberGroup() = default;
+      EventConnection() = default;
 
-      template <typename E, typename Subscriber>
-      std::size_t addSubscriber(Subscriber& subscriber, EventPriority priority,
+      template <typename E, typename Listener>
+      std::size_t addListener(Listener& listener, EventPriority priority,
          bool ignoreIfHandled)
       {
-         bool (Subscriber:: * receive)(const E&) = &Subscriber::receive;
+         bool (Listener::* listenEvent)(const E&) = &Listener::listenEvent;
 
          auto callback = EventCallbackWrapper<E>(
-            std::bind(receive, &subscriber, std::placeholders::_1));
+            std::bind(listenEvent, &listener, std::placeholders::_1));
 
-         auto callback_element = CallbackElement(
+         auto callback_element = EventCallbackElement(
             std::make_shared<EventCallback>(callback), priority,
             ignoreIfHandled);
 
@@ -69,7 +69,7 @@ namespace Neat
                m_callbackElements.begin(),
                m_callbackElements.end(),
                priority,
-               [](const CallbackElement& element, EventPriority priority)
+               [](const EventCallbackElement& element, EventPriority priority)
                {
                   return !(element.priority < priority);
                }
@@ -80,29 +80,29 @@ namespace Neat
          return (std::size_t)m_callbackElements.back().callback.get();
       }
 
-      void removeSubscriber(std::size_t id)
+      void removeListener(std::size_t id)
       {
          m_callbackElements.remove_if(
-            [id](const CallbackElement& callbackElement)
+            [id](const EventCallbackElement& callbackElement)
             {
                return (std::size_t)callbackElement.callback.get() == id;
             });
       }
 
       template <typename E>
-      void publish(const E& event)
+      void publishEvent(const E& event)
       {
          executeCallbacks(&event);
       }
 
       template <typename E>
-      void publish(std::unique_ptr<E> event)
+      void publishEvent(std::unique_ptr<E> event)
       {
          executeCallbacks(event.get());
       }
 
       template <typename E, typename... Args>
-      void publish(Args&&... args)
+      void publishEvent(Args&&... args)
       {
          E event(std::forward<Args>(args)...);
          executeCallbacks(&event);
@@ -138,33 +138,36 @@ namespace Neat
       }
 
    private:
-      std::list<CallbackElement> m_callbackElements;
+      std::list<EventCallbackElement> m_callbackElements;
    };
 
 
    // ---------------------------------------------------------------------- //
-   // BaseEventSubscriber -------------------------------------------------- //
+   // BaseEventListener ---------------------------------------------------- //
    // ---------------------------------------------------------------------- //
-   class BaseEventSubscriber
+   class BaseEventListener
    {
    public:
-      BaseEventSubscriber::~BaseEventSubscriber()
+      BaseEventListener::~BaseEventListener()
       {
-         for (auto& subscription_pair : m_subscriptionsMap)
+         for (auto&& [family, connection_pair] : m_listenersMap)
          {
-            auto& subscription = subscription_pair.second.first;
-            if (!subscription.expired())
-               subscription.lock()->removeSubscriber(
-                  subscription_pair.second.second);
+            auto&& [connection, connection_id] = connection_pair;
+            if (!connection.expired())
+               connection.lock()->removeListener(connection_id);
          }
       }
 
-      UInt BaseEventSubscriber::getNumberOfConnectedSignals() const
+      UInt BaseEventListener::getNumberOfConnectedSignals() const
       {
          UInt count = 0;
-         for (auto& subscription_pair : m_subscriptionsMap)
-            if (!subscription_pair.second.first.expired())
+         for (auto&& [family, connection_pair] : m_listenersMap)
+         {
+            auto&& [connection, connection_id] = connection_pair;
+            if (!connection.expired())
                ++count;
+         }
+            
 
          return count;
       }
@@ -174,17 +177,17 @@ namespace Neat
 
       std::unordered_map<
          BaseEvent::Family,
-         std::pair<std::weak_ptr<EventSubscriberGroup>, std::size_t>
-      > m_subscriptionsMap;
+         std::pair<std::weak_ptr<EventConnection>, std::size_t>
+      > m_listenersMap;
    };
 
 
    // ---------------------------------------------------------------------- //
-   // EventSubscriber ------------------------------------------------------ //
+   // EventListener ------------------------------------------------------ //
    // ---------------------------------------------------------------------- //
    template <typename Derived>
-   struct EventSubscriber : public BaseEventSubscriber
+   struct EventListener : public BaseEventListener
    {
-      virtual ~EventSubscriber() {}
+      virtual ~EventListener() {}
    };
 }

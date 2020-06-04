@@ -9,7 +9,7 @@
 
 namespace Neat
 {
-   class Application : public EventSubscriber<Application>
+   class Application : public EventListener<Application>
    {
    public:
       Application();
@@ -34,8 +34,8 @@ namespace Neat
       Window& getWindow() { return *m_window; }
 
       // Events receiving
-      bool receive(const WindowCloseEvent& event);
-      bool receive(const WindowResizeEvent& event);
+      bool listenEvent(const WindowCloseEvent& event);
+      bool listenEvent(const WindowResizeEvent& event);
 
       EventManager& events() { return m_events; }
 

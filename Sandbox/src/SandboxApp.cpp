@@ -55,7 +55,6 @@ public:
 
    virtual void update(Neat::DeltaTime deltaTime) override
    {
-      //cameraController.update(deltaTime);
       systems.update<Neat::OrthographicCameraControllerSystem>(deltaTime);
       systems.update<Neat::RenderSystem>(deltaTime);
    }

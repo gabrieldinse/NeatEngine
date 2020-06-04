@@ -13,7 +13,7 @@ namespace Neat
 {
    class OrthographicCameraControllerSystem
       : public System<OrthographicCameraControllerSystem>
-      , public EventSubscriber<OrthographicCameraControllerSystem>
+      , public EventListener<OrthographicCameraControllerSystem>
    {
    public:
       OrthographicCameraControllerSystem(float aspectRatio,
@@ -29,9 +29,9 @@ namespace Neat
       void update(EntityManager& entityManager,
          EventManager& eventManager, DeltaTime deltaTime);
 
-      bool receive(const MouseScrolledEvent& event);
-      bool receive(const MouseMovedEvent& event);
-      bool receive(const WindowResizeEvent& event);
+      bool listenEvent(const MouseScrolledEvent& event);
+      bool listenEvent(const MouseMovedEvent& event);
+      bool listenEvent(const WindowResizeEvent& event);
 
    private:
       float m_aspectRatio;

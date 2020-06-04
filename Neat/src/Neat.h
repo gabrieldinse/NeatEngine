@@ -13,8 +13,6 @@
 
 #include "Neat/Core/Timer.h"
 
-#include "Neat/Core/OrthographicCameraController.h"
-
 #include "Neat/Events/Event.h"
 #include "Neat/Events/EventManager.h"
 // ----------------------------------------------------------------------------

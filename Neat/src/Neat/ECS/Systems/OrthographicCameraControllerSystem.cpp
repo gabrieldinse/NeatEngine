@@ -1,5 +1,4 @@
 #include "Neat/Core/Application.h"
-#include "Neat/Core/OrthographicCameraController.h"
 #include "Neat/Core/Input.h"
 #include "Neat/ECS/Systems/OrthographicCameraControllerSystem.h"
 #include "Neat/Math/Transforms.h"
@@ -13,10 +12,7 @@ namespace Neat
       , m_camera(-m_aspectRatio * m_zoomLevel, m_aspectRatio* m_zoomLevel,
          -m_zoomLevel, m_zoomLevel, -m_zoomLevel)
       , m_rotationEnabled(rotationEnabled)
-      , m_lastMousePosition(Input::getMouseX(), Input::getMouseY())
-   {
-
-   }
+      , m_lastMousePosition(Input::getMouseX(), Input::getMouseY()) {}
 
    OrthographicCameraControllerSystem::~OrthographicCameraControllerSystem()
    {
@@ -24,13 +20,14 @@ namespace Neat
 
    void OrthographicCameraControllerSystem::init(EventManager& eventManager)
    {
-      eventManager.subscribe<MouseMovedEvent>(*this);
-      eventManager.subscribe<MouseScrolledEvent>(*this);
-      eventManager.subscribe<WindowResizeEvent>(*this);
+      eventManager.addListener<MouseMovedEvent>(*this);
+      eventManager.addListener<MouseScrolledEvent>(*this);
+      eventManager.addListener<WindowResizeEvent>(*this);
    }
 
-   void OrthographicCameraControllerSystem::update(EntityManager& entityManager,
-      EventManager& eventManager, DeltaTime deltaTime)
+   void OrthographicCameraControllerSystem::update(
+      EntityManager& entityManager, EventManager& eventManager,
+      DeltaTime deltaTime)
    {
       if (!((Input::isKeyPressed(KeyCode::LeftControl) ||
          Input::isKeyPressed(KeyCode::RightControl)) &&
@@ -81,7 +78,8 @@ namespace Neat
       }
    }
 
-   bool OrthographicCameraControllerSystem::receive(const MouseScrolledEvent& event)
+   bool OrthographicCameraControllerSystem::listenEvent(
+      const MouseScrolledEvent& event)
    {
       if ((Input::isKeyPressed(KeyCode::LeftControl) ||
          Input::isKeyPressed(KeyCode::RightControl)))
@@ -98,7 +96,8 @@ namespace Neat
       return false;
    }
 
-   bool OrthographicCameraControllerSystem::receive(const MouseMovedEvent& event)
+   bool OrthographicCameraControllerSystem::listenEvent(
+      const MouseMovedEvent& event)
    {
       Vector2 current_mouse_position(event.xPos, event.yPos);
 
@@ -126,7 +125,8 @@ namespace Neat
       return false;
    }
 
-   bool OrthographicCameraControllerSystem::receive(const WindowResizeEvent& event)
+   bool OrthographicCameraControllerSystem::listenEvent(
+      const WindowResizeEvent& event)
    {
       m_aspectRatio = (float)event.width / (float)event.height;
       m_camera.setProjection(

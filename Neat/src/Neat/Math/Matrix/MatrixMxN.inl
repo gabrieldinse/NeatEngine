@@ -6,7 +6,8 @@ namespace Neat
    template <UInt M, UInt N, typename T>
    std::ostream& operator<<(std::ostream& os, const Matrix<M, N, T>& m)
    {
-      os << "Matrix<" << N << ", " << M << ", " << typeid(T).name() << "> [";
+      os << "Neat::Matrix<" << N << ", " << M << ", " << typeid(T).name()
+         << "> [";
       for (std::size_t i = 0; i < M; ++i)
       {
          os << "\n[";

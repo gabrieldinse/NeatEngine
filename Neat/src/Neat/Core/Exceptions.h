@@ -23,23 +23,23 @@ namespace Neat
 
 
    // Timer exceptions --------------------------------------------------
-   struct StopwatchError : Exception
+   struct TimerError : Exception
    {
-      StopwatchError(const std::string& msg) : Exception(msg) {}
+      TimerError(const std::string& msg) : Exception(msg) {}
    };
 
-   struct WrongTimeUnitError : public StopwatchError
+   struct WrongTimeUnitError : public TimerError
    {
       WrongTimeUnitError(
          const std::string& msg = "Wrong TimeUnit.")
-         : StopwatchError(msg) {}
+         : TimerError(msg) {}
    };
 
-   struct StopwatchNotStartedError : public StopwatchError
+   struct TimerNotStartedError : public TimerError
    {
-      StopwatchNotStartedError(
+      TimerNotStartedError(
          const std::string& msg = "Timer has not been started.")
-         : StopwatchError(msg) {}
+         : TimerError(msg) {}
    };
    // -------------------------------------------------------------------------
 

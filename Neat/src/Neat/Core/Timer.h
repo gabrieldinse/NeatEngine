@@ -30,19 +30,19 @@ namespace Neat
       template <typename T = double>
       T stop(TimeUnit timeUnit = TimeUnit::Seconds)
       {
-         auto time_passed = elapsed<T>(timeUnit);
+         auto elapsed_time = elapsed<T>(timeUnit);
          m_started = false;
 
-         return time_passed;
+         return elapsed_time;
       }
 
       template <typename T = double>
       T restart(TimeUnit timeUnit = TimeUnit::Seconds)
       {
-         auto time_passed = elapsed<T>(timeUnit);
+         auto elapsed_time = elapsed<T>(timeUnit);
          m_startTicks = m_currentTicks;
 
-         return time_passed;
+         return elapsed_time;
       }
 
       template <typename T = double>
@@ -66,7 +66,7 @@ namespace Neat
             throw WrongTimeUnitError();
          }
 
-         throw StopwatchNotStartedError();
+         throw TimerNotStartedError();
       }
 
    private:

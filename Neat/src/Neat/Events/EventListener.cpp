@@ -1,4 +1,4 @@
-#include "Neat/Events/EventSubscriber.h"
+#include "Neat/Events/EventListener.h"
 
 
 namespace Neat

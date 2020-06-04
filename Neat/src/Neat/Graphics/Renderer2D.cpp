@@ -92,8 +92,8 @@ namespace Neat
       for (std::size_t i = 0; i < s_data.textureSlotIndex; ++i, ++index)
          s_data.textureSlots[i]->bind(index);
 
-      RenderCommand::drawIndexed(
-         s_data.quadVertexArray, s_data.quadVextexDataBuffer.indexCount);
+      RenderCommand::drawIndexed(s_data.quadVertexArray,
+         s_data.quadVextexDataBuffer.indexCount);
 
       s_data.stats.drawCalls++;
    }
