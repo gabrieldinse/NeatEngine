@@ -12,7 +12,6 @@ int main(int argc, char* argv[])
    Neat::Log::init();
 
    auto application = Neat::createApplication();
-
    application->run();
 }
 

@@ -75,10 +75,10 @@ namespace Neat
    };
 
    // Event subscriptions
-   struct EventSubscriptionError : public EventError
+   struct EventListenerError : public EventError
    {
-      EventSubscriptionError(
-         const std::string& msg = "Event is not subscribed.")
+      EventListenerError(
+         const std::string& msg = "EventListener is not connected to Event.")
          : EventError(msg) {}
    };
    // -------------------------------------------------------------------------
@@ -88,34 +88,6 @@ namespace Neat
    struct ECSError : public Exception
    {
       ECSError(const std::string& msg) : Exception(msg) {}
-   };
-
-   // Components
-   struct ComponentError : public ECSError
-   {
-      ComponentError(const std::string& msg) : ECSError(msg) {}
-   };
-
-   struct BadComponentAllocationError : public ComponentError
-   {
-      BadComponentAllocationError(
-         const std::string& msg = "You should not delete components directly. "
-            "Use Entity::destroyEntity() instead.")
-         : ComponentError(msg) {}
-   };
-
-   struct InvalidComponentError : public ComponentError
-   {
-      InvalidComponentError(
-         const std::string& msg = "Acessed component is invalid.")
-         : ComponentError(msg) {}
-   };
-
-   struct MaximumNumberOfComponentsError : public ComponentError
-   {
-      MaximumNumberOfComponentsError(
-         const std::string& msg = "Maximum number of components reached.")
-         : ComponentError(msg) {}
    };
 
    // Entities
@@ -159,19 +131,52 @@ namespace Neat
          const std::string& msg = "Component is not present in the Entity.")
          : EntityError(msg) {}
    };
+
+   // Components
+   struct ComponentError : public ECSError
+   {
+      ComponentError(const std::string& msg) : ECSError(msg) {}
+   };
+
+   struct BadComponentAllocationError : public ComponentError
+   {
+      BadComponentAllocationError(
+         const std::string& msg = "You should not delete components directly. "
+         "Use Entity::destroyEntity() instead.")
+         : ComponentError(msg) {}
+   };
+
+   struct InvalidComponentError : public ComponentError
+   {
+      InvalidComponentError(
+         const std::string& msg = "Acessed component is invalid.")
+         : ComponentError(msg) {}
+   };
+
+   struct MaximumNumberOfComponentsError : public ComponentError
+   {
+      MaximumNumberOfComponentsError(
+         const std::string& msg = "Maximum number of components reached.")
+         : ComponentError(msg) {}
+   };
    
    // Systems
-   struct SystemManagerNotInitializedError : public ECSError
+   struct SystemError : public ECSError
+   {
+      SystemError(const std::string& msg) : ECSError(msg) {}
+   };
+
+   struct SystemManagerNotInitializedError : public SystemError
    {
       SystemManagerNotInitializedError(
          const std::string& msg = "SystemManager::init() not called.")
-         : ECSError(msg) {}
+         : SystemError(msg) {}
    };
 
-   struct InvalidSystemError : public ECSError
+   struct InvalidSystemError : public SystemError
    {
       InvalidSystemError(const std::string& msg = "System does not exist.")
-         : ECSError(msg) {}
+         : SystemError(msg) {}
    };
    // -------------------------------------------------------------------------
 }

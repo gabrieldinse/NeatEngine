@@ -99,8 +99,8 @@ namespace Neat
       constexpr std::size_t size() const { return 3 * 3; }
 
       // Elements acessing
-      constexpr T* dataPointer() { return m_flattened; }
-      constexpr const T* dataPointer() const { return m_flattened; }
+      constexpr T* data() { return m_flattened; }
+      constexpr const T* data() const { return m_flattened; }
 
       constexpr RowType& operator[](std::size_t row);
       constexpr const RowType& operator[](std::size_t row) const;

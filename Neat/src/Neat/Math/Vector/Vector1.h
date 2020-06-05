@@ -105,9 +105,9 @@ namespace Neat
       const T& operator()(std::size_t pos) const { return (*this)[pos]; }
 
       constexpr
-      T* dataPointer() { return &x; }
+      T* data() { return &x; }
       constexpr
-      const T* dataPointer() const { return &x; }
+      const T* data() const { return &x; }
 
 
       // Conversion operator

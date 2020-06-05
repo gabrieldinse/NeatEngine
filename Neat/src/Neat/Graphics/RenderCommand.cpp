@@ -26,7 +26,7 @@ namespace Neat
    void RenderCommand::clearWithColor(const Vector4 color)
    {
       static constexpr float one = 1.0f;
-      glClearBufferfv(GL_COLOR, 0, color.dataPointer());
+      glClearBufferfv(GL_COLOR, 0, color.data());
       glClearBufferfv(GL_DEPTH, 0, &one);
    }
 

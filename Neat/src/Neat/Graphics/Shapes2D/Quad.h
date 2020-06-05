@@ -16,7 +16,7 @@ namespace Neat
          , m_size(size)
          , m_color(color) {}
 
-      void draw() const
+      virtual void draw() const override
       {
          Renderer2D::drawQuad(m_position, m_size, m_color);
       }

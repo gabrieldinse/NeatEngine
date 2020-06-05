@@ -49,9 +49,7 @@ namespace Neat
       WindowProps props;
       GLFWwindowUniquePtr window;
       std::unique_ptr<GraphicsContext> context;
-
       EventManager& events;
-
       bool minimized = false;
       bool vSync = false;
 

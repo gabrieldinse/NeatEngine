@@ -95,9 +95,9 @@ namespace Neat
 
       // Elements acessing
       constexpr
-      T* dataPointer() { return m_flattened; }
+      T* data() { return m_flattened; }
       constexpr
-      const T* dataPointer() const { return m_flattened; }
+      const T* data() const { return m_flattened; }
 
       constexpr
       RowType& operator[](std::size_t row);

@@ -38,6 +38,7 @@ namespace Neat
                )
             )
          );
+         NT_CORE_TRACE(typeid(E).name());
          NT_CORE_TRACE((std::size_t) & base.m_listenersMap);
       }
 
@@ -48,7 +49,7 @@ namespace Neat
 
          if (base.m_listenersMap.find(Event<E>::getFamily())
             == base.m_listenersMap.end())
-            throw EventSubscriptionError();
+            throw EventListenerError();
 
          auto& [event_connection, connection_id] =
             base.m_listenersMap[Event<E>::getFamily()];
