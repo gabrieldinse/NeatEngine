@@ -15,9 +15,6 @@ namespace Neat
    class EventManager;
 
 
-   // ---------------------------------------------------------------------- //
-   // EventCallbackElement ------------------------------------------------- //
-   // ---------------------------------------------------------------------- //
    using EventCallback = std::function<bool(const void*)>;
 
    enum class EventPriority : UIntShort
@@ -29,27 +26,30 @@ namespace Neat
    bool operator==(EventPriority priorityA, EventPriority priorityB);
 
 
-   struct EventCallbackElement
-   {
-      EventCallbackElement(const std::shared_ptr<EventCallback>& callback,
-         EventPriority priority, bool ignoreIfHandled)
-         : callback(callback)
-         , priority(priority)
-         , ignoreIfHandled(ignoreIfHandled) {}
-
-      std::shared_ptr<EventCallback> callback;
-      EventPriority priority;
-      bool ignoreIfHandled;
-   };
-
-
    // ---------------------------------------------------------------------- //
-   // EventConnection ------------------------------------------------------ //
+   // EventToListenersConnection ------------------------------------------- //
    // ---------------------------------------------------------------------- //
-   class EventConnection
+   class EventToListenersConnection
    {
    public:
-      EventConnection() = default;
+      // EventCallbackElement -------------------------------------------------
+      struct EventCallbackElement
+      {
+         
+         EventCallbackElement(const std::shared_ptr<EventCallback>& callback,
+            EventPriority priority, bool ignoreIfHandled)
+            : callback(callback)
+            , priority(priority)
+            , ignoreIfHandled(ignoreIfHandled) {}
+
+         std::shared_ptr<EventCallback> callback;
+         EventPriority priority;
+         bool ignoreIfHandled;
+      };
+      // ----------------------------------------------------------------------
+
+   public:
+      EventToListenersConnection() = default;
 
       template <typename E, typename Listener>
       std::size_t addListener(Listener& listener, EventPriority priority,
@@ -148,9 +148,14 @@ namespace Neat
    class BaseEventListener
    {
    public:
+      using ConnectedEventsMap = std::unordered_map<
+         BaseEvent::Family,
+         std::pair<std::weak_ptr<EventToListenersConnection>, std::size_t>>;
+
+   public:
       BaseEventListener::~BaseEventListener()
       {
-         for (auto&& [family, connection_pair] : m_listenersMap)
+         for (auto&& [family, connection_pair] : m_connectedEvents)
          {
             auto&& [connection, connection_id] = connection_pair;
             if (!connection.expired())
@@ -161,24 +166,20 @@ namespace Neat
       UInt BaseEventListener::getNumberOfConnectedSignals() const
       {
          UInt count = 0;
-         for (auto&& [family, connection_pair] : m_listenersMap)
+         for (auto&& [family, connection_pair] : m_connectedEvents)
          {
             auto&& [connection, connection_id] = connection_pair;
             if (!connection.expired())
                ++count;
          }
             
-
          return count;
       }
 
    private:
       friend class EventManager;
 
-      std::unordered_map<
-         BaseEvent::Family,
-         std::pair<std::weak_ptr<EventConnection>, std::size_t>
-      > m_listenersMap;
+      ConnectedEventsMap m_connectedEvents;
    };
 
 

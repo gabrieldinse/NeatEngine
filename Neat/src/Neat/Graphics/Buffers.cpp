@@ -84,7 +84,7 @@ namespace Neat
       : m_count(count)
    {
       glCreateBuffers(1, &m_id);
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
+      bind();
       glBufferData(GL_ELEMENT_ARRAY_BUFFER,
          m_count * sizeof(m_count), indices, GL_STATIC_DRAW);
    }

@@ -12,6 +12,10 @@ namespace Neat
    class EventManager
    {
    public:
+      using EventsConnectionsVector =
+         std::vector<std::shared_ptr<EventToListenersConnection>>;
+
+   public:
       EventManager() = default;
       virtual ~EventManager() = default;
 
@@ -29,17 +33,16 @@ namespace Neat
             listener, priority, ignoreIfHandled);
 
          BaseEventListener& base = listener;
-         base.m_listenersMap.insert(
+         base.m_connectedEvents.insert(
             std::make_pair(
                Event<E>::getFamily(),
                std::make_pair(
-                  std::weak_ptr<EventConnection>(event_connection),
+                  std::weak_ptr<EventToListenersConnection>(event_connection),
                   connection_id
                )
             )
          );
-         NT_CORE_TRACE(typeid(E).name());
-         NT_CORE_TRACE((std::size_t) & base.m_listenersMap);
+         NT_CORE_TRACE((std::size_t) & base.m_connectedEvents);
       }
 
       template <typename E, typename Listener>
@@ -47,17 +50,17 @@ namespace Neat
       {
          BaseEventListener& base = listener;
 
-         if (base.m_listenersMap.find(Event<E>::getFamily())
-            == base.m_listenersMap.end())
+         if (base.m_connectedEvents.find(Event<E>::getFamily())
+            == base.m_connectedEvents.end())
             throw EventListenerError();
 
          auto& [event_connection, connection_id] =
-            base.m_listenersMap[Event<E>::getFamily()];
+            base.m_connectedEvents[Event<E>::getFamily()];
 
          if (!event_connection.expired())
             event_connection.lock()->removeListener(connection_id);
 
-         base.m_listenersMap.erase(Event<E>::getFamily());
+         base.m_connectedEvents.erase(Event<E>::getFamily());
       }
 
 
@@ -86,7 +89,7 @@ namespace Neat
       UInt getNumberOfListeners() const
       {
          UInt count = 0;
-         for (auto& event_connection : m_eventConnections)
+         for (auto& event_connection : m_eventsConnections)
             if (event_connection)
                count += (UInt)event_connection->size();
 
@@ -94,20 +97,21 @@ namespace Neat
       }
 
    private:
-      std::shared_ptr<EventConnection>& getEventConnection(
+      std::shared_ptr<EventToListenersConnection>& getEventConnection(
          BaseEvent::Family family)
       {
-         if (family >= m_eventConnections.size())
-            m_eventConnections.resize((std::size_t)family + 1);
+         if (family >= m_eventsConnections.size())
+            m_eventsConnections.resize((std::size_t)family + 1);
 
-         if (!m_eventConnections[family])
-            m_eventConnections[family] = std::make_shared<EventConnection>();
+         if (!m_eventsConnections[family])
+            m_eventsConnections[family] =
+               std::make_shared<EventToListenersConnection>();
 
-         return m_eventConnections[family];
+         return m_eventsConnections[family];
       }
 
    private:
-      std::vector<std::shared_ptr<EventConnection>> m_eventConnections;
+      EventsConnectionsVector m_eventsConnections;
    };
 
 
