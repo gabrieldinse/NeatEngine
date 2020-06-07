@@ -28,7 +28,7 @@ namespace Neat
          EventPriority priority = EventPriority::Lowest,
          bool ignoreIfHandled = false)
       {
-         auto event_connection = getEventConnection(Event<E>::getFamily());
+         auto event_connection = getEventConnection<E>();
          auto connection_id = event_connection->addListener<E>(
             listener, priority, ignoreIfHandled);
 
@@ -42,7 +42,6 @@ namespace Neat
                )
             )
          );
-         NT_CORE_TRACE((std::size_t) & base.m_connectedEvents);
       }
 
       template <typename E, typename Listener>
@@ -67,41 +66,43 @@ namespace Neat
       template <typename E>
       void publish(const E& event)
       {
-         auto event_connection = getEventConnection(Event<E>::getFamily());
+         auto event_connection = getEventConnection<E>();
          event_connection->publishEvent<E>(event);
       }
 
       template <typename E>
       void publish(std::unique_ptr<E> event)
       {
-         auto event_connection = getEventConnection(Event<E>::getFamily());
+         auto event_connection = getEventConnection<E>();
          event_connection->publishEvent<E>(event);
       }
 
       template <typename E, typename... Args>
       void publish(Args&&... args)
       {
-         auto event_connection = getEventConnection(Event<E>::getFamily());
+         auto event_connection = getEventConnection<E>();
          event_connection->publishEvent<E>(std::forward<Args>(args)...);
       }
 
 
-      UInt getNumberOfListeners() const
+      std::size_t getNumberOfListeners() const
       {
-         UInt count = 0;
+         std::size_t count = 0;
          for (auto& event_connection : m_eventsConnections)
             if (event_connection)
-               count += (UInt)event_connection->size();
+               count += event_connection->size();
 
          return count;
       }
 
    private:
-      std::shared_ptr<EventToListenersConnection>& getEventConnection(
-         BaseEvent::Family family)
+      template <typename E>
+      std::shared_ptr<EventToListenersConnection>& getEventConnection()
       {
+         Event<E>::Family family = Event<E>::getFamily();
+
          if (family >= m_eventsConnections.size())
-            m_eventsConnections.resize((std::size_t)family + 1);
+            m_eventsConnections.resize(family + 1);
 
          if (!m_eventsConnections[family])
             m_eventsConnections[family] =

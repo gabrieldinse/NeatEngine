@@ -64,10 +64,10 @@ namespace Neat
             std::make_shared<EventCallback>(callback), priority,
             ignoreIfHandled);
 
-         m_callbackElements.insert(
+         m_connectedListenersCallbacks.insert(
             std::lower_bound(
-               m_callbackElements.begin(),
-               m_callbackElements.end(),
+               m_connectedListenersCallbacks.begin(),
+               m_connectedListenersCallbacks.end(),
                priority,
                [](const EventCallbackElement& element, EventPriority priority)
                {
@@ -77,12 +77,12 @@ namespace Neat
             callback_element
          );
 
-         return (std::size_t)m_callbackElements.back().callback.get();
+         return (std::size_t)m_connectedListenersCallbacks.back().callback.get();
       }
 
       void removeListener(std::size_t id)
       {
-         m_callbackElements.remove_if(
+         m_connectedListenersCallbacks.remove_if(
             [id](const EventCallbackElement& callbackElement)
             {
                return (std::size_t)callbackElement.callback.get() == id;
@@ -109,7 +109,7 @@ namespace Neat
       }
 
 
-      std::size_t size() const { return m_callbackElements.size(); }
+      std::size_t size() const { return m_connectedListenersCallbacks.size(); }
 
    private:
       template <typename E>
@@ -129,7 +129,7 @@ namespace Neat
       void executeCallbacks(const void* event)
       {
          bool handled = false;
-         for (auto& callback_element : m_callbackElements)
+         for (auto& callback_element : m_connectedListenersCallbacks)
             if (callback_element.callback != nullptr &&
                (callback_element.ignoreIfHandled || !handled))
             {
@@ -138,7 +138,7 @@ namespace Neat
       }
 
    private:
-      std::list<EventCallbackElement> m_callbackElements;
+      std::list<EventCallbackElement> m_connectedListenersCallbacks;
    };
 
 

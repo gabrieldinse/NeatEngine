@@ -301,8 +301,7 @@ namespace Neat
          {
             if (IterateOverAll)
             {
-               std::sort(
-                  m_entityManager->m_freeEntityIds.begin(),
+               std::sort(m_entityManager->m_freeEntityIds.begin(),
                   m_entityManager->m_freeEntityIds.end());
                m_freeCursor = 0;
             }
@@ -535,10 +534,10 @@ namespace Neat
 
          UnpackingView(EntityManager* entityManager,
             ComponentMask componentGroupMask,
-            ComponentHandle<Components>&... handles)
+            ComponentHandle<Components>&... componentHandles)
             : m_entityManager(entityManager)
             , m_componentGroupMask(componentGroupMask)
-            , m_unpacker(handles...) {}
+            , m_unpacker(componentHandles...) {}
 
       private:
          EntityManager* m_entityManager;
