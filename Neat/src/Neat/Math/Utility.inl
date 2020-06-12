@@ -2,17 +2,32 @@
 
 namespace Neat
 {
-   template<UInt N, typename T, typename U>
+   template <typename T>
+   inline constexpr
+   T radians(T angleDegrees)
+   {
+      return angleDegrees * static_cast<T>(NT_PI_OVER_180);
+   }
+
+   template <typename T>
+   inline constexpr
+   T degrees(T angleRadians)
+   {
+      return angleRadians * static_cast<T>(NT_180_OVER_PI);
+   }
+
+
+   template<UInt32 N, typename T, typename U>
    Vector<N, T> linearInterpolation(
-      const Vector<N, T>& a, const Vector<N, T>& b, U t)
+      const Vector<N, T>& a, const Vector<N, T>& b, const U& t)
    {
       return
          a * (static_cast<T>(1) - static_cast<T>(t)) + b * static_cast<T>(t);
    }
 
-   template<UInt N, typename T, typename U>
+   template<UInt32 N, typename T, typename U>
    Vector<N, T> quadraticBezier(const Vector<N, T>& a, const Vector<N, T>& b,
-      const Vector<N, T>& c, U t)
+      const Vector<N, T>& c, const U& t)
    {
       auto d = linearInterpolation(a, b, t);
       auto e = linearInterpolation(b, c, t);
@@ -21,9 +36,9 @@ namespace Neat
       return p;
    }
 
-   template<UInt N, typename T, typename U>
+   template<UInt32 N, typename T, typename U>
    Vector<N, T> cubicBezier(const Vector<N, T>& a, const Vector<N, T>& b,
-      const Vector<N, T>& c, const Vector<N, T>& d, U t)
+      const Vector<N, T>& c, const Vector<N, T>& d, const U& t)
    {
       auto e = linearInterpolation(a, b, t);
       auto f = linearInterpolation(b, c, t);

@@ -16,7 +16,7 @@ namespace Neat
    class BaseEvent
    {
    public:
-      using Family = UInt;
+      using Family = UInt32;
 
       virtual ~BaseEvent() {}
 
@@ -47,11 +47,11 @@ namespace Neat
    // ---------------------------------------------------------------------- //
    struct WindowResizeEvent
    {
-      WindowResizeEvent(UInt width, UInt height)
+      WindowResizeEvent(UInt32 width, UInt32 height)
          : width(width), height(height) {}
 
-      UInt width;
-      UInt height;
+      UInt32 width;
+      UInt32 height;
    };
 
 
@@ -124,10 +124,10 @@ namespace Neat
 
    struct KeyPressedEvent : public KeyEvent
    {
-      KeyPressedEvent(KeyCode keyCode, Int repeatCount = 0)
+      KeyPressedEvent(KeyCode keyCode, Int32 repeatCount = 0)
          : KeyEvent(keyCode), repeatCount(repeatCount) {}
 
-      Int repeatCount;
+      Int32 repeatCount;
    };
 
 

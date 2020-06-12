@@ -6,7 +6,7 @@
 
 namespace Neat
 {
-   UInt OpenGLTypeConverter::sizeInBytes(ShaderDataType type)
+   UInt32 OpenGLTypeConverter::sizeInBytes(ShaderDataType type)
    {
       switch (type)
       {
@@ -16,7 +16,7 @@ namespace Neat
          case ShaderDataType::Vector4:    return 4 * 4;
          case ShaderDataType::Matrix3:    return 4 * 3 * 3;
          case ShaderDataType::Matrix4:    return 4 * 4 * 4;
-         case ShaderDataType::Int:        return 4;
+         case ShaderDataType::Int:      return 4;
          case ShaderDataType::IVector2:   return 4 * 2;
          case ShaderDataType::IVector3:   return 4 * 3;
          case ShaderDataType::IVector4:   return 4 * 4;
@@ -27,28 +27,28 @@ namespace Neat
       return 0;
    }
 
-   UInt OpenGLTypeConverter::componentCount(ShaderDataType type)
+   UInt32 OpenGLTypeConverter::componentCount(ShaderDataType type)
    {
       switch (type)
       {
-         case ShaderDataType::Float:		return 1;
-         case ShaderDataType::Vector2:		return 2;
-         case ShaderDataType::Vector3:		return 3;
-         case ShaderDataType::Vector4:		return 4;
-         case ShaderDataType::Matrix3:		return 3 * 3;
-         case ShaderDataType::Matrix4:		return 4 * 4;
-         case ShaderDataType::Int:			return 1;
-         case ShaderDataType::IVector2:	return 2;
-         case ShaderDataType::IVector3:	return 3;
-         case ShaderDataType::IVector4:	return 4;
-         case ShaderDataType::Bool:			return 1;
+         case ShaderDataType::Float:      return 1;
+         case ShaderDataType::Vector2:    return 2;
+         case ShaderDataType::Vector3:    return 3;
+         case ShaderDataType::Vector4:    return 4;
+         case ShaderDataType::Matrix3:    return 3 * 3;
+         case ShaderDataType::Matrix4:    return 4 * 4;
+         case ShaderDataType::Int:        return 1;
+         case ShaderDataType::IVector2:   return 2;
+         case ShaderDataType::IVector3:   return 3;
+         case ShaderDataType::IVector4:   return 4;
+         case ShaderDataType::Bool:       return 1;
       }
 
       NT_CORE_ASSERT(false, "Unkown ShaderDataType!");
       return 0;
    }
 
-   UInt OpenGLTypeConverter::baseType(ShaderDataType type)
+   UInt32 OpenGLTypeConverter::baseType(ShaderDataType type)
    {
       switch (type)
       {
@@ -69,7 +69,7 @@ namespace Neat
       return 0;
    }
 
-   UInt OpenGLTypeConverter::type(ShaderDataType type)
+   UInt32 OpenGLTypeConverter::type(ShaderDataType type)
    {
       switch (type)
       {
@@ -79,7 +79,7 @@ namespace Neat
          case ShaderDataType::Vector4:    return GL_FLOAT_VEC4;
          case ShaderDataType::Matrix3:    return GL_FLOAT_MAT3;
          case ShaderDataType::Matrix4:    return GL_FLOAT_MAT4;
-         case ShaderDataType::Int:        return GL_INT;
+         case ShaderDataType::Int:      return GL_INT;
          case ShaderDataType::IVector2:   return GL_INT_VEC2;
          case ShaderDataType::IVector3:   return GL_INT_VEC3;
          case ShaderDataType::IVector4:   return GL_INT_VEC4;
@@ -90,7 +90,7 @@ namespace Neat
       return 0;
    }
 
-   ShaderDataType OpenGLTypeConverter::toShaderDataType(UInt type, Int count)
+   ShaderDataType OpenGLTypeConverter::toShaderDataType(UInt32 type, UInt32 count)
    {
       switch (type)
       {
@@ -157,7 +157,7 @@ namespace Neat
       return ShaderDataType::None;
    }
 
-   UInt OpenGLTypeConverter::fromStringToShaderType(
+   UInt32 OpenGLTypeConverter::fromStringToShaderType(
       const std::string& type)
    {
       if (type == "vertex")

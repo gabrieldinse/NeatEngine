@@ -11,7 +11,7 @@ namespace Neat
    // Basic Constructors
    template <typename T>
    inline constexpr
-   Vector<1, T>::Vector(T scalar) : x(scalar) {}
+   Vector<1, T>::Vector(const T& scalar) : x(scalar) {}
 
 
    // Copy Constructor
@@ -50,7 +50,7 @@ namespace Neat
    // Assignment operators
    template <typename T>
    inline constexpr
-   Vector<1, T>& Vector<1, T>::operator=(T scalar)
+   Vector<1, T>& Vector<1, T>::operator=(const T& scalar)
    {
       x = scalar;
 
@@ -103,7 +103,7 @@ namespace Neat
    template<typename T>
    template<typename U>
    inline constexpr
-   Vector<1, T>& Vector<1, T>::operator*=(U scalar)
+   Vector<1, T>& Vector<1, T>::operator*=(const U& scalar)
    {
       x *= scalar;
 
@@ -113,7 +113,7 @@ namespace Neat
    template<typename T>
    template<typename U>
    inline constexpr
-   Vector<1, T>& Vector<1, T>::operator/=(U scalar)
+   Vector<1, T>& Vector<1, T>::operator/=(const U& scalar)
    {
       x /= scalar;
 
@@ -185,21 +185,21 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-      Vector<1, T> operator*(T scalar, const Vector<1, T>& v)
+      Vector<1, T> operator*(const T& scalar, const Vector<1, T>& v)
    {
       return Vector<1, T>(v) *= scalar;
    }
 
    template <typename T>
    inline constexpr
-      Vector<1, T> operator*(const Vector<1, T>& v, T scalar)
+      Vector<1, T> operator*(const Vector<1, T>& v, const T& scalar)
    {
       return Vector<1, T>(v) *= scalar;
    }
 
    template <typename T>
    inline constexpr
-      Vector<1, T> operator/(const Vector<1, T>& v, T scalar)
+      Vector<1, T> operator/(const Vector<1, T>& v, const T& scalar)
    {
       return Vector<1, T>(v) /= scalar;
    }

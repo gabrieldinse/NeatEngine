@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Neat/Graphics/Renderer2D.h"
-#include "Neat/Graphics/Shapes2D/Shape.h"
+#include "Neat/Graphics/Shape2D/Shape.h"
 
 
 namespace Neat

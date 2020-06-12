@@ -17,7 +17,7 @@ namespace Neat
    class BaseSystem : public NonCopyable
    {
    public:
-      using Family = UInt;
+      using Family = UInt32;
 
       virtual ~BaseSystem() = default;
 

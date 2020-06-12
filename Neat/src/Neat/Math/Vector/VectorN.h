@@ -12,37 +12,37 @@
 namespace Neat
 {
    // Vector class template
-   template <UInt N, typename T>
+   template <UInt32 N, typename T>
    struct Vector;
 
 
    // Relational operators
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator>(const Vector<N, T>& va, const Vector<N, T>& vb);
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator<(const Vector<N, T>& va, const Vector<N, T>& vb);
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator==(const Vector<N, T>& va, const Vector<N, T>& vb);
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator!=(const Vector<N, T>& va, const Vector<N, T>& vb);
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator>=(const Vector<N, T>& va, const Vector<N, T>& vb);
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator<=(const Vector<N, T>& va, const Vector<N, T>& vb);
 
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    std::ostream& operator<<(std::ostream& os, const Vector<N, T>& v);
 }
 

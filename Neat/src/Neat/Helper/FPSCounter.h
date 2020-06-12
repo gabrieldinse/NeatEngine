@@ -26,6 +26,6 @@ namespace Neat
       double m_interval;
       double m_fps = 0.0;
       Timer timer;
-      UInt m_frameCount = 0;
+      UInt32 m_frameCount = 0;
    };
 }

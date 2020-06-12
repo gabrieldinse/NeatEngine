@@ -9,23 +9,23 @@ namespace Neat
 {
    // Inner/Dot product
    template <typename T>
-   T dotProduct(const Vector<1, T>& va, const Vector<1, T>& vb);
+   T dot(const Vector<1, T>& va, const Vector<1, T>& vb);
 
    template <typename T>
-   T dotProduct(const Vector<2, T>& va, const Vector<2, T>& vb);
+   T dot(const Vector<2, T>& va, const Vector<2, T>& vb);
 
    template <typename T>
-   T dotProduct(const Vector<3, T>& va, const Vector<3, T>& vb);
+   T dot(const Vector<3, T>& va, const Vector<3, T>& vb);
 
    template <typename T>
-   T dotProduct(const Vector<4, T>& va, const Vector<4, T>& vb);
+   T dot(const Vector<4, T>& va, const Vector<4, T>& vb);
 
-   template <typename T, UInt N>
-   T innerProduct(const Vector<N, T>& va, const Vector<N, T>& vb);
+   template <typename T, UInt32 N>
+   T inner(const Vector<N, T>& va, const Vector<N, T>& vb);
 
    // Cross product
    template <typename T>
-   Vector<3, T> crossProduct(const Vector<3, T>& va, const Vector<3, T>& vb);
+   Vector<3, T> cross(const Vector<3, T>& va, const Vector<3, T>& vb);
 
    // Norm
    template <typename T>
@@ -54,13 +54,13 @@ namespace Neat
    Vector<4, T> normalize(const Vector<4, T>& v);
 
    // Reflect
-   template <UInt N, typename T>
+   template <UInt32 N, typename T>
    Vector<N, T> reflect(const Vector<N, T>& v, const Vector<N, T>& normal);
 
    // Refract
-   template <UInt N, typename T>
+   template <UInt32 N, typename T>
    Vector<N, T> refract(
-      const Vector<N, T>& v, const Vector<N, T>& normal, T eta);
+      const Vector<N, T>& v, const Vector<N, T>& normal, const T& eta);
 }
 
 #include "Neat/Math/VectorOperations.inl"

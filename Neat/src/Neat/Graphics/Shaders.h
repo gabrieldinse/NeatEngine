@@ -10,24 +10,24 @@ namespace Neat
    public:
       using ShaderProgram::ShaderProgram;
 
-      void setTextures(Int* values, Int count)
+      void setTextures(Int32* values, Int32 count)
       {
-         bind();
+         use();
          m_uniformTextures.set(values, count);
       }
 
-      void setProjectionViewMatrix(const Matrix4& projectionView)
+      void setCameraTransform(const Matrix4& projectionView)
       {
-         bind();
-         m_uniformViewProjection.set(projectionView);
+         use();
+         m_cameraTransform.set(projectionView);
       }
 
    private:
       Uniform<ShaderDataType::IntArray> m_uniformTextures{
          getUniform<ShaderDataType::IntArray>("u_textures[0]")
       };
-      Uniform<ShaderDataType::Matrix4> m_uniformViewProjection{
-         getUniform<ShaderDataType::Matrix4>("u_projectionView")
+      Uniform<ShaderDataType::Matrix4> m_cameraTransform{
+         getUniform<ShaderDataType::Matrix4>("u_cameraTransform")
       };
    };
 }

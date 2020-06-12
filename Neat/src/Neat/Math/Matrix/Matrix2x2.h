@@ -10,6 +10,7 @@ namespace Neat
    struct Matrix<2, 2, T>
    {
       using RowType = Vector<2, T>;
+      using ElementType = T;
 
 
       // Default constructor
@@ -20,11 +21,11 @@ namespace Neat
       // Basic constructors
       constexpr
       Matrix(
-         T m00, T m01,
-         T m10, T m11);
+         const T& m00, const T& m01,
+         const T& m10, const T& m11);
 
       constexpr explicit
-      Matrix(T scalar);
+      Matrix(const T& scalar);
 
       constexpr
       Matrix(const Matrix<2, 2, T>& m);
@@ -36,8 +37,8 @@ namespace Neat
          typename X2, typename Y2>
       constexpr
       Matrix(
-         X1 m00, Y1 m01,
-         X2 m10, Y2 m11);
+         const X1& m00, const Y1& m01,
+         const X2& m10, const Y2& m11);
 
       template <typename U>
       constexpr explicit
@@ -54,8 +55,8 @@ namespace Neat
       template <typename V1, typename V2>
       constexpr
       Matrix(
-         const Vector<2, V1> row1,
-         const Vector<2, V2> row2);
+         const Vector<2, V1>& row1,
+         const Vector<2, V2>& row2);
 
 
       // Assignment operators
@@ -71,7 +72,7 @@ namespace Neat
 
 	   template<typename U>
 	   constexpr
-      Matrix<2, 2, T> & operator-=(U scalar);
+      Matrix<2, 2, T> & operator-=(const U& scalar);
 
 	   template<typename U>
 	   constexpr
@@ -79,7 +80,7 @@ namespace Neat
 
 	   template<typename U>
 	   constexpr
-      Matrix<2, 2, T> & operator*=(U scalar);
+      Matrix<2, 2, T> & operator*=(const U& scalar);
 
 	   template<typename U>
 	   constexpr
@@ -87,11 +88,11 @@ namespace Neat
 
 	   template<typename U>
 	   constexpr
-      Matrix<2, 2, T>& operator/=(U scalar);
+      Matrix<2, 2, T>& operator/=(const U& scalar);
 
 
       constexpr
-      UInt size() const { return 2 * 2; }
+      UInt32 size() const { return 2 * 2; }
 
       // Elements acessing
       constexpr
@@ -140,11 +141,11 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<2, 2, T> operator*(T scalar, const Matrix<2, 2, T>& m);
+   Matrix<2, 2, T> operator*(const T& scalar, const Matrix<2, 2, T>& m);
 
    template <typename T>
    inline constexpr
-   Matrix<2, 2, T> operator*(const Matrix<2, 2, T>& m, T scalar);
+   Matrix<2, 2, T> operator*(const Matrix<2, 2, T>& m, const T& scalar);
 
    template <typename T>
    inline constexpr
@@ -152,7 +153,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<2, 2, T> operator/(const Matrix<2, 2, T>& m, T scalar);
+   Matrix<2, 2, T> operator/(const Matrix<2, 2, T>& m, const T& scalar);
 }
 
 #include "Neat/Math/Matrix/Matrix2x2.inl"

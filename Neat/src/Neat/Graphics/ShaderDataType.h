@@ -29,11 +29,11 @@ namespace Neat
    class OpenGLTypeConverter
    {
    public:
-      static UInt sizeInBytes(ShaderDataType type);
-      static UInt componentCount(ShaderDataType type);
-      static UInt baseType(ShaderDataType type);
-      static UInt type(ShaderDataType type);
-      static ShaderDataType toShaderDataType(UInt type, Int count);
-      static UInt fromStringToShaderType(const std::string& type);
+      static UInt32 sizeInBytes(ShaderDataType type);
+      static UInt32 componentCount(ShaderDataType type);
+      static UInt32 baseType(ShaderDataType type);
+      static UInt32 type(ShaderDataType type);
+      static ShaderDataType toShaderDataType(UInt32 type, UInt32 count);
+      static UInt32 fromStringToShaderType(const std::string& type);
    };
 }

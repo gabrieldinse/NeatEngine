@@ -8,7 +8,7 @@
 
 namespace Neat
 {
-   Texture2D::Texture2D(Int width, Int height)
+   Texture2D::Texture2D(Int32 width, Int32 height)
       : m_width(width), m_height(height), m_internalFormat(GL_RGBA8), m_dataFormat(GL_RGBA)
    {
       NT_CORE_ASSERT(m_internalFormat & m_dataFormat,
@@ -32,13 +32,13 @@ namespace Neat
    Texture2D::Texture2D(const std::string& filepath)
       : m_internalFormat(0), m_dataFormat(0)
    {
-      // stbi_load uses signed Int
-      Int width, height, channels;
+      // stbi_load uses signed Int32
+      Int32 width, height, channels;
       stbi_set_flip_vertically_on_load(1); // flip the image loaded vertically
       auto data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
       NT_CORE_ASSERT(data, "Failed to load texture image!");
 
-      // Converts to unsigned because OpenGL uses UInt
+      // Converts to unsigned because OpenGL uses UInt32
       m_width = width;
       m_height = height;
 
@@ -73,6 +73,7 @@ namespace Neat
       glTextureSubImage2D(
          m_id, 0, 0, 0, m_width, m_height,
          m_dataFormat, GL_UNSIGNED_BYTE, data);
+      glGenerateMipmap(GL_TEXTURE_2D);
 
       // Deallocates the memory
       stbi_image_free(data);
@@ -83,15 +84,16 @@ namespace Neat
       glDeleteTextures(1, &m_id);
    }
 
-   void Texture2D::setData(void* data, UInt size)
+   void Texture2D::setData(void* data, UInt32 size)
    {
       glTextureSubImage2D(
          m_id, 0, 0, 0, m_width, m_height,
          m_dataFormat, GL_UNSIGNED_BYTE, data);
+      glGenerateMipmap(GL_TEXTURE_2D);
    }
 
-   void Texture2D::bind(UInt slot) const
+   void Texture2D::bind(UInt32 unit) const
    {
-      glBindTextureUnit(slot, m_id);
+      glBindTextureUnit(unit, m_id);
    }
 }

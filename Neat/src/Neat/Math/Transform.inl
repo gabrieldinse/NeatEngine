@@ -30,7 +30,7 @@ namespace Neat
    }
 
    template <typename T>
-   Matrix<4, 4, T> rotate(T angleRadians, const Vector<3, T>& v)
+   Matrix<4, 4, T> rotate(const T& angleRadians, const Vector<3, T>& v)
    {
       T c = static_cast<T>(std::cos(angleRadians));
       T s = static_cast<T>(std::sin(angleRadians));
@@ -66,7 +66,8 @@ namespace Neat
    }
 
    template <typename T>
-   Matrix<4, 4, T> rotate(const Matrix<4, 4, T>& m, T angleRadians, const Vector<3, T>& v)
+   Matrix<4, 4, T> rotate(const Matrix<4, 4, T>& m, const T& angleRadians,
+      const Vector<3, T>& v)
    {
       T c = static_cast<T>(std::cos(angleRadians));
       T s = static_cast<T>(std::sin(angleRadians));
@@ -133,19 +134,5 @@ namespace Neat
          m[2][0] * v.x, m[2][1] * v.y, m[2][2] * v.z, m[2][3],
          m[3][0] * v.x, m[3][1] * v.y, m[3][2] * v.z, m[3][3]
          );
-   }
-
-   template <typename T>
-   Matrix<4, 4, T> orthographicProjection(T left, T right, T bottom, T top, T zNear, T zFar)
-   {
-      Matrix<4, 4, T>  result(static_cast<T>(1));
-      result[0][0] = static_cast<T>(2) / (right - left);
-      result[1][1] = static_cast<T>(2) / (top - bottom);
-      result[2][2] = -static_cast<T>(2) / (zFar - zNear);
-      result[0][3] = -(right + left) / (right - left);
-      result[1][3] = -(top + bottom) / (top - bottom);
-      result[2][3] = -(zFar + zNear) / (zFar - zNear);
-
-      return result;
    }
 }

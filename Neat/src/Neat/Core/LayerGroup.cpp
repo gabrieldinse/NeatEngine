@@ -26,7 +26,7 @@ namespace Neat
       m_layers.push_back(std::move(layer));
    }
 
-   std::unique_ptr<Layer> LayerGroup::popLayer(Int position)
+   std::unique_ptr<Layer> LayerGroup::popLayer(Int32 position)
    {
       NT_CORE_ASSERT(position < m_layers.size(), "Invalid layer position!");
       auto layer = std::move(m_layers[position]);
@@ -36,7 +36,7 @@ namespace Neat
       return layer;
    }
 
-   std::unique_ptr<Layer> LayerGroup::popOverlay(Int position)
+   std::unique_ptr<Layer> LayerGroup::popOverlay(Int32 position)
    {
       NT_CORE_ASSERT(position < m_layers.size(), "Invalid overlay position!");
       auto layer = std::move(m_layers[position]);

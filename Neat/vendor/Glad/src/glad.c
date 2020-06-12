@@ -448,7 +448,7 @@ PFNGLFRAMEBUFFERTEXTURE1DPROC glad_glFramebufferTexture1D = NULL;
 PFNGLFRAMEBUFFERTEXTURE2DPROC glad_glFramebufferTexture2D = NULL;
 PFNGLFRAMEBUFFERTEXTURE3DPROC glad_glFramebufferTexture3D = NULL;
 PFNGLFRAMEBUFFERTEXTURELAYERPROC glad_glFramebufferTextureLayer = NULL;
-PFNGLFRONTFACEPROC glad_glFrontFace = NULL;
+PFNGLm_forwardFACEPROC glad_glm_forwardFace = NULL;
 PFNGLGENBUFFERSPROC glad_glGenBuffers = NULL;
 PFNGLGENFRAMEBUFFERSPROC glad_glGenFramebuffers = NULL;
 PFNGLGENPROGRAMPIPELINESPROC glad_glGenProgramPipelines = NULL;
@@ -976,7 +976,7 @@ PFNGLWAITSYNCPROC glad_glWaitSync = NULL;
 static void load_GL_VERSION_1_0(GLADloadproc load) {
 	if(!GLAD_GL_VERSION_1_0) return;
 	glad_glCullFace = (PFNGLCULLFACEPROC)load("glCullFace");
-	glad_glFrontFace = (PFNGLFRONTFACEPROC)load("glFrontFace");
+	glad_glm_forwardFace = (PFNGLm_forwardFACEPROC)load("glm_forwardFace");
 	glad_glHint = (PFNGLHINTPROC)load("glHint");
 	glad_glLineWidth = (PFNGLLINEWIDTHPROC)load("glLineWidth");
 	glad_glPointSize = (PFNGLPOINTSIZEPROC)load("glPointSize");

@@ -24,14 +24,17 @@
 
 #include "Neat/Graphics/Texture.h"
 #include "Neat/Graphics/SubTexture2D.h"
+
+#include "Neat/Graphics/Camera.h"
 // ----------------------------------------------------------------------------
 
 // ECS ------------------------------------------------------------------------
 #include "Neat/ECS/SystemManager.h"
 #include "Neat/ECS/System.h"
 #include "Neat/ECS/Entity.h"
-#include "Neat/ECS/Systems/RenderSystem.h"
-#include "Neat/ECS/Systems/OrthographicCameraControllerSystem.h"
+#include "Neat/ECS/Systems/Render2DSystem.h"
+#include "Neat/ECS/Systems/Camera2DControllerSystem.h"
+#include "Neat/ECS/Systems/Camera3DControllerSystem.h"
 #include "Neat/ECS/Components.h"
 // ----------------------------------------------------------------------------
 
@@ -40,6 +43,7 @@
 #include "Neat/Math/VectorOperations.h"
 #include "Neat/Math/Matrix.h"
 #include "Neat/Math/MatrixOperations.h"
-#include "Neat/Math/Transforms.h"
+#include "Neat/Math/Transform.h"
 #include "Neat/Math/Utility.h"
+#include "Neat/Math/Projection.h"
 // ----------------------------------------------------------------------------

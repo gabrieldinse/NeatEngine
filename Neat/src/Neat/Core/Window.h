@@ -23,12 +23,12 @@ namespace Neat
       struct WindowProps
       {
          std::string title;
-         Int width;
-         Int height;
+         Int32 width;
+         Int32 height;
 
          WindowProps(const std::string& title = "Neat Engine",
-                     Int width = 1280,
-                     Int height = 720)
+                     Int32 width = 1280,
+                     Int32 height = 720)
             : title(title), width(width), height(height)
          {
          }
@@ -43,8 +43,8 @@ namespace Neat
       void swapBuffers();
       void pollEvents();
 
-      Int getWidth() const;
-      Int getHeight() const;
+      Int32 getWidth() const;
+      Int32 getHeight() const;
 
       void* getNativeWindow() const;
 

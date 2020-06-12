@@ -17,7 +17,7 @@ namespace Neat
 
    using EventCallback = std::function<bool(const void*)>;
 
-   enum class EventPriority : UIntShort
+   enum class EventPriority : UInt16
    {
       Lowest, Low, High, Normal, Highest
    };
@@ -163,9 +163,9 @@ namespace Neat
          }
       }
 
-      UInt BaseEventListener::getNumberOfConnectedSignals() const
+      UInt32 BaseEventListener::getNumberOfConnectedSignals() const
       {
-         UInt count = 0;
+         UInt32 count = 0;
          for (auto&& [family, connection_pair] : m_connectedEvents)
          {
             auto&& [connection, connection_id] = connection_pair;

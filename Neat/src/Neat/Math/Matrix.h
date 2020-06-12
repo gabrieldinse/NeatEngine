@@ -8,23 +8,23 @@
 namespace Neat
 {
    // Predefined Matrix names
-   using Matrix2      = Matrix<2, 2, float>;
-   using Matrix3      = Matrix<3, 3, float>;
-   using Matrix4      = Matrix<4, 4, float>;
+   using Matrix2     = Matrix<2, 2, float>;
+   using Matrix3     = Matrix<3, 3, float>;
+   using Matrix4     = Matrix<4, 4, float>;
 
-   using IMatrix2     = Matrix<2, 2, Int>;
-   using IMatrix3     = Matrix<3, 3, Int>;
-   using IMatrix4     = Matrix<4, 4, Int>;
+   using IMatrix2    = Matrix<2, 2, Int32>;
+   using IMatrix3    = Matrix<3, 3, Int32>;
+   using IMatrix4    = Matrix<4, 4, Int32>;
 
-   using UIMatrix2     = Matrix<2, 2, UInt>;
-   using UIMatrix3     = Matrix<3, 3, UInt>;
-   using UIMatrix4     = Matrix<4, 4, UInt>;
+   using UIMatrix2   = Matrix<2, 2, UInt32>;
+   using UIMatrix3   = Matrix<3, 3, UInt32>;
+   using UIMatrix4   = Matrix<4, 4, UInt32>;
                     
-   using DMatrix2     = Matrix<2, 2, double>;
-   using DMatrix3     = Matrix<3, 3, double>;
-   using DMatrix4     = Matrix<4, 4, double>;
-                     
-   using BMatrix2     = Matrix<2, 2, bool>;
-   using BMatrix3     = Matrix<3, 3, bool>;
-   using BMatrix4     = Matrix<4, 4, bool>;
+   using DMatrix2    = Matrix<2, 2, double>;
+   using DMatrix3    = Matrix<3, 3, double>;
+   using DMatrix4    = Matrix<4, 4, double>;
+
+   using BMatrix2    = Matrix<2, 2, bool>;
+   using BMatrix3    = Matrix<3, 3, bool>;
+   using BMatrix4    = Matrix<4, 4, bool>;
 }

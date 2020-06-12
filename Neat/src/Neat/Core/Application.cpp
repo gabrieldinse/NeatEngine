@@ -80,12 +80,12 @@ namespace Neat
       m_layerGroup.pushOverlay(std::move(layer));
    }
 
-   std::unique_ptr<Layer> Application::popLayer(Int position)
+   std::unique_ptr<Layer> Application::popLayer(Int32 position)
    {
       return m_layerGroup.popLayer(position);
    }
 
-   std::unique_ptr<Layer> Application::popOverlay(Int position)
+   std::unique_ptr<Layer> Application::popOverlay(Int32 position)
    {
       return m_layerGroup.popOverlay(position);
    }

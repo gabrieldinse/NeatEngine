@@ -36,14 +36,11 @@ namespace Neat
       vertexBuffer->bind();
 
       const auto& layout = vertexBuffer->getLayout();
-      glVertexArrayVertexBuffer(m_id, 0, vertexBuffer->getId(), 0,
-         layout.getOffset());
-      
       for (const auto& element : layout)
       {
-         glVertexArrayAttribBinding(m_id, element.index, 0);
-         glVertexArrayAttribFormat(m_id, element.index, element.componentCount,
-            element.dataType, element.normalized, element.offset);
+         glVertexAttribPointer(element.index, element.componentCount,
+            element.dataType, element.normalized, layout.getOffset(),
+            static_cast<void*>(static_cast<char*>(0) + element.offset));
          glEnableVertexAttribArray(element.index);
       }
 

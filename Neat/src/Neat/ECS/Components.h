@@ -4,9 +4,9 @@
 
 #include "Neat/Math/Vector.h"
 #include "Neat/Math/Matrix.h"
-#include "Neat/Math/Transforms.h"
+#include "Neat/Math/Transform.h"
 #include "Neat/Core/Input.h"
-#include "Neat/Graphics/Shapes2D/Quad.h"
+#include "Neat/Graphics/Shape2D/Quad.h"
 
 
 namespace Neat

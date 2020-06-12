@@ -19,12 +19,12 @@ namespace Neat
    {
       ShaderDataType type;
       std::string name;
-      UInt componentCount;
-      UInt dataType;
-      UInt normalized;
-      UInt size;
-      UInt offset = 0;
-      UInt index = 0;
+      UInt32 componentCount;
+      UInt32 dataType;
+      UInt32 normalized;
+      UInt32 size;
+      UInt32 offset = 0;
+      UInt32 index = 0;
 
       BufferElement() = default;
 
@@ -48,7 +48,7 @@ namespace Neat
       
       BufferLayout(const std::initializer_list<BufferElement>& elements);
 
-      UInt getOffset() const { return m_offset; }
+      UInt32 getOffset() const { return m_offset; }
       const BufferElementsVector& getElements() const { return m_elements; }
 
       BufferElementsVectorIt begin() { return m_elements.begin(); }
@@ -58,7 +58,7 @@ namespace Neat
 
    private:
       BufferElementsVector m_elements;
-      UInt m_offset = 0;
+      UInt32 m_offset = 0;
    };
 
 
@@ -68,22 +68,22 @@ namespace Neat
    class VertexBuffer
    {
    public:
-      VertexBuffer(UInt size);
-      VertexBuffer(float* vertices, UInt size);
+      VertexBuffer(UInt32 size);
+      VertexBuffer(float* vertices, UInt32 size);
       ~VertexBuffer();
 
       void bind() const;
       void unbind() const;
 
-      UInt getId() const { return m_id; }
+      UInt32 getId() const { return m_id; }
 
       const BufferLayout& getLayout() const { return m_layout; }
       void setLayout(const BufferLayout& layout);
 
-      void setData(const void* m_data, IntLong size);
+      void setData(const void* data, UInt32 size);
 
    private:
-      UInt m_id = 0;
+      UInt32 m_id = 0;
       BufferLayout m_layout;
    };
 
@@ -94,16 +94,16 @@ namespace Neat
    class IndexBuffer
    {
    public:
-      IndexBuffer(UInt* indices, Int count);
+      IndexBuffer(UInt32* indices, UInt32 count);
       ~IndexBuffer();
 
       void bind() const;
       void unbind() const;
 
-      Int getCount() const { return m_count; }
+      UInt32 getCount() const { return m_count; }
 
    private:
-      UInt m_id = 0;
-      Int m_count;
+      UInt32 m_id = 0;
+      UInt32 m_count;
    };
 }

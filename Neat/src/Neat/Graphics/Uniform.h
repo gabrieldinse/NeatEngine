@@ -48,9 +48,9 @@ namespace Neat
       virtual ~UniformBase();
 
       const std::string& getName() const;
-      Int getType() const;
-      Int getSize() const;
-      Int getLocation() const;
+      Int32 getType() const;
+      Int32 getSize() const;
+      Int32 getLocation() const;
 
    protected:
       void checkUniform(ShaderDataType uniformType,
@@ -110,7 +110,7 @@ namespace Neat
    template<>
    struct Uniform<ShaderDataType::Int> : public UniformBase
    {
-      void set(Int value);
+      void set(Int32 value);
 
    private:
       friend class ShaderProgram;
@@ -120,7 +120,7 @@ namespace Neat
    template<>
    struct Uniform<ShaderDataType::IntArray> : public UniformBase
    {
-      void set(Int* values, Int count);
+      void set(Int32* values, UInt32 count);
 
    private:
       friend class ShaderProgram;

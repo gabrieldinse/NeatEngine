@@ -6,42 +6,42 @@
 namespace Neat
 {
    // Relational operators
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator>(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return (norm(va) > norm(vb));
    }
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator<(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return (vb > va);
    }
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator==(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return (norm(va) == norm(vb));
    }
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator!=(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return !(va == vb);
    }
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator>=(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
       return !(va < vb);
    }
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    inline constexpr
    bool operator<=(const Vector<N, T>& va, const Vector<N, T>& vb)
    {
@@ -49,7 +49,7 @@ namespace Neat
    }
 
 
-   template <typename T, UInt N>
+   template <typename T, UInt32 N>
    std::ostream& operator<<(std::ostream& os, const Vector<N, T>& v)
    {
       os << "Neat::Vector<" << N << ", " << typeid(T).name() << "> [";

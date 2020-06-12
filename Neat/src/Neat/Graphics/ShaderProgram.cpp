@@ -1,6 +1,7 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <sstream>
 #include <fstream>
 #include <cctype>
 #include <filesystem>
@@ -18,56 +19,52 @@ namespace Neat
    // ---------------------------------------------------------------------- //
    // ShaderProgramBuilder ------------------------------------------------- //
    // ---------------------------------------------------------------------- //
-   ShaderProgramBuilder::ShaderProgramBuilder(const std::string& filepath)
+   ShaderProgramBuilder::ShaderProgramBuilder(UInt32 programId,
+      const std::string& filepath)
+      : m_id(programId)
    {
-      std::ifstream input(filepath, std::ios::in | std::ios::binary);
+      std::ifstream input_file(filepath, std::ios::in | std::ios::binary);
 
-      if (input.is_open())
-      {
-         input.seekg(0, std::ios::end);
-         m_fileContent.resize(input.tellg());
-         input.seekg(0, std::ios::beg);
-         input.read(&m_fileContent[0], m_fileContent.size());
-         input.close();
-      }
-      else
-      {
-         NT_CORE_ERROR("Could not open file \"{0}\"", filepath);
-         NT_CORE_ASSERT(false, "");
-      }
+      NT_CORE_ASSERT(input_file.is_open(),
+         "Could not open file \"" + filepath + "\"");
+
+      std::stringstream file_reader_stream;
+      file_reader_stream << input_file.rdbuf();
+      m_fileContent = file_reader_stream.str();
+      input_file.close();
 
       preprocessShaderSource();
    }
 
-   ShaderProgramBuilder::ShaderProgramBuilder(const std::string& vertexSource,
+   ShaderProgramBuilder::ShaderProgramBuilder(UInt32 programId,
+      const std::string& vertexSource,
       const std::string& fragmentSource)
-      : m_shaderSources({
+      : m_id(programId)
+      , m_shaderSources({
          { GL_VERTEX_SHADER, vertexSource },
-         { GL_FRAGMENT_SHADER, fragmentSource } }
-         ) {}
+         { GL_FRAGMENT_SHADER, fragmentSource }
+         }) {}
 
-   UInt ShaderProgramBuilder::build()
+   void ShaderProgramBuilder::build()
    {
       NT_CORE_ASSERT(m_shaderSources.size() <= 2,
          "The maximum number of supported shaders is 2.");
 
-      UInt program_id = glCreateProgram();
-
-      std::array<UInt, 2> shaders_id;
-      Int shaders_id_index = 0;
+      std::array<UInt32, 2> shaders_id;
+      Int32 shaders_id_index = 0;
       for (auto&& [type, shader_source] : m_shaderSources)
       {
-         UInt shader_id = glCreateShader(type);
+         UInt32 shader_id = glCreateShader(type);
 
          const char* source = shader_source.c_str();
          glShaderSource(shader_id, 1, &source, 0);
          glCompileShader(shader_id);
 
-         Int compiled = 0;
+         Int32 compiled = 0;
          glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compiled);
          if (compiled == GL_FALSE)
          {
-            Int max_length = 0;
+            Int32 max_length = 0;
             glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &max_length);
 
             std::vector<char> info_log(max_length);
@@ -76,43 +73,37 @@ namespace Neat
 
             glDeleteShader(shader_id);
 
-            NT_CORE_ERROR("{0}", info_log.data());
-            NT_CORE_ASSERT(false, "ShaderProgram compilation failure.");
-
-            return 0;
+            NT_CORE_ERROR("ShaderProgram compilation failure\n{0}", info_log.data());
+            NT_CORE_ASSERT(false, "");
          }
 
-         glAttachShader(program_id, shader_id);
+         glAttachShader(m_id, shader_id);
          shaders_id[shaders_id_index++] = shader_id;
       }
 
-      glLinkProgram(program_id);
+      glLinkProgram(m_id);
 
-      Int linked = 0;
-      glGetProgramiv(program_id, GL_LINK_STATUS, (Int*)&linked);
+      Int32 linked = 0;
+      glGetProgramiv(m_id, GL_LINK_STATUS, (Int32*)&linked);
       if (linked == GL_FALSE)
       {
-         Int max_length = 0;
-         glGetProgramiv(program_id, GL_INFO_LOG_LENGTH, &max_length);
+         Int32 max_length = 0;
+         glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &max_length);
 
          std::vector<char> info_log(max_length);
-         glGetProgramInfoLog(program_id, max_length, &max_length, &info_log[0]);
+         glGetProgramInfoLog(m_id, max_length, &max_length, &info_log[0]);
 
-         glDeleteProgram(program_id);
+         glDeleteProgram(m_id);
 
          for (auto shader_id : shaders_id)
             glDeleteShader(shader_id);
 
-         NT_CORE_ERROR("{0}", info_log.data());
-         NT_CORE_ASSERT(false, "ShaderProgram program_id link failure.");
-
-         return 0;
+         NT_CORE_ERROR("ShaderProgram link failure\n{0}", info_log.data());
+         NT_CORE_ASSERT(false, "");
       }
 
       for (auto shader_id : shaders_id)
-         glDetachShader(program_id, shader_id);
-
-      return program_id;
+         glDetachShader(m_id, shader_id);
    }
 
    void ShaderProgramBuilder::preprocessShaderSource()
@@ -150,28 +141,31 @@ namespace Neat
    // ShaderProgram -------------------------------------------------------- //
    // ---------------------------------------------------------------------- //
    ShaderProgram::ShaderProgram(const std::string& filepath)
-      : m_id(ShaderProgramBuilder(filepath).build())
-      , m_uniformLibrary(*this)
+      : m_id(glCreateProgram())
       , m_name(std::filesystem::path(filepath).stem().string())
    {
+      ShaderProgramBuilder(m_id, filepath).build();
+      m_uniformLibrary = std::make_unique<UniformLibrary>(*this);
    }
 
    ShaderProgram::ShaderProgram(const std::string& name,
       const std::string& filepath)
-      : m_id(ShaderProgramBuilder(filepath).build())
-      , m_uniformLibrary(*this)
+      : m_id(glCreateProgram())
       , m_name(name)
    {
+      ShaderProgramBuilder(m_id, filepath).build();
+      m_uniformLibrary = std::make_unique<UniformLibrary>(*this);
    }
 
    ShaderProgram::ShaderProgram(
       const std::string& name,
       const std::string& vertexSource,
       const std::string& fragmentSource)
-      : m_id(ShaderProgramBuilder(vertexSource, fragmentSource).build())
-      , m_uniformLibrary(*this)
+      : m_id(glCreateProgram())
       , m_name(name)
    {
+      ShaderProgramBuilder(m_id, vertexSource, fragmentSource).build();
+      m_uniformLibrary = std::make_unique<UniformLibrary>(*this);
    }
 
    ShaderProgram::~ShaderProgram()
@@ -179,12 +173,12 @@ namespace Neat
       glDeleteProgram(m_id);
    }
 
-   void ShaderProgram::bind() const
+   void ShaderProgram::use() const
    {
       glUseProgram(m_id);
    }
 
-   void ShaderProgram::unbind() const
+   void ShaderProgram::unuse() const
    {
       glUseProgram(0);
    }

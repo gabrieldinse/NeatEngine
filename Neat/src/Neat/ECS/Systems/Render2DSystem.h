@@ -5,21 +5,21 @@
 #include "Neat/ECS/Components.h"
 #include "Neat/Graphics/Renderer2D.h"
 #include "Neat/Graphics/RenderCommand.h"
-#include "Neat/Graphics/OrthographicCamera.h"
+#include "Neat/Graphics/Camera.h"
 
 
 namespace Neat
 {
-   class RenderSystem : public System<RenderSystem>
+   class Render2DSystem : public System<Render2DSystem>
    {
    public:
-      RenderSystem(OrthographicCamera& camera)
+      Render2DSystem(Camera& camera)
          : m_camera(camera) {}
 
       virtual void update(EntityManager& entityManager,
          EventManager& eventManager, DeltaTime deltaTime);
 
    private:
-      OrthographicCamera& m_camera;
+      Camera& m_camera;
    };
 }

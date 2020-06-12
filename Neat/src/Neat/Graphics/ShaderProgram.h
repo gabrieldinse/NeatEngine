@@ -19,17 +19,18 @@ namespace Neat
    class ShaderProgramBuilder
    {
    public:
-      ShaderProgramBuilder(const std::string& filepath);
-      ShaderProgramBuilder(const std::string& vertexSource,
+      ShaderProgramBuilder(UInt32 programId, const std::string& filepath);
+      ShaderProgramBuilder(UInt32 programId, const std::string& vertexSource,
          const std::string& fragmentSource);
-      UInt build();
+      void build();
 
    private:
       void preprocessShaderSource();
 
    private:
+      UInt32 m_id = 0;
       std::string m_fileContent;
-      std::unordered_map<UInt, std::string> m_shaderSources;
+      std::unordered_map<UInt32, std::string> m_shaderSources;
    };
 
 
@@ -45,23 +46,23 @@ namespace Neat
          const std::string& fragmentSource);
       virtual ~ShaderProgram();
 
-      void bind() const;
-      void unbind() const;
+      void use() const;
+      void unuse() const;
 
       const std::string& getName() const { return m_name; }
       void setName(const std::string& name) { m_name = name; }
 
-      UInt getId() const { return m_id; }
+      UInt32 getId() const { return m_id; }
 
       template <ShaderDataType UniformType>
       Uniform<UniformType> getUniform(const std::string& name)
       {
-         return Uniform<UniformType>(name, m_uniformLibrary);
+         return Uniform<UniformType>(name, *m_uniformLibrary);
       }
 
    private:
-      UInt m_id = 0;
-      UniformLibrary m_uniformLibrary;
+      UInt32 m_id = 0;
+      std::unique_ptr<UniformLibrary> m_uniformLibrary;
       std::string m_name;
    };
 

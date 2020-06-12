@@ -15,32 +15,32 @@ namespace Neat
    public:
       virtual ~Texture() = default;
 
-      virtual Int getWidth() const = 0;
-      virtual Int getHeight() const = 0;
+      virtual Int32 getWidth() const = 0;
+      virtual Int32 getHeight() const = 0;
 
-      virtual void setData(void* m_data, UInt size) = 0;
+      virtual void setData(void* data, UInt32 size) = 0;
 
-      virtual void bind(UInt slot = 0) const = 0;
+      virtual void bind(UInt32 slot) const = 0;
    };
 
    class Texture2D : public Texture
    {
    public:
-      Texture2D(Int width, Int height);
+      Texture2D(Int32 width, Int32 height);
       Texture2D(const std::string& filepath);
       ~Texture2D();
 
-      Int getWidth() const { return m_width; }
-      Int getHeight() const { return m_height; }
+      Int32 getWidth() const { return m_width; }
+      Int32 getHeight() const { return m_height; }
 
       virtual const Vector2* getCoordinates() const
       {
          return m_coordinates;
       };
 
-      void setData(void* m_data, UInt size);
+      void setData(void* data, UInt32 size);
 
-      void bind(UInt slot) const;
+      void bind(UInt32 unit) const;
 
       bool operator==(const Texture2D& other) const
       {
@@ -48,11 +48,13 @@ namespace Neat
       }
 
    private:
-      UInt m_id;
-      Int m_width;
-      Int m_height;
-      UInt m_internalFormat;
-      UInt m_dataFormat;
-      const Vector2 m_coordinates[4] = { {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f} };
+      UInt32 m_id;
+      Int32 m_width;
+      Int32 m_height;
+      UInt32 m_internalFormat;
+      UInt32 m_dataFormat;
+      const Vector2 m_coordinates[4] = {
+         {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}
+      };
    };
 }

@@ -1,9 +1,9 @@
-#include "Neat/ECS/Systems/RenderSystem.h"
+#include "Neat/ECS/Systems/Render2DSystem.h"
 
 
 namespace Neat
 {
-   void RenderSystem::update(EntityManager& entityManager,
+   void Render2DSystem::update(EntityManager& entityManager,
       EventManager& eventManager, DeltaTime deltaTime)
    {
       Neat::Renderer2D::resetStats();

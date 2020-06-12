@@ -1,7 +1,7 @@
 #include "Neat/Graphics/Renderer2D.h"
 #include "Neat/Graphics/RenderCommand.h"
 #include "Neat/Graphics/ShaderDataType.h"
-#include "Neat/Math/Transforms.h"
+#include "Neat/Math/Transform.h"
 #include "Neat/Math/Vector.h"
 
 
@@ -13,7 +13,8 @@ namespace Neat
    {
       s_data.quadVertexArray = std::make_shared<VertexArray>();
       s_data.quadVertexBuffer = std::make_shared<VertexBuffer>(
-         QuadVextexDataBuffer::maxVertices * (UInt)sizeof(QuadVertexData));
+         QuadVextexDataBuffer::maxVertices * (UInt32)sizeof(QuadVertexData)
+      );
 
       s_data.quadVertexBuffer->setLayout({
          { ShaderDataType::Vector4, "position" },
@@ -24,18 +25,19 @@ namespace Neat
          });
       s_data.quadVertexArray->addVertexBuffer(s_data.quadVertexBuffer);
 
-      auto quadIndexes = std::make_unique<UInt[]>(
+      auto quadIndexes = std::make_unique<UInt32[]>(
          QuadVextexDataBuffer::maxIndexes);
-      UInt offset = 0;
-      for (std::size_t i = 0; i < QuadVextexDataBuffer::maxIndexes; i += 6, offset += 4)
+      UInt32 offset = 0;
+      for (UInt32 i = 0; i < QuadVextexDataBuffer::maxIndexes;
+         i += 6, offset += 4)
       {
-         quadIndexes[i + 0] = offset + 0;
-         quadIndexes[i + 1] = offset + 1;
-         quadIndexes[i + 2] = offset + 2;
+         quadIndexes[(std::size_t)i + 0] = offset + 0;
+         quadIndexes[(std::size_t)i + 1] = offset + 1;
+         quadIndexes[(std::size_t)i + 2] = offset + 2;
 
-         quadIndexes[i + 3] = offset + 2;
-         quadIndexes[i + 4] = offset + 3;
-         quadIndexes[i + 5] = offset + 0;
+         quadIndexes[(std::size_t)i + 3] = offset + 2;
+         quadIndexes[(std::size_t)i + 4] = offset + 3;
+         quadIndexes[(std::size_t)i + 5] = offset + 0;
       }
 
       auto squareIB = std::make_shared<IndexBuffer>(
@@ -44,16 +46,18 @@ namespace Neat
       s_data.quadVertexArray->setIndexBuffer(squareIB);
 
       s_data.whiteTexture = std::make_shared<Texture2D>(1, 1);
-      UInt white_texture_data = 0xffffffff;
-      s_data.whiteTexture->setData(&white_texture_data, sizeof(UInt));
-
-      Int samplers[Renderer2DData::maxTextureSlots];
-      for (Int i = 0; i < Renderer2DData::maxTextureSlots; ++i)
-         samplers[i] = i;
+      UInt32 white_texture_data = 0xffffffff;
+      s_data.whiteTexture->setData(&white_texture_data, (UInt32)sizeof(UInt32));
+      
+      // Assign each sampler to a texture unit (sampler2d's 0-31 to texture
+      // units 0-31)
+      Int32 samplers[Renderer2DData::maxTextureSlots];
+      for (std::size_t i = 0; i < Renderer2DData::maxTextureSlots; ++i)
+         samplers[i] = (Int32)i;
 
       s_data.textureShader = std::make_shared<TextureShader>(
-         "assets/glsl/texture.glsl");
-      s_data.textureShader->setTextures(samplers, sizeof(samplers));
+         "assets/shader_source/texture.glsl");
+      s_data.textureShader->setTextures(samplers, (Int32)sizeof(samplers));
 
       s_data.textureSlots[0] = s_data.whiteTexture;
    }
@@ -62,9 +66,9 @@ namespace Neat
    {
    }
 
-   void Renderer2D::beginScene(const OrthographicCamera& camera)
+   void Renderer2D::beginScene(const Camera& camera)
    {
-      s_data.textureShader->setProjectionViewMatrix(camera.getViewProjectionMatrix());
+      s_data.textureShader->setCameraTransform(camera.getCameraTransform());
 
       startNewBatch();
    }
@@ -82,15 +86,14 @@ namespace Neat
 
    void Renderer2D::draw()
    {
-      s_data.textureShader->bind();
+      s_data.textureShader->use();
 
       s_data.quadVertexBuffer->setData(
-         s_data.quadVextexDataBuffer.m_data.get(),
+         s_data.quadVextexDataBuffer.data.get(),
          s_data.quadVextexDataBuffer.getDataSize());
 
-      UInt index = 0;
-      for (std::size_t i = 0; i < s_data.textureSlotIndex; ++i, ++index)
-         s_data.textureSlots[i]->bind(index);
+      for (UInt32 i = 0; i < s_data.textureSlotIndex; ++i)
+         s_data.textureSlots[i]->bind(i);
 
       RenderCommand::drawIndexed(s_data.quadVertexArray,
          s_data.quadVextexDataBuffer.indexCount);
@@ -108,22 +111,24 @@ namespace Neat
    void Renderer2D::drawQuad(const Vector3& position, const Vector2& size,
       const Vector4 color)
    {
-      if (s_data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
+      if (reachedBatchDataLimit())
       {
          draw();
          startNewBatch();
       }
 
-      constexpr Int textureIndex = 0; // white texture;
+      constexpr Int32 textureIndex = 0; // white texture;
       constexpr float tilingFactor = 1.0f;
       constexpr Vector2 textureCoordinates[] = {
          {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}
       };
 
-      auto transform = translate(position) * scale(Vector3(size.x, size.y, 1.0f));
+      auto model_matrix =
+         translate(position) *
+         scale(Vector3(size.x, size.y, 1.0f));
       
-      s_data.quadVextexDataBuffer.addQuad(
-         transform, color, textureCoordinates, textureIndex, tilingFactor);
+      s_data.quadVextexDataBuffer.addQuad(model_matrix, color,
+         textureCoordinates, textureIndex, tilingFactor);
 
       s_data.stats.quadCount++;
    }
@@ -141,14 +146,14 @@ namespace Neat
       const std::shared_ptr<Texture2D>& texture, const Vector4& tint,
       float tilingFactor)
    {
-      if (s_data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
+      if (reachedBatchDataLimit())
       {
          draw();
          startNewBatch();
       }
 
-      Int textureIndex = 0;
-      for (Int i = 1; i < s_data.textureSlotIndex; ++i)
+      UInt32 textureIndex = 0;
+      for (UInt32 i = 1; i < s_data.textureSlotIndex; ++i)
       {
          if (*s_data.textureSlots[i] == *texture)
          {
@@ -164,70 +169,72 @@ namespace Neat
          s_data.textureSlotIndex++;
       }
 
-      auto transform = translate(position) * scale(Vector3(size.x, size.y, 1.0f));
+      auto model_matrix =
+         translate(position) *
+         scale(Vector3(size.x, size.y, 1.0f));
 
-      s_data.quadVextexDataBuffer.addQuad(
-         transform, tint, texture->getCoordinates(), textureIndex, tilingFactor);
+      s_data.quadVextexDataBuffer.addQuad(model_matrix, tint,
+         texture->getCoordinates(), textureIndex, tilingFactor);
 
       s_data.stats.quadCount++;
    }
 
    // Rotated Quads 
-   void Renderer2D::drawRotatedQuad(const Vector2& position, const Vector2& size,
-      float angleDegrees, const Vector4 color)
+   void Renderer2D::drawRotatedQuad(const Vector2& position,
+      const Vector2& size, float angleDegrees, const Vector4 color)
    {
-      drawRotatedQuad(
-         { position.x, position.y, 0.0f }, size, angleDegrees, color);
+      drawRotatedQuad({ position.x, position.y, 0.0f }, size, angleDegrees,
+         color);
    }
 
-   void Renderer2D::drawRotatedQuad(const Vector3& position, const Vector2& size,
-      float angleDegrees, const Vector4 color)
+   void Renderer2D::drawRotatedQuad(const Vector3& position,
+      const Vector2& size, float angleDegrees, const Vector4 color)
    {
-      if (s_data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
+      if (reachedBatchDataLimit())
       {
          draw();
          startNewBatch();
       }
 
-      constexpr Int textureIndex = 0; // white texture;
+      constexpr Int32 textureIndex = 0; // white texture;
       constexpr float tilingFactor = 1.0f;
       constexpr Vector2 textureCoordinates[] = {
          {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}
       };
 
-      auto transform =
+      auto model_matrix =
          translate(Matrix4(1.0f),position) *
-         rotate(degreesToRadians(angleDegrees), { 0, 0, 1 }) *
+         rotate(radians(angleDegrees), { 0, 0, 1 }) *
          scale(Vector3(size.x, size.y, 1.0f));
 
-      s_data.quadVextexDataBuffer.addQuad(
-         transform, color, textureCoordinates, textureIndex, tilingFactor);
+      s_data.quadVextexDataBuffer.addQuad(model_matrix, color,
+         textureCoordinates, textureIndex, tilingFactor);
 
       s_data.stats.quadCount++;
    }
 
-   void Renderer2D::drawRotatedQuad(const Vector2& position, const Vector2& size,
-      float angleDegrees, const std::shared_ptr<Texture2D>& texture,
-      const Vector4& tint, float tilingFactor)
+   void Renderer2D::drawRotatedQuad(const Vector2& position,
+      const Vector2& size, float angleDegrees,
+      const std::shared_ptr<Texture2D>& texture, const Vector4& tint,
+      float tilingFactor)
    {
-      drawRotatedQuad(
-         { position.x, position.y, 0.0f },
-         size, angleDegrees, texture, tint, tilingFactor);
+      drawRotatedQuad({ position.x, position.y, 0.0f }, size, angleDegrees,
+         texture, tint, tilingFactor);
    }
 
-   void Renderer2D::drawRotatedQuad(
-      const Vector3& position, const Vector2& size,
-      float angleDegrees, const std::shared_ptr<Texture2D>& texture,
-      const Vector4& tint, float tilingFactor)
+   void Renderer2D::drawRotatedQuad(const Vector3& position,
+      const Vector2& size, float angleDegrees,
+      const std::shared_ptr<Texture2D>& texture, const Vector4& tint,
+      float tilingFactor)
    {
-      if (s_data.quadVextexDataBuffer.indexCount >= QuadVextexDataBuffer::maxIndexes)
+      if (reachedBatchDataLimit())
       {
          draw();
          startNewBatch();
       }
 
-      Int textureIndex = 0;
-      for (Int i = 1; i < s_data.textureSlotIndex; ++i)
+      UInt32 textureIndex = 0;
+      for (UInt32 i = 1; i < s_data.textureSlotIndex; ++i)
       {
          if (*s_data.textureSlots[i] == *texture)
          {
@@ -243,13 +250,13 @@ namespace Neat
          s_data.textureSlotIndex++;
       }
 
-      auto transform =
+      auto model_matrix =
          translate(position) *
-         rotate(degreesToRadians(angleDegrees), { 0, 0, 1 }) *
+         rotate(radians(angleDegrees), { 0, 0, 1 }) *
          scale(Vector3(size.x, size.y, 1.0f));
 
-      s_data.quadVextexDataBuffer.addQuad(
-         transform, tint, texture->getCoordinates(), textureIndex, tilingFactor);
+      s_data.quadVextexDataBuffer.addQuad(model_matrix, tint,
+         texture->getCoordinates(), textureIndex, tilingFactor);
 
       s_data.stats.quadCount++;
    }

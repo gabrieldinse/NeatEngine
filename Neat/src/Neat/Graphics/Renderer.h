@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Neat/Graphics/RenderCommand.h"
-#include "Neat/Graphics/OrthographicCamera.h"
+#include "Neat/Graphics/Camera.h"
 #include "Neat/Graphics/ShaderProgram.h"
 
 
@@ -20,7 +20,7 @@ namespace Neat
       //   const std::shared_ptr<VertexArray>& vertexArray,
       //   const Matrix4& transform = Matrix4(1.0f));
 
-      static void onWindowResize(UInt width, UInt height);
+      static void onWindowResize(UInt32 width, UInt32 height);
 
    private:
       struct SceneData

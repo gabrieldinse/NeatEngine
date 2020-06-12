@@ -28,14 +28,14 @@ namespace Neat
 
    bool Input::isKeyPressed(KeyCode key)
    {
-      auto state = glfwGetKey(s_data->window, static_cast<Int>(key));
+      auto state = glfwGetKey(s_data->window, static_cast<Int32>(key));
 
       return (state == GLFW_PRESS || state == GLFW_REPEAT);
    }
 
    bool Input::isMouseButtonPressed(MouseCode button)
    {
-      auto state = glfwGetMouseButton(s_data->window, static_cast<Int>(button));
+      auto state = glfwGetMouseButton(s_data->window, static_cast<Int32>(button));
 
       return (state == GLFW_PRESS);
    }

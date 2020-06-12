@@ -16,6 +16,9 @@ namespace Neat
       union { T z, b, k, p; };
 
 
+      using ElementType = T;
+
+
       // Default constructor
       constexpr
       Vector();
@@ -23,10 +26,10 @@ namespace Neat
 
       // Basic Constructors
       constexpr explicit
-      Vector(T scalar);
+      Vector(const T& scalar);
 
       constexpr
-      Vector(T x, T y, T z);
+      Vector(const T& x, const T& y, const T& z);
 
       // Copy Constructor
       constexpr
@@ -52,11 +55,11 @@ namespace Neat
 
       template <typename A, typename B>
       constexpr explicit
-      Vector(const Vector<2, A>& v, B scalar1);
+      Vector(const Vector<2, A>& v, const B& scalar1);
 
       template <typename A, typename B, typename C>
       constexpr explicit
-      Vector(const Vector<1, A>& v, B scalar1, C scalar2);
+      Vector(const Vector<1, A>& v, const B& scalar1, const C& scalar2);
 
       template <typename X, typename Y, typename Z>
       constexpr
@@ -91,11 +94,11 @@ namespace Neat
 
       template <typename U>
       constexpr
-      Vector<3, T>& operator*=(U scalar);
+      Vector<3, T>& operator*=(const U& scalar);
 
       template <typename U>
       constexpr
-      Vector<3, T>& operator/=(U scalar);
+      Vector<3, T>& operator/=(const U& scalar);
 
 
       inline constexpr explicit
@@ -103,7 +106,7 @@ namespace Neat
 
 
       constexpr
-      UInt size() const { return 3; }
+      UInt32 size() const { return 3; }
 
 
       // Element acessingT& operator[](std::size_t pos);
@@ -147,15 +150,15 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Vector<3, T> operator*(T scalar, const Vector<3, T>& v);
+   Vector<3, T> operator*(const T& scalar, const Vector<3, T>& v);
 
    template <typename T>
    inline constexpr
-   Vector<3, T> operator*(const Vector<3, T>& v, T scalar);
+   Vector<3, T> operator*(const Vector<3, T>& v, const T& scalar);
 
    template <typename T>
    inline constexpr
-      Vector<3, T> operator/(const Vector<3, T>& v, T scalar);
+      Vector<3, T> operator/(const Vector<3, T>& v, const T& scalar);
 }
 
 #include "Neat/Math/Vector/Vector3.inl"

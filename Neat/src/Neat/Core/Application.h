@@ -25,8 +25,8 @@ namespace Neat
       void pushOverlay(Args&&... args);
       void pushLayer(std::unique_ptr<Layer>&& layer);
       void pushOverlay(std::unique_ptr<Layer>&& layer);
-      std::unique_ptr<Layer> popLayer(Int position);
-      std::unique_ptr<Layer> popOverlay(Int position);
+      std::unique_ptr<Layer> popLayer(Int32 position);
+      std::unique_ptr<Layer> popOverlay(Int32 position);
 
       void setUpdateRate(double rate) { m_updatePeriod = 1.0f / rate; }
 

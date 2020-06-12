@@ -4,7 +4,7 @@
 #include <array>
 
 #include "Neat/Core/Types.h"
-#include "Neat/Graphics/OrthographicCamera.h"
+#include "Neat/Graphics/Camera.h"
 #include "Neat/Graphics/Shaders.h"
 #include "Neat/Graphics/VertexArray.h"
 #include "Neat/Graphics/Texture.h"
@@ -18,7 +18,7 @@ namespace Neat
       static void init();
       static void shutdown();
 
-      static void beginScene(const OrthographicCamera& camera);
+      static void beginScene(const Camera& camera);
       static void endScene();
 
       // Primitives -----------------------------------------------------------
@@ -55,11 +55,11 @@ namespace Neat
 
       struct Statistics
       {
-         UInt drawCalls = 0;
-         UInt quadCount = 0;
+         UInt32 drawCalls = 0;
+         UInt32 quadCount = 0;
 
-         UInt getTotalVertexCount() const { return quadCount * 4; }
-         UInt getTotalIndexCount() const { return quadCount * 6; }
+         UInt32 getTotalVertexCount() const { return quadCount * 4; }
+         UInt32 getTotalIndexCount() const { return quadCount * 6; }
       };
 
       static Statistics getStats();
@@ -68,46 +68,51 @@ namespace Neat
    private:
       static void draw();
       static void startNewBatch();
+      static bool reachedBatchDataLimit()
+      {
+         return
+            s_data.quadVextexDataBuffer.indexCount >=
+            QuadVextexDataBuffer::maxIndexes;
+      }
 
    private:
       struct QuadVertexData
       {
-         Vector4 position;
-         Vector4 color;
-         Vector2 textureCoordinate;
-         Int textureIndex;
-         float tilingFactor;
+         Vector4 position{ 0.0f };
+         Vector4 color{ 1.0f, 0.0f, 1.0f, 1.0f };
+         Vector2 textureCoordinate{ 0.0f, 0.0f };
+         Int32 textureIndex = 0;
+         float tilingFactor = 1.0f;
       };
 
       struct QuadVextexDataBuffer
       {
-         static constexpr UInt maxQuads = 10000;
-         static constexpr UInt maxVertices = maxQuads * 4;
-         static constexpr UInt maxIndexes = maxQuads * 6;
+         static constexpr UInt32 maxQuads = 10000;
+         static constexpr UInt32 maxVertices = maxQuads * 4;
+         static constexpr UInt32 maxIndexes = maxQuads * 6;
          static constexpr Vector4 defaultPositions[4] = {
                { -0.5f, -0.5f, 0.0f, 1.0f },
-               { 0.5f, -0.5f, 0.0f, 1.0f },
-               { 0.5f,  0.5f, 0.0f, 1.0f },
+               {  0.5f, -0.5f, 0.0f, 1.0f },
+               {  0.5f,  0.5f, 0.0f, 1.0f },
                { -0.5f,  0.5f, 0.0f, 1.0f }
-               };
+         };
 
-         UInt indexCount = 0;
-         std::unique_ptr<QuadVertexData[]> m_data;
+         UInt32 indexCount = 0;
+         std::unique_ptr<QuadVertexData[]> data;
          QuadVertexData* currentPos = nullptr;
 
-         QuadVextexDataBuffer()
-            : m_data(std::make_unique<QuadVertexData[]>(
-               QuadVextexDataBuffer::maxVertices))
-         {
-         }
 
-         void addQuad(const Matrix4& transform, const Vector4& color,
-            const Vector2* textureCoordinates, Int textureIndex,
+         QuadVextexDataBuffer()
+            : data(std::make_unique<QuadVertexData[]>(
+               QuadVextexDataBuffer::maxVertices)) {}
+
+         void addQuad(const Matrix4& modelMatrix, const Vector4& color,
+            const Vector2* textureCoordinates, Int32 textureIndex,
             float tilingFactor)
          {
             for (std::size_t i = 0; i < 4; ++i)
             {
-               currentPos->position = transform * defaultPositions[i];
+               currentPos->position = modelMatrix * defaultPositions[i];
                currentPos->color = color;
                currentPos->textureCoordinate = textureCoordinates[i];
                currentPos->textureIndex = textureIndex;
@@ -117,23 +122,22 @@ namespace Neat
             indexCount += 6;
          }
 
-         IntLong getDataSize() const
+         UInt32 getDataSize() const
          {
-            return (IntLong)((Byte*)(currentPos) -
-               (Byte*)(m_data.get())
-               );
+            return (UInt32)((Byte*)(currentPos) - (Byte*)(data.get()));
          }
 
          void reset()
          {
             indexCount = 0;
-            currentPos = m_data.get();
+            currentPos = data.get();
          }
       };
 
       struct Renderer2DData
       {
-         static constexpr const UInt maxTextureSlots = 32; // TODO: RenderCapatilities
+         // TODO: RenderCapatilities
+         static constexpr const UInt32 maxTextureSlots = 32; 
 
          std::shared_ptr<VertexArray> quadVertexArray;
          std::shared_ptr<VertexBuffer> quadVertexBuffer;
@@ -143,7 +147,7 @@ namespace Neat
          QuadVextexDataBuffer quadVextexDataBuffer;
 
          std::array<std::shared_ptr<Texture2D>, maxTextureSlots> textureSlots;
-         Int textureSlotIndex = 1; // 0 = white texture
+         UInt32 textureSlotIndex = 1; // unit 0 = default white texture
 
          Statistics stats;
       };

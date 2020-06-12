@@ -14,6 +14,9 @@ namespace Neat
       // Class data
       union { T x, r, i, s; };
       union { T y, g, j, t; };
+      
+
+      using ElementType = T;
 
 
       // Default constructor
@@ -23,10 +26,10 @@ namespace Neat
 
       // Basic Constructors
       constexpr explicit
-      Vector(T scalar);
+      Vector(const T& scalar);
 
       constexpr
-      Vector(T x, T y);
+      Vector(const T& x, const T& y);
 
 
       // Copy Constructor
@@ -53,7 +56,7 @@ namespace Neat
 
       template <typename A, typename B>
       constexpr explicit
-      Vector(const Vector<1, A>& v, B scalar1);
+      Vector(const Vector<1, A>& v, const B& scalar1);
 
       template <typename X, typename Y>
       constexpr
@@ -88,11 +91,11 @@ namespace Neat
 
       template <typename U>
       constexpr
-      Vector<2, T>& operator*=(U scalar);
+      Vector<2, T>& operator*=(const U& scalar);
 
       template <typename U>
       constexpr
-      Vector<2, T>& operator/=(U scalar);
+      Vector<2, T>& operator/=(const U& scalar);
 
 
       inline constexpr explicit
@@ -100,7 +103,7 @@ namespace Neat
 
 
       constexpr
-      UInt size() const { return 2; }
+      UInt32 size() const { return 2; }
 
 
       // Element acessing
@@ -144,15 +147,15 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Vector<2, T> operator*(T scalar, const Vector<2, T>& v);
+   Vector<2, T> operator*(const T& scalar, const Vector<2, T>& v);
 
    template <typename T>
    inline constexpr
-   Vector<2, T> operator*(const Vector<2, T>& v, T scalar);
+   Vector<2, T> operator*(const Vector<2, T>& v, const T& scalar);
 
    template <typename T>
    inline constexpr
-   Vector<2, T> operator/(const Vector<2, T>& v, T scalar);
+   Vector<2, T> operator/(const Vector<2, T>& v, const T& scalar);
 }
 
 #include "Neat/Math/Vector/Vector2.inl"

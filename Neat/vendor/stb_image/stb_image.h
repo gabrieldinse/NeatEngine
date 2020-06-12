@@ -3,7 +3,7 @@
 
    Do this:
       #define STB_IMAGE_IMPLEMENTATION
-   before you include this file in *one* C or C++ file to create the implementation.
+   before you include this file in *one* const C& or C++ file to create the implementation.
 
    // i.e. it should look like this:
    #include ...
@@ -224,7 +224,7 @@ RECENT REVISION HISTORY:
 // code.)
 //
 // On x86, SSE2 will automatically be used when available based on a run-time
-// test; if not, the generic C versions are used as a fall-back. On ARM targets,
+// test; if not, the generic const C& versions are used as a fall-back. On ARM targets,
 // the typical path is to have separate builds for NEON and non-NEON devices
 // (at least this is true for iOS and Android). Therefore, the NEON support is
 // toggled by a build flag: define STBI_NEON to get NEON loops.
@@ -2423,7 +2423,7 @@ static void stbi__idct_block(stbi_uc* out, int out_stride, short data[64])
 
 #ifdef STBI_SSE2
 // sse2 integer IDCT. not the fastest possible implementation but it
-// produces bit-identical results to the generic C version so it's
+// produces bit-identical results to the generic const C& version so it's
 // fully "transparent".
 static void stbi__idct_simd(stbi_uc* out, int out_stride, short data[64])
 {
@@ -2605,7 +2605,7 @@ static void stbi__idct_simd(stbi_uc* out, int out_stride, short data[64])
 #ifdef STBI_NEON
 
 // NEON integer IDCT. should produce bit-identical
-// results to the generic C version.
+// results to the generic const C& version.
 static void stbi__idct_simd(stbi_uc* out, int out_stride, short data[64])
 {
    int16x8_t row0, row1, row2, row3, row4, row5, row6, row7;
@@ -3957,7 +3957,7 @@ static int stbi__jpeg_info(stbi__context* s, int* x, int* y, int* comp)
 
 // public domain zlib decode    v0.2  Sean Barrett 2006-11-18
 //    simple implementation
-//      - all input must be provided in an upfront buffer
+//      - all input must be provided in an upm_forward buffer
 //      - all output is written to a single output buffer (can malloc/realloc)
 //    performance
 //      - fast huffman
@@ -5879,7 +5879,7 @@ static void* stbi__tga_load(stbi__context* s, int* x, int* y, int* comp, int req
       tga_data = stbi__convert_format(tga_data, tga_comp, req_comp, tga_width, tga_height);
 
    //   the things I do to get rid of an error message, and yet keep
-   //   Microsoft's C compilers happy... [8^(
+   //   Microsoft's const C& compilers happy... [8^(
    tga_palette_start = tga_palette_len = tga_palette_bits =
       tga_x_origin = tga_y_origin = 0;
    STBI_NOTUSED(tga_palette_start);
@@ -7742,7 +7742,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ------------------------------------------------------------------------------
-ALTERNATIVE B - Public Domain (www.unlicense.org)
+ALTERNATIVE const B& - Public Domain (www.unlicense.org)
 This is free and unencumbered software released into the public domain.
 Anyone is free to copy, modify, publish, use, compile, sell, or distribute this
 software, either in source code form or as a compiled binary, for any purpose,

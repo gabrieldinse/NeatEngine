@@ -10,6 +10,7 @@ namespace Neat
    struct Matrix<3, 3, T>
    {
       using RowType = Vector<3, T>;
+      using ElementType = T;
 
 
       // Default constructor
@@ -20,12 +21,12 @@ namespace Neat
       // Basic constructors
       constexpr
       Matrix(
-         T m00, T m01, T m02,
-         T m10, T m11, T m12,
-         T m20, T m21, T m22);
+         const T& m00, const T& m01, const T& m02,
+         const T& m10, const T& m11, const T& m12,
+         const T& m20, const T& m21, const T& m22);
 
       constexpr explicit
-      Matrix(T scalar);
+      Matrix(const T& scalar);
 
 
       // Copy constrcutor
@@ -40,9 +41,9 @@ namespace Neat
          typename X3, typename Y3, typename Z3>
       constexpr
       Matrix(
-         X1 m00, Y1 m01, Z1 m02,
-         X2 m10, Y2 m11, Z2 m12,
-         X3 m20, Y3 m21, Z3 m22);
+         const X1& m00, const Y1& m01, const Z1& m02,
+         const X2& m10, const Y2& m11, const Z2& m12,
+         const X3& m20, const Y3& m21, const Z3& m22);
 
       template <typename U>
       constexpr explicit
@@ -59,9 +60,9 @@ namespace Neat
       template <typename V1, typename V2, typename V3>
       constexpr
       Matrix(
-         const Vector<3, V1> row1,
-         const Vector<3, V2> row2,
-         const Vector<3, V3> row3);
+         const Vector<3, V1>& row1,
+         const Vector<3, V2>& row2,
+         const Vector<3, V3>& row3);
 
 
       // Assignment operators
@@ -77,7 +78,7 @@ namespace Neat
 
 	   template<typename U>
 	   constexpr
-      Matrix<3, 3, T> & operator-=(U scalar);
+      Matrix<3, 3, T> & operator-=(const U& scalar);
 
 	   template<typename U>
 	   constexpr
@@ -85,7 +86,7 @@ namespace Neat
 
 	   template<typename U>
 	   constexpr
-      Matrix<3, 3, T> & operator*=(U scalar);
+      Matrix<3, 3, T> & operator*=(const U& scalar);
 
 	   template<typename U>
 	   constexpr
@@ -93,7 +94,7 @@ namespace Neat
 
 	   template<typename U>
 	   constexpr
-      Matrix<3, 3, T>& operator/=(U scalar);
+      Matrix<3, 3, T>& operator/=(const U& scalar);
 
 
       constexpr std::size_t size() const { return 3 * 3; }
@@ -139,11 +140,11 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<3, 3, T> operator*(T scalar, const Matrix<3, 3, T>& m);
+   Matrix<3, 3, T> operator*(const T& scalar, const Matrix<3, 3, T>& m);
 
    template <typename T>
    inline constexpr
-   Matrix<3, 3, T> operator*(const Matrix<3, 3, T>& m, T scalar);
+   Matrix<3, 3, T> operator*(const Matrix<3, 3, T>& m, const T& scalar);
 
    template <typename T>
    inline constexpr
@@ -151,7 +152,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<3, 3, T> operator/(const Matrix<3, 3, T>& m, T scalar);
+   Matrix<3, 3, T> operator/(const Matrix<3, 3, T>& m, const T& scalar);
 }
 
 #include "Neat/Math/Matrix/Matrix3x3.inl"

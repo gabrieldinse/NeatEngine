@@ -6,12 +6,12 @@ namespace Neat
    bool operator<(EventPriority priorityA, EventPriority priorityB)
    {
       return
-         static_cast<UIntShort>(priorityA) < static_cast<UIntShort>(priorityB);
+         static_cast<UInt16>(priorityA) < static_cast<UInt16>(priorityB);
    }
 
    bool operator==(EventPriority priorityA, EventPriority priorityB)
    {
       return
-         static_cast<UIntShort>(priorityA) == static_cast<UIntShort>(priorityB);
+         static_cast<UInt16>(priorityA) == static_cast<UInt16>(priorityB);
    }
 }

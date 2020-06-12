@@ -19,9 +19,9 @@ namespace Neat
 
       ~BaseMemoryPool();
 
-      UInt size() const { return (UInt)m_size; }
-      UInt capacity() const { return (UInt)m_capacity; }
-      UInt chunks() const { return (UInt)m_memoryBlocks.size(); }
+      UInt32 size() const { return (UInt32)m_size; }
+      UInt32 capacity() const { return (UInt32)m_capacity; }
+      UInt32 chunks() const { return (UInt32)m_memoryBlocks.size(); }
 
       void resize(std::size_t count);
       void reserve(std::size_t count);

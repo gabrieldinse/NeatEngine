@@ -17,9 +17,9 @@ namespace Neat
       static void clearWithColor(const Vector4 color);
 
       static void drawIndexed(const std::shared_ptr<VertexArray>& vertexArray,
-         UInt indexCount = 0);
+         UInt32 indexCount = 0);
 
       static void setViewport(
-         UInt xOffset, UInt yOffset, UInt width, UInt height);
+         UInt32 xOffset, UInt32 yOffset, UInt32 width, UInt32 height);
    };
 }

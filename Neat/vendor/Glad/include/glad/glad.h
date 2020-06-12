@@ -165,15 +165,15 @@ typedef void (APIENTRY *GLVULKANPROCNV)(void);
 #define GL_ONE_MINUS_DST_COLOR 0x0307
 #define GL_SRC_ALPHA_SATURATE 0x0308
 #define GL_NONE 0
-#define GL_FRONT_LEFT 0x0400
-#define GL_FRONT_RIGHT 0x0401
+#define GL_m_forward_LEFT 0x0400
+#define GL_m_forward_RIGHT 0x0401
 #define GL_BACK_LEFT 0x0402
 #define GL_BACK_RIGHT 0x0403
-#define GL_FRONT 0x0404
+#define GL_m_forward 0x0404
 #define GL_BACK 0x0405
 #define GL_LEFT 0x0406
 #define GL_RIGHT 0x0407
-#define GL_FRONT_AND_BACK 0x0408
+#define GL_m_forward_AND_BACK 0x0408
 #define GL_NO_ERROR 0
 #define GL_INVALID_ENUM 0x0500
 #define GL_INVALID_VALUE 0x0501
@@ -192,7 +192,7 @@ typedef void (APIENTRY *GLVULKANPROCNV)(void);
 #define GL_POLYGON_SMOOTH 0x0B41
 #define GL_CULL_FACE 0x0B44
 #define GL_CULL_FACE_MODE 0x0B45
-#define GL_FRONT_FACE 0x0B46
+#define GL_m_forward_FACE 0x0B46
 #define GL_DEPTH_RANGE 0x0B70
 #define GL_DEPTH_TEST 0x0B71
 #define GL_DEPTH_WRITEMASK 0x0B72
@@ -1507,9 +1507,9 @@ GLAPI int GLAD_GL_VERSION_1_0;
 typedef void (APIENTRYP PFNGLCULLFACEPROC)(GLenum mode);
 GLAPI PFNGLCULLFACEPROC glad_glCullFace;
 #define glCullFace glad_glCullFace
-typedef void (APIENTRYP PFNGLFRONTFACEPROC)(GLenum mode);
-GLAPI PFNGLFRONTFACEPROC glad_glFrontFace;
-#define glFrontFace glad_glFrontFace
+typedef void (APIENTRYP PFNGLm_forwardFACEPROC)(GLenum mode);
+GLAPI PFNGLm_forwardFACEPROC glad_glm_forwardFace;
+#define glm_forwardFace glad_glm_forwardFace
 typedef void (APIENTRYP PFNGLHINTPROC)(GLenum target, GLenum mode);
 GLAPI PFNGLHINTPROC glad_glHint;
 #define glHint glad_glHint

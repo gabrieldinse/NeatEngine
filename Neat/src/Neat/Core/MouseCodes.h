@@ -7,7 +7,7 @@
 
 namespace Neat
 {
-	typedef enum class MouseCode : UIntShort
+	typedef enum class MouseCode : UInt16
 	{
 		Button0 = 0,
 		Button1 = 1,
@@ -25,7 +25,7 @@ namespace Neat
 
 	inline std::ostream& operator<<(std::ostream& os, MouseCode mouseCode)
 	{
-		os << static_cast<Int>(mouseCode);
+		os << static_cast<Int32>(mouseCode);
 		return os;
 	}
 }

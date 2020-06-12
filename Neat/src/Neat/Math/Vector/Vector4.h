@@ -17,6 +17,9 @@ namespace Neat
       union { T w, a, l, q; };
 
 
+      using ElementType = T;
+
+
       // Default constructor
       constexpr
       Vector();
@@ -24,10 +27,10 @@ namespace Neat
 
       // Basic Constructors
       constexpr explicit
-      Vector(T scalar);
+      Vector(const T& scalar);
 
       constexpr
-      Vector(T x, T y, T z, T w);
+      Vector(const T& x, const T& y, const T& z, const T& w);
 
 
       // Copy Constructor
@@ -54,15 +57,15 @@ namespace Neat
 
       template <typename A, typename B>
       constexpr explicit
-      Vector(const Vector<3, A>& v, B scalar);
+      Vector(const Vector<3, A>& v, const B& scalar);
 
       template <typename A, typename B, typename C>
       constexpr explicit
-      Vector(const Vector<2, A>& v, B scalar1, C scalar2);
+      Vector(const Vector<2, A>& v, const B& scalar1, const C& scalar2);
 
       template <typename A, typename B, typename C, typename D>
       constexpr explicit
-      Vector(const Vector<1, A>& v, B scalar1, C scalar2, D scalar3);
+      Vector(const Vector<1, A>& v, const B& scalar1, const C& scalar2, const D& scalar3);
 
       template <typename X, typename Y, typename Z, typename W>
       constexpr
@@ -97,11 +100,11 @@ namespace Neat
 
       template <typename U>
       constexpr
-      Vector<4, T>& operator*=(U scalar);
+      Vector<4, T>& operator*=(const U& scalar);
 
       template <typename U>
       constexpr
-      Vector<4, T>& operator/=(U scalar);
+      Vector<4, T>& operator/=(const U& scalar);
 
 
       constexpr explicit
@@ -109,7 +112,7 @@ namespace Neat
 
 
       constexpr
-      UInt size() const { return 4; }
+      UInt32 size() const { return 4; }
 
       // Element acessing
       constexpr
@@ -156,15 +159,15 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Vector<4, T> operator*(T scalar, const Vector<4, T>& v);
+   Vector<4, T> operator*(const T& scalar, const Vector<4, T>& v);
 
    template <typename T>
    inline constexpr
-   Vector<4, T> operator*(const Vector<4, T>& v, T scalar);
+   Vector<4, T> operator*(const Vector<4, T>& v, const T& scalar);
 
    template <typename T>
    inline constexpr
-   Vector<4, T> operator/(const Vector<4, T>& v, T scalar);
+   Vector<4, T> operator/(const Vector<4, T>& v, const T& scalar);
 
 
 }

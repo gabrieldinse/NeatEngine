@@ -14,7 +14,7 @@ namespace Neat
    // ---------------------------------------------------------------------- //
    struct BaseComponent
    {
-      using Family = UInt;
+      using Family = UInt32;
 
       void operator delete(void* ptr) { fail(); }
       void operator delete[](void* ptr) { fail(); }

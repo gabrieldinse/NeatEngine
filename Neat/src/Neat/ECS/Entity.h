@@ -40,14 +40,14 @@ namespace Neat
       { 
       public:
          Id() : m_id(0) {}
-         Id(UInt index, UInt version)
-            : m_id(UIntLong(index) | UIntLong(version) << 32) {}
-         explicit Id(UIntLong id) : m_id(id) {}
+         Id(UInt32 index, UInt32 version)
+            : m_id(UInt64(index) | UInt64(version) << 32) {}
+         explicit Id(UInt64 id) : m_id(id) {}
          
 
-         UIntLong id() const { return m_id; }
-         UInt index() const { return (UInt)(m_id & UIntLong(NT_UINT_MAX)); }
-         UInt version() const { return (UInt)(m_id >> 32); }
+         UInt64 id() const { return m_id; }
+         UInt32 index() const { return (UInt32)(m_id & UInt64(NT_UINT32_MAX)); }
+         UInt32 version() const { return (UInt32)(m_id >> 32); }
 
          bool operator==(const Id &other) const { return m_id == other.m_id; }
          bool operator!=(const Id &other) const { return m_id != other.m_id; }
@@ -57,7 +57,7 @@ namespace Neat
          friend class EntityManager;
 
       private:
-         UIntLong m_id;
+         UInt64 m_id;
       };
 
       static const Id INVALID_ID;
@@ -293,7 +293,7 @@ namespace Neat
          }
          
       protected:
-         ViewIterator(EntityManager* entityManager, UInt index)
+         ViewIterator(EntityManager* entityManager, UInt32 index)
             : m_entityManager(entityManager)
             , m_pos(index)
             , m_capacity(m_entityManager->capacity())
@@ -309,12 +309,12 @@ namespace Neat
 
          ViewIterator(EntityManager* entityManager,
             const ComponentMask componentGroupMask,
-            UInt index)
+            UInt32 index)
             : m_entityManager(entityManager)
             , m_componentGroupMask(componentGroupMask)
             , m_pos(index)
             , m_capacity(m_entityManager->capacity())
-            , m_freeCursor(NT_UINT_MAX)
+            , m_freeCursor(NT_UINT32_MAX)
          {
             if (IterateOverAll)
             {
@@ -364,7 +364,7 @@ namespace Neat
       protected:
          EntityManager* m_entityManager;
          ComponentMask m_componentGroupMask;
-         UInt m_pos;
+         UInt32 m_pos;
          std::size_t m_capacity;
          std::size_t m_freeCursor;
       };
@@ -381,7 +381,7 @@ namespace Neat
          {
          public:
             Iterator(EntityManager* entityManager,
-               const ComponentMask componentGroupMask, UInt index)
+               const ComponentMask componentGroupMask, UInt32 index)
                : ViewIterator<Iterator, IterateOverAll>(
                   entityManager, componentGroupMask, index)
             {
@@ -402,7 +402,7 @@ namespace Neat
          {
             return
                Iterator(m_entityManager, m_componentGroupMask,
-                  (UInt)m_entityManager->capacity());
+                  (UInt32)m_entityManager->capacity());
          }
 
          const Iterator begin() const
@@ -414,7 +414,7 @@ namespace Neat
          {
             return
                Iterator(m_entityManager, m_componentGroupMask,
-                  (UInt)m_entityManager->capacity());
+                  (UInt32)m_entityManager->capacity());
          }
 
       private:
@@ -484,7 +484,7 @@ namespace Neat
          public:
             Iterator(EntityManager* entityManager,
                const ComponentMask componentGroupMask,
-               UInt index, const Unpacker& unpacker)
+               UInt32 index, const Unpacker& unpacker)
                : ViewIterator<Iterator>(entityManager, componentGroupMask,
                   index)
                , m_unpacker(unpacker)
@@ -513,7 +513,7 @@ namespace Neat
          {
             return
                Iterator(m_entityManager, m_componentGroupMask,
-                  (UInt)m_entityManager->capacity(), m_unpacker);
+                  (UInt32)m_entityManager->capacity(), m_unpacker);
          }
 
          const Iterator begin() const
@@ -526,7 +526,7 @@ namespace Neat
          {
             return
                Iterator(m_entityManager, m_componentGroupMask,
-                  (UInt)m_entityManager->capacity(), m_unpacker);
+                  (UInt32)m_entityManager->capacity(), m_unpacker);
          }
 
       private:
@@ -571,8 +571,8 @@ namespace Neat
 
       Entity createEntity()
       {
-         UInt index;
-         UInt version;
+         UInt32 index;
+         UInt32 version;
 
          if (m_freeEntityIds.empty())
          {
@@ -597,7 +597,7 @@ namespace Neat
       {
          checkIsValid(id);
 
-         UInt index = id.index();
+         UInt32 index = id.index();
          auto component_mask = m_entityComponentMasks[index];
 
          m_eventManager.publish<EntityDestroyedEvent>(Entity(this, id));
@@ -622,7 +622,7 @@ namespace Neat
          return Entity(this, id);
       }
 
-      Entity::Id createId(UInt index) const
+      Entity::Id createId(UInt32 index) const
       {
          return Entity::Id(index, m_entityIdsVersion[index]);
       }
@@ -634,7 +634,7 @@ namespace Neat
          checkIsValid(id);
 
          const BaseComponent::Family family = getComponentFamily<C>();
-         UInt index = id.index();
+         UInt32 index = id.index();
 
          if (m_entityComponentMasks[index].test(family))
             throw ComponentAlreadyAddedError();
@@ -865,7 +865,7 @@ namespace Neat
       }
 
 
-      void accomodateEntity(UInt index)
+      void accomodateEntity(UInt32 index)
       {
          if (m_entityComponentMasks.size() <= index)
          {
@@ -897,13 +897,13 @@ namespace Neat
       }
 
    private:
-      UInt m_indexCounter = 0;
+      UInt32 m_indexCounter = 0;
 
       EventManager& m_eventManager;
       std::vector<BaseMemoryPool*> m_componentArrays;
       std::vector<ComponentMask> m_entityComponentMasks;
-      std::vector<UInt> m_entityIdsVersion;
-      std::vector<UInt> m_freeEntityIds;
+      std::vector<UInt32> m_entityIdsVersion;
+      std::vector<UInt32> m_freeEntityIds;
    };
    // ---------------------------------------------------------------------- //
    // ---------------------------------------------------------------------- //

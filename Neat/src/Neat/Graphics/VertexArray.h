@@ -28,7 +28,7 @@ namespace Neat
       }
 
    private:
-      UInt m_id = 0;
+      UInt32 m_id = 0;
       std::vector<std::shared_ptr<VertexBuffer>> m_vertexBuffers;
       std::shared_ptr<IndexBuffer> m_indexBuffer;
    };

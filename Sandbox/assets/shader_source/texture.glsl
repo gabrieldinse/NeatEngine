@@ -7,7 +7,7 @@ layout(location = 2) in vec2 textureCoordinate;
 layout(location = 3) in int textureIndex;
 layout(location = 4) in float tilingFactor;
 
-uniform mat4 u_projectionView;
+uniform mat4 u_cameraTransform;
 
 out VS_OUT
 {
@@ -17,14 +17,14 @@ out VS_OUT
     float tilingFactor;
 } vs_out;
 
+
 void main()
 {
     vs_out.textureCoordinate = textureCoordinate;
     vs_out.color = color;
     vs_out.textureIndex = textureIndex;
     vs_out.tilingFactor = tilingFactor;
-    gl_Position = 
-    position * u_projectionView;
+    gl_Position = u_cameraTransform * position;
 }
 
 #type fragment
@@ -41,7 +41,8 @@ in VS_OUT
     flat int textureIndex;
     float tilingFactor;
 } fs_in;
-         
+   
+   
 void main()
 {
     vec4 texture_color = fs_in.color;

@@ -8,7 +8,7 @@ namespace Neat
    void RenderCommand::init()
    {
       glEnable(GL_DEPTH_TEST);
-      glEnable(GL_CULL_FACE);
+      //glEnable(GL_CULL_FACE);
       glEnable(GL_BLEND);
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    }
@@ -26,14 +26,14 @@ namespace Neat
    void RenderCommand::clearWithColor(const Vector4 color)
    {
       static constexpr float one = 1.0f;
-      glClearBufferfv(GL_COLOR, 0, color.data());
       glClearBufferfv(GL_DEPTH, 0, &one);
+      glClearBufferfv(GL_COLOR, 0, color.data());
    }
 
    void RenderCommand::drawIndexed(
-      const std::shared_ptr<VertexArray>& vertexArray, UInt indexCount)
+      const std::shared_ptr<VertexArray>& vertexArray, UInt32 indexCount)
    {
-      UInt count = (indexCount == 0)
+      UInt32 count = (indexCount == 0)
          ? vertexArray->getIndexBuffer()->getCount()
          : indexCount;
 
@@ -42,7 +42,7 @@ namespace Neat
    }
 
    void RenderCommand::setViewport(
-      UInt xOffset, UInt yOffset, UInt width, UInt height)
+      UInt32 xOffset, UInt32 yOffset, UInt32 width, UInt32 height)
    {
       glViewport(xOffset, yOffset, width, height);
    }

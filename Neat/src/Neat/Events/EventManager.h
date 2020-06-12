@@ -48,18 +48,19 @@ namespace Neat
       void removeListener(Listener& listener)
       {
          BaseEventListener& base = listener;
+         Event<E>::Family family = Event<E>::getFamily();
 
-         if (base.m_connectedEvents.find(Event<E>::getFamily())
+         if (base.m_connectedEvents.find(family)
             == base.m_connectedEvents.end())
             throw EventListenerError();
 
          auto& [event_connection, connection_id] =
-            base.m_connectedEvents[Event<E>::getFamily()];
+            base.m_connectedEvents[family];
 
          if (!event_connection.expired())
             event_connection.lock()->removeListener(connection_id);
 
-         base.m_connectedEvents.erase(Event<E>::getFamily());
+         base.m_connectedEvents.erase(family);
       }
 
 

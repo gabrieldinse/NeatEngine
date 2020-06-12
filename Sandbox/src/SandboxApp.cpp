@@ -24,9 +24,9 @@ public:
          *spritesheetTexture, { 8, 6 }, { 64, 64 }))
    {
       auto camera_controller_system = 
-         systems.addSystem<Neat::OrthographicCameraControllerSystem>(
-         (float)getWindow().getWidth() / (float)getWindow().getHeight());
-      systems.addSystem<Neat::RenderSystem>(
+         systems.addSystem<Neat::Camera3DControllerSystem>(
+            (float)getWindow().getWidth() / (float)getWindow().getHeight());
+      systems.addSystem<Neat::Render2DSystem>(
          camera_controller_system->getCamera());
       systems.init();
 
@@ -55,8 +55,8 @@ public:
 
    virtual void update(Neat::DeltaTime deltaTime) override
    {
-      systems.update<Neat::OrthographicCameraControllerSystem>(deltaTime);
-      systems.update<Neat::RenderSystem>(deltaTime);
+      systems.update<Neat::Camera3DControllerSystem>(deltaTime);
+      systems.update<Neat::Render2DSystem>(deltaTime);
    }
 
    virtual void imGuiRender() override

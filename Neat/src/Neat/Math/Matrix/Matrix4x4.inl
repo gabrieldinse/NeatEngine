@@ -14,10 +14,10 @@ namespace Neat
    template <typename T>
    inline constexpr
    Matrix<4, 4, T>::Matrix(
-      T m00, T m01, T m02, T m03,
-      T m10, T m11, T m12, T m13,
-      T m20, T m21, T m22, T m23,
-      T m30, T m31, T m32, T m33)
+      const T& m00, const T& m01, const T& m02, const T& m03,
+      const T& m10, const T& m11, const T& m12, const T& m13,
+      const T& m20, const T& m21, const T& m22, const T& m23,
+      const T& m30, const T& m31, const T& m32, const T& m33)
       : m_rows{
          RowType(m00, m01, m02, m03),
          RowType(m10, m11, m12, m13),
@@ -27,7 +27,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<4, 4, T>::Matrix(T scalar)
+   Matrix<4, 4, T>::Matrix(const T& scalar)
       : m_rows{
          RowType(scalar, 0, 0, 0),
          RowType(0, scalar, 0, 0),
@@ -52,10 +52,10 @@ namespace Neat
       typename X4, typename Y4, typename Z4, typename W4>
    inline constexpr
    Matrix<4, 4, T>::Matrix(
-      X1 m00, Y1 m01, Z1 m02, W1 m03,
-      X2 m10, Y2 m11, Z2 m12, W2 m13,
-      X3 m20, Y3 m21, Z3 m22, W3 m23,
-      X4 m30, Y4 m31, Z4 m32, W4 m33)
+      const X1& m00, const Y1& m01, const Z1& m02, const W1& m03,
+      const X2& m10, const Y2& m11, const Z2& m12, const W2& m13,
+      const X3& m20, const Y3& m21, const Z3& m22, const W3& m23,
+      const X4& m30, const Y4& m31, const Z4& m32, const W4& m33)
       : m_rows{
          RowType(m00, m01, m02, m03),
          RowType(m10, m11, m12, m13),
@@ -100,10 +100,10 @@ namespace Neat
    template<typename V1, typename V2, typename V3, typename V4>
    inline constexpr
    Matrix<4, 4, T>::Matrix(
-      const Vector<4, V1> row1,
-      const Vector<4, V2> row2,
-      const Vector<4, V3> row3,
-      const Vector<4, V4> row4)
+      const Vector<4, V1>& row1,
+      const Vector<4, V2>& row2,
+      const Vector<4, V3>& row3,
+      const Vector<4, V4>& row4)
       : m_rows{
          RowType(row1),
          RowType(row2),
@@ -166,7 +166,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<4, 4, T> operator*(T scalar, const Matrix<4, 4, T>& m)
+   Matrix<4, 4, T> operator*(const T& scalar, const Matrix<4, 4, T>& m)
    {
       return Matrix<4, 4, T>(
          scalar * m[0],
@@ -178,7 +178,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-      Matrix<4, 4, T> operator*(const Matrix<4, 4, T>& m, T scalar)
+      Matrix<4, 4, T> operator*(const Matrix<4, 4, T>& m, const T& scalar)
    {
       return scalar * m;
    }
@@ -197,7 +197,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr
-   Matrix<4, 4, T> operator/(const Matrix<4, 4, T>& m, T scalar)
+   Matrix<4, 4, T> operator/(const Matrix<4, 4, T>& m, const T& scalar)
    {
       return Matrix<4, 4, T>(
          m[0] / scalar,
@@ -240,7 +240,7 @@ namespace Neat
 	template<typename T>
 	template<typename U>
 	inline constexpr
-   Matrix<4, 4, T>& Matrix<4, 4, T>::operator-=(U scalar)
+   Matrix<4, 4, T>& Matrix<4, 4, T>::operator-=(const U& scalar)
 	{
 		m_rows[0] -= scalar;
 		m_rows[1] -= scalar;
@@ -266,7 +266,7 @@ namespace Neat
 	template<typename T>
 	template<typename U>
 	inline constexpr
-   Matrix<4, 4, T>& Matrix<4, 4, T>::operator*=(U scalar)
+   Matrix<4, 4, T>& Matrix<4, 4, T>::operator*=(const U& scalar)
 	{
 		m_rows[0] *= scalar;
 		m_rows[1] *= scalar;
@@ -287,7 +287,7 @@ namespace Neat
 	template<typename T>
 	template<typename U>
 	inline constexpr
-   Matrix<4, 4, T>& Matrix<4, 4, T>::operator/=(U scalar)
+   Matrix<4, 4, T>& Matrix<4, 4, T>::operator/=(const U& scalar)
 	{
 		m_rows[0] /= scalar;
 		m_rows[1] /= scalar;
