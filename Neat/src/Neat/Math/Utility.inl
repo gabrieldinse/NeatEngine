@@ -1,3 +1,4 @@
+#include "Neat/Math/Constants.h"
 
 
 namespace Neat
@@ -6,48 +7,38 @@ namespace Neat
    inline constexpr
    T radians(T angleDegrees)
    {
-      return angleDegrees * static_cast<T>(NT_PI_OVER_180);
+      return angleDegrees * degreeInRadians<T>;
    }
 
    template <typename T>
    inline constexpr
    T degrees(T angleRadians)
    {
-      return angleRadians * static_cast<T>(NT_180_OVER_PI);
+      return angleRadians * radianInDegrees<T>;
    }
 
-
-   template<UInt32 N, typename T, typename U>
-   Vector<N, T> linearInterpolation(
-      const Vector<N, T>& a, const Vector<N, T>& b, const U& t)
+   template <typename T>
+   T wrapPi(T angleRadians)
    {
-      return
-         a * (static_cast<T>(1) - static_cast<T>(t)) + b * static_cast<T>(t);
+      if (std::fabs(angleRadians) > pi<T>)
+      {
+         T revolutions = std::floor(
+            oneOverTwoPi<T> * (angleRadians + pi<T>));
+         angleRadians -= revolutions * twoPi<T>;
+      }
+
+      return angleRadians;
    }
 
-   template<UInt32 N, typename T, typename U>
-   Vector<N, T> quadraticBezier(const Vector<N, T>& a, const Vector<N, T>& b,
-      const Vector<N, T>& c, const U& t)
+   template <typename T>
+   T wrap2Pi(T angleRadians)
    {
-      auto d = linearInterpolation(a, b, t);
-      auto e = linearInterpolation(b, c, t);
-      auto p = linearInterpolation(d, e, t);
+      if (std::fabs(angleRadians) > twoPi<T>)
+      {
+         T revolutions = std::floor(oneOverTwoPi<T> * angleRadians);
+         angleRadians -= revolutions * twoPi<T>;
+      }
 
-      return p;
-   }
-
-   template<UInt32 N, typename T, typename U>
-   Vector<N, T> cubicBezier(const Vector<N, T>& a, const Vector<N, T>& b,
-      const Vector<N, T>& c, const Vector<N, T>& d, const U& t)
-   {
-      auto e = linearInterpolation(a, b, t);
-      auto f = linearInterpolation(b, c, t);
-      auto g = linearInterpolation(c, d, t);
-
-      auto h = linearInterpolation(e, f, t);
-      auto i = linearInterpolation(f, g, t);
-      auto p = linearInterpolation(h, i, t);
-
-      return p;
+      return angleRadians;
    }
 }

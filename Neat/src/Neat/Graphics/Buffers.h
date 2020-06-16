@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#include "Neat/Core/Core.h"
+#include "Neat/Core/Base.h"
 #include "Neat/Core/Types.h"
 #include "Neat/Graphics/ShaderDataType.h"
 

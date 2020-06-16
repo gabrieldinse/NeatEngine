@@ -8,8 +8,6 @@ namespace Neat
    Camera2DControllerSystem::Camera2DControllerSystem(float aspectRatio,
       bool rotationEnabled)
       : m_aspectRatio(aspectRatio)
-      , m_position(m_camera.getPosition())
-      , m_rotation(m_camera.getRoll())
       , m_rotationEnabled(rotationEnabled)
       , m_lastMousePosition(Input::getMouseX(), Input::getMouseY())
    {
@@ -39,43 +37,41 @@ namespace Neat
       {
          if (Input::isKeyPressed(KeyCode::W))
          {
-            m_position.y += (float)(m_translationSpeed * deltaTime);
+            m_camera.incrementY((float)(m_translationSpeed * deltaTime));
          }
 
          if (Input::isKeyPressed(KeyCode::S))
          {
-            m_position.y -= (float)(m_translationSpeed * deltaTime);
+            m_camera.incrementY(-(float)(m_translationSpeed * deltaTime));
          }
 
          if (Input::isKeyPressed(KeyCode::D))
          {
-            m_position.x += (float)(m_translationSpeed * deltaTime);
+            m_camera.incrementX((float)(m_translationSpeed * deltaTime));
          }
 
          if (Input::isKeyPressed(KeyCode::A))
          {
-            m_position.x -= (float)(m_translationSpeed * deltaTime);
+            m_camera.incrementX(-(float)(m_translationSpeed * deltaTime));
          }
-
-         m_camera.setPosition(m_position);
       }
 
       if (m_rotationEnabled)
       {
          if (Input::isKeyPressed(KeyCode::Q))
          {
-            m_rotation += (float)(m_rotationSpeed * deltaTime);
-            if (m_rotation >= 360.0f)
-               m_rotation -= 360.0f;
-            m_camera.setRoll(m_rotation);
+            auto rotation = (float)(m_rotationSpeed * deltaTime);
+            if (m_camera.getRoll() + rotation >= 360.0f)
+               rotation -= 360.0f;
+            m_camera.incrementRoll(rotation);
          }
 
          if (Input::isKeyPressed(KeyCode::E))
          {
-            m_rotation -= (float)(m_rotationSpeed * deltaTime);
-            if (m_rotation <= -360.0f)
-               m_rotation += 360.0f;
-            m_camera.setRoll(m_rotation);
+            auto rotation = -(float)(m_rotationSpeed * deltaTime);
+            if (m_camera.getRoll() + rotation <= -360.0f)
+               rotation += 360.0f;
+            m_camera.incrementRoll(rotation);
          }
       }
    }
@@ -113,12 +109,11 @@ namespace Neat
          auto mouse_possition_offset =
             current_mouse_position - m_lastMousePosition;
          auto screen_position_offset =
-            rotate(radians(m_rotation), { 0, 0, 1 }) *
+            rotate(radians(m_camera.getRoll()), { 0, 0, 1 }) *
             scale(Vector3(-scale_factor, scale_factor, 1.0f)) *
             Vector4(mouse_possition_offset, 0.0f, 1.0f);
 
-         m_position = m_position + Vector3(screen_position_offset);
-         m_camera.setPosition(m_position);
+         m_camera.incrementPosition(Vector3(screen_position_offset));
       }
 
       m_lastMousePosition = current_mouse_position;

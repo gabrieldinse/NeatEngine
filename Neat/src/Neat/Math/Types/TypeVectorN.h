@@ -46,4 +46,4 @@ namespace Neat
    std::ostream& operator<<(std::ostream& os, const Vector<N, T>& v);
 }
 
-#include "Neat/Math/Vector/VectorN.inl"
+#include "Neat/Math/Types/TypeVectorN.inl"

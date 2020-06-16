@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Neat/Core/Types.h"
-#include "Neat/Math/Vector/Vector1.h"
-#include "Neat/Math/Vector/Vector2.h"
-#include "Neat/Math/Vector/Vector3.h"
-#include "Neat/Math/Vector/Vector4.h"
+#include "Neat/Math/Types/TypeVector1.h"
+#include "Neat/Math/Types/TypeVector2.h"
+#include "Neat/Math/Types/TypeVector3.h"
+#include "Neat/Math/Types/TypeVector4.h"
+#include "Neat/Math/VectorOperations.h"
 
 
 namespace Neat

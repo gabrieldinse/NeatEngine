@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Neat/Math/Matrix/MatrixMxN.h"
-#include "Neat/Math/Vector/VectorN.h"
+#include "Neat/Math/Types/TypeMatrixMxN.h"
+#include "Neat/Math/Types/TypeVectorN.h"
 
 
 namespace Neat
@@ -9,8 +9,9 @@ namespace Neat
    template <typename T>
    struct Matrix<4, 4, T>
    {
+      using Type = Matrix<4, 4, T>;
       using RowType = Vector<4, T>;
-      using ElementType = T;
+      using ValueType = T;
 
 
       // Default constructor
@@ -167,4 +168,4 @@ namespace Neat
    Matrix<4, 4, T> operator/(const Matrix<4, 4, T>& m, const T& scalar);
 }
 
-#include "Neat/Math/Matrix/Matrix4x4.inl"
+#include "Neat/Math/Types/TypeMatrix4x4.inl"

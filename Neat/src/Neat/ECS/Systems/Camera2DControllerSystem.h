@@ -34,8 +34,6 @@ namespace Neat
 
    private:
       Camera m_camera;
-      Vector3 m_position;
-      float m_rotation;
       float m_zoomLevel = 1.0f;
       float m_translationSpeed = 1.0f;
       float m_rotationSpeed = 90.0f;

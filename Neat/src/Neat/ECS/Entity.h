@@ -12,6 +12,7 @@
 
 #include "Neat/Core/Log.h"
 #include "Neat/Core/Types.h"
+#include "Neat/Core/Limits.h"
 #include "Neat/ECS/Component.h"
 #include "Neat/Events/Event.h"
 #include "Neat/Events/EventManager.h"
@@ -26,7 +27,7 @@ namespace Neat
    template <typename C, typename EM = EntityManager>
    class ComponentHandle;
 
-   using ComponentMask = std::bitset<NT_MAX_COMPONENTS>;
+   using ComponentMask = std::bitset<maxComponents>;
 
 
    // ---------------------------------------------------------------------- //
@@ -46,7 +47,7 @@ namespace Neat
          
 
          UInt64 id() const { return m_id; }
-         UInt32 index() const { return (UInt32)(m_id & UInt64(NT_UINT32_MAX)); }
+         UInt32 index() const { return (UInt32)(m_id & UInt64(UInt32Max)); }
          UInt32 version() const { return (UInt32)(m_id >> 32); }
 
          bool operator==(const Id &other) const { return m_id == other.m_id; }
@@ -297,7 +298,7 @@ namespace Neat
             : m_entityManager(entityManager)
             , m_pos(index)
             , m_capacity(m_entityManager->capacity())
-            , m_freeCursor(NT_UINT_MAX)
+            , m_freeCursor(UInt32Max)
          {
             if (IterateOverAll)
             {
@@ -314,7 +315,7 @@ namespace Neat
             , m_componentGroupMask(componentGroupMask)
             , m_pos(index)
             , m_capacity(m_entityManager->capacity())
-            , m_freeCursor(NT_UINT32_MAX)
+            , m_freeCursor(UInt32Max)
          {
             if (IterateOverAll)
             {
@@ -1057,7 +1058,7 @@ namespace Neat
 
 
    inline
-   std::bitset<NT_MAX_COMPONENTS> Entity::getComponentMask() const
+   std::bitset<maxComponents> Entity::getComponentMask() const
    {
       return m_entityManager->getComponentMask(m_id);
    }

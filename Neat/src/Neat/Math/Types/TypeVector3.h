@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-#include "Neat/Math/Vector/VectorN.h"
+#include "Neat/Math/Types/TypeVectorN.h"
 
 
 namespace Neat
@@ -10,13 +10,18 @@ namespace Neat
    template <typename T>
    struct Vector<3, T>
    {
+      using Type = Vector<3, T>;
+      using ValueType = T;
+
+
       // Class Data
-      union { T x, r, i, s; };
-      union { T y, g, j, t; };
-      union { T z, b, k, p; };
-
-
-      using ElementType = T;
+      union
+      {
+         struct { T x, y, z; };
+         struct { T r, g, b; };
+         struct { T i, j, k; };
+         struct { T s, t, p; };
+      };
 
 
       // Default constructor
@@ -161,4 +166,4 @@ namespace Neat
       Vector<3, T> operator/(const Vector<3, T>& v, const T& scalar);
 }
 
-#include "Neat/Math/Vector/Vector3.inl"
+#include "Neat/Math/Types/TypeVector3.inl"

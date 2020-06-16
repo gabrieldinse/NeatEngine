@@ -1,5 +1,4 @@
 #include "Neat/Math/VectorOperations.h"
-#include "Vector4.h"
 
 
 namespace Neat

@@ -62,8 +62,6 @@ namespace Neat
                case TimeUnit::Hours:          return hoursElapsed<T>();
                case TimeUnit::Days:           return daysElapsed<T>();
             }
-
-            throw WrongTimeUnitError();
          }
 
          throw TimerNotStartedError();

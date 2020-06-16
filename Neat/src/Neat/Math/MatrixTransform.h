@@ -26,4 +26,4 @@ namespace Neat
    Matrix<4, 4, T> scale(const Matrix<4, 4, T>& m, const Vector<3, T>& v);
 }
 
-#include "Neat/Math/Transform.inl"
+#include "Neat/Math/MatrixTransform.inl"

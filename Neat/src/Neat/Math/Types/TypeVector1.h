@@ -2,21 +2,20 @@
 
 #include <type_traits>
 
-#include "Neat/Math/Vector/VectorN.h"
-#include "Neat/Core/Log.h"
+#include "Neat/Math/Types/TypeVectorN.h"
 
 
 namespace Neat
 {
    template <typename T>
-   struct Vector<2, T>
+   struct Vector<1, T>
    {
+      using Type = Vector<1, T>;
+      using ValueType = T;
+
+
       // Class data
       union { T x, r, i, s; };
-      union { T y, g, j, t; };
-      
-
-      using ElementType = T;
 
 
       // Default constructor
@@ -28,19 +27,16 @@ namespace Neat
       constexpr explicit
       Vector(const T& scalar);
 
-      constexpr
-      Vector(const T& x, const T& y);
-
 
       // Copy Constructor
       constexpr
-      Vector(const Vector<2, T>& v);
+      Vector(const Vector<1, T>& v);
 
 
       // Conversion constructors
       template <typename U>
       constexpr explicit
-      Vector(const Vector<2, U>& v);
+      Vector(const Vector<1, U>& v);
 
       template <typename U>
       constexpr explicit
@@ -52,50 +48,45 @@ namespace Neat
 
       template <typename U>
       constexpr explicit
-      Vector(const Vector<1, U>& v);
+      Vector(const Vector<2, U>& v);
 
-      template <typename A, typename B>
-      constexpr explicit
-      Vector(const Vector<1, A>& v, const B& scalar1);
-
-      template <typename X, typename Y>
+      template <typename X>
       constexpr
-      Vector(X x, Y y);
+      Vector(X x);
 
 
       // Assignment operators
       constexpr
-      Vector<2, T>& operator=(const Vector<2, T>& other) = default;
+      Vector<1, T>& operator=(const T& scalar);
+
+      constexpr
+      Vector<1, T>& operator=(const Vector<1, T>& other) = default;
 
       template <typename U>
       constexpr
-      Vector<2, T>& operator=(const Vector<2, U>& other);
+      Vector<1, T>& operator=(const Vector<1, U>& other);
 
 
       // Compound assignment operators
       template <typename U>
       constexpr
-      Vector<2, T>& operator+=(const Vector<2, U>& v);
+      Vector<1, T>& operator+=(const Vector<1, U>& v);
 
       template <typename U>
       constexpr
-      Vector<2, T>& operator-=(const Vector<2, U>& v);
+      Vector<1, T>& operator-=(const Vector<1, U>& v);
 
       template <typename U>
       constexpr
-      Vector<2, T>& operator*=(const Vector<2, U>& v);
+      Vector<1, T>& operator*=(const Vector<1, U>& v);
 
       template <typename U>
       constexpr
-      Vector<2, T>& operator*=(const Vector<1, U>& v);
+      Vector<1, T>& operator*=(const U& scalar);
 
       template <typename U>
       constexpr
-      Vector<2, T>& operator*=(const U& scalar);
-
-      template <typename U>
-      constexpr
-      Vector<2, T>& operator/=(const U& scalar);
+      Vector<1, T>& operator/=(const U& scalar);
 
 
       inline constexpr explicit
@@ -103,7 +94,7 @@ namespace Neat
 
 
       constexpr
-      UInt32 size() const { return 2; }
+      UInt32 size() const { return 1; }
 
 
       // Element acessing
@@ -121,41 +112,42 @@ namespace Neat
       T* data() { return &x; }
       constexpr
       const T* data() const { return &x; }
+
+
+      // Conversion operator
+      constexpr
+      operator T() const { return x; }
    };
 
 
    // Nom member operators
    template <typename T>
    inline constexpr
-   Vector<2, T> operator+(const Vector<2, T>& va, const Vector<2, T>& vb);
+   Vector<1, T> operator+(const Vector<1, T>& va, const Vector<1, T>& vb);
 
    template <typename T>
    inline constexpr
-   Vector<2, T> operator-(const Vector<2, T>& v);
+   Vector<1, T> operator-(const Vector<1, T>& v);
 
    template <typename T>
    inline constexpr
-   Vector<2, T> operator-(const Vector<2, T>& va, const Vector<2, T>& vb);
+   Vector<1, T> operator-(const Vector<1, T>& va, const Vector<1, T>& vb);
 
    template <typename T>
    inline constexpr
-   Vector<2, T> operator*(const Vector<2, T>& va, const Vector<2, T>& vb);
+   Vector<1, T> operator*(const Vector<1, T>& va, const Vector<1, T>& vb);
 
    template <typename T>
    inline constexpr
-   Vector<2, T> operator*(const Vector<2, T>& va, const Vector<1, T>& vb);
+   Vector<1, T> operator*(const T& scalar, const Vector<1, T>& v);
 
    template <typename T>
    inline constexpr
-   Vector<2, T> operator*(const T& scalar, const Vector<2, T>& v);
+   Vector<1, T> operator*(const Vector<1, T>& v, const T& scalar);
 
    template <typename T>
    inline constexpr
-   Vector<2, T> operator*(const Vector<2, T>& v, const T& scalar);
-
-   template <typename T>
-   inline constexpr
-   Vector<2, T> operator/(const Vector<2, T>& v, const T& scalar);
+   Vector<1, T> operator/(const Vector<1, T>& v, const T& scalar);
 }
 
-#include "Neat/Math/Vector/Vector2.inl"
+#include "Neat/Math/Types/TypeVector1.inl"

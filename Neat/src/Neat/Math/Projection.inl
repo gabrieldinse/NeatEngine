@@ -39,14 +39,14 @@ namespace Neat
 
    template<typename T>
    Matrix<4, 4, T> lookAtRH(const Vector<3, T>& eye,
-      const Vector<3, T>& target, const Vector<3, T>& upVector)
+      const Vector<3, T>& target, const Vector<3, T>& upDirection)
    {
       Vector<3, T> front(normalize(target - eye));
-      Vector<3, T> side(normalize(cross(front, upVector)));
-      Vector<3, T> up(cross(side, front));
+      Vector<3, T> right(normalize(cross(front, upDirection)));
+      Vector<3, T> up(cross(right, front));
 
       return Matrix<4, 4, T>(
-           side.x,   side.y,   side.z, -dot(eye, side),
+          right.x,  right.y,  right.z, -dot(eye, right),
              up.x,     up.y,     up.z, -dot(eye, up),
          -front.x, -front.y, -front.z, dot(eye, front),
          0, 0, 0, 1
@@ -55,14 +55,14 @@ namespace Neat
 
    template<typename T>
    Matrix<4, 4, T> lookAtLH(const Vector<3, T>& eye,
-      const Vector<3, T>& target, const Vector<3, T>& upVector)
+      const Vector<3, T>& target, const Vector<3, T>& upDirection)
    {
       Vector<3, T> front(normalize(target - eye));
-      Vector<3, T> side(normalize(cross(upVector, front)));
-      Vector<3, T> up(cross(front, side));
+      Vector<3, T> right(normalize(cross(upDirection, front)));
+      Vector<3, T> up(cross(front, right));
 
       return Matrix<4, 4, T>(
-          side.x,  side.y,  side.z, -dot(eye, side),
+         right.x, right.y, right.z, -dot(eye, right),
             up.x,    up.y,    up.z, -dot(eye, up),
          front.x, front.y, front.z, -dot(eye, front),
          0, 0, 0, 1

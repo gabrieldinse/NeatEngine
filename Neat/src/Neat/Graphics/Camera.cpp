@@ -2,7 +2,7 @@
 
 #include "Neat/Core/Log.h"
 #include "Neat/Graphics/Camera.h"
-#include "Neat/Math/Transform.h"
+#include "Neat/Math/MatrixTransform.h"
 #include "Neat/Math/Projection.h"
 #include "Neat/Math/MatrixOperations.h"
 #include "Neat/Math/Utility.h"
@@ -10,11 +10,11 @@
 
 namespace Neat
 {
-   Camera::Camera(const Vector3& position, const Vector3& up, float pitch,
+   Camera::Camera(const Vector3& position, const Vector3& upDirection, float pitch,
       float yaw, float roll)
       : m_cameraType(CameraType::None)
       , m_position(position)
-      , m_worldUp(normalize(up))
+      , m_worldUpDirection(normalize(upDirection))
       , m_pitch(pitch)
       , m_yaw(yaw)
       , m_roll(roll)
@@ -27,7 +27,9 @@ namespace Neat
       float top, float near, float far)
    {
       m_cameraData = OrthographicCameraProperties(
-         left, right, bottom, top, near, far);
+         left, right, bottom, top);
+      m_near = near;
+      m_far = far;
       m_cameraType = CameraType::Orthographic;
 
       return *this;
@@ -36,7 +38,9 @@ namespace Neat
    Camera& Camera::setPerspective(float fov, float aspectRatio, float near,
       float far)
    {
-      m_cameraData = PerspectiveCameraProperties(fov, aspectRatio, near, far);
+      m_cameraData = PerspectiveCameraProperties(fov, aspectRatio);
+      m_near = near;
+      m_far = far;
       m_cameraType = CameraType::Perspective;
 
       return *this;
@@ -50,14 +54,15 @@ namespace Neat
       updateOrientationVectors();
    }
 
-   void Camera::setYaw(float yaw)
-   {
-      m_yaw = yaw;
-      updateOrientationVectors();
-   }
    void Camera::setPitch(float pitch)
    {
       m_pitch = pitch;
+      updateOrientationVectors();
+   }
+
+   void Camera::setYaw(float yaw)
+   {
+      m_yaw = yaw;
       updateOrientationVectors();
    }
 
@@ -68,32 +73,57 @@ namespace Neat
    }
 
 
+   void Camera::incrementRotation(float pitch, float yaw, float roll)
+   {
+      m_pitch += pitch;
+      m_yaw += yaw;
+      m_roll += roll;
+      updateOrientationVectors();
+   }
+
+   void Camera::incrementPitch(float pitch)
+   {
+      m_pitch += pitch;
+      updateOrientationVectors();
+   }
+
+   void Camera::incrementYaw(float yaw)
+   {
+      m_yaw += yaw;
+      updateOrientationVectors();
+   }
+
+   void Camera::incrementRoll(float roll)
+   {
+      m_roll += roll;
+      updateOrientationVectors();
+   }
+
+
    Matrix4 Camera::getProjectionMatrix() const
    {
       switch (m_cameraType)
       {
          case CameraType::Orthographic:
          {
-            auto camera_data = getOrthographicData();
+            auto& camera_data = getOrthographicData();
             return orthographic(camera_data.left, camera_data.right,
-                  camera_data.bottom, camera_data.top, camera_data.near,
-                  camera_data.far);
+                  camera_data.bottom, camera_data.top, m_near, m_far);
          }
          case CameraType::Perspective:
          {
-            auto camera_data = getPerspectiveData();
-            return perspective(camera_data.fieldOfView,
-               camera_data.aspectRatio, camera_data.near, camera_data.far);
+            auto& camera_data = getPerspectiveData();
+            return perspective(radians(camera_data.fieldOfView),
+               camera_data.aspectRatio, m_near, m_far);
          }
-         default:
-            NT_CORE_ASSERT(false, "Unknown camera type.");
-            return Matrix4();
       }
+
+      throw CameraTypeHasNotBeenSettedError();
    }
 
    Matrix4 Camera::getViewMatrix() const
    {
-      return lookAtRH(m_position, m_position + m_front, m_up);
+      return lookAtRH(m_position, m_position + m_frontDirection, m_upDirection);
    }
 
    Matrix4 Camera::getCameraTransform() const
@@ -101,21 +131,109 @@ namespace Neat
       return getProjectionMatrix() * getViewMatrix();
    }
 
+
+   // Perspective
+   float Camera::getFieldOfView() const
+   {
+      checkIsPerspective();
+      
+      return getPerspectiveData().fieldOfView;
+   }
+
+   float Camera::getAspectRatio() const
+   {
+      checkIsPerspective();
+
+      return getPerspectiveData().aspectRatio;
+   }
+
+   void Camera::setFieldOfView(float fieldOfView)
+   {
+      checkIsPerspective();
+
+      getPerspectiveData().fieldOfView = fieldOfView;
+   }
+
+   void Camera::setAspectRatio(float aspectRatio)
+   {
+      checkIsPerspective();
+      
+      getPerspectiveData().aspectRatio = aspectRatio;
+   }
+
+
+   // Orthographic
+   float Camera::getLeft() const
+   {
+      checkIsOrthographic();
+
+      return getOrthographicData().left;
+   }
+
+   float Camera::getRight() const
+   {
+      checkIsOrthographic();
+
+      return getOrthographicData().right;
+   }
+
+   float Camera::getBottom() const
+   {
+      checkIsOrthographic();
+
+      return getOrthographicData().bottom;
+   }
+
+   float Camera::getTop() const
+   {
+      checkIsOrthographic();
+
+      return getOrthographicData().top;
+   }
+
+   void Camera::setLeft(float left)
+   {
+      checkIsOrthographic();
+      
+      getOrthographicData().left = left;
+   }
+
+   void Camera::setRight(float right)
+   {
+      checkIsOrthographic();
+
+      getOrthographicData().right = right;
+   }
+
+   void Camera::setBottom(float bottom)
+   {
+      checkIsOrthographic();
+
+      getOrthographicData().bottom = bottom;
+   }
+
+   void Camera::setTop(float top)
+   {
+      checkIsOrthographic();
+      
+      getOrthographicData().top = top;
+   }
+
+
    void Camera::updateOrientationVectors()
    {
-      Vector3 front(
-         cos(radians(m_yaw)) * cos(radians(m_pitch)),
-         sin(radians(m_pitch)),
-         sin(radians(m_yaw)) * cos(radians(m_pitch))
+      m_frontDirection = normalize(Vector3(
+         std::cos(radians(m_yaw)) * std::cos(radians(m_pitch)),
+         std::sin(radians(m_pitch)),
+         std::sin(radians(m_yaw)) * std::cos(radians(m_pitch))
+      ));
+      m_rightDirection = Vector3(
+         rotate(radians(m_roll), m_frontDirection) *
+         Vector4(normalize(cross(m_frontDirection, m_worldUpDirection)), 1.0f)
       );
-      m_front = normalize(front);
-      m_right = Vector3(
-         rotate(radians(m_roll), m_front) *
-         Vector4(normalize(cross(m_front, m_worldUp)))
-      );
-      m_up = Vector3(
-         rotate(radians(m_roll), m_front) *
-         Vector4(normalize(cross(m_right, m_front)))
+      m_upDirection = Vector3(
+         rotate(radians(m_roll), m_frontDirection) *
+         Vector4(normalize(cross(m_rightDirection, m_frontDirection)), 1.0f)
       );
    }
 }

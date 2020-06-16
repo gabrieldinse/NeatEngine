@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Math/Matrix/MatrixMxN.h"
+#include "Neat/Math/Types/TypeMatrixMxN.h"
 
 
 namespace Neat

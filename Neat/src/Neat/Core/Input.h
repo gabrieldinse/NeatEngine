@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "Neat/Core/Core.h"
+#include "Neat/Core/Base.h"
 #include "Neat/Core/Window.h"
 #include "Neat/Core/KeyCodes.h"
 #include "Neat/Core/MouseCodes.h"

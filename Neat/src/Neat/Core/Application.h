@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Core/Core.h"
+#include "Neat/Core/Base.h"
 #include "Neat/Core/Window.h"
 #include "Neat/Core/LayerGroup.h"
 #include "Neat/Events/EventManager.h"

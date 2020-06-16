@@ -28,13 +28,6 @@ namespace Neat
       TimerError(const std::string& msg) : Exception(msg) {}
    };
 
-   struct WrongTimeUnitError : public TimerError
-   {
-      WrongTimeUnitError(
-         const std::string& msg = "Wrong TimeUnit.")
-         : TimerError(msg) {}
-   };
-
    struct TimerNotStartedError : public TimerError
    {
       TimerNotStartedError(
@@ -67,6 +60,31 @@ namespace Neat
    };
    // -------------------------------------------------------------------------
 
+
+   // Camera exceptions -------------------------------------------------------
+   struct CameraError : public Exception
+   {
+      CameraError(const std::string& msg) : Exception(msg) {}
+   };
+
+   struct CameraTypeHasNotBeenSettedError : public CameraError
+   {
+      CameraTypeHasNotBeenSettedError(
+         const std::string& msg = "Camera type was not setted yet. "
+         "Use Camera::setOrthographic or Camera::setPerspective methods "
+         "before using camera functionalities.")
+         : CameraError(msg) {}
+   };
+
+   struct WrongCameraTypeError : public CameraError
+   {
+      WrongCameraTypeError(
+         const std::string& msg = "The camera type you are using does not"
+            "support this method.")
+         : CameraError(msg) {}
+   };
+
+   // -------------------------------------------------------------------------
 
    // Event exceptions --------------------------------------------------------
    struct EventError : public Exception

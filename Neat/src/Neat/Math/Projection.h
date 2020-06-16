@@ -18,11 +18,11 @@ namespace Neat
 
    template <typename T>
    Matrix<4, 4, T> lookAtLH(const Vector<3, T>& eye,
-      const Vector<3, T>& target, const Vector<3, T>& upVector);
+      const Vector<3, T>& target, const Vector<3, T>& upDirection );
 
    template <typename T>
    Matrix<4, 4, T> lookAtRH(const Vector<3, T>& eye,
-      const Vector<3, T>& target, const Vector<3, T>& upVector);
+      const Vector<3, T>& target, const Vector<3, T>& upDirection);
 }
 
 #include "Neat/Math/Projection.inl"

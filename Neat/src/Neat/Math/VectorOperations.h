@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "Neat/Math/Vector/VectorN.h"
+#include "Neat/Math/Types/TypeVectorN.h"
 
 
 namespace Neat

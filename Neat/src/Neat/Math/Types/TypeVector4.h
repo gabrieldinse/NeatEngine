@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-#include "Neat/Math/Vector/VectorN.h"
+#include "Neat/Math/Types/TypeVectorN.h"
 
 
 namespace Neat
@@ -10,14 +10,18 @@ namespace Neat
    template <typename T>
    struct Vector<4, T>
    {
+      using Type = Vector<4, T>;
+      using ValueType = T;
+
+
       // Class Data
-      union { T x, r, i, s; };
-      union { T y, g, j, t; };
-      union { T z, b, k, p; };
-      union { T w, a, l, q; };
-
-
-      using ElementType = T;
+      union
+      {
+         struct { T x, y, z, w; };
+         struct { T r, g, b, a; };
+         struct { T i, j, k, l; };
+         struct { T s, t, p, q; };
+      };
 
 
       // Default constructor
@@ -172,4 +176,4 @@ namespace Neat
 
 }
 
-#include "Neat/Math/Vector/Vector4.inl"
+#include "Neat/Math/Types/TypeVector4.inl"

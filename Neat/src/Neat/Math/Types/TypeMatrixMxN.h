@@ -18,4 +18,4 @@ namespace Neat
    std::ostream& operator<<(std::ostream& os, const Matrix<M, N, T>& m);
 }
 
-#include "Neat/Math/Matrix/MatrixMxN.inl"
+#include "Neat/Math/Types/TypeMatrixMxN.inl"

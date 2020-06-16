@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Neat/Math/Matrix/Matrix2x2.h"
-#include "Neat/Math/Matrix/Matrix3x3.h"
-#include "Neat/Math/Matrix/Matrix4x4.h"
+#include "Neat/Math/Types/TypeMatrix2x2.h"
+#include "Neat/Math/Types/TypeMatrix3x3.h"
+#include "Neat/Math/Types/TypeMatrix4x4.h"
+#include "Neat/Math/MatrixOperations.h"
 
 
 namespace Neat
