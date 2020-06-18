@@ -1,5 +1,6 @@
 #include "Neat/Graphics/VertexArray.h"
 #include "Neat/Graphics/Renderer.h"
+#include "Neat/Core/Log.h"
 
 #include <glad/glad.h>
 

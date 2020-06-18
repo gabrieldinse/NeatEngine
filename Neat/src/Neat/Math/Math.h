@@ -6,4 +6,7 @@
 #include "Neat/Math/MatrixTransform.h"
 #include "Neat/Math/Projection.h"
 #include "Neat/Math/Interpolation.h"
-#include "Neat/Math/Utility.h"
+#include "Neat/Math/Constants.h"
+#include "Neat/Math/Common.h"
+#include "Neat/Math/Trigonometric.h"
+#include "Neat/Math/Exponential.h"

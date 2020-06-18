@@ -3,6 +3,7 @@
 #include "Neat/Graphics/ShaderDataType.h"
 #include "Neat/Math/MatrixTransform.h"
 #include "Neat/Math/Vector.h"
+#include "Neat/Math/Trigonometric.h"
 
 
 namespace Neat

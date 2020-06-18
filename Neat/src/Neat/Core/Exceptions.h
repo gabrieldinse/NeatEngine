@@ -58,6 +58,14 @@ namespace Neat
          const std::string& msg = "Wrong Matrix dimension being acessed.")
          : MathError(msg) {}
    };
+
+   // Matrices
+   struct QuaternionDimensionError : public MathError
+   {
+      QuaternionDimensionError(
+         const std::string& msg = "Wrong Quaternion dimension being acessed.")
+         : MathError(msg) {}
+   };
    // -------------------------------------------------------------------------
 
 

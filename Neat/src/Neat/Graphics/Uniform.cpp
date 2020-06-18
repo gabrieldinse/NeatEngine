@@ -1,5 +1,6 @@
 #include "Neat/Graphics/Uniform.h"
 #include "Neat/Graphics/ShaderProgram.h"
+#include "Neat/Core/Log.h"
 
 #include <glad/glad.h>
 
@@ -208,11 +209,11 @@ namespace Neat
 
    void Uniform<ShaderDataType::Matrix3>::set(Matrix3 matrix)
    {
-      glUniformMatrix3fv(m_data->location, 1, GL_TRUE, matrix.data());
+      glUniformMatrix3fv(m_data->location, 1, GL_TRUE, matrix.dataPointer());
    }
 
    void Uniform<ShaderDataType::Matrix4>::set(Matrix4 matrix)
    {
-      glUniformMatrix4fv(m_data->location, 1, GL_TRUE, matrix.data());
+      glUniformMatrix4fv(m_data->location, 1, GL_TRUE, matrix.dataPointer());
    }
 }

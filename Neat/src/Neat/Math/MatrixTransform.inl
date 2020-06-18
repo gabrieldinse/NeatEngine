@@ -1,7 +1,7 @@
 #include <cmath>
 
-#include "Neat/Math/VectorOperations.h"
-#include "Neat/Math/Utility.h"
+#include "Neat/Math/Constants.h"
+#include "Neat/Math/Trigonometric.h"
 
 
 namespace Neat
@@ -10,10 +10,10 @@ namespace Neat
    Matrix<4, 4, T> translate(const Vector<3, T>& v)
    {
       return Matrix<4, 4, T>(
-         static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), v.x,
-         static_cast<T>(0), static_cast<T>(1), static_cast<T>(0), v.y,
-         static_cast<T>(0), static_cast<T>(0), static_cast<T>(1), v.z,
-         static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1)
+          one<T>, zero<T>, zero<T>, v.x,
+         zero<T>,  one<T>, zero<T>, v.y,
+         zero<T>, zero<T>,  one<T>, v.z,
+         zero<T>, zero<T>, zero<T>, one<T>
          );
    }
 
@@ -32,13 +32,13 @@ namespace Neat
    template <typename T>
    Matrix<4, 4, T> rotate(const T& angleRadians, const Vector<3, T>& v)
    {
-      T c = static_cast<T>(std::cos(angleRadians));
-      T s = static_cast<T>(std::sin(angleRadians));
+      T c = cos(angleRadians);
+      T s = sin(angleRadians);
       Vector<3, T> axis(normalize(v));
 
-      T one_minus_c_x = (static_cast<T>(1) - c) * axis.x;
-      T one_minus_c_y = (static_cast<T>(1) - c) * axis.y;
-      T one_minus_c_z = (static_cast<T>(1) - c) * axis.z;
+      T one_minus_c_x = (one<T> - c) * axis.x;
+      T one_minus_c_y = (one<T> - c) * axis.y;
+      T one_minus_c_z = (one<T> - c) * axis.z;
 
       T x2c = one_minus_c_x * axis.x;
       T xyc = one_minus_c_x * axis.y;
@@ -58,10 +58,10 @@ namespace Neat
       T r22 = z2c + c;
 
       return Matrix<4, 4, T>(
-         r00, r01, r02, static_cast<T>(0),
-         r10, r11, r12, static_cast<T>(0),
-         r20, r21, r22, static_cast<T>(0),
-         static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1)
+         r00, r01, r02, zero<T>,
+         r10, r11, r12, zero<T>,
+         r20, r21, r22, zero<T>,
+         zero<T>, zero<T>, zero<T>, one<T>
          );
    }
 
@@ -69,13 +69,13 @@ namespace Neat
    Matrix<4, 4, T> rotate(const Matrix<4, 4, T>& m, const T& angleRadians,
       const Vector<3, T>& v)
    {
-      T c = static_cast<T>(std::cos(angleRadians));
-      T s = static_cast<T>(std::sin(angleRadians));
+      T c = cos(angleRadians);
+      T s = sin(angleRadians);
       Vector<3, T> axis(normalize(v));
 
-      T one_minus_c_x = (static_cast<T>(1) - c) * axis.x;
-      T one_minus_c_y = (static_cast<T>(1) - c) * axis.y;
-      T one_minus_c_z = (static_cast<T>(1) - c) * axis.z;
+      T one_minus_c_x = (one<T> - c) * axis.x;
+      T one_minus_c_y = (one<T> - c) * axis.y;
+      T one_minus_c_z = (one<T> - c) * axis.z;
 
       T x2c = one_minus_c_x * axis.x;
       T xyc = one_minus_c_x * axis.y;
@@ -107,9 +107,9 @@ namespace Neat
          r20 * m[0][1] + r21 * m[1][1] + r22 * m[2][1],
          r20 * m[0][2] + r21 * m[1][2] + r22 * m[2][2],
          r20 * m[0][3] + r21 * m[1][3] + r22 * m[2][3],
-         static_cast<T>(0),
-         static_cast<T>(0),
-         static_cast<T>(0),
+         zero<T>,
+         zero<T>,
+         zero<T>,
          m(3, 3)
          );
    }
@@ -118,10 +118,10 @@ namespace Neat
    Matrix<4, 4, T> scale(const Vector<3, T>& v)
    {
       return Matrix<4, 4, T>(
-         v.x, static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
-         static_cast<T>(0), v.y, static_cast<T>(0), static_cast<T>(0),
-         static_cast<T>(0), static_cast<T>(0), v.z, static_cast<T>(0),
-         static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1)
+             v.x, zero<T>, zero<T>, zero<T>,
+         zero<T>,     v.y, zero<T>, zero<T>,
+         zero<T>, zero<T>,     v.z, zero<T>,
+         zero<T>, zero<T>, zero<T>, one<T>
          );
    }
 

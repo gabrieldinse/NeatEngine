@@ -12,7 +12,7 @@
 namespace Neat
 {
    template <UInt32 M, UInt32 N, typename T>
-   struct Matrix;
+   struct Matrix {};
 
    template <UInt32 M, UInt32 N, typename T>
    std::ostream& operator<<(std::ostream& os, const Matrix<M, N, T>& m);

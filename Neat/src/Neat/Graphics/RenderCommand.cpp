@@ -27,7 +27,7 @@ namespace Neat
    {
       static constexpr float one = 1.0f;
       glClearBufferfv(GL_DEPTH, 0, &one);
-      glClearBufferfv(GL_COLOR, 0, color.data());
+      glClearBufferfv(GL_COLOR, 0, color.dataPointer());
    }
 
    void RenderCommand::drawIndexed(

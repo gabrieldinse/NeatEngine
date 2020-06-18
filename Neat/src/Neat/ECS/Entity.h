@@ -131,7 +131,7 @@ namespace Neat
       template <typename C>
       bool hasComponent() const;
 
-      template<typename C1, typename... OtherComponents>
+      template <typename C1, typename... OtherComponents>
       void unpack(ComponentHandle<C1>& c1,
          ComponentHandle<OtherComponents>&... others);
 
@@ -1036,7 +1036,7 @@ namespace Neat
    }
 
 
-   template<typename C1, typename... OtherComponents>
+   template <typename C1, typename... OtherComponents>
    inline
    void Entity::unpack(ComponentHandle<C1>& c1,
       ComponentHandle<OtherComponents>&... others)
@@ -1065,7 +1065,7 @@ namespace Neat
    // ---------------------------------------------------------------------- //
 
 
-   template<typename C, typename EM>
+   template <typename C, typename EM>
    inline ComponentHandle<C, EM>::operator bool() const
    {
       return isValid();

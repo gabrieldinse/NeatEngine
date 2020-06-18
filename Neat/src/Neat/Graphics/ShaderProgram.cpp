@@ -9,7 +9,6 @@
 #include "Neat/Core/Log.h"
 #include "Neat/Graphics/ShaderProgram.h"
 #include "Neat/Graphics/ShaderDataType.h"
-#include "Neat/Math/MatrixOperations.h"
 
 #include <glad/glad.h>
 

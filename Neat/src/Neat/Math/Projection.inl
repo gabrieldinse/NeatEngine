@@ -1,4 +1,3 @@
-#include "Neat/Math/VectorOperations.h"
 
 
 namespace Neat
@@ -7,11 +6,11 @@ namespace Neat
    Matrix<4, 4, T> orthographic(const T& left, const T& right,
       const T& bottom, const T& top, const T& near, const T& far)
    {
-      Matrix<4, 4, T> result(static_cast<T>(1));
+      Matrix<4, 4, T> result(one<T>);
 
-      result[0][0] = static_cast<T>(2) / (right - left);
-      result[1][1] = static_cast<T>(2) / (top - bottom);
-      result[2][2] = -static_cast<T>(2) / (far - near);
+      result[0][0] = two<T> / (right - left);
+      result[1][1] = two<T> / (top - bottom);
+      result[2][2] = -two<T> / (far - near);
       result[0][3] = -(right + left) / (right - left);
       result[1][3] = -(top + bottom) / (top - bottom);
       result[2][3] = -(far + near) / (far - near);
@@ -23,21 +22,21 @@ namespace Neat
    Matrix<4, 4, T> perspective(const T& fieldOfView, const T& aspectRatio,
       const T& near, const T& far)
    {  
-      Matrix<4, 4, T> result(static_cast<T>(1));
+      Matrix<4, 4, T> result(one<T>);
 
-      T tan_half_fov = std::tan(fieldOfView / static_cast<T>(2));
-      result[0][0] = static_cast<T>(1) / (aspectRatio * tan_half_fov);
-      result[1][1] = static_cast<T>(1) / tan_half_fov;
+      T tan_half_fov = std::tan(fieldOfView / two<T>);
+      result[0][0] = one<T> / (aspectRatio * tan_half_fov);
+      result[1][1] = one<T> / tan_half_fov;
       result[2][2] = -(far + near) / (far - near);
-      result[2][3] = -static_cast<T>(2) * far * near / (far - near);
-      result[3][2] = -static_cast<T>(1);
-      result[3][3] = static_cast<T>(0);
+      result[2][3] = -two<T> * far * near / (far - near);
+      result[3][2] = -one<T>;
+      result[3][3] = zero<T>;
 
       return result;
    }
 
 
-   template<typename T>
+   template <typename T>
    Matrix<4, 4, T> lookAtRH(const Vector<3, T>& eye,
       const Vector<3, T>& target, const Vector<3, T>& upDirection)
    {
@@ -53,7 +52,7 @@ namespace Neat
          );
    }
 
-   template<typename T>
+   template <typename T>
    Matrix<4, 4, T> lookAtLH(const Vector<3, T>& eye,
       const Vector<3, T>& target, const Vector<3, T>& upDirection)
    {

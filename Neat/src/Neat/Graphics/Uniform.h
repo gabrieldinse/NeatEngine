@@ -1,12 +1,12 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 #include "Neat/Core/Base.h"
 #include "Neat/Core/Types.h"
 #include "Neat/Math/Vector.h"
 #include "Neat/Math/Matrix.h"
-#include "Neat/Math/MatrixOperations.h"
 #include "Neat/Graphics/ShaderDataType.h"
 
 
@@ -67,7 +67,7 @@ namespace Neat
    template <ShaderDataType uniformType>
    struct Uniform : public UniformBase {};
 
-   template<>
+   template <>
    struct Uniform<ShaderDataType::Float> : public UniformBase
    {
       void set(float value);
@@ -77,7 +77,7 @@ namespace Neat
       Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
    };
 
-   template<>
+   template <>
    struct Uniform<ShaderDataType::Vector2> : public UniformBase
    {
       void set(Vector2 values);
@@ -87,7 +87,7 @@ namespace Neat
       Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
    };
 
-   template<>
+   template <>
    struct Uniform<ShaderDataType::Vector3> : public UniformBase
    {
       void set(Vector3 values);
@@ -97,7 +97,7 @@ namespace Neat
       Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
    };
 
-   template<>
+   template <>
    struct Uniform<ShaderDataType::Vector4> : public UniformBase
    {
       void set(Vector4 values);
@@ -107,7 +107,7 @@ namespace Neat
       Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
    };
 
-   template<>
+   template <>
    struct Uniform<ShaderDataType::Int> : public UniformBase
    {
       void set(Int32 value);
@@ -117,7 +117,7 @@ namespace Neat
       Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
    };
 
-   template<>
+   template <>
    struct Uniform<ShaderDataType::IntArray> : public UniformBase
    {
       void set(Int32* values, UInt32 count);
@@ -127,7 +127,7 @@ namespace Neat
       Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
    };
 
-   template<>
+   template <>
    struct Uniform<ShaderDataType::Matrix3> : public UniformBase
    {
       void set(Matrix3 matrix);
@@ -137,7 +137,7 @@ namespace Neat
       Uniform(const std::string& name, const UniformLibrary& uniformLibrary);
    };
 
-   template<>
+   template <>
    struct Uniform<ShaderDataType::Matrix4> : public UniformBase
    {
       void set(Matrix4 matrix);

@@ -5,14 +5,12 @@ namespace Neat
 {
    // Default constructor
    template <typename T>
-   inline constexpr
-   Matrix<3, 3, T>::Matrix() : m_flattened{} {}
+   inline constexpr Matrix<3, 3, T>::Matrix() : m_flattened{} {}
 
 
    // Basic constructors
    template <typename T>
-   inline constexpr
-   Matrix<3, 3, T>::Matrix(
+   inline constexpr Matrix<3, 3, T>::Matrix(
       const T& m00, const T& m01, const T& m02,
       const T& m10, const T& m11, const T& m12,
       const T& m20, const T& m21, const T& m22)
@@ -23,8 +21,7 @@ namespace Neat
          } {}
 
    template <typename T>
-   inline constexpr
-   Matrix<3, 3, T>::Matrix(const T& scalar)
+   inline constexpr Matrix<3, 3, T>::Matrix(const T& scalar)
       : m_rows{
          RowType(scalar, 0, 0),
          RowType(0, scalar, 0),
@@ -34,8 +31,7 @@ namespace Neat
 
    // Copy constrcutor
    template <typename T>
-   inline constexpr
-   Matrix<3, 3, T>::Matrix(const Matrix<3, 3, T>& m)
+   inline constexpr Matrix<3, 3, T>::Matrix(const Matrix<3, 3, T>& m)
       : m_rows{m[0], m[1], m[2]} {}
 
 
@@ -45,8 +41,7 @@ namespace Neat
       typename X1, typename Y1, typename Z1,
       typename X2, typename Y2, typename Z2,
       typename X3, typename Y3, typename Z3>
-   inline constexpr
-   Matrix<3, 3, T>::Matrix(
+   inline constexpr Matrix<3, 3, T>::Matrix(
       const X1& m00, const Y1& m01, const Z1& m02,
       const X2& m10, const Y2& m11, const Z2& m12,
       const X3& m20, const Y3& m21, const Z3& m22)
@@ -58,8 +53,7 @@ namespace Neat
 
    template <typename T>
    template <typename U>
-   inline constexpr
-   Matrix<3, 3, T>::Matrix(const Matrix<3, 3, U>& m)
+   inline constexpr Matrix<3, 3, T>::Matrix(const Matrix<3, 3, U>& m)
       : m_rows{
          RowType(m[0]),
          RowType(m[1]),
@@ -68,8 +62,7 @@ namespace Neat
 
    template <typename T>
    template <typename U>
-   inline constexpr
-   Matrix<3, 3, T>::Matrix(const Matrix<4, 4, U>& m)
+   inline constexpr Matrix<3, 3, T>::Matrix(const Matrix<4, 4, U>& m)
       : m_rows{
          RowType(m[0]),
          RowType(m[1]),
@@ -78,28 +71,35 @@ namespace Neat
 
    template <typename T>
    template <typename U>
-   inline constexpr
-   Matrix<3, 3, T>::Matrix(const Matrix<2, 2, U>& m)
+   inline constexpr Matrix<3, 3, T>::Matrix(const Matrix<2, 2, U>& m)
       : m_rows{
          RowType(m[0], 0),
          RowType(m[1], 0),
          RowType(0, 0, 1)
          } {}
 
-   template<typename T>
-   template<typename V1, typename V2, typename V3>
-   inline constexpr
-   Matrix<3, 3, T>::Matrix(
+   template <typename T>
+   template <typename V1, typename V2, typename V3>
+   inline constexpr Matrix<3, 3, T>::Matrix(
       const Vector<3, V1>& row1,
       const Vector<3, V2>& row2,
       const Vector<3, V3>& row3)
       : m_rows{RowType(row1), RowType(row2), RowType(row3)} {}
 
+   template <typename T>
+   inline constexpr Matrix<3, 3, T>::Matrix(const T* data, UInt32 count)
+   {
+      if (count > size())
+         throw MatrixDimensionError("Data size is bigger than Matrix size");
+
+      std::copy(data, data + count, m_flattened);
+      std::fill(m_flattened + count, m_flattened + size(), zero<T>);
+   }
+
 
    // Non member operators
    template <typename T>
-   inline constexpr
-   Matrix<3, 3, T> operator+(
+   inline constexpr Matrix<3, 3, T> operator+(
       const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb)
    {
       return Matrix<3, 3, T>(
@@ -110,8 +110,7 @@ namespace Neat
    }
 
    template <typename T>
-   inline constexpr
-   Matrix<3, 3, T> operator-(
+   inline constexpr Matrix<3, 3, T> operator-(
       const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb)
    {
       return Matrix<3, 3, T>(
@@ -122,8 +121,7 @@ namespace Neat
    }
 
    template <typename T>
-   inline constexpr
-   Matrix<3, 3, T> operator*(
+   inline constexpr Matrix<3, 3, T> operator*(
       const Matrix<3, 3, T>& ma, const Matrix<3, 3, T>& mb)
    {
       return Matrix<3, 3, T>(
@@ -140,8 +138,7 @@ namespace Neat
    }
 
    template <typename T>
-   inline constexpr
-   Matrix<3, 3, T> operator*(const T& scalar, const Matrix<3, 3, T>& m)
+   inline constexpr Matrix<3, 3, T> operator*(const T& scalar, const Matrix<3, 3, T>& m)
    {
       return Matrix<3, 3, T>(
          scalar * m[0],
@@ -151,15 +148,13 @@ namespace Neat
    }
 
    template <typename T>
-   inline constexpr
-   Matrix<3, 3, T> operator*(const Matrix<3, 3, T>& m, const T& scalar)
+   inline constexpr Matrix<3, 3, T> operator*(const Matrix<3, 3, T>& m, const T& scalar)
    {
       return scalar * m;
    }
 
    template <typename T>
-   inline constexpr
-   Vector<3, T> operator*(const Matrix<3, 3, T>& m, const Vector<3, T>& v)
+   inline constexpr Vector<3, T> operator*(const Matrix<3, 3, T>& m, const Vector<3, T>& v)
    {
       return Vector<3, T>(
          m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2],
@@ -169,8 +164,7 @@ namespace Neat
    }
 
    template <typename T>
-   inline constexpr
-   Matrix<3, 3, T> operator/(const Matrix<3, 3, T>& m, const T& scalar)
+   inline constexpr Matrix<3, 3, T> operator/(const Matrix<3, 3, T>& m, const T& scalar)
    {
       return Matrix<3, 3, T>(
          m[0] / scalar,
@@ -183,8 +177,7 @@ namespace Neat
    // Assignment operators
    template <typename T>
    template <typename U>
-   inline constexpr
-   Matrix<3, 3, T>& Matrix<3, 3, T>::operator=(const Matrix<3, 3, U>& m)
+   inline constexpr Matrix<3, 3, T>& Matrix<3, 3, T>::operator=(const Matrix<3, 3, U>& m)
    {
       m_rows[0] = m[0];
       m_rows[1] = m[1];
@@ -195,10 +188,9 @@ namespace Neat
 
 
    // Compound assigment operators
-   template<typename T>
-	template<typename U>
-   inline constexpr
-   Matrix<3, 3, T>& Matrix<3, 3, T>::operator+=(Matrix<3, 3, U> const& m)
+   template <typename T>
+	template <typename U>
+   inline constexpr Matrix<3, 3, T>& Matrix<3, 3, T>::operator+=(Matrix<3, 3, U> const& m)
 	{
 		m_rows[0] += m[0];
 		m_rows[1] += m[1];
@@ -207,10 +199,9 @@ namespace Neat
 		return *this;
 	}
 
-	template<typename T>
-	template<typename U>
-	inline constexpr
-   Matrix<3, 3, T>& Matrix<3, 3, T>::operator-=(const U& scalar)
+	template <typename T>
+	template <typename U>
+	inline constexpr Matrix<3, 3, T>& Matrix<3, 3, T>::operator-=(const U& scalar)
 	{
 		m_rows[0] -= scalar;
 		m_rows[1] -= scalar;
@@ -219,10 +210,9 @@ namespace Neat
 		return *this;
 	}
 
-	template<typename T>
-	template<typename U>
-	inline constexpr
-   Matrix<3, 3, T>& Matrix<3, 3, T>::operator-=(Matrix<3, 3, U> const& m)
+	template <typename T>
+	template <typename U>
+	inline constexpr Matrix<3, 3, T>& Matrix<3, 3, T>::operator-=(Matrix<3, 3, U> const& m)
 	{
 		m_rows[0] -= m[0];
 		m_rows[1] -= m[1];
@@ -231,10 +221,9 @@ namespace Neat
 		return *this;
 	}
 
-	template<typename T>
-	template<typename U>
-	inline constexpr
-   Matrix<3, 3, T>& Matrix<3, 3, T>::operator*=(const U& scalar)
+	template <typename T>
+	template <typename U>
+	inline constexpr Matrix<3, 3, T>& Matrix<3, 3, T>::operator*=(const U& scalar)
 	{
 		m_rows[0] *= scalar;
 		m_rows[1] *= scalar;
@@ -243,18 +232,16 @@ namespace Neat
 		return *this;
 	}
 
-	template<typename T>
-	template<typename U>
-	inline constexpr
-   Matrix<3, 3, T>& Matrix<3, 3, T>::operator*=(Matrix<3, 3, U> const& m)
+	template <typename T>
+	template <typename U>
+	inline constexpr Matrix<3, 3, T>& Matrix<3, 3, T>::operator*=(Matrix<3, 3, U> const& m)
 	{
 		return (*this = *this * m);
 	}
 
-	template<typename T>
-	template<typename U>
-	inline constexpr
-   Matrix<3, 3, T>& Matrix<3, 3, T>::operator/=(const U& scalar)
+	template <typename T>
+	template <typename U>
+	inline constexpr Matrix<3, 3, T>& Matrix<3, 3, T>::operator/=(const U& scalar)
 	{
 		m_rows[0] /= scalar;
 		m_rows[1] /= scalar;
@@ -266,31 +253,66 @@ namespace Neat
 
    // Element accessing
    template <typename T>
-   inline constexpr
-   typename Matrix<3, 3, T>::RowType& Matrix<3, 3, T>::operator[](std::size_t row)
+   inline constexpr typename Matrix<3, 3, T>::RowType& Matrix<3, 3, T>::operator[](UInt32 row)
    {
       return m_rows[row];
    }
 
    template <typename T>
-   inline constexpr
-   const typename Matrix<3, 3, T>::RowType& Matrix<3, 3, T>::operator[](
-      std::size_t row) const
+   inline constexpr const typename Matrix<3, 3, T>::RowType& Matrix<3, 3, T>::operator[](
+      UInt32 row) const
    {
       return m_rows[row];
    }
 
    template <typename T>
-   inline constexpr
-   T& Matrix<3, 3, T>::operator()(std::size_t pos)
+   inline constexpr T& Matrix<3, 3, T>::operator()(UInt32 pos)
    {
       return m_flattened[pos];
    }
 
    template <typename T>
-   inline constexpr
-   const T& Matrix<3, 3, T>::operator()(std::size_t pos) const
+   inline constexpr const T& Matrix<3, 3, T>::operator()(UInt32 pos) const
    {
       return m_flattened[pos];
+   }
+
+
+   // Matrix operations
+   template <typename T>
+   inline T determinant(const Matrix<3, 3, T>& m)
+   {
+      return
+         + m[0][0] * (m[1][1] * m[2][2] - m[2][1] * m[1][2])
+         - m[1][0] * (m[0][1] * m[2][2] - m[2][1] * m[0][2])
+         + m[2][0] * (m[0][1] * m[1][2] - m[1][1] * m[0][2]);
+   }
+
+   template <typename T>
+   inline Matrix<3, 3, T> transpose(const Matrix<3, 3, T>& m)
+   {
+      return Matrix<3, 3, T>(
+         m[0][0], m[1][0], m[2][0],
+         m[0][1], m[1][1], m[2][1],
+         m[0][2], m[1][2], m[2][2]
+         );
+   }
+
+   template <typename T>
+   inline Matrix<3, 3, T> inverse(const Matrix<3, 3, T>& m)
+   {
+      T inverse_determinant = one<T> / determinant(m);
+
+      return Matrix<3, 3, T>(
+         (m[1][1] * m[2][2] - m[2][1] * m[1][2]) * inverse_determinant,
+         -(m[0][1] * m[2][2] - m[2][1] * m[0][2]) * inverse_determinant,
+         (m[0][1] * m[1][2] - m[1][1] * m[0][2]) * inverse_determinant,
+         -(m[1][0] * m[2][2] - m[2][0] * m[1][2]) * inverse_determinant,
+         (m[0][0] * m[2][2] - m[2][0] * m[0][2]) * inverse_determinant,
+         -(m[0][0] * m[1][2] - m[1][0] * m[0][2]) * inverse_determinant,
+         (m[1][0] * m[2][1] - m[2][0] * m[1][1]) * inverse_determinant,
+         -(m[0][0] * m[2][1] - m[2][0] * m[0][1]) * inverse_determinant,
+         (m[0][0] * m[1][1] - m[1][0] * m[0][1]) * inverse_determinant
+         );
    }
 }
