@@ -1,6 +1,4 @@
 #include "Neat/Math/Trigonometric.h"
-#include "Neat/Math/Types/TypeMatrixMxN.h"
-#include "TypeQuaternion.h"
 
 
 namespace Neat
@@ -26,6 +24,7 @@ namespace Neat
    inline constexpr Quaternion<T>::Quaternion(const Quaternion<T>& q)
       : w(q.w), x(q.x), y(q.y), z(q.z) {}
 
+
    // Conversion constructors
    template <typename T>
    template <typename U>
@@ -35,12 +34,13 @@ namespace Neat
       , y(static_cast<T>(q.y))
       , z(static_cast<T>(q.z)) {}
 
+
    // Euler angles constructors
    template<typename T>
    inline constexpr Quaternion<T>::Quaternion(Vector<3, T> const& eulerAngles)
    {
-      vec<3, T, Q> c = cos(eulerAngles * T(0.5));
-      vec<3, T, Q> s = sin(eulerAngles * T(0.5));
+      Vector<3, T> c = cos(eulerAngles * T(0.5));
+      Vector<3, T> s = sin(eulerAngles * T(0.5));
 
       w = c.x * c.y * c.z + s.x * s.y * s.z;
       x = s.x * c.y * c.z - c.x * s.y * s.z;
@@ -48,14 +48,23 @@ namespace Neat
       z = c.x * c.y * s.z - s.x * s.y * c.z;
    }
 
-   template<typename T>
-   inline constexpr Quaternion<T>::Quaternion(Matrix<3, 3, T> const& rotation)
+   template <typename T>
+   inline constexpr Quaternion<T>::Quaternion(const Matrix<3, 3, T>& rotation)
    {
    }
 
-   template<typename T>
-   inline constexpr Quaternion<T>::Quaternion(Matrix<4, 4, T> const& rotation)
+   template <typename T>
+   inline constexpr Quaternion<T>::Quaternion(const Matrix<4, 4, T>& rotation)
    {
+   }
+
+
+   // Static factory constructors
+   template<typename T>
+   inline constexpr Quaternion<T> Quaternion<T>::fromAngleAxis(T angleRadians,
+      const Vector<3, T>& axis)
+   {
+      return Quaternion<T>(cos(angleRadians), sin(axis));
    }
 
 
@@ -152,7 +161,6 @@ namespace Neat
       // TODO
       return Matrix<4, 4, T>();
    }
-
 
    // Elements accessing
    template <typename T>

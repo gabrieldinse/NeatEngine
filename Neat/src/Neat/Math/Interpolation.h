@@ -21,7 +21,9 @@ namespace Neat
       const U& t);
 
    // Quaternion
-
+   template <typename T, typename U>
+   inline constexpr Quaternion<T> mix(const Quaternion<T>& a,
+      const Quaternion<T>& b, const U& t);
 }
 
 #include "Neat/Math/Interpolation.inl"

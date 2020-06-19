@@ -22,82 +22,78 @@ namespace Neat
    // Trigonometric functions -------------------------------------------------
    // Scalar
    template <typename T>
-   T sin(T value);
+   inline T sin(T value);
 
    template <typename T>
-   T cos(T value);
+   inline T cos(T value);
 
    template <typename T>
-   T tan(T value);
+   inline T tan(T value);
 
    template <typename T>
-   T asin(T value);
+   inline T asin(T value);
 
    template <typename T>
-   T acos(T value);
+   inline T acos(T value);
 
    template <typename T>
-   T atan(T value);
+   inline T atan(T value);
 
    template <typename T>
-   T sinh(T value);
+   inline T sinh(T value);
 
    template <typename T>
-   T cosh(T value);
+   inline T cosh(T value);
 
    template <typename T>
-   T tanh(T value);
+   inline T tanh(T value);
 
    template <typename T>
-   T asinh(T value);
+   inline T asinh(T value);
 
    template <typename T>
-   T acosh(T value);
+   inline T acosh(T value);
 
    template <typename T>
-   T atanh(T value);
+   inline T atanh(T value);
 
 
    // Vector
    template <UInt32 N, typename T>
-   Vector<N, T> sin(const Vector<N, T>& v);
+   inline Vector<N, T> sin(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> cos(const Vector<N, T>& v);
+   inline Vector<N, T> cos(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> tan(const Vector<N, T>& v);
+   inline Vector<N, T> tan(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> asin(const Vector<N, T>& v);
+   inline Vector<N, T> asin(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> acos(const Vector<N, T>& v);
+   inline Vector<N, T> acos(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> atan(const Vector<N, T>& v);
+   inline Vector<N, T> atan(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> sinh(const Vector<N, T>& v);
+   inline Vector<N, T> sinh(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> cosh(const Vector<N, T>& v);
+   inline Vector<N, T> cosh(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> tanh(const Vector<N, T>& v);
+   inline Vector<N, T> tanh(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> asinh(const Vector<N, T>& v);
+   inline Vector<N, T> asinh(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> acosh(const Vector<N, T>& v);
+   inline Vector<N, T> acosh(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   Vector<N, T> atanh(const Vector<N, T>& v);
-   
-
-   // Quaternion
-
+   inline Vector<N, T> atanh(const Vector<N, T>& v);
 }
 
 #include "Neat/Math/Trigonometric.inl"

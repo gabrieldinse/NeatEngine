@@ -1,9 +1,6 @@
 #pragma once
 
-#include <type_traits>
 #include <iostream>
-#include <numeric>
-#include <algorithm>
 
 #include "Neat/Core/Types.h"
 #include "Neat/Core/Exceptions.h"

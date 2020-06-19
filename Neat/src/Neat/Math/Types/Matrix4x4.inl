@@ -5,7 +5,13 @@ namespace Neat
 {
    // Default constructor
    template <typename T>
-   inline constexpr Matrix<4, 4, T>::Matrix() : m_flattened{} {}
+   inline constexpr Matrix<4, 4, T>::Matrix()
+      : m_rows{
+         RowType(one<T>, 0, 0, 0),
+         RowType(0, one<T>, 0, 0),
+         RowType(0, 0, one<T>, 0),
+         RowType(0, 0, 0, one<T>)
+      } {}
 
 
    // Basic constructors
@@ -329,8 +335,7 @@ namespace Neat
       T det3 = m[1][0] * sub6 + m[1][1] * sub4 + m[1][3] * sub7;
       T det4 = m[1][0] * sub3 + m[1][1] * sub8 + m[1][2] * sub7;
 
-      return
-         m[0][0] * det1 - m[0][1] * det2 + m[0][2] * det3 - m[0][3] * det4;
+      return m[0][0] * det1 - m[0][1] * det2 + m[0][2] * det3 - m[0][3] * det4;
    }
 
    template <typename T>

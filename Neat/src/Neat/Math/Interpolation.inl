@@ -36,4 +36,13 @@ namespace Neat
 
       return p;
    }
+
+
+   // Quaternion
+   template<typename T, typename U>
+   constexpr Quaternion<T> mix(const Quaternion<T>& a, const Quaternion<T>& b, const U& t)
+   {
+      // TODO
+      return Quaternion<T>();
+   }
 }

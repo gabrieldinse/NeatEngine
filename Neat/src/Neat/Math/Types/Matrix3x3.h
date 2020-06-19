@@ -81,7 +81,7 @@ namespace Neat
       T& operator()(UInt32 pos) const;
 
       // Static member functions
-      static constexpr Matrix<3, 3, T> identity() { return Matrix<3, 3, T>(one<T>); }
+      static constexpr Matrix<3, 3, T> identity() { return Matrix<3, 3, T>(); }
       static constexpr UInt32 size() { return 3 * 3; }
       static constexpr UInt32 length() { return size(); }
 

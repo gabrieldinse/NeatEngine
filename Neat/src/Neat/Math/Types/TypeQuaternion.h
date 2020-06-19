@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Neat/Math/Types/TypeVectorN.h"
+#include "Neat/Math/Types/TypeMatrixMxN.h"
 
 
 namespace Neat
@@ -38,8 +39,8 @@ namespace Neat
 
       // Euler angles constructors
       constexpr explicit Quaternion(const Vector<3, T>& eulerAngles);
-      constexpr explicit Quaternion(Matrix<3, 3, T> const& rotation);
-      constexpr explicit Quaternion(Matrix<4, 4, T> const& rotation);
+      constexpr explicit Quaternion(const Matrix<3, 3, T>& rotation);
+      constexpr explicit Quaternion(const Matrix<4, 4, T>& rotation);
 
       // Assignment operators
       constexpr Quaternion<T>& operator=(const Quaternion<T>& q) = default;
@@ -57,6 +58,10 @@ namespace Neat
       constexpr Quaternion<T>& operator*=(U scalar);
       template <typename U>
       constexpr Quaternion<T>& operator/=(U scalar);
+
+      // Static factory constructors
+      constexpr Quaternion<T> fromAngleAxis(T angleRadians,
+         const Vector<3, T>& n);
 
       // Explicit conversion operators
       explicit operator Matrix<3, 3, T>() const;
@@ -136,11 +141,20 @@ namespace Neat
 
 
    // Quaternion operations
-   template <typename T>
-   inline constexpr Quaternion<T> conjugate(const Quaternion<T>& q);
+   template<typename T>
+   constexpr T dot(const Quaternion<T>& qa, const Quaternion<T>& qb);
 
-   template <typename T>
-   inline constexpr Quaternion<T> inverse(const Quaternion<T>& q);
+   template<typename T>
+   constexpr T norm(const Quaternion<T>& q);
+
+   template<typename T>
+   constexpr Quaternion<T> normalize(const Quaternion<T>& q);
+
+   template<typename T>
+   constexpr Quaternion<T> conjugate(const Quaternion<T>& q);
+
+   template<typename T>
+   constexpr Quaternion<T> inverse(const Quaternion<T>& q);
 }
 
 #include "Neat/Math/Types/TypeQuaternion.inl"

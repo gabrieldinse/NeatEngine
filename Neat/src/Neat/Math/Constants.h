@@ -1,5 +1,7 @@
 #pragma once
 
+#include <limits>
+
 #include "Neat/Core/Types.h"
 
 
@@ -7,6 +9,12 @@ namespace Neat
 {
    template <typename T>
    inline constexpr T zero = static_cast<T>(0);
+
+   template <typename T>
+   inline constexpr T sixth = static_cast<T>(0.16666666666666666666666666666667);
+
+   template <typename T>
+   inline constexpr T tenth = static_cast<T>(0.1);
 
    template <typename T>
    inline constexpr T fifth = static_cast<T>(0.2);
@@ -35,8 +43,16 @@ namespace Neat
    template <typename T>
    inline constexpr T twoAndHalf = static_cast<T>(2.5);
 
+
+   template <typename T>
+   inline constexpr T e = static_cast<T>(2.7182818284590452353602874713527);
+
    template <typename T>
    inline constexpr T pi = static_cast<T>(3.1415926535897932384626433832795);
+
+   template <typename T>
+   inline constexpr T goldenRatio = static_cast<T>(1.61803398874989484820458683436563811);
+
 
    template <typename T>
    inline constexpr T twoPi = static_cast<T>(6.283185307179586476925286766559);
@@ -57,10 +73,13 @@ namespace Neat
    inline constexpr T threeHalfPi = static_cast<T>(4.7123889803846898576939650749193);
 
    template <typename T>
-   inline constexpr T degreeInRadians = static_cast<T>(0.01745329251994329576923690768489);
+   inline constexpr T quarterPi = static_cast<T>(0.78539816339744830961566084581988);
 
    template <typename T>
-   inline constexpr T radianInDegrees = static_cast<T>(57.295779513082320876798154814105);
+   inline constexpr T fitfhPi = static_cast<T>(0.6283185307179586476925286766559);
+
+   template <typename T>
+   inline constexpr T sixthPi = static_cast<T>(0.52359877559829887307710723054658);
 
    template <typename T>
    inline constexpr T oneOverPi = static_cast<T>(0.31830988618379067153776752674503);
@@ -83,8 +102,32 @@ namespace Neat
    template <typename T>
    inline constexpr T threeOverTwoPi = static_cast<T>(0.47746482927568600730665129011754);
 
+
    template <typename T>
-   inline constexpr T e = static_cast<T>(2.7182818284590452353602874713527);
+   inline constexpr T degreeInRadians = static_cast<T>(0.01745329251994329576923690768489);
+
+   template <typename T>
+   inline constexpr T radianInDegrees = static_cast<T>(57.295779513082320876798154814105);
+
+
+   template <typename T>
+   inline constexpr T sinSixthPi = static_cast<T>(0.5);
+
+   template <typename T>
+   inline constexpr T sinQuarterPi = static_cast<T>(0.70710678118654752440084436210485);
+
+   template <typename T>
+   inline constexpr T sinThirdPi = static_cast<T>(0.86602540378443864676372317075294);
+
+   template <typename T>
+   inline constexpr T cosSixthPi = static_cast<T>(0.86602540378443864676372317075294);
+
+   template <typename T>
+   inline constexpr T cosQuarterPi = static_cast<T>(0.70710678118654752440084436210485);
+
+   template <typename T>
+   inline constexpr T cosThirdPi = static_cast<T>(0.5);
+
 
    template <typename T>
    inline constexpr T sqrtTwo = static_cast<T>(1.4142135623730950488016887242097);
@@ -104,6 +147,7 @@ namespace Neat
    template <typename T>
    inline constexpr T oneOverSqrtFive = static_cast<T>(0.44721359549995793928183473374626);
 
+
    template <typename T>
    inline constexpr T logTwoE = static_cast<T>(1.4426950408889634073599246810019);
 
@@ -115,7 +159,4 @@ namespace Neat
 
    template <typename T>
    inline constexpr T logETen = static_cast<T>(2.3025850929940456840179914546844);
-
-   template <typename T>
-   inline constexpr T goldenRatio = static_cast<T>(1.61803398874989484820458683436563811);
 }

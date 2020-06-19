@@ -5,7 +5,11 @@ namespace Neat
 {
    // Default constructor
    template <typename T>
-   inline constexpr Matrix<2, 2, T>::Matrix() : m_flattened{} {}
+   inline constexpr Matrix<2, 2, T>::Matrix()
+      : m_rows{
+         RowType(one<T>, 0),
+         RowType(0, one<T>)
+      } {}
 
 
    // Basic constructors

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <limits>
+
 #include "Neat/Core/Types.h"
 
 
@@ -29,7 +31,21 @@ namespace Neat
    constexpr IntPointerType    IntPointerMax = INTPTR_MAX;
    constexpr UIntPointerType   UIntPointerMax = UINTPTR_MAX;
 
-   constexpr char              charMin = CHAR_MIN;
-   constexpr char              charMax = CHAR_MAX;
-   constexpr unsigned char     uCharMax = UCHAR_MAX;
+   constexpr char              CharMin = CHAR_MIN;
+   constexpr char              CharMax = CHAR_MAX;
+   constexpr unsigned char     UCharMax = UCHAR_MAX;
+
+
+
+   template <typename T>
+   inline constexpr T epsilon = std::numeric_limits<T>::epsilon();
+
+   template <typename T>
+   inline constexpr T infinity = std::numeric_limits<T>::infinity();
+
+   template <typename T>
+   inline constexpr T nan = std::numeric_limits<T>::quiet_NaN();
+
+   template <typename T>
+   inline constexpr T signalNan = std::numeric_limits<T>::signaling_NaN();
 }

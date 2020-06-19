@@ -84,7 +84,7 @@ namespace Neat
       constexpr const T& operator()(UInt32 pos) const;
 
       // Static member functions
-      static constexpr Matrix<4, 4, T> identity() { return Matrix<4, 4, T>(one<T>); }
+      static constexpr Matrix<4, 4, T> identity() { return Matrix<4, 4, T>(); }
       static constexpr UInt32 size() { return 4 * 4; }
       static constexpr UInt32 length() { return size(); }
 

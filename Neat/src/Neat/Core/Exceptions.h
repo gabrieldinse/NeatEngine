@@ -59,11 +59,19 @@ namespace Neat
          : MathError(msg) {}
    };
 
-   // Matrices
+   // Quaternion
    struct QuaternionDimensionError : public MathError
    {
       QuaternionDimensionError(
          const std::string& msg = "Wrong Quaternion dimension being acessed.")
+         : MathError(msg) {}
+   };
+
+   struct QuaternionLogArgumentOverflow : public MathError
+   {
+      QuaternionLogArgumentOverflow(
+         const std::string& msg = "Log of Quaternion is undefined because "
+            "norm(Quaternion) == 0")
          : MathError(msg) {}
    };
    // -------------------------------------------------------------------------
