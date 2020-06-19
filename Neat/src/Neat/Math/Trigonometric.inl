@@ -44,17 +44,12 @@ namespace Neat
    }
 
 
-   // Trigonometric functions
+   // Trigonometric functions -------------------------------------------------
+   // Scalar
    template <typename T>
    T sin(T value)
    {
       return std::sin(value);
-   }
-
-   template <UInt32 N, typename T>
-   Vector<N, T> sin(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(sin, v);
    }
 
    template <typename T>
@@ -63,22 +58,10 @@ namespace Neat
       return std::cos(value);
    }
 
-   template <UInt32 N, typename T>
-   Vector<N, T> cos(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(cos, v);
-   }
-
    template <typename T>
    T tan(T value)
    {
       return std::tan(value);
-   }
-
-   template<UInt32 N, typename T>
-   Vector<N, T> tan(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(tan, v);
    }
 
    template <typename T>
@@ -87,22 +70,10 @@ namespace Neat
       return std::asin(value);
    }
 
-   template <UInt32 N, typename T>
-   Vector<N, T> asin(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(asin, v);
-   }
-
    template <typename T>
    T acos(T value)
    {
       return std::acos(value);
-   }
-
-   template <UInt32 N, typename T>
-   Vector<N, T> acos(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(acos, v);
    }
 
    template <typename T>
@@ -111,22 +82,10 @@ namespace Neat
       return std::atan(value);
    }
 
-   template <UInt32 N, typename T>
-   Vector<N, T> atan(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(atan, v);
-   }
-
    template <typename T>
    T sinh(T value)
    {
       return std::sinh(value);
-   }
-
-   template <UInt32 N, typename T>
-   Vector<N, T> sinh(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(sinh, v);
    }
 
    template <typename T>
@@ -135,22 +94,10 @@ namespace Neat
       return std::cosh(value);
    }
 
-   template <UInt32 N, typename T>
-   Vector<N, T> cosh(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(cosh, v);
-   }
-
    template <typename T>
    T tanh(T value)
    {
       return std::tanh(value);
-   }
-
-   template <UInt32 N, typename T>
-   Vector<N, T> tanh(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(tanh, v);
    }
 
    template <typename T>
@@ -159,28 +106,84 @@ namespace Neat
       return std::asinh(value);
    }
 
-   template <UInt32 N, typename T>
-   Vector<N, T> asinh(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(asinh, v);
-   }
-
    template <typename T>
    T acosh(T value)
    {
       return std::acosh(value);
    }
 
-   template <UInt32 N, typename T>
-   Vector<N, T> acosh(const Vector<N, T>& v)
-   {
-      return FunctorVector<Vector, N, T, T>::call(acosh, v);
-   }
-
    template <typename T>
    T atanh(T value)
    {
       return std::atanh(value);
+   }
+
+
+   // Vector
+   template <UInt32 N, typename T>
+   Vector<N, T> sin(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(sin, v);
+   }
+
+   template <UInt32 N, typename T>
+   Vector<N, T> cos(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(cos, v);
+   }
+
+   template<UInt32 N, typename T>
+   Vector<N, T> tan(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(tan, v);
+   }
+
+   template <UInt32 N, typename T>
+   Vector<N, T> asin(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(asin, v);
+   }
+
+   template <UInt32 N, typename T>
+   Vector<N, T> acos(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(acos, v);
+   }
+
+   template <UInt32 N, typename T>
+   Vector<N, T> atan(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(atan, v);
+   }
+
+   template <UInt32 N, typename T>
+   Vector<N, T> sinh(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(sinh, v);
+   }
+
+   template <UInt32 N, typename T>
+   Vector<N, T> cosh(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(cosh, v);
+   }
+
+   template <UInt32 N, typename T>
+   Vector<N, T> tanh(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(tanh, v);
+   }
+
+   template <UInt32 N, typename T>
+   Vector<N, T> asinh(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(asinh, v);
+   }
+
+   template <UInt32 N, typename T>
+   Vector<N, T> acosh(const Vector<N, T>& v)
+   {
+      return FunctorVector<Vector, N, T, T>::call(acosh, v);
    }
 
    template <UInt32 N, typename T>

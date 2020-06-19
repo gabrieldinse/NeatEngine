@@ -37,9 +37,26 @@ namespace Neat
       constexpr explicit Quaternion(const Quaternion<U>& q);
 
       // Euler angles constructors
-      constexpr explicit Quaternion(Vector<3, T> const& eulerAngles);
+      constexpr explicit Quaternion(const Vector<3, T>& eulerAngles);
       constexpr explicit Quaternion(Matrix<3, 3, T> const& rotation);
       constexpr explicit Quaternion(Matrix<4, 4, T> const& rotation);
+
+      // Assignment operators
+      constexpr Quaternion<T>& operator=(const Quaternion<T>& q) = default;
+      template <typename U>
+      constexpr Quaternion<T>& operator=(const Quaternion<U>& q);
+
+      // Compound assignment operators
+      template <typename U>
+      constexpr Quaternion<T>& operator+=(const Quaternion<U>& q);
+      template <typename U>
+      constexpr Quaternion<T>& operator-=(const Quaternion<U>& q);
+      template <typename U>
+      constexpr Quaternion<T>& operator*=(const Quaternion<U>& q);
+      template <typename U>
+      constexpr Quaternion<T>& operator*=(U scalar);
+      template <typename U>
+      constexpr Quaternion<T>& operator/=(U scalar);
 
       // Explicit conversion operators
       explicit operator Matrix<3, 3, T>() const;
@@ -57,6 +74,73 @@ namespace Neat
       static constexpr UInt32 size() { return 4; }
       static constexpr UInt32 length() { return size(); }
    };
+
+
+   // Predefined types
+   using DQuaternion = Quaternion<double>;
+
+
+   // Non members operators
+   template <typename T>
+   inline constexpr Quaternion<T> operator+(const Quaternion<T>& qa,
+      const Quaternion<T>& qb);
+
+   template <typename T>
+   inline constexpr Quaternion<T> operator-(const Quaternion<T>& q);
+
+   template <typename T>
+   inline constexpr Quaternion<T> operator-(const Quaternion<T>& qa,
+      const Quaternion<T>& qb);
+
+   template <typename T>
+   inline constexpr Quaternion<T> operator*(const Quaternion<T>& qa,
+      const Quaternion<T>& qb);
+
+   template <typename T>
+   inline constexpr Vector<3, T> operator*(const Quaternion<T>& q,
+      const Vector<3, T>& v);
+
+   template <typename T>
+   inline constexpr Vector<3, T> operator*(const Vector<3, T>& v,
+      const Quaternion<T>& q);
+
+   template <typename T>
+   inline constexpr Vector<4, T> operator*(const Quaternion<T>& q,
+      const Vector<4, T>& v);
+
+   template <typename T>
+   inline constexpr Vector<4, T> operator*(const Vector<4, T>& v,
+      const Quaternion<T>& q);
+
+   template <typename T>
+   inline constexpr Quaternion<T> operator*(const Quaternion<T>& q,
+      T const& scalar);
+
+   template <typename T>
+   inline constexpr Quaternion<T> operator*(T const& scalar,
+      const Quaternion<T>& q);
+
+   template <typename T>
+   inline constexpr Quaternion<T> operator/(const Quaternion<T>& q,
+      T const& scalar);
+
+
+   // Relational operators
+   template <typename T>
+   inline constexpr bool operator==(const Quaternion<T>& qa,
+      const Quaternion<T>& qb);
+
+   template <typename T>
+   inline constexpr bool operator!=(const Quaternion<T>& qa,
+      const Quaternion<T>& qb);
+
+
+   // Quaternion operations
+   template <typename T>
+   inline constexpr Quaternion<T> conjugate(const Quaternion<T>& q);
+
+   template <typename T>
+   inline constexpr Quaternion<T> inverse(const Quaternion<T>& q);
 }
 
-#include "TypeQuaternion.inl"
+#include "Neat/Math/Types/TypeQuaternion.inl"

@@ -251,6 +251,7 @@ namespace Neat
       return Vector<3, T>(v) /= scalar;
    }
 
+
    // Relational operators
    template <typename T>
    inline constexpr bool operator==(const Vector<3, T>& va,
@@ -271,24 +272,23 @@ namespace Neat
    template <typename T>
    T dot(const Vector<3, T>& va, const Vector<3, T>& vb)
    {
-      return va[0] * vb[0] + va[1] * vb[1] + va[2] * vb[2];
+      return va.x * vb.x + va.y * vb.y + va.z * vb.z;
    }
 
    template <typename T>
    Vector<3, T> cross(const Vector<3, T>& va, const Vector<3, T>& vb)
    {
       return Vector<3, T>(
-         va[1] * vb[2] - va[2] * vb[1],
-         va[2] * vb[0] - va[0] * vb[2],
-         va[0] * vb[1] - va[1] * vb[0]
+         va.y * vb.z - va.z * vb.y,
+         va.z * vb.x - va.x * vb.z,
+         va.x * vb.y - va.y * vb.x
          );
    }
 
    template <typename T>
    T norm(const Vector<3, T>& v)
    {
-      return
-         static_cast<T>(sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]));
+      return sqrt(dot(v, v));
    }
 
    template <typename T>

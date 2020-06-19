@@ -296,15 +296,13 @@ namespace Neat
    T dot(const Vector<4, T>& va, const Vector<4, T>& vb)
    {
       return
-         va[0] * vb[0] + va[1] * vb[1] + va[2] * vb[2] + va[3] * vb[3];
+         va.x * vb.x + va.y * vb.y + va.z * vb.z + va.w * vb.w;
    }
 
    template <typename T>
    T norm(const Vector<4, T>& v)
    {
-      return static_cast<T>(sqrt(
-         v[0] * v[0] + v[1] * v[1] + v[2] * v[2] + v[3] * v[3])
-         );
+      return sqrt(dot(v, v));
    }
 
    template <typename T>

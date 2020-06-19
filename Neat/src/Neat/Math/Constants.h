@@ -6,16 +6,37 @@
 namespace Neat
 {
    template <typename T>
-   constexpr T zero = static_cast<T>(0);
+   inline constexpr T zero = static_cast<T>(0);
 
    template <typename T>
-   constexpr T one = static_cast<T>(1);
+   inline constexpr T fifth = static_cast<T>(0.2);
 
    template <typename T>
-   constexpr T two = static_cast<T>(2);
+   inline constexpr T quarter = static_cast<T>(0.25);
 
    template <typename T>
-   constexpr T pi = static_cast<T>(3.1415926535897932384626433832795);
+   inline constexpr T third = static_cast<T>(0.33333333333333333333333333333333);
+
+   template <typename T>
+   inline constexpr T half = static_cast<T>(0.5);
+
+   template <typename T>
+   inline constexpr T twoThirds = static_cast<T>(0.66666666666666666666666666666667);
+
+   template <typename T>
+   inline constexpr T one = static_cast<T>(1);
+
+   template <typename T>
+   inline constexpr T oneAndHalf = static_cast<T>(1.5);
+
+   template <typename T>
+   inline constexpr T two = static_cast<T>(2);
+
+   template <typename T>
+   inline constexpr T twoAndHalf = static_cast<T>(2.5);
+
+   template <typename T>
+   inline constexpr T pi = static_cast<T>(3.1415926535897932384626433832795);
 
    template <typename T>
    inline constexpr T twoPi = static_cast<T>(6.283185307179586476925286766559);
@@ -24,16 +45,16 @@ namespace Neat
    inline constexpr T threePi = static_cast<T>(9.4247779607693797153879301498385);
 
    template <typename T>
-   inline constexpr T piOverTwo = static_cast<T>(1.5707963267948966192313216916398);
+   inline constexpr T halfPi = static_cast<T>(1.5707963267948966192313216916398);
 
    template <typename T>
-   inline constexpr T piOverThree = static_cast<T>(1.0471975511965977461542144610932);
+   inline constexpr T thirdPi = static_cast<T>(1.0471975511965977461542144610932);
 
    template <typename T>
-   inline constexpr T twoPiOverThree = static_cast<T>(2.0943951023931954923084289221863);
+   inline constexpr T twoThirdsPi = static_cast<T>(2.0943951023931954923084289221863);
 
    template <typename T>
-   inline constexpr T threePiOverTwo = static_cast<T>(4.7123889803846898576939650749193);
+   inline constexpr T threeHalfPi = static_cast<T>(4.7123889803846898576939650749193);
 
    template <typename T>
    inline constexpr T degreeInRadians = static_cast<T>(0.01745329251994329576923690768489);
@@ -94,4 +115,7 @@ namespace Neat
 
    template <typename T>
    inline constexpr T logETen = static_cast<T>(2.3025850929940456840179914546844);
+
+   template <typename T>
+   inline constexpr T goldenRatio = static_cast<T>(1.61803398874989484820458683436563811);
 }

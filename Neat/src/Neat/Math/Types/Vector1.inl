@@ -187,6 +187,7 @@ namespace Neat
       return Vector<1, T>(v) /= scalar;
    }
 
+
    // Relational operators
    template <typename T>
    inline constexpr bool operator==(const Vector<1, T>& va,
@@ -207,13 +208,13 @@ namespace Neat
    template <typename T>
    T dot(const Vector<1, T>& va, const Vector<1, T>& vb)
    {
-      return va[0] * vb[0];
+      return va.x * vb.x;
    }
 
    template <typename T>
    T norm(const Vector<1, T>& v)
    {
-      return abs(v[0]);
+      return abs(v.x);
    }
 
    template <typename T>
