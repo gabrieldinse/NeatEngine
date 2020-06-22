@@ -2,10 +2,8 @@
 
 #include "Neat/Core/Log.h"
 #include "Neat/Graphics/Camera.h"
-#include "Neat/Math/MatrixTransform.h"
+#include "Neat/Math/Transform.h"
 #include "Neat/Math/Projection.h"
-#include "Neat/Math/MatrixOperations.h"
-#include "Neat/Math/Utility.h"
 
 
 namespace Neat

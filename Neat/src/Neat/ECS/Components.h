@@ -4,7 +4,7 @@
 
 #include "Neat/Math/Vector.h"
 #include "Neat/Math/Matrix.h"
-#include "Neat/Math/MatrixTransform.h"
+#include "Neat/Math/Transform.h"
 #include "Neat/Core/Input.h"
 #include "Neat/Graphics/Shape2D/Quad.h"
 

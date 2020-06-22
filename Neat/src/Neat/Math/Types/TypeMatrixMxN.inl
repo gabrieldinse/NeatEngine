@@ -25,7 +25,7 @@ namespace Neat
          }
          os << "]";
       }
-      os << "]\n";
+      os << "]";
 
       return os;
    }

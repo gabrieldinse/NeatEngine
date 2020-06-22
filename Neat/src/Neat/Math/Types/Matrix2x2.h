@@ -49,6 +49,9 @@ namespace Neat
 
       constexpr Matrix(const T* data, UInt32 count);
 
+      // Static factory constructors
+      static constexpr Matrix<2, 2, T> identity() { return Matrix<2, 2, T>(); }
+
       // Assignment operators
       template <typename U>
       constexpr Matrix<2, 2, T>& operator=(const Matrix<2, 2, U>& m);
@@ -76,7 +79,6 @@ namespace Neat
       constexpr const T& operator()(UInt32 pos) const;
 
       // Static member functions
-      static constexpr Matrix<2, 2, T> identity() { return Matrix<2, 2, T>(); }
       static constexpr UInt32 size() { return 2 * 2; }
       static constexpr UInt32 length() { return size(); }
 

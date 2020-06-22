@@ -146,7 +146,4 @@ namespace Neat
    {
       return FunctorVector<Vector, N, T, T>::call(ceil, v);
    }
-
-
-   // Quaternion
 }

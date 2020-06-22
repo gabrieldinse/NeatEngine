@@ -12,6 +12,8 @@ namespace Neat
    template <UInt32 N, typename T>
    struct Vector {};
 
+
+   // Ostream operator
    template <typename T, UInt32 N>
    std::ostream& operator<<(std::ostream& os, const Vector<N, T>& v);
 }

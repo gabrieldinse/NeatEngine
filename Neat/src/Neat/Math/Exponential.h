@@ -20,7 +20,7 @@ namespace Neat
    inline T inverseSqrt(T value);
 
    template <typename T>
-   inline T pow(T value, T n);
+   inline T pow(T base, T exponent);
 
    template <typename T>
    inline T exp(T value);
@@ -49,7 +49,7 @@ namespace Neat
    inline Vector<N, T> inverseSqrt(const Vector<N, T>& v);
 
    template <UInt32 N, typename T>
-   inline Vector<N, T> pow(const Vector<N, T>& q, T n);
+   inline Vector<N, T> pow(const Vector<N, T>& q, T exponent);
 
    template <UInt32 N, typename T>
    inline Vector<N, T> exp(const Vector<N, T>& v);
@@ -65,17 +65,17 @@ namespace Neat
 
 
    // Quaternion
-   template <UInt32 N, typename T>
-   inline Quaternion<T> log(const Quaternion<T>& q);
+   template <typename T>
+   inline Quat<T> log(const Quat<T>& q);
 
-   template <UInt32 N, typename T>
-   inline Quaternion<T> ln(const Quaternion<T>& q);
+   template <typename T>
+   inline Quat<T> ln(const Quat<T>& q);
 
-   template <UInt32 N, typename T>
-   inline Quaternion<T> exp(const Quaternion<T>& q);
+   template <typename T>
+   inline Quat<T> exp(const Quat<T>& q);
 
-   template <UInt32 N, typename T>
-   inline Quaternion<T> pow(const Quaternion<T>& q, T n);
+   template <typename T>
+   inline Quat<T> pow(const Quat<T>& q, T exponent);
 }
 
 #include "Neat/Math/Exponential.inl"

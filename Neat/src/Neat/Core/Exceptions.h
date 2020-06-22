@@ -67,11 +67,18 @@ namespace Neat
          : MathError(msg) {}
    };
 
-   struct QuaternionLogArgumentOverflow : public MathError
+   struct QuaternionLogUndefined : public MathError
    {
-      QuaternionLogArgumentOverflow(
-         const std::string& msg = "Log of Quaternion is undefined because "
-            "norm(Quaternion) == 0")
+      QuaternionLogUndefined(
+         const std::string& msg = "Log of Quaternion is undefined")
+         : MathError(msg) {}
+   };
+
+   struct QuaternionLerpStepError : public MathError
+   {
+      QuaternionLerpStepError(
+         const std::string& msg = "Lerp step parameter t must be in "
+            "range [0, 1]")
          : MathError(msg) {}
    };
    // -------------------------------------------------------------------------

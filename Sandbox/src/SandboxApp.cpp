@@ -7,6 +7,10 @@
 
 #include "Sandbox2D.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/string_cast.hpp>
+
 
 class Sandbox : public Neat::Application
 {
@@ -23,6 +27,17 @@ public:
       , stairsTexture2(Neat::SubTexture2D::createFromIndex(
          *spritesheetTexture, { 8, 6 }, { 64, 64 }))
    {
+      auto q = Neat::Quaternion::fromAngleAxis(Neat::radians(45.0f), Neat::Vector3(1.0f, 0.0f, 0.0f));
+      auto q2 = glm::angleAxis(glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+      NT_TRACE(q);
+      NT_TRACE(Neat::log(q));
+      NT_TRACE(Neat::pow(q, 0.5f));
+      NT_TRACE("");
+      NT_TRACE(glm::to_string(q2));
+      NT_TRACE(glm::to_string(glm::log(q2)));
+      NT_TRACE(glm::to_string(glm::pow(q2, 0.5f)));
+      NT_ASSERT(false, "");
+
       auto camera_controller_system = 
          systems.addSystem<Neat::Camera3DControllerSystem>(
             (float)getWindow().getWidth() / (float)getWindow().getHeight());

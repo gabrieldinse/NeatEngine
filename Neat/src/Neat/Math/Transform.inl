@@ -2,12 +2,14 @@
 
 #include "Neat/Math/Constants.h"
 #include "Neat/Math/Trigonometric.h"
+#include "Transform.h"
 
 
 namespace Neat
 {
+   // Vector
    template <typename T>
-   Matrix<4, 4, T> translate(const Vector<3, T>& v)
+   inline Matrix<4, 4, T> translate(const Vector<3, T>& v)
    {
       return Matrix<4, 4, T>(
           one<T>, zero<T>, zero<T>, v.x,
@@ -18,7 +20,7 @@ namespace Neat
    }
 
    template <typename T>
-   Matrix<4, 4, T> translate(const Matrix<4, 4, T>& m, const Vector<3, T>& v)
+   inline Matrix<4, 4, T> translate(const Matrix<4, 4, T>& m, const Vector<3, T>& v)
    {
       Matrix<4, 4, T> result(m);
       result[0][3] = v.x * m[0][0] + v.y * m[0][1] + v.z * m[0][2] + m[0][3];
@@ -30,11 +32,12 @@ namespace Neat
    }
 
    template <typename T>
-   Matrix<4, 4, T> rotate(const T& angleRadians, const Vector<3, T>& v)
+   inline Matrix<4, 4, T> rotate(const T& angleRadians,
+      const Vector<3, T>& rotationAxis)
    {
       T c = cos(angleRadians);
       T s = sin(angleRadians);
-      Vector<3, T> axis(normalize(v));
+      Vector<3, T> axis(normalize(rotationAxis));
 
       T one_minus_c_x = (one<T> - c) * axis.x;
       T one_minus_c_y = (one<T> - c) * axis.y;
@@ -66,12 +69,12 @@ namespace Neat
    }
 
    template <typename T>
-   Matrix<4, 4, T> rotate(const Matrix<4, 4, T>& m, const T& angleRadians,
-      const Vector<3, T>& v)
+   inline Matrix<4, 4, T> rotate(const Matrix<4, 4, T>& m, const T& angleRadians,
+      const Vector<3, T>& rotationAxis)
    {
       T c = cos(angleRadians);
       T s = sin(angleRadians);
-      Vector<3, T> axis(normalize(v));
+      Vector<3, T> axis(normalize(rotationAxis));
 
       T one_minus_c_x = (one<T> - c) * axis.x;
       T one_minus_c_y = (one<T> - c) * axis.y;
@@ -115,7 +118,7 @@ namespace Neat
    }
 
    template <typename T>
-   Matrix<4, 4, T> scale(const Vector<3, T>& v)
+   inline Matrix<4, 4, T> scale(const Vector<3, T>& v)
    {
       return Matrix<4, 4, T>(
              v.x, zero<T>, zero<T>, zero<T>,
@@ -126,7 +129,7 @@ namespace Neat
    }
 
    template <typename T>
-   Matrix<4, 4, T> scale(const Matrix<4, 4, T>& m, const Vector<3, T>& v)
+   inline Matrix<4, 4, T> scale(const Matrix<4, 4, T>& m, const Vector<3, T>& v)
    {
       return Matrix<4, 4, T>(
          m[0][0] * v.x, m[0][1] * v.y, m[0][2] * v.z, m[0][3],
@@ -134,5 +137,21 @@ namespace Neat
          m[2][0] * v.x, m[2][1] * v.y, m[2][2] * v.z, m[2][3],
          m[3][0] * v.x, m[3][1] * v.y, m[3][2] * v.z, m[3][3]
          );
+   }
+
+
+   // Quaternion
+   template <typename T>
+   inline Quat<T> rotate(const Quat<T>& q, const T& angleRadians, Vector<3, T>& rotationAxis)
+   {
+      return q * Quat<T>(
+         cos(angleRadians * oneHalf<T>),
+         sin(angleRadians * oneHalf<T>) * normalize(rotationAxis));
+   }
+
+   template <typename T>
+   Quat<T> rotate(const T& angleRadians, Vector<3, T>& rotationAxis)
+   {
+      return Quat<T>::fromAngleAxis(angleRadians, rotationAxis);
    }
 }
