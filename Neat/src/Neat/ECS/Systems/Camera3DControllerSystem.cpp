@@ -1,6 +1,7 @@
 #include "Neat/Core/Application.h"
 #include "Neat/Core/Input.h"
 #include "Neat/ECS/Systems/Camera3DControllerSystem.h"
+#include "Neat/Math/Trigonometric.h"
 
 
 namespace Neat
@@ -8,10 +9,9 @@ namespace Neat
    Camera3DControllerSystem::Camera3DControllerSystem(float aspectRatio,
       bool rotationEnabled)
       : m_rotationEnabled(rotationEnabled)
-      , m_lastMousePosition(Input::getMouseX(), Input::getMouseY())
    {
       m_camera.setPerspective(45.0f, aspectRatio, 0.1f, 100.0f);
-      m_translationSpeed = m_camera.getFieldOfView() * 0.2f;
+      m_translationSpeed = m_camera.getFieldOfView() * 0.5f;
    }
 
    Camera3DControllerSystem::~Camera3DControllerSystem()
@@ -33,63 +33,43 @@ namespace Neat
          Input::isKeyPressed(KeyCode::RightControl)) &&
          Input::isMouseButtonPressed(MouseCode::ButtonLeft)))
       {
-         auto shift = (float)(m_translationSpeed * deltaTime);
+         auto distance = (float)(m_translationSpeed * deltaTime);
          if (Input::isKeyPressed(KeyCode::W))
-         {
-            m_camera.incrementPosition(shift * m_camera.getFrontDirection());
-         }
+            m_camera.moveForward(distance);
 
          if (Input::isKeyPressed(KeyCode::S))
-         {
-            m_camera.incrementPosition(-shift * m_camera.getFrontDirection());
-         }
+            m_camera.moveBackward(distance );
 
          if (Input::isKeyPressed(KeyCode::D))
-         {
-            m_camera.incrementPosition(shift * m_camera.getRightDirection());
-         }
+            m_camera.moveRight(distance);
 
          if (Input::isKeyPressed(KeyCode::A))
-         {
-            m_camera.incrementPosition(-shift * m_camera.getRightDirection());
-         }
+            m_camera.moveLeft(distance);
 
          if (Input::isKeyPressed(KeyCode::Z))
-         {
-            m_camera.incrementPosition(shift * m_camera.getUpDirection());
-         }
+            m_camera.moveUp(distance);
 
          if (Input::isKeyPressed(KeyCode::X))
-         {
-            m_camera.incrementPosition(-shift * m_camera.getUpDirection());
-         }
+            m_camera.moveDown(distance);
       }
 
       if (m_rotationEnabled)
       {
+         float rotation = 0.0f;
          if (Input::isKeyPressed(KeyCode::Q))
-         {
-            auto rotation = (float)(m_rotationSpeed * deltaTime);
-            if (m_camera.getRoll() + rotation >= 360.0f)
-               rotation -= 360.0f;
-            m_camera.incrementRoll(rotation);
-         }
+            rotation += (float)(m_rotationSpeed * deltaTime);
 
          if (Input::isKeyPressed(KeyCode::E))
-         {
-            auto rotation = -(float)(m_rotationSpeed * deltaTime);
-            if (m_camera.getRoll() + rotation <= -360.0f)
-               rotation += 360.0f;
-            m_camera.incrementRoll(rotation);
-         }
+            rotation -= (float)(m_rotationSpeed * deltaTime);
+         
+         m_camera.setRoll(wrap360(rotation + m_camera.getRoll()));
       }
    }
 
    bool Camera3DControllerSystem::listenEvent(
       const MouseScrolledEvent& event)
    {
-      auto fov = std::max(-event.yOffset + m_camera.getFieldOfView(), 1.0f);
-      fov = std::min(fov, 60.0f);
+      auto fov = clamp(-event.yOffset + m_camera.getFieldOfView(), 1.0f, 60.0f);
       m_translationSpeed = fov * 0.5f;
       m_camera.setFieldOfView(fov);
 
@@ -99,25 +79,20 @@ namespace Neat
    bool Camera3DControllerSystem::listenEvent(
       const MouseMovedEvent& event)
    {
-      Vector2 current_mouse_position(event.xPos, event.yPos);
+      if (m_firstMouse)
+      {
+         m_lastMousePosition = Vector2F(event.xPos, event.yPos);
+         m_firstMouse = false;
+      }
 
+      Vector2F current_mouse_position(event.xPos, event.yPos);
       auto mouse_position_offset = current_mouse_position - m_lastMousePosition;
-      auto yaw_offset = m_mouseSensitivity * mouse_position_offset.x;
-      auto pitch_offset = m_mouseSensitivity * -mouse_position_offset.y;
-
-      if (yaw_offset + m_camera.getYaw() >= 360.0f)
-         yaw_offset -= 360.0f;
-      if (yaw_offset + m_camera.getYaw() <= -360.0f)
-         yaw_offset += 360.0f;
-      if (pitch_offset + m_camera.getPitch() >= 360.0f)
-         pitch_offset -= 360.0f;
-      if (pitch_offset + m_camera.getPitch() <= -360.0f)
-         pitch_offset += 360.0f;
-
-      m_camera.incrementYaw(yaw_offset);
-      m_camera.incrementPitch(pitch_offset);
-
       m_lastMousePosition = current_mouse_position;
+
+      auto yaw_offset = -m_mouseSensitivity * mouse_position_offset.x;
+      auto pitch_offset = -m_mouseSensitivity * mouse_position_offset.y;
+      m_camera.setYaw(wrap360(yaw_offset + m_camera.getYaw()));
+      m_camera.setPitch(wrap360(pitch_offset + m_camera.getPitch()));
 
       return false;
    }

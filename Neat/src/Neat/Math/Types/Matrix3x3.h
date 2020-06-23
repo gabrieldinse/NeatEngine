@@ -98,11 +98,11 @@ namespace Neat
 
 
    // Predefined types
-   using Matrix3 = Matrix<3, 3, float>;
-   using IMatrix3 = Matrix<3, 3, Int32>;
-   using UIMatrix3 = Matrix<3, 3, UInt32>;
-   using DMatrix3 = Matrix<3, 3, double>;
-   using BMatrix3 = Matrix<3, 3, bool>;
+   using Matrix3F = Matrix<3, 3, float>;
+   using Matrix3I = Matrix<3, 3, Int32>;
+   using Matrix3UI = Matrix<3, 3, UInt32>;
+   using Matrix3D = Matrix<3, 3, double>;
+   using Matrix3B = Matrix<3, 3, bool>;
 
 
    // Nom member operators

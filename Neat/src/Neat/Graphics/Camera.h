@@ -54,9 +54,9 @@ namespace Neat
          >;
 
    public:
-      Camera(const Vector3& position = { 0.0f, 0.0f, 15.0f },
-         const Vector3& upDirection = { 0.0f, 1.0f, 0.0f }, float pitch = 0.0f,
-         float yaw = -90.0f, float roll = 0.0f);
+      Camera(const Vector3F& position = { 0.0f, 0.0f, 15.0f },
+         const Vector3F& upDirection = { 0.0f, 1.0f, 0.0f }, float pitch = 0.0f,
+         float yaw = 0.0f, float roll = 0.0f);
 
       Camera& setOrthographic(float left, float right, float bottom, float top,
          float near = -100.0f, float far = 100.0f);
@@ -64,35 +64,45 @@ namespace Neat
          float aspectRatio = 16.0f / 9.0f, float near = 0.1f,
          float far = 1000.f);
 
-      const Vector3& getPosition() const { return m_position; }
+      const Vector3F& getPosition() const { return m_position; }
       float getPitch() const { return m_pitch; }
       float getYaw() const { return m_yaw; }
       float getRoll() const { return m_roll; }
-      const Vector3& getFrontDirection() const { return m_frontDirection; }
-      const Vector3& getUpDirection() const { return m_upDirection; }
-      const Vector3& getRightDirection() const { return m_rightDirection; }
+      const Vector3F& getForwardDirection() const { return m_forwardDirection; }
+      const Vector3F& getUpDirection() const { return m_upDirection; }
+      const Vector3F& getRightDirection() const { return m_rightDirection; }
       float getNear() const { return m_near; }
       float getFar() const { return m_far; }
 
-      void setPosition(const Vector3& position) { m_position = position; }
+      void setPosition(const Vector3F& position) { m_position = position; }
+      void setX(float x) { m_position.x = x; }
+      void setY(float y) { m_position.y = y; }
+      void setZ(float z) { m_position.z = z; }
       void setRotation(float pitch, float yaw, float roll);
       void setPitch(float pitch);
       void setYaw(float yaw);
       void setRoll(float roll);
-      void setWorldUp(const Vector3& worldUp) { m_worldUpDirection = worldUp; }
+      void setWorldUp(const Vector3F& worldUp) { m_worldUpDirection = worldUp; }
 
-      void incrementPosition(const Vector3& position) { m_position += position; }
-      void incrementX(float x) { m_position.x += x; }
-      void incrementY(float y) { m_position.y += y; }
-      void incrementZ(float z) { m_position.z += z; }
-      void incrementRotation(float pitch, float yaw, float roll);
-      void incrementPitch(float pitch);
-      void incrementYaw(float yaw);
-      void incrementRoll(float roll);
+      void rotate(float pitch, float yaw, float roll);
+      void rotatePitch(float pitch);
+      void rotateYaw(float yaw);
+      void rotateRoll(float roll);
 
-      Matrix4 getProjectionMatrix() const;
-      Matrix4 getViewMatrix() const;
-      Matrix4 getCameraTransform() const;
+      void move(const Vector3F& position) { m_position += position; }
+      void moveX(float distance) { m_position.x += distance; }
+      void moveY(float distance) { m_position.y += distance; }
+      void moveZ(float distance) { m_position.z += distance; }
+      void moveUp(float distance) { m_position += m_upDirection * distance; }
+      void moveDown(float distance) { m_position -= m_upDirection * distance; }
+      void moveRight(float distance) { m_position += m_rightDirection * distance; }
+      void moveLeft(float distance) { m_position -= m_rightDirection * distance; }
+      void moveForward(float distance) { m_position += m_forwardDirection * distance; }
+      void moveBackward(float distance) { m_position -= m_forwardDirection * distance; }
+
+      Matrix4F getProjectionMatrix() const;
+      Matrix4F getViewMatrix() const;
+      Matrix4F getCameraTransform() const;
 
       bool isOrthographic() const { return m_cameraType == CameraType::Orthographic; }
       bool isPerspective() const { return m_cameraType == CameraType::Perspective; }
@@ -135,22 +145,13 @@ namespace Neat
       }
 
 
-      void checkIsOrthographic() const
+      void checkIsType(CameraType type) const
       {
-         if (m_cameraType == CameraType::Perspective)
-            throw WrongCameraTypeError();
-         
          if (m_cameraType == CameraType::None)
             throw CameraTypeHasNotBeenSettedError();
-      }
 
-      void checkIsPerspective() const
-      {
-         if (m_cameraType == CameraType::Orthographic)
+         if (m_cameraType != type)
             throw WrongCameraTypeError();
-
-         if (m_cameraType == CameraType::None)
-            throw CameraTypeHasNotBeenSettedError();
       }
 
 
@@ -159,11 +160,11 @@ namespace Neat
    private:
       CameraType m_cameraType;
       CameraData m_cameraData;
-      Vector3 m_position;
-      Vector3 m_worldUpDirection;
-      Vector3 m_frontDirection{ 0.0f };
-      Vector3 m_rightDirection{ 0.0f };
-      Vector3 m_upDirection{ 0.0f };
+      Vector3F m_position;
+      Vector3F m_worldUpDirection;
+      Vector3F m_forwardDirection{ 0.0f };
+      Vector3F m_rightDirection{ 0.0f };
+      Vector3F m_upDirection{ 0.0f };
       float m_yaw;
       float m_pitch;
       float m_roll;

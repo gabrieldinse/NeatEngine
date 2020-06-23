@@ -16,7 +16,7 @@ namespace Neat
          m_uniformTextures.set(values, count);
       }
 
-      void setCameraTransform(const Matrix4& projectionView)
+      void setCameraTransform(const Matrix4F& projectionView)
       {
          use();
          m_cameraTransform.set(projectionView);
@@ -26,8 +26,8 @@ namespace Neat
       Uniform<ShaderDataType::IntArray> m_uniformTextures{
          getUniform<ShaderDataType::IntArray>("u_textures[0]")
       };
-      Uniform<ShaderDataType::Matrix4> m_cameraTransform{
-         getUniform<ShaderDataType::Matrix4>("u_cameraTransform")
+      Uniform<ShaderDataType::Matrix4F> m_cameraTransform{
+         getUniform<ShaderDataType::Matrix4F>("u_cameraTransform")
       };
    };
 }

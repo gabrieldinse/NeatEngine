@@ -102,11 +102,11 @@ namespace Neat
 
 
    // Predefined types
-   using Matrix4 = Matrix<4, 4, float>;
-   using IMatrix4 = Matrix<4, 4, Int32>;
-   using UIMatrix4 = Matrix<4, 4, UInt32>;
-   using DMatrix4 = Matrix<4, 4, double>;
-   using BMatrix4 = Matrix<4, 4, bool>;
+   using Matrix4F = Matrix<4, 4, float>;
+   using Matrix4I = Matrix<4, 4, Int32>;
+   using Matrix4UI = Matrix<4, 4, UInt32>;
+   using Matrix4D = Matrix<4, 4, double>;
+   using Matrix4B = Matrix<4, 4, bool>;
 
 
    // Nom member operators

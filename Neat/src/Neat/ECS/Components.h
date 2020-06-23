@@ -13,17 +13,17 @@ namespace Neat
 {
    struct Transform2D
    {
-      Transform2D(const Vector2& position) : position(position) {}
+      Transform2D(const Vector2F& position) : position(position) {}
 
-      Vector2 position;
+      Vector2F position;
    };
 
 
    struct Direction2D
    {
-      Direction2D(const Vector2& direction) : direction(direction) {}
+      Direction2D(const Vector2F& direction) : direction(direction) {}
 
-      Vector2 direction;
+      Vector2F direction;
    };
 
 

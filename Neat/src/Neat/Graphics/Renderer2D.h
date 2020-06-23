@@ -23,34 +23,34 @@ namespace Neat
 
       // Primitives -----------------------------------------------------------
       // Quads
-      static void drawQuad(const Vector2& position, const Vector2& size,
-         const Vector4 color);
+      static void drawQuad(const Vector2F& position, const Vector2F& size,
+         const Vector4F color);
 
-      static void drawQuad(const Vector3& position, const Vector2& size,
-         const Vector4 color);
+      static void drawQuad(const Vector3F& position, const Vector2F& size,
+         const Vector4F color);
 
-      static void drawQuad(const Vector2& position, const Vector2& size,
+      static void drawQuad(const Vector2F& position, const Vector2F& size,
          const std::shared_ptr<Texture2D>& texture,
-         const Vector4& tint = Vector4(1.0f), float tilingFactor = 1.0f);
+         const Vector4F& tint = Vector4F(1.0f), float tilingFactor = 1.0f);
 
-      static void drawQuad(const Vector3& position, const Vector2& size,
+      static void drawQuad(const Vector3F& position, const Vector2F& size,
          const std::shared_ptr<Texture2D>& texture,
-         const Vector4& tint = Vector4(1.0f), float tilingFactor = 1.0f);
+         const Vector4F& tint = Vector4F(1.0f), float tilingFactor = 1.0f);
 
       // Rotated Quads
-      static void drawRotatedQuad(const Vector2& position, const Vector2& size,
-         float angleDegrees, const Vector4 color);
+      static void drawRotatedQuad(const Vector2F& position, const Vector2F& size,
+         float angleDegrees, const Vector4F color);
 
-      static void drawRotatedQuad(const Vector3& position, const Vector2& size,
-         float angleDegrees, const Vector4 color);
+      static void drawRotatedQuad(const Vector3F& position, const Vector2F& size,
+         float angleDegrees, const Vector4F color);
 
-      static void drawRotatedQuad(const Vector2& position, const Vector2& size,
+      static void drawRotatedQuad(const Vector2F& position, const Vector2F& size,
          float angleDegrees, const std::shared_ptr<Texture2D>& texture,
-         const Vector4& tint = Vector4(1.0f), float tilingFactor = 1.0f);
+         const Vector4F& tint = Vector4F(1.0f), float tilingFactor = 1.0f);
 
-      static void drawRotatedQuad(const Vector3& position, const Vector2& size,
+      static void drawRotatedQuad(const Vector3F& position, const Vector2F& size,
          float angleDegrees, const std::shared_ptr<Texture2D>& texture,
-         const Vector4& tint = Vector4(1.0f), float tilingFactor = 1.0f);
+         const Vector4F& tint = Vector4F(1.0f), float tilingFactor = 1.0f);
       // ----------------------------------------------------------------------
 
       struct Statistics
@@ -78,9 +78,9 @@ namespace Neat
    private:
       struct QuadVertexData
       {
-         Vector4 position{ 0.0f };
-         Vector4 color{ 1.0f, 0.0f, 1.0f, 1.0f };
-         Vector2 textureCoordinate{ 0.0f, 0.0f };
+         Vector4F position{ 0.0f };
+         Vector4F color{ 1.0f, 0.0f, 1.0f, 1.0f };
+         Vector2F textureCoordinate{ 0.0f, 0.0f };
          Int32 textureIndex = 0;
          float tilingFactor = 1.0f;
       };
@@ -90,7 +90,7 @@ namespace Neat
          static constexpr UInt32 maxQuads = 10000;
          static constexpr UInt32 maxVertices = maxQuads * 4;
          static constexpr UInt32 maxIndexes = maxQuads * 6;
-         static constexpr Vector4 defaultPositions[4] = {
+         static constexpr Vector4F defaultPositions[4] = {
                { -0.5f, -0.5f, 0.0f, 1.0f },
                {  0.5f, -0.5f, 0.0f, 1.0f },
                {  0.5f,  0.5f, 0.0f, 1.0f },
@@ -106,8 +106,8 @@ namespace Neat
             : data(std::make_unique<QuadVertexData[]>(
                QuadVextexDataBuffer::maxVertices)) {}
 
-         void addQuad(const Matrix4& modelMatrix, const Vector4& color,
-            const Vector2* textureCoordinates, Int32 textureIndex,
+         void addQuad(const Matrix4F& modelMatrix, const Vector4F& color,
+            const Vector2F* textureCoordinates, Int32 textureIndex,
             float tilingFactor)
          {
             for (std::size_t i = 0; i < 4; ++i)

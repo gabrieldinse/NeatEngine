@@ -16,7 +16,13 @@ namespace Neat
    inline constexpr T wrapPi(T angleRadians);
 
    template <typename T>
-   inline constexpr T wrap2Pi(T angleRadians);
+   inline constexpr T wrapTwoPi(T angleRadians);
+
+   template <typename T>
+   inline constexpr T wrap180(T angleDegrees);
+
+   template <typename T>
+   inline constexpr T wrap360(T angleDegrees);
 
 
    // Trigonometric functions -------------------------------------------------

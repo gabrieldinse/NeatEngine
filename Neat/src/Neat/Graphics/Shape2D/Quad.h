@@ -9,9 +9,9 @@ namespace Neat
    class Quad : public Shape
    {
    public:
-      Quad(const Vector3& position = { 0.0f, 0.0f, 0.0f },
-         const Vector2& size = { 1.0f, 1.0f },
-         const Vector4 color = { 1.0f, 0.0f, 1.0f, 1.0f })
+      Quad(const Vector3F& position = { 0.0f, 0.0f, 0.0f },
+         const Vector2F& size = { 1.0f, 1.0f },
+         const Vector4F color = { 1.0f, 0.0f, 1.0f, 1.0f })
          : m_position(position)
          , m_size(size)
          , m_color(color) {}
@@ -22,8 +22,8 @@ namespace Neat
       }
 
    private:
-      Vector3 m_position;
-      Vector2 m_size;
-      Vector4 m_color;
+      Vector3F m_position;
+      Vector2F m_size;
+      Vector4F m_color;
    };
 }

@@ -13,7 +13,7 @@ namespace Neat
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    }
 
-   void RenderCommand::setClearColor(const Vector4 color)
+   void RenderCommand::setClearColor(const Vector4F color)
    {
       glClearColor(color.r, color.g, color.b, color.a);
    }
@@ -23,7 +23,7 @@ namespace Neat
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    }
 
-   void RenderCommand::clearWithColor(const Vector4 color)
+   void RenderCommand::clearWithColor(const Vector4F color)
    {
       static constexpr float one = 1.0f;
       glClearBufferfv(GL_DEPTH, 0, &one);

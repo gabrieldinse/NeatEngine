@@ -35,60 +35,42 @@ namespace Neat
          Input::isKeyPressed(KeyCode::RightControl)) &&
          Input::isMouseButtonPressed(MouseCode::ButtonLeft)))
       {
+         auto distance = (float)(m_translationSpeed * deltaTime);
          if (Input::isKeyPressed(KeyCode::W))
-         {
-            m_camera.incrementY((float)(m_translationSpeed * deltaTime));
-         }
+            m_camera.moveUp(distance);
 
          if (Input::isKeyPressed(KeyCode::S))
-         {
-            m_camera.incrementY(-(float)(m_translationSpeed * deltaTime));
-         }
+            m_camera.moveDown(distance);
 
          if (Input::isKeyPressed(KeyCode::D))
-         {
-            m_camera.incrementX((float)(m_translationSpeed * deltaTime));
-         }
+            m_camera.moveRight(distance);
 
          if (Input::isKeyPressed(KeyCode::A))
-         {
-            m_camera.incrementX(-(float)(m_translationSpeed * deltaTime));
-         }
+            m_camera.moveLeft(distance);
       }
 
       if (m_rotationEnabled)
       {
+         float rotation = 0.0f;
          if (Input::isKeyPressed(KeyCode::Q))
-         {
-            auto rotation = (float)(m_rotationSpeed * deltaTime);
-            if (m_camera.getRoll() + rotation >= 360.0f)
-               rotation -= 360.0f;
-            m_camera.incrementRoll(rotation);
-         }
+            rotation += (float)(m_rotationSpeed * deltaTime);
 
          if (Input::isKeyPressed(KeyCode::E))
-         {
-            auto rotation = -(float)(m_rotationSpeed * deltaTime);
-            if (m_camera.getRoll() + rotation <= -360.0f)
-               rotation += 360.0f;
-            m_camera.incrementRoll(rotation);
-         }
+            rotation -= (float)(m_rotationSpeed * deltaTime);
+
+         m_camera.setRoll(wrap360(m_camera.getRoll() + rotation));
       }
    }
 
    bool Camera2DControllerSystem::listenEvent(
       const MouseScrolledEvent& event)
    {
-      if ((Input::isKeyPressed(KeyCode::LeftControl) ||
-         Input::isKeyPressed(KeyCode::RightControl)))
-      {
-         m_zoomLevel -= event.yOffset * 0.2f;
-         m_zoomLevel = std::max(m_zoomLevel, 0.25f);
-         m_translationSpeed = 2.0f * m_zoomLevel;
-         m_camera.setOrthographic(
-            -m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel,
-            -m_zoomLevel, m_zoomLevel);
-      }
+      m_zoomLevel -= event.yOffset * 0.2f;
+      m_zoomLevel = std::max(m_zoomLevel, 0.25f);
+      m_translationSpeed = 2.0f * m_zoomLevel;
+      m_camera.setOrthographic(
+         -m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel,
+         -m_zoomLevel, m_zoomLevel);
 
       return false;
    }
@@ -96,7 +78,7 @@ namespace Neat
    bool Camera2DControllerSystem::listenEvent(
       const MouseMovedEvent& event)
    {
-      Vector2 current_mouse_position(event.xPos, event.yPos);
+      Vector2F current_mouse_position(event.xPos, event.yPos);
 
       if ((Input::isKeyPressed(KeyCode::LeftControl) ||
          Input::isKeyPressed(KeyCode::RightControl)) &&
@@ -110,10 +92,10 @@ namespace Neat
             current_mouse_position - m_lastMousePosition;
          auto screen_position_offset =
             rotate(radians(m_camera.getRoll()), { 0, 0, 1 }) *
-            scale(Vector3(-scale_factor, scale_factor, 1.0f)) *
-            Vector4(mouse_possition_offset, 0.0f, 1.0f);
+            scale(Vector3F(-scale_factor, scale_factor, 1.0f)) *
+            Vector4F(mouse_possition_offset, 0.0f, 1.0f);
 
-         m_camera.incrementPosition(Vector3(screen_position_offset));
+         m_camera.move(Vector3F(screen_position_offset));
       }
 
       m_lastMousePosition = current_mouse_position;

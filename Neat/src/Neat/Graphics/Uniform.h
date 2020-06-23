@@ -78,9 +78,9 @@ namespace Neat
    };
 
    template <>
-   struct Uniform<ShaderDataType::Vector2> : public UniformBase
+   struct Uniform<ShaderDataType::Vector2F> : public UniformBase
    {
-      void set(Vector2 values);
+      void set(Vector2F values);
 
    private:
       friend class ShaderProgram;
@@ -88,9 +88,9 @@ namespace Neat
    };
 
    template <>
-   struct Uniform<ShaderDataType::Vector3> : public UniformBase
+   struct Uniform<ShaderDataType::Vector3F> : public UniformBase
    {
-      void set(Vector3 values);
+      void set(Vector3F values);
 
    private:
       friend class ShaderProgram;
@@ -98,9 +98,9 @@ namespace Neat
    };
 
    template <>
-   struct Uniform<ShaderDataType::Vector4> : public UniformBase
+   struct Uniform<ShaderDataType::Vector4F> : public UniformBase
    {
-      void set(Vector4 values);
+      void set(Vector4F values);
 
    private:
       friend class ShaderProgram;
@@ -128,9 +128,9 @@ namespace Neat
    };
 
    template <>
-   struct Uniform<ShaderDataType::Matrix3> : public UniformBase
+   struct Uniform<ShaderDataType::Matrix3F> : public UniformBase
    {
-      void set(Matrix3 matrix);
+      void set(Matrix3F matrix);
 
    private:
       friend class ShaderProgram;
@@ -138,9 +138,9 @@ namespace Neat
    };
 
    template <>
-   struct Uniform<ShaderDataType::Matrix4> : public UniformBase
+   struct Uniform<ShaderDataType::Matrix4F> : public UniformBase
    {
-      void set(Matrix4 matrix);
+      void set(Matrix4F matrix);
 
    private:
       friend class ShaderProgram;

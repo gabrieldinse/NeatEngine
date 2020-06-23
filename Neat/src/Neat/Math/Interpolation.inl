@@ -3,7 +3,7 @@
 namespace Neat
 {
    // Scalar
-   template<typename T, typename U>
+   template <typename T, typename U>
    inline constexpr T mix(const T& a, const T& b, const U& t)
    {
       return a * (one<T> - static_cast<T>(t)) + b * static_cast<T>(t);
@@ -47,15 +47,15 @@ namespace Neat
 
 
    // Quaternion
-   template<typename T, typename U>
-   constexpr Quat<T> mix(const Quat<T>& a, const Quat<T>& b, const U& t)
+   template <typename T, typename U>
+   constexpr Quaternion<T> mix(const Quaternion<T>& a, const Quaternion<T>& b, const U& t)
    {
       T cos_theta = dot(x, y);
 
       // Performs linear interpolation when cos_theta is close to 1 to avoid
       // sin(angle) to become a division by 0
       if (cos_theta > one<T> - epsilon<T>)
-         return Quat<T>(mix(a.w, b.w), mix(a.v, b.v));
+         return Quaternion<T>(mix(a.w, b.w), mix(a.v, b.v));
       
       T angle = acos(cos_theta);
       return
@@ -65,8 +65,8 @@ namespace Neat
          ) / sin(angle);
    }
 
-   template<typename T, typename U>
-   constexpr Quat<T> lerp(const Quat<T>& a, const Quat<T>& b, const U& t)
+   template <typename T, typename U>
+   constexpr Quaternion<T> lerp(const Quaternion<T>& a, const Quaternion<T>& b, const U& t)
    {
       if (t < zero<T> || t > one<T>)
          throw QuaternionLerpStepError();
@@ -74,11 +74,11 @@ namespace Neat
       return a * (one<T> -static_cast<T>(t)) + b * static_cast<T>(t);   
    }
 
-   template<typename T, typename U>
-   constexpr Quat<T> slerp(const Quat<T>& a, const Quat<T>& b, const U& t)
+   template <typename T, typename U>
+   constexpr Quaternion<T> slerp(const Quaternion<T>& a, const Quaternion<T>& b, const U& t)
    {
       T cos_theta = dot(x, y);
-      Quat<T> c(b);
+      Quaternion<T> c(b);
 
       // If cos_theta is negative, slerp will take the longest path
       // The solution is to invert one of the quaternions (a or b) and so we
@@ -92,7 +92,7 @@ namespace Neat
       // Performs linear interpolation when cos_theta is close to 1 to avoid
       // sin(angle) to become a division by 0
       if (cos_theta > one<T> -epsilon<T>)
-         return Quat<T>(mix(a.w, b.w), mix(a.v, b.v));
+         return Quaternion<T>(mix(a.w, b.w), mix(a.v, b.v));
 
       T angle = acos(cos_theta);
 

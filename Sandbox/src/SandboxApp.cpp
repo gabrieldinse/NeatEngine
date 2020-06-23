@@ -27,16 +27,16 @@ public:
       , stairsTexture2(Neat::SubTexture2D::createFromIndex(
          *spritesheetTexture, { 8, 6 }, { 64, 64 }))
    {
-      auto q = Neat::Quaternion::fromAngleAxis(Neat::radians(45.0f), Neat::Vector3(1.0f, 0.0f, 0.0f));
-      auto q2 = glm::angleAxis(glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-      NT_TRACE(q);
-      NT_TRACE(Neat::log(q));
-      NT_TRACE(Neat::pow(q, 0.5f));
-      NT_TRACE("");
-      NT_TRACE(glm::to_string(q2));
-      NT_TRACE(glm::to_string(glm::log(q2)));
-      NT_TRACE(glm::to_string(glm::pow(q2, 0.5f)));
-      NT_ASSERT(false, "");
+      //auto q = Neat::Quaternion::fromAngleAxis(Neat::radians(45.0f), Neat::Vector3F(1, 0, 0));
+      //auto q2 = glm::angleAxis(glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+      //NT_TRACE(q);
+      //NT_TRACE(Neat::log(q));
+      //NT_TRACE(Neat::pow(q, 0.5f));
+      //NT_TRACE("");
+      //NT_TRACE(glm::to_string(q2));
+      //NT_TRACE(glm::to_string(glm::log(q2)));
+      //NT_TRACE(glm::to_string(glm::pow(q2, 0.5f)));
+      //NT_ASSERT(false, "");
 
       auto camera_controller_system = 
          systems.addSystem<Neat::Camera3DControllerSystem>(
@@ -52,9 +52,9 @@ public:
             auto entity = entities.createEntity();
             entity.addComponent<Neat::Renderable>(
                std::make_unique<Neat::Quad>(
-                  Neat::Vector3{ 0.1f * j, 0.1f * i, 0.0f },
-                  Neat::Vector2{ 0.1f, 0.1f },
-                  Neat::Vector4{
+                  Neat::Vector3F{ 0.1f * j, 0.1f * i, 0.0f },
+                  Neat::Vector2F{ 0.1f, 0.1f },
+                  Neat::Vector4F{
                      float(i) / this->numberOfLines,
                      float(j) / this->numberOfColumns,
                      1.0f, 1.0f }
@@ -102,7 +102,7 @@ private:
    std::shared_ptr<Neat::SubTexture2D> stairsTexture;
    std::shared_ptr<Neat::SubTexture2D> stairsTexture2;
 
-   Neat::Vector4 tint = { 0.8f, 0.3f, 0.2f, 1.0f };
+   Neat::Vector4F tint = { 0.8f, 0.3f, 0.2f, 1.0f };
 
    int numberOfColumns = 20;
    int numberOfLines = 20;

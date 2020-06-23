@@ -33,7 +33,7 @@ namespace Neat
       Int32 getWidth() const { return m_width; }
       Int32 getHeight() const { return m_height; }
 
-      virtual const Vector2* getCoordinates() const
+      virtual const Vector2F* getCoordinates() const
       {
          return m_coordinates;
       };
@@ -53,7 +53,7 @@ namespace Neat
       Int32 m_height;
       UInt32 m_internalFormat;
       UInt32 m_dataFormat;
-      const Vector2 m_coordinates[4] = {
+      const Vector2F m_coordinates[4] = {
          {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}
       };
    };

@@ -93,11 +93,11 @@ namespace Neat
 
 
    // Predefined types
-   using Matrix2 = Matrix<2, 2, float>;
-   using IMatrix2 = Matrix<2, 2, Int32>;
-   using UIMatrix2 = Matrix<2, 2, UInt32>;
-   using DMatrix2 = Matrix<2, 2, double>;
-   using BMatrix2 = Matrix<2, 2, bool>;
+   using Matrix2F = Matrix<2, 2, float>;
+   using Matrix2I = Matrix<2, 2, Int32>;
+   using Matrix2UI = Matrix<2, 2, UInt32>;
+   using Matrix2D = Matrix<2, 2, double>;
+   using Matrix2B = Matrix<2, 2, bool>;
 
 
    // Nom member operators

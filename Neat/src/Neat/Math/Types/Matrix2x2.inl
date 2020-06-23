@@ -7,8 +7,8 @@ namespace Neat
    template <typename T>
    inline constexpr Matrix<2, 2, T>::Matrix()
       : m_rows{
-         RowType(one<T>, 0),
-         RowType(0, one<T>)
+         RowType(1, 0),
+         RowType(0, 1)
       } {}
 
 

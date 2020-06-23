@@ -20,7 +20,7 @@ namespace Neat
       static void setWindow(Window& window);
       static bool isKeyPressed(KeyCode key);
       static bool isMouseButtonPressed(MouseCode button);
-      static Vector2 getMousePosition();
+      static Vector2F getMousePosition();
       static float getMouseX();
       static float getMouseY();
 

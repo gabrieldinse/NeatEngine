@@ -2,13 +2,14 @@
 
 #include "Neat/Core/Log.h"
 #include "Neat/Graphics/Camera.h"
+#include "Neat/Math/Quaternion.h"
 #include "Neat/Math/Transform.h"
 #include "Neat/Math/Projection.h"
 
 
 namespace Neat
 {
-   Camera::Camera(const Vector3& position, const Vector3& upDirection, float pitch,
+   Camera::Camera(const Vector3F& position, const Vector3F& upDirection, float pitch,
       float yaw, float roll)
       : m_cameraType(CameraType::None)
       , m_position(position)
@@ -71,7 +72,7 @@ namespace Neat
    }
 
 
-   void Camera::incrementRotation(float pitch, float yaw, float roll)
+   void Camera::rotate(float pitch, float yaw, float roll)
    {
       m_pitch += pitch;
       m_yaw += yaw;
@@ -79,26 +80,26 @@ namespace Neat
       updateOrientationVectors();
    }
 
-   void Camera::incrementPitch(float pitch)
+   void Camera::rotatePitch(float pitch)
    {
       m_pitch += pitch;
       updateOrientationVectors();
    }
 
-   void Camera::incrementYaw(float yaw)
+   void Camera::rotateYaw(float yaw)
    {
       m_yaw += yaw;
       updateOrientationVectors();
    }
 
-   void Camera::incrementRoll(float roll)
+   void Camera::rotateRoll(float roll)
    {
       m_roll += roll;
       updateOrientationVectors();
    }
 
 
-   Matrix4 Camera::getProjectionMatrix() const
+   Matrix4F Camera::getProjectionMatrix() const
    {
       switch (m_cameraType)
       {
@@ -119,12 +120,12 @@ namespace Neat
       throw CameraTypeHasNotBeenSettedError();
    }
 
-   Matrix4 Camera::getViewMatrix() const
+   Matrix4F Camera::getViewMatrix() const
    {
-      return lookAtRH(m_position, m_position + m_frontDirection, m_upDirection);
+      return lookAtRH(m_position, m_position + m_forwardDirection, m_upDirection);
    }
 
-   Matrix4 Camera::getCameraTransform() const
+   Matrix4F Camera::getCameraTransform() const
    {
       return getProjectionMatrix() * getViewMatrix();
    }
@@ -133,28 +134,28 @@ namespace Neat
    // Perspective
    float Camera::getFieldOfView() const
    {
-      checkIsPerspective();
+      checkIsType(CameraType::Perspective);
       
       return getPerspectiveData().fieldOfView;
    }
 
    float Camera::getAspectRatio() const
    {
-      checkIsPerspective();
+      checkIsType(CameraType::Perspective);
 
       return getPerspectiveData().aspectRatio;
    }
 
    void Camera::setFieldOfView(float fieldOfView)
    {
-      checkIsPerspective();
+      checkIsType(CameraType::Perspective);
 
       getPerspectiveData().fieldOfView = fieldOfView;
    }
 
    void Camera::setAspectRatio(float aspectRatio)
    {
-      checkIsPerspective();
+      checkIsType(CameraType::Perspective);
       
       getPerspectiveData().aspectRatio = aspectRatio;
    }
@@ -163,75 +164,77 @@ namespace Neat
    // Orthographic
    float Camera::getLeft() const
    {
-      checkIsOrthographic();
+      checkIsType(CameraType::Orthographic);
 
       return getOrthographicData().left;
    }
 
    float Camera::getRight() const
    {
-      checkIsOrthographic();
+      checkIsType(CameraType::Orthographic);
 
       return getOrthographicData().right;
    }
 
    float Camera::getBottom() const
    {
-      checkIsOrthographic();
+      checkIsType(CameraType::Orthographic);
 
       return getOrthographicData().bottom;
    }
 
    float Camera::getTop() const
    {
-      checkIsOrthographic();
+      checkIsType(CameraType::Orthographic);
 
       return getOrthographicData().top;
    }
 
    void Camera::setLeft(float left)
    {
-      checkIsOrthographic();
+      checkIsType(CameraType::Orthographic);
       
       getOrthographicData().left = left;
    }
 
    void Camera::setRight(float right)
    {
-      checkIsOrthographic();
+      checkIsType(CameraType::Orthographic);
 
       getOrthographicData().right = right;
    }
 
    void Camera::setBottom(float bottom)
    {
-      checkIsOrthographic();
+      checkIsType(CameraType::Orthographic);
 
       getOrthographicData().bottom = bottom;
    }
 
    void Camera::setTop(float top)
    {
-      checkIsOrthographic();
-      
+      checkIsType(CameraType::Orthographic);
+
       getOrthographicData().top = top;
    }
 
 
    void Camera::updateOrientationVectors()
    {
-      m_frontDirection = normalize(Vector3(
-         std::cos(radians(m_yaw)) * std::cos(radians(m_pitch)),
-         std::sin(radians(m_pitch)),
-         std::sin(radians(m_yaw)) * std::cos(radians(m_pitch))
-      ));
-      m_rightDirection = Vector3(
-         rotate(radians(m_roll), m_frontDirection) *
-         Vector4(normalize(cross(m_frontDirection, m_worldUpDirection)), 1.0f)
-      );
-      m_upDirection = Vector3(
-         rotate(radians(m_roll), m_frontDirection) *
-         Vector4(normalize(cross(m_rightDirection, m_frontDirection)), 1.0f)
-      );
+      auto orientation = QuaternionF::fromEulerAngles(
+         radians(m_pitch), radians(m_yaw), radians(m_roll));
+      //NT_CORE_TRACE("PITCH: {0}", m_pitch);
+      //NT_CORE_TRACE("YAW: {0}", m_yaw);
+      //NT_CORE_TRACE("ROLL: {0}", m_roll);
+      //NT_CORE_TRACE("");
+      m_forwardDirection = Neat::rotate(orientation, Vector3F(0, 0, -1));
+      m_rightDirection = cross(m_forwardDirection, m_worldUpDirection);
+      m_upDirection = cross(m_rightDirection, m_forwardDirection);
+      NT_CORE_TRACE("FORWARD: {0}", m_forwardDirection);
+      NT_CORE_TRACE("  RIGHT: {0}", m_rightDirection);
+      NT_CORE_TRACE("     UP: {0}", m_upDirection);
+      NT_CORE_TRACE("");
+      /*m_rightDirection = Neat::rotate(orientation, Vector3F(-1, 0, 0));
+      m_upDirection = Neat::rotate(orientation, Vector3F(0, -1, 0));*/
    }
 }

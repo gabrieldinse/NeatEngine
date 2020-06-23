@@ -30,11 +30,8 @@ namespace Neat
 
    // Quaternion
    template <typename T>
-   Quat<T> rotate(const T& angleRadians, Vector<3, T>& rotationAxis);
-
-   template <typename T>
-   Quat<T> rotate(const Quat<T>& q, const T& angleRadians,
-      Vector<3, T>& rotationAxis);
+   Quaternion<T> rotate(const Quaternion<T>& q, const T& angleRadians,
+      const Vector<3, T>& rotationAxis);
 }
 
 #include "Neat/Math/Transform.inl"

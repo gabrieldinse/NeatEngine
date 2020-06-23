@@ -40,7 +40,7 @@ namespace Neat
       return (state == GLFW_PRESS);
    }
 
-   Vector2 Input::getMousePosition()
+   Vector2F Input::getMousePosition()
    {
       double xPos, yPos;
       glfwGetCursorPos(s_data->window, &xPos, &yPos);

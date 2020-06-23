@@ -66,16 +66,16 @@ namespace Neat
 
    // Quaternion
    template <typename T>
-   inline Quat<T> log(const Quat<T>& q);
+   inline Quaternion<T> log(const Quaternion<T>& q);
 
    template <typename T>
-   inline Quat<T> ln(const Quat<T>& q);
+   inline Quaternion<T> ln(const Quaternion<T>& q);
 
    template <typename T>
-   inline Quat<T> exp(const Quat<T>& q);
+   inline Quaternion<T> exp(const Quaternion<T>& q);
 
    template <typename T>
-   inline Quat<T> pow(const Quat<T>& q, T exponent);
+   inline Quaternion<T> pow(const Quaternion<T>& q, T exponent);
 }
 
 #include "Neat/Math/Exponential.inl"

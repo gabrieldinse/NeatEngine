@@ -12,9 +12,9 @@ namespace Neat
    public:
       static void init();
 
-      static void setClearColor(const Vector4 color);
+      static void setClearColor(const Vector4F color);
       static void clear();
-      static void clearWithColor(const Vector4 color);
+      static void clearWithColor(const Vector4F color);
 
       static void drawIndexed(const std::shared_ptr<VertexArray>& vertexArray,
          UInt32 indexCount = 0);

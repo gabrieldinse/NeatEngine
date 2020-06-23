@@ -73,6 +73,13 @@ namespace Neat
    Vector<N, T> clamp(const Vector<N, T>& v, const Vector<N, T>& low,
       const Vector<N, T>& high);
 
+   template <UInt32 N, typename T>
+   Vector<N, T> reflect(const Vector<N, T>& v, const Vector<N, T>& normal);
+
+   template <UInt32 N, typename T>
+   Vector<N, T> refract(const Vector<N, T>& v, const Vector<N, T>& normal,
+      const T& eta);
+
 
    // Quaternion
 }

@@ -37,7 +37,8 @@ namespace Neat
       float m_translationSpeed = 0.0f;
       float m_rotationSpeed = 90.0f;
       float m_mouseSensitivity = 0.2f;
-      Vector2 m_lastMousePosition;
+      Vector2F m_lastMousePosition;
+      bool m_firstMouse = true;
       bool m_rotationEnabled;
    };
 }

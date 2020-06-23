@@ -13,13 +13,13 @@ namespace Neat
    {
       None = 0,
 
-      Float, Vector2, Vector3, Vector4,
+      Float, Vector2F, Vector3F, Vector4F,
       FloatArray, Vector2Array, Vector3Array, Vector4Array,
 
-      Matrix2, Matrix3, Matrix4,
+      Matrix2F, Matrix3F, Matrix4F,
       Matrix2Array, Matrix3Array, Matrix4Array,
 
-      Int, IVector2, IVector3, IVector4,
+      Int, Vector2I, Vector3I, Vector4I,
       IntArray, IVector2Array, IVector3Array, IVector4Array,
 
       Bool

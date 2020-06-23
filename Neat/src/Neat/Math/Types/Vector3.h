@@ -92,11 +92,11 @@ namespace Neat
 
 
    // Predefined types
-   using Vector3 = Vector<3, float>;
-   using IVector3 = Vector<3, Int32>;
-   using UIVector3 = Vector<3, UInt32>;
-   using BVector3 = Vector<3, bool>;
-   using DVector3 = Vector<3, double>;
+   using Vector3F = Vector<3, float>;
+   using Vector3I = Vector<3, Int32>;
+   using Vector3UI = Vector<3, UInt32>;
+   using Vector3B = Vector<3, bool>;
+   using Vector3D = Vector<3, double>;
 
 
    // Nom member operators

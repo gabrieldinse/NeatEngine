@@ -124,7 +124,7 @@ namespace Neat
              v.x, zero<T>, zero<T>, zero<T>,
          zero<T>,     v.y, zero<T>, zero<T>,
          zero<T>, zero<T>,     v.z, zero<T>,
-         zero<T>, zero<T>, zero<T>, one<T>
+         zero<T>, zero<T>, zero<T>,  one<T>
          );
    }
 
@@ -142,16 +142,9 @@ namespace Neat
 
    // Quaternion
    template <typename T>
-   inline Quat<T> rotate(const Quat<T>& q, const T& angleRadians, Vector<3, T>& rotationAxis)
+   inline Quaternion<T> rotate(const Quaternion<T>& q, const T& angleRadians,
+      const Vector<3, T>& rotationAxis)
    {
-      return q * Quat<T>(
-         cos(angleRadians * oneHalf<T>),
-         sin(angleRadians * oneHalf<T>) * normalize(rotationAxis));
-   }
-
-   template <typename T>
-   Quat<T> rotate(const T& angleRadians, Vector<3, T>& rotationAxis)
-   {
-      return Quat<T>::fromAngleAxis(angleRadians, rotationAxis);
+      return q * Quaternion<T>::fromAngleAxis(angleRadians, normalize(rotationAxis));
    }
 }

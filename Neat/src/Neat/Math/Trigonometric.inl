@@ -1,6 +1,7 @@
 #include <cmath>
 
 #include "Neat/Math/Types/FunctorVector.h"
+#include "Neat/Math/Common.h"
 
 
 namespace Neat
@@ -21,9 +22,9 @@ namespace Neat
    template <typename T>
    inline constexpr T wrapPi(T angleRadians)
    {
-      if (fabs(angleRadians) > pi<T>)
+      if (abs(angleRadians) > pi<T>)
       {
-         T revolutions = std::floor(
+         T revolutions = floor(
             oneOverTwoPi<T> * (angleRadians + pi<T>));
          angleRadians -= revolutions * twoPi<T>;
       }
@@ -32,15 +33,40 @@ namespace Neat
    }
 
    template <typename T>
-   inline constexpr T wrap2Pi(T angleRadians)
+   inline constexpr T wrapTwoPi(T angleRadians)
    {
-      if (fabs(angleRadians) > twoPi<T>)
+      if (abs(angleRadians) > twoPi<T>)
       {
-         T revolutions = std::floor(oneOverTwoPi<T> * angleRadians);
+         T revolutions = floor(oneOverTwoPi<T> * angleRadians);
          angleRadians -= revolutions * twoPi<T>;
       }
 
       return angleRadians;
+   }
+
+   template<typename T>
+   inline constexpr T wrap180(T angleDegrees)
+   {
+      if (abs(angleDegrees) > static_cast<T>(180))
+      {
+         T revolutions = floor(
+            static_cast<T>(1.0 / 360) * (angleDegrees + static_cast<T>(180)));
+         angleDegrees -= revolutions * static_cast<T>(360);   
+      }
+
+      return angleDegrees;
+   }
+
+   template<typename T>
+   inline constexpr T wrap360(T angleDegrees)
+   {
+      if (abs(angleDegrees) > static_cast<T>(360))
+      {
+         T revolutions = floor(static_cast<T>(1.0 / 360) * angleDegrees);
+         angleDegrees -= revolutions * static_cast<T>(360);
+      }
+
+      return angleDegrees;
    }
 
 
@@ -132,7 +158,7 @@ namespace Neat
       return FunctorVector<Vector, N, T, T>::call(cos, v);
    }
 
-   template<UInt32 N, typename T>
+   template <UInt32 N, typename T>
    Vector<N, T> tan(const Vector<N, T>& v)
    {
       return FunctorVector<Vector, N, T, T>::call(tan, v);

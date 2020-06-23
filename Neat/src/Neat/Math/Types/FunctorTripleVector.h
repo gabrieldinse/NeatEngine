@@ -15,8 +15,9 @@ namespace Neat
    template <template <UInt32 N, typename T> class Vector, typename R, typename T>
    struct FunctorTripleVector<Vector, 1, R, T>
    {
-      static Vector<1, R> call(R(*function)(T x, T y, T z), const Vector<1, T>& va,
-         const Vector<1, T>& vb, const Vector<1, T>& vc)
+      static Vector<1, R> call(R(*function)(T x, T y, T z),
+         const Vector<1, T>& va, const Vector<1, T>& vb,
+         const Vector<1, T>& vc)
       {
          return Vector<1, R>(function(va.x, vb.x, vc.x));
       }

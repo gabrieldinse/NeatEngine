@@ -18,9 +18,9 @@ namespace Neat
       );
 
       s_data.quadVertexBuffer->setLayout({
-         { ShaderDataType::Vector4, "position" },
-         { ShaderDataType::Vector4, "color"},
-         { ShaderDataType::Vector2, "textureCoordinate"},
+         { ShaderDataType::Vector4F, "position" },
+         { ShaderDataType::Vector4F, "color"},
+         { ShaderDataType::Vector2F, "textureCoordinate"},
          { ShaderDataType::Float, "textureIndex"},
          { ShaderDataType::Float, "tilingFactor"}
          });
@@ -102,15 +102,15 @@ namespace Neat
       s_data.stats.drawCalls++;
    }
 
-   void Renderer2D::drawQuad(const Vector2& position, const Vector2& size,
-      const Vector4 color)
+   void Renderer2D::drawQuad(const Vector2F& position, const Vector2F& size,
+      const Vector4F color)
    {
       drawQuad({position.x, position.y, 0.0f}, size, color);
    }
 
    // Quads
-   void Renderer2D::drawQuad(const Vector3& position, const Vector2& size,
-      const Vector4 color)
+   void Renderer2D::drawQuad(const Vector3F& position, const Vector2F& size,
+      const Vector4F color)
    {
       if (reachedBatchDataLimit())
       {
@@ -120,13 +120,13 @@ namespace Neat
 
       constexpr Int32 textureIndex = 0; // white texture;
       constexpr float tilingFactor = 1.0f;
-      constexpr Vector2 textureCoordinates[] = {
+      constexpr Vector2F textureCoordinates[] = {
          {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}
       };
 
       auto model_matrix =
          translate(position) *
-         scale(Vector3(size.x, size.y, 1.0f));
+         scale(Vector3F(size.x, size.y, 1.0f));
       
       s_data.quadVextexDataBuffer.addQuad(model_matrix, color,
          textureCoordinates, textureIndex, tilingFactor);
@@ -134,8 +134,8 @@ namespace Neat
       s_data.stats.quadCount++;
    }
 
-   void Renderer2D::drawQuad(const Vector2& position,const Vector2& size,
-      const std::shared_ptr<Texture2D>& texture, const Vector4& tint,
+   void Renderer2D::drawQuad(const Vector2F& position,const Vector2F& size,
+      const std::shared_ptr<Texture2D>& texture, const Vector4F& tint,
       float tilingFactor)
    {
       drawQuad(
@@ -143,8 +143,8 @@ namespace Neat
    }
 
    void Renderer2D::drawQuad(
-      const Vector3& position, const Vector2& size,
-      const std::shared_ptr<Texture2D>& texture, const Vector4& tint,
+      const Vector3F& position, const Vector2F& size,
+      const std::shared_ptr<Texture2D>& texture, const Vector4F& tint,
       float tilingFactor)
    {
       if (reachedBatchDataLimit())
@@ -172,7 +172,7 @@ namespace Neat
 
       auto model_matrix =
          translate(position) *
-         scale(Vector3(size.x, size.y, 1.0f));
+         scale(Vector3F(size.x, size.y, 1.0f));
 
       s_data.quadVextexDataBuffer.addQuad(model_matrix, tint,
          texture->getCoordinates(), textureIndex, tilingFactor);
@@ -181,15 +181,15 @@ namespace Neat
    }
 
    // Rotated Quads 
-   void Renderer2D::drawRotatedQuad(const Vector2& position,
-      const Vector2& size, float angleDegrees, const Vector4 color)
+   void Renderer2D::drawRotatedQuad(const Vector2F& position,
+      const Vector2F& size, float angleDegrees, const Vector4F color)
    {
       drawRotatedQuad({ position.x, position.y, 0.0f }, size, angleDegrees,
          color);
    }
 
-   void Renderer2D::drawRotatedQuad(const Vector3& position,
-      const Vector2& size, float angleDegrees, const Vector4 color)
+   void Renderer2D::drawRotatedQuad(const Vector3F& position,
+      const Vector2F& size, float angleDegrees, const Vector4F color)
    {
       if (reachedBatchDataLimit())
       {
@@ -199,14 +199,14 @@ namespace Neat
 
       constexpr Int32 textureIndex = 0; // white texture;
       constexpr float tilingFactor = 1.0f;
-      constexpr Vector2 textureCoordinates[] = {
+      constexpr Vector2F textureCoordinates[] = {
          {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}
       };
 
       auto model_matrix =
-         translate(Matrix4(1.0f),position) *
+         translate(Matrix4F(1.0f),position) *
          rotate(radians(angleDegrees), { 0, 0, 1 }) *
-         scale(Vector3(size.x, size.y, 1.0f));
+         scale(Vector3F(size.x, size.y, 1.0f));
 
       s_data.quadVextexDataBuffer.addQuad(model_matrix, color,
          textureCoordinates, textureIndex, tilingFactor);
@@ -214,18 +214,18 @@ namespace Neat
       s_data.stats.quadCount++;
    }
 
-   void Renderer2D::drawRotatedQuad(const Vector2& position,
-      const Vector2& size, float angleDegrees,
-      const std::shared_ptr<Texture2D>& texture, const Vector4& tint,
+   void Renderer2D::drawRotatedQuad(const Vector2F& position,
+      const Vector2F& size, float angleDegrees,
+      const std::shared_ptr<Texture2D>& texture, const Vector4F& tint,
       float tilingFactor)
    {
       drawRotatedQuad({ position.x, position.y, 0.0f }, size, angleDegrees,
          texture, tint, tilingFactor);
    }
 
-   void Renderer2D::drawRotatedQuad(const Vector3& position,
-      const Vector2& size, float angleDegrees,
-      const std::shared_ptr<Texture2D>& texture, const Vector4& tint,
+   void Renderer2D::drawRotatedQuad(const Vector3F& position,
+      const Vector2F& size, float angleDegrees,
+      const std::shared_ptr<Texture2D>& texture, const Vector4F& tint,
       float tilingFactor)
    {
       if (reachedBatchDataLimit())
@@ -254,7 +254,7 @@ namespace Neat
       auto model_matrix =
          translate(position) *
          rotate(radians(angleDegrees), { 0, 0, 1 }) *
-         scale(Vector3(size.x, size.y, 1.0f));
+         scale(Vector3F(size.x, size.y, 1.0f));
 
       s_data.quadVextexDataBuffer.addQuad(model_matrix, tint,
          texture->getCoordinates(), textureIndex, tilingFactor);

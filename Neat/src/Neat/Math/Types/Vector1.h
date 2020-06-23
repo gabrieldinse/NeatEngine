@@ -76,11 +76,11 @@ namespace Neat
 
 
    // Predefined types
-   using Vector1 = Vector<1, float>;
-   using IVector1 = Vector<1, Int32>;
-   using UIVector1 = Vector<1, UInt32>;
-   using BVector1 = Vector<1, bool>;
-   using DVector1 = Vector<1, double>;
+   using Vector1F = Vector<1, float>;
+   using Vector1I = Vector<1, Int32>;
+   using Vector1UI = Vector<1, UInt32>;
+   using Vector1B = Vector<1, bool>;
+   using Vector1D = Vector<1, double>;
 
 
    // Nom member operators

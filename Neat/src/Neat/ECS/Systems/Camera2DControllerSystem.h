@@ -38,7 +38,7 @@ namespace Neat
       float m_translationSpeed = 1.0f;
       float m_rotationSpeed = 90.0f;
       float m_aspectRatio;
-      Vector2 m_lastMousePosition;
+      Vector2F m_lastMousePosition;
       bool m_rotationEnabled;
    };
 }

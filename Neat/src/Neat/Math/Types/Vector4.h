@@ -100,11 +100,11 @@ namespace Neat
 
 
    // Predefined types
-   using Vector4 = Vector<4, float>;
-   using IVector4 = Vector<4, Int32>;
-   using UIVector4 = Vector<4, UInt32>;
-   using BVector4 = Vector<4, bool>;
-   using DVector4 = Vector<4, double>;
+   using Vector4F = Vector<4, float>;
+   using Vector4I = Vector<4, Int32>;
+   using Vector4UI = Vector<4, UInt32>;
+   using Vector4B = Vector<4, bool>;
+   using Vector4D = Vector<4, double>;
 
 
    // Nom member operators
