@@ -67,7 +67,8 @@ namespace Neat
    {
    }
 
-   void Renderer2D::beginScene(const Camera& camera)
+   template <typename C>
+   void Renderer2D::beginScene(const C& camera)
    {
       s_data.textureShader->setCameraTransform(camera.getCameraTransform());
 

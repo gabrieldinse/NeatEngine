@@ -60,7 +60,7 @@ namespace Neat
 
       // Static factory constructors
       static constexpr Quaternion<T> fromAngleAxis(T angleRadians,
-         const Vector<3, T>& n);
+         const Vector<3, T>& axis);
       static constexpr Quaternion<T> fromEulerAngles(
          const Vector<3, T>& pitchYawRoll);
       static constexpr Quaternion<T> fromEulerAngles(T pitch, T yaw, T roll);

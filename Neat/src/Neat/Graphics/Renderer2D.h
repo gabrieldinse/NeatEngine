@@ -18,7 +18,8 @@ namespace Neat
       static void init();
       static void shutdown();
 
-      static void beginScene(const Camera& camera);
+      template <typename C>
+      static void beginScene(const C& camera);
       static void endScene();
 
       // Primitives -----------------------------------------------------------

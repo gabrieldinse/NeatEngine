@@ -7,13 +7,11 @@ namespace Neat
 {
    Camera2DControllerSystem::Camera2DControllerSystem(float aspectRatio,
       bool rotationEnabled)
-      : m_aspectRatio(aspectRatio)
+      : m_camera(aspectRatio)
+      , m_aspectRatio(aspectRatio)
       , m_rotationEnabled(rotationEnabled)
       , m_lastMousePosition(Input::getMouseX(), Input::getMouseY())
    {
-      m_camera.setOrthographic(
-         -m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel,
-         -m_zoomLevel, m_zoomLevel);
    }
 
    Camera2DControllerSystem::~Camera2DControllerSystem()
@@ -58,7 +56,7 @@ namespace Neat
          if (Input::isKeyPressed(KeyCode::E))
             rotation -= (float)(m_rotationSpeed * deltaTime);
 
-         m_camera.setRoll(wrap360(m_camera.getRoll() + rotation));
+         m_camera.setRotation(wrap360(m_camera.getRotation() + rotation));
       }
    }
 
@@ -68,7 +66,7 @@ namespace Neat
       m_zoomLevel -= event.yOffset * 0.2f;
       m_zoomLevel = std::max(m_zoomLevel, 0.25f);
       m_translationSpeed = 2.0f * m_zoomLevel;
-      m_camera.setOrthographic(
+      m_camera.setZoo(
          -m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel,
          -m_zoomLevel, m_zoomLevel);
 

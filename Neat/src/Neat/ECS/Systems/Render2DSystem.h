@@ -5,7 +5,7 @@
 #include "Neat/ECS/Components.h"
 #include "Neat/Graphics/Renderer2D.h"
 #include "Neat/Graphics/RenderCommand.h"
-#include "Neat/Graphics/Camera.h"
+#include "Neat/Graphics/Cameras/Camera.h"
 
 
 namespace Neat

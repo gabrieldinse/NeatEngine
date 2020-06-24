@@ -1,7 +1,7 @@
 #include <cmath>
 
 #include "Neat/Core/Log.h"
-#include "Neat/Graphics/Camera.h"
+#include "Neat/Graphics/Cameras/Camera.h"
 #include "Neat/Math/Quaternion.h"
 #include "Neat/Math/Transform.h"
 #include "Neat/Math/Projection.h"
@@ -9,14 +9,9 @@
 
 namespace Neat
 {
-   Camera::Camera(const Vector3F& position, const Vector3F& upDirection, float pitch,
-      float yaw, float roll)
-      : m_cameraType(CameraType::None)
-      , m_position(position)
+   Camera::Camera(const Vector3F& position, const Vector3F& upDirection)
+      : m_position(position)
       , m_worldUpDirection(normalize(upDirection))
-      , m_pitch(pitch)
-      , m_yaw(yaw)
-      , m_roll(roll)
    {
       updateOrientationVectors();
    }
@@ -29,6 +24,16 @@ namespace Neat
          left, right, bottom, top);
       m_near = near;
       m_far = far;
+      m_cameraType = CameraType::Orthographic;
+
+      return *this;
+   }
+
+   Camera& Camera::setOrthographic(float left, float right, float bottom,
+      float top)
+   {
+      m_cameraData = OrthographicCameraProperties(
+         left, right, bottom, top);
       m_cameraType = CameraType::Orthographic;
 
       return *this;
@@ -109,15 +114,16 @@ namespace Neat
             return orthographic(camera_data.left, camera_data.right,
                   camera_data.bottom, camera_data.top, m_near, m_far);
          }
+
          case CameraType::Perspective:
          {
             auto& camera_data = getPerspectiveData();
             return perspective(radians(camera_data.fieldOfView),
                camera_data.aspectRatio, m_near, m_far);
          }
-      }
 
-      throw CameraTypeHasNotBeenSettedError();
+         default: throw CameraTypeHasNotBeenSettedError();
+      }
    }
 
    Matrix4F Camera::getViewMatrix() const
@@ -223,18 +229,8 @@ namespace Neat
    {
       auto orientation = QuaternionF::fromEulerAngles(
          radians(m_pitch), radians(m_yaw), radians(m_roll));
-      //NT_CORE_TRACE("PITCH: {0}", m_pitch);
-      //NT_CORE_TRACE("YAW: {0}", m_yaw);
-      //NT_CORE_TRACE("ROLL: {0}", m_roll);
-      //NT_CORE_TRACE("");
       m_forwardDirection = Neat::rotate(orientation, Vector3F(0, 0, -1));
       m_rightDirection = cross(m_forwardDirection, m_worldUpDirection);
       m_upDirection = cross(m_rightDirection, m_forwardDirection);
-      NT_CORE_TRACE("FORWARD: {0}", m_forwardDirection);
-      NT_CORE_TRACE("  RIGHT: {0}", m_rightDirection);
-      NT_CORE_TRACE("     UP: {0}", m_upDirection);
-      NT_CORE_TRACE("");
-      /*m_rightDirection = Neat::rotate(orientation, Vector3F(-1, 0, 0));
-      m_upDirection = Neat::rotate(orientation, Vector3F(0, -1, 0));*/
    }
 }

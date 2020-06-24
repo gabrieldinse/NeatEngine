@@ -3,7 +3,7 @@
 #include "Neat/ECS/System.h"
 #include "Neat/ECS/Entity.h"
 #include "Neat/ECS/Components.h"
-#include "Neat/Graphics/Camera.h"
+#include "Neat/Graphics/Cameras/Camera.h"
 #include "Neat/Events/Event.h"
 #include "Neat/Events/EventManager.h"
 #include "Neat/Math/Vector.h"

@@ -26,8 +26,7 @@ namespace Neat
       struct OrthographicCameraProperties
       {
          OrthographicCameraProperties(float left = 0.0f, float right = 0.0f,
-            float bottom = 0.0f, float top = 0.0f, float near = 0.0f,
-            float far = 0.0f)
+            float bottom = 0.0f, float top = 0.0f)
             : left(left), right(right), bottom(bottom), top(top) {}
 
          float left;
@@ -40,7 +39,7 @@ namespace Neat
       struct PerspectiveCameraProperties
       {
          PerspectiveCameraProperties(float fieldOfView = 0.0f,
-            float aspectRatio = 0.0f, float near = 0.0f, float far = 0.0f)
+            float aspectRatio = 0.0f)
           : fieldOfView(fieldOfView), aspectRatio(aspectRatio) {}
 
          float fieldOfView;
@@ -54,15 +53,13 @@ namespace Neat
          >;
 
    public:
-      Camera(const Vector3F& position = { 0.0f, 0.0f, 15.0f },
-         const Vector3F& upDirection = { 0.0f, 1.0f, 0.0f }, float pitch = 0.0f,
-         float yaw = 0.0f, float roll = 0.0f);
+      Camera(const Vector3F& position = { 0.0f, 0.0f, 1.0f },
+         const Vector3F& upDirection = { 0.0f, 1.0f, 0.0f });
 
       Camera& setOrthographic(float left, float right, float bottom, float top,
-         float near = -100.0f, float far = 100.0f);
-      Camera& setPerspective(float fov = 45.0f,
-         float aspectRatio = 16.0f / 9.0f, float near = 0.1f,
-         float far = 1000.f);
+         float near, float far);
+      Camera& setOrthographic(float left, float right, float bottom, float top);
+      Camera& setPerspective(float fov, float aspectRatio, float near, float far);
 
       const Vector3F& getPosition() const { return m_position; }
       float getPitch() const { return m_pitch; }
@@ -78,11 +75,13 @@ namespace Neat
       void setX(float x) { m_position.x = x; }
       void setY(float y) { m_position.y = y; }
       void setZ(float z) { m_position.z = z; }
-      void setRotation(float pitch, float yaw, float roll);
+      void setRotation(float pitch, float yaw, float roll); 
       void setPitch(float pitch);
       void setYaw(float yaw);
       void setRoll(float roll);
       void setWorldUp(const Vector3F& worldUp) { m_worldUpDirection = worldUp; }
+      void setNear(float near) { m_near = near; }
+      void setFar(float far) { m_far = far; }
 
       void rotate(float pitch, float yaw, float roll);
       void rotatePitch(float pitch);
@@ -158,17 +157,17 @@ namespace Neat
       void updateOrientationVectors();
 
    private:
-      CameraType m_cameraType;
+      CameraType m_cameraType = CameraType::None;
       CameraData m_cameraData;
       Vector3F m_position;
       Vector3F m_worldUpDirection;
       Vector3F m_forwardDirection{ 0.0f };
       Vector3F m_rightDirection{ 0.0f };
       Vector3F m_upDirection{ 0.0f };
-      float m_yaw;
-      float m_pitch;
-      float m_roll;
-      float m_near = 0.0f;
-      float m_far = 0.0f;
+      float m_yaw = 0.0f;
+      float m_pitch = 0.0f;
+      float m_roll = 0.0f;
+      float m_near = -1.0f;
+      float m_far = 1.0f;
    };
 }
