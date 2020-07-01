@@ -5,6 +5,7 @@
 #include "Neat/Math/Quaternion.h"
 #include "Neat/Math/Transform.h"
 #include "Neat/Math/Projection.h"
+#include "Neat/Math/EulerAngles.h"
 
 
 namespace Neat
@@ -20,7 +21,7 @@ namespace Neat
    Camera& Camera::setOrthographic(float left, float right, float bottom,
       float top, float near, float far)
    {
-      m_cameraData = OrthographicCameraProperties(
+      m_cameraData = OrthographicProps(
          left, right, bottom, top);
       m_near = near;
       m_far = far;
@@ -32,7 +33,7 @@ namespace Neat
    Camera& Camera::setOrthographic(float left, float right, float bottom,
       float top)
    {
-      m_cameraData = OrthographicCameraProperties(
+      m_cameraData = OrthographicProps(
          left, right, bottom, top);
       m_cameraType = CameraType::Orthographic;
 
@@ -42,13 +43,14 @@ namespace Neat
    Camera& Camera::setPerspective(float fov, float aspectRatio, float near,
       float far)
    {
-      m_cameraData = PerspectiveCameraProperties(fov, aspectRatio);
+      m_cameraData = PerspectiveProps(fov, aspectRatio);
       m_near = near;
       m_far = far;
       m_cameraType = CameraType::Perspective;
 
       return *this;
    }
+
 
    void Camera::setRotation(float pitch, float yaw, float roll)
    {
@@ -229,8 +231,9 @@ namespace Neat
    {
       auto orientation = QuaternionF::fromEulerAngles(
          radians(m_pitch), radians(m_yaw), radians(m_roll));
+      
       m_forwardDirection = Neat::rotate(orientation, Vector3F(0, 0, -1));
-      m_rightDirection = cross(m_forwardDirection, m_worldUpDirection);
-      m_upDirection = cross(m_rightDirection, m_forwardDirection);
+      m_rightDirection = Neat::rotate(orientation, Vector3F(1, 0, 0));
+      m_upDirection = Neat::rotate(orientation, Vector3F(0, 1, 0));
    }
 }

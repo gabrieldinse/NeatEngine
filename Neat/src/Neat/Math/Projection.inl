@@ -35,7 +35,6 @@ namespace Neat
       return result;
    }
 
-
    template <typename T>
    Matrix<4, 4, T> lookAtRH(const Vector<3, T>& eye,
       const Vector<3, T>& target, const Vector<3, T>& upDirection)

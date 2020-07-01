@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Neat/Graphics/RenderCommand.h"
-#include "Neat/Graphics/Camera.h"
+#include "Neat/Graphics/Cameras/Camera.h"
 #include "Neat/Graphics/ShaderProgram.h"
 
 

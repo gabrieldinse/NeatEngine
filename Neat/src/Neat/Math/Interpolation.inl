@@ -66,16 +66,18 @@ namespace Neat
    }
 
    template <typename T, typename U>
-   constexpr Quaternion<T> lerp(const Quaternion<T>& a, const Quaternion<T>& b, const U& t)
+   constexpr Quaternion<T> lerp(const Quaternion<T>& a,
+      const Quaternion<T>& b, const U& t)
    {
       if (t < zero<T> || t > one<T>)
          throw QuaternionLerpStepError();
 
-      return a * (one<T> -static_cast<T>(t)) + b * static_cast<T>(t);   
+      return a * (one<T> - static_cast<T>(t)) + b * static_cast<T>(t);
    }
 
    template <typename T, typename U>
-   constexpr Quaternion<T> slerp(const Quaternion<T>& a, const Quaternion<T>& b, const U& t)
+   constexpr Quaternion<T> slerp(const Quaternion<T>& a,
+      const Quaternion<T>& b, const U& t)
    {
       T cos_theta = dot(x, y);
       Quaternion<T> c(b);
@@ -91,13 +93,13 @@ namespace Neat
 
       // Performs linear interpolation when cos_theta is close to 1 to avoid
       // sin(angle) to become a division by 0
-      if (cos_theta > one<T> -epsilon<T>)
+      if (cos_theta > one<T> - epsilon<T>)
          return Quaternion<T>(mix(a.w, b.w), mix(a.v, b.v));
 
       T angle = acos(cos_theta);
 
       return
-         (sin((one<T> -static_cast<T>(t)) * angle) * a
+         (sin((one<T> - static_cast<T>(t)) * angle) * a
             + sin(static_cast<T>(t) * angle) * c) / sin(angle);
    }
 }

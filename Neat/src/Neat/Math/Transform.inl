@@ -118,6 +118,45 @@ namespace Neat
    }
 
    template <typename T>
+   inline Matrix<4, 4, T> rotateX(const T& angleRadians)
+   {
+      T cos_x = cos(angleRadians);
+      T sin_x = sin(angleRadians);
+
+      return Matrix<4, 4, T>(
+         one<T>, zero<T>, zero<T>, zero<T>,
+         zero<T>, cos_x, -sin_x, zero<T>,
+         zero<T>, sin_x, cos_x, zero<T>,
+         zero<T>, zero<T>, zero<T>, one<T>);
+   }
+
+   template <typename T>
+   inline Matrix<4, 4, T> rotateY(const T& angleRadians)
+   {
+      T cos_y = cos(angleRadians);
+      T sin_y = sin(angleRadians);
+
+      return Matrix<4, 4, T>(
+         cos_y, zero<T>, sin_y, zero<T>,
+         zero<T>, one<T>, zero<T>, zero<T>,
+         -sin_y, zero<T>, cos_y, zero<T>,
+         zero<T>, zero<T>, zero<T>, one<T>);
+   }
+
+   template <typename T>
+   inline Matrix<4, 4, T> rotateZ(const T& angleRadians)
+   {
+      T cos_z = cos(angleRadians);
+      T sin_z = sin(angleRadians);
+
+      return Matrix<4, 4, T>(
+         cos_z, -sin_z, zero<T>, zero<T>,
+         sin_z, cos_z, zero<T>, zero<T>,
+         zero<T>, zero<T>, one<T>, zero<T>,
+         zero<T>, zero<T>, zero<T>, one<T>);
+   }
+
+   template <typename T>
    inline Matrix<4, 4, T> scale(const Vector<3, T>& v)
    {
       return Matrix<4, 4, T>(

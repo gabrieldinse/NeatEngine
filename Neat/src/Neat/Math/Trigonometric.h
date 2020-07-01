@@ -63,6 +63,9 @@ namespace Neat
    template <typename T>
    inline T atanh(T value);
 
+   template <typename T>
+   inline T atan2(T y, T x);
+
 
    // Vector
    template <UInt32 N, typename T>
@@ -100,6 +103,9 @@ namespace Neat
 
    template <UInt32 N, typename T>
    inline Vector<N, T> atanh(const Vector<N, T>& v);
+
+   template <UInt32 N, typename T>
+   inline Vector<N, T> atan2(const Vector<N, T>& vy, const Vector<N, T>& vx);
 }
 
 #include "Neat/Math/Trigonometric.inl"

@@ -189,6 +189,20 @@ namespace Neat
    }
 
 
+   // Member converters
+   template<typename T>
+   inline constexpr Matrix<3, 3, T> Quaternion<T>::toMatrix3() const
+   {
+      return Matrix3Cast(*this);
+   }
+
+   template<typename T>
+   inline constexpr Matrix<4, 4, T> Quaternion<T>::toMatrix4() const
+   {
+      return Matrix4Cast(*this);
+   }
+
+
    // Assignment operators
    template <typename T>
    template <typename U>

@@ -6,15 +6,6 @@
 namespace Neat
 {
    template <typename T>
-   inline Matrix<4, 4, T> eulerAnglesX(const T& angleX);
-
-   template <typename T>
-   inline Matrix<4, 4, T> eulerAnglesY(const T& angle);
-
-   template <typename T>
-   inline Matrix<4, 4, T> eulerAnglesZ(const T& angleZ);
-
-   template <typename T>
    inline Matrix<4, 4, T> eulerAnglesXYZ(const T& angle1, const T& angle2,
       const T& angle3);
 
@@ -62,9 +53,59 @@ namespace Neat
    inline Matrix<4, 4, T> eulerAnglesZXY(const T& angle1, const T& angle2,
       const T& angle3);
 
+
    template <typename T>
    inline Matrix<4, 4, T> yawPitchRoll(const T& yaw, const T& pitch,
       const T& roll);
+
+
+   template<typename T>
+   inline void extractEulerAnglesXYZ(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesYXZ(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesXZX(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesXYX(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesYXY(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesYZY(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesZYZ(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesZXZ(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesXZY(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesYZX(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesZYX(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
+
+   template <typename T>
+   inline void extractEulerAnglesZXY(Matrix<4, 4, T> const& m, T& angle1,
+      T& angle2, T& angle3);
 }
 
 #include "Neat/Math/EulerAngles.inl"

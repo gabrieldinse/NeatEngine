@@ -6,9 +6,6 @@
 #include "Neat/Math/Vector.h"
 #include "Neat/Math/Projection.h"
 
-#undef near
-#undef far
-
 
 namespace Neat
 {
@@ -23,9 +20,9 @@ namespace Neat
       };
 
 
-      struct OrthographicCameraProperties
+      struct OrthographicProps
       {
-         OrthographicCameraProperties(float left = 0.0f, float right = 0.0f,
+         OrthographicProps(float left = 0.0f, float right = 0.0f,
             float bottom = 0.0f, float top = 0.0f)
             : left(left), right(right), bottom(bottom), top(top) {}
 
@@ -36,21 +33,15 @@ namespace Neat
       };
 
 
-      struct PerspectiveCameraProperties
+      struct PerspectiveProps
       {
-         PerspectiveCameraProperties(float fieldOfView = 0.0f,
+         PerspectiveProps(float fieldOfView = 0.0f,
             float aspectRatio = 0.0f)
           : fieldOfView(fieldOfView), aspectRatio(aspectRatio) {}
 
          float fieldOfView;
          float aspectRatio;
       };
-
-      using CameraData =
-         std::variant<
-         OrthographicCameraProperties,
-         PerspectiveCameraProperties
-         >;
 
    public:
       Camera(const Vector3F& position = { 0.0f, 0.0f, 1.0f },
@@ -123,24 +114,24 @@ namespace Neat
       void setTop(float top);
 
    private:
-      const OrthographicCameraProperties& getOrthographicData() const
+      const OrthographicProps& getOrthographicData() const
       {
-         return std::get<OrthographicCameraProperties>(m_cameraData);
+         return std::get<OrthographicProps>(m_cameraData);
       }
 
-      OrthographicCameraProperties& getOrthographicData()
+      OrthographicProps& getOrthographicData()
       {
-         return std::get<OrthographicCameraProperties>(m_cameraData);
+         return std::get<OrthographicProps>(m_cameraData);
       }
 
-      const PerspectiveCameraProperties& getPerspectiveData() const
+      const PerspectiveProps& getPerspectiveData() const
       {
-         return std::get<PerspectiveCameraProperties>(m_cameraData);
+         return std::get<PerspectiveProps>(m_cameraData);
       }
 
-      PerspectiveCameraProperties& getPerspectiveData()
+      PerspectiveProps& getPerspectiveData()
       {
-         return std::get<PerspectiveCameraProperties>(m_cameraData);
+         return std::get<PerspectiveProps>(m_cameraData);
       }
 
 
@@ -158,7 +149,7 @@ namespace Neat
 
    private:
       CameraType m_cameraType = CameraType::None;
-      CameraData m_cameraData;
+      std::variant<OrthographicProps, PerspectiveProps> m_cameraData;
       Vector3F m_position;
       Vector3F m_worldUpDirection;
       Vector3F m_forwardDirection{ 0.0f };

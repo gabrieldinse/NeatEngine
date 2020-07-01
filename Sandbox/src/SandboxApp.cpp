@@ -38,9 +38,9 @@ public:
       //NT_TRACE(glm::to_string(glm::pow(q2, 0.5f)));
       //NT_ASSERT(false, "");
 
-      auto camera_controller_system = 
+      auto camera_controller_system =
          systems.addSystem<Neat::Camera3DControllerSystem>(
-            (float)getWindow().getWidth() / (float)getWindow().getHeight());
+            getWindow().getAspectRatio());
       systems.addSystem<Neat::Render2DSystem>(
          camera_controller_system->getCamera());
       systems.init();

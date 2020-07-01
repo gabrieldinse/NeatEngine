@@ -22,6 +22,15 @@ namespace Neat
       const Vector<3, T>& rotationAxis);
 
    template <typename T>
+   inline Matrix<4, 4, T> rotateX(const T& angleRadians);
+
+   template <typename T>
+   inline Matrix<4, 4, T> rotateY(const T& angleRadians);
+
+   template <typename T>
+   inline Matrix<4, 4, T> rotateZ(const T& angleRadians);
+
+   template <typename T>
    Matrix<4, 4, T> scale(const Vector<3, T>& v);
 
    template <typename T>

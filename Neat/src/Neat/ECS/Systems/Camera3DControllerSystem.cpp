@@ -25,49 +25,40 @@ namespace Neat
       eventManager.addListener<WindowResizeEvent>(*this);
    }
 
-   void Camera3DControllerSystem::update(
-      EntityManager& entityManager, EventManager& eventManager,
-      DeltaTime deltaTime)
+   void Camera3DControllerSystem::update(EntityManager& entityManager,
+      EventManager& eventManager, DeltaTime deltaTime)
    {
-      if (!((Input::isKeyPressed(KeyCode::LeftControl) ||
-         Input::isKeyPressed(KeyCode::RightControl)) &&
-         Input::isMouseButtonPressed(MouseCode::ButtonLeft)))
-      {
-         auto distance = (float)(m_translationSpeed * deltaTime);
-         if (Input::isKeyPressed(KeyCode::W))
-            m_camera.moveForward(distance);
+      auto distance = (float)(m_translationSpeed * deltaTime);
+      if (Input::isKeyPressed(KeyCode::W))
+         m_camera.moveForward(distance);
 
-         if (Input::isKeyPressed(KeyCode::S))
-            m_camera.moveBackward(distance );
+      if (Input::isKeyPressed(KeyCode::S))
+         m_camera.moveBackward(distance );
 
-         if (Input::isKeyPressed(KeyCode::D))
-            m_camera.moveRight(distance);
+      if (Input::isKeyPressed(KeyCode::D))
+         m_camera.moveRight(distance);
 
-         if (Input::isKeyPressed(KeyCode::A))
-            m_camera.moveLeft(distance);
+      if (Input::isKeyPressed(KeyCode::A))
+         m_camera.moveLeft(distance);
 
-         if (Input::isKeyPressed(KeyCode::Z))
-            m_camera.moveUp(distance);
+      if (Input::isKeyPressed(KeyCode::Z))
+         m_camera.moveUp(distance);
 
-         if (Input::isKeyPressed(KeyCode::X))
-            m_camera.moveDown(distance);
-      }
+      if (Input::isKeyPressed(KeyCode::X))
+         m_camera.moveDown(distance);
 
       if (m_rotationEnabled)
       {
-         float rotation = 0.0f;
+         auto rotation = (float)(m_rotationSpeed * deltaTime);
          if (Input::isKeyPressed(KeyCode::Q))
-            rotation += (float)(m_rotationSpeed * deltaTime);
+            m_camera.setRoll(wrap360(m_camera.getRoll() + rotation));
 
          if (Input::isKeyPressed(KeyCode::E))
-            rotation -= (float)(m_rotationSpeed * deltaTime);
-         
-         m_camera.setRoll(wrap360(rotation + m_camera.getRoll()));
+            m_camera.setRoll(wrap360(m_camera.getRoll() - rotation));
       }
    }
 
-   bool Camera3DControllerSystem::listenEvent(
-      const MouseScrolledEvent& event)
+   bool Camera3DControllerSystem::listenEvent(const MouseScrolledEvent& event)
    {
       auto fov = clamp(-event.yOffset + m_camera.getFieldOfView(), 1.0f, 60.0f);
       m_translationSpeed = fov * 0.5f;
@@ -76,8 +67,7 @@ namespace Neat
       return false;
    }
 
-   bool Camera3DControllerSystem::listenEvent(
-      const MouseMovedEvent& event)
+   bool Camera3DControllerSystem::listenEvent(const MouseMovedEvent& event)
    {
       if (m_firstMouse)
       {

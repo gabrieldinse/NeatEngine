@@ -110,6 +110,7 @@ namespace Neat
       glfwSetCursorPosCallback(m_impl->window.get(), mouseMoveCallback);
    }
 
+
    Int32 Window::getWidth() const
    {
       return m_impl->props.width;
@@ -119,6 +120,12 @@ namespace Neat
    {
       return m_impl->props.height;
    }
+
+   float Window::getAspectRatio() const
+   {
+      return (float)m_impl->props.width / (float)m_impl->props.height;
+   }
+
 
    void* Window::getNativeWindow() const
    {

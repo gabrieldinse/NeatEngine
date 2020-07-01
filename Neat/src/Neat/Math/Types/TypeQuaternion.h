@@ -66,6 +66,10 @@ namespace Neat
       static constexpr Quaternion<T> fromEulerAngles(T pitch, T yaw, T roll);
       static constexpr Quaternion<T> identity() { return Quaternion<T>(); }
 
+      // Member converters
+      constexpr Matrix<3, 3, T> toMatrix3() const;
+      constexpr Matrix<4, 4, T> toMatrix4() const;
+
       // Explicit conversion operators
       explicit operator Matrix<3, 3, T>() const;
       explicit operator Matrix<4, 4, T>() const;

@@ -1,7 +1,9 @@
 #include <cmath>
 
 #include "Neat/Math/Types/FunctorVector.h"
+#include "Neat/Math/Types/FunctorDoubleVector.h"
 #include "Neat/Math/Common.h"
+#include "Trigonometric.h"
 
 
 namespace Neat
@@ -144,6 +146,12 @@ namespace Neat
       return std::atanh(value);
    }
 
+   template<typename T>
+   T atan2(T y, T x)
+   {
+      return std::atan2(y, x);
+   }
+
 
    // Vector
    template <UInt32 N, typename T>
@@ -216,5 +224,11 @@ namespace Neat
    Vector<N, T> atanh(const Vector<N, T>& v)
    {
       return FunctorVector<Vector, N, T, T>::call(atanh, v);
+   }
+
+   template<UInt32 N, typename T>
+   Vector<N, T> atan2(const Vector<N, T>& vy, const Vector<N, T>& vx)
+   {
+      return FunctorDoubleVector<Vector, N, T, T>::call(atan2, vy, vx);
    }
 }

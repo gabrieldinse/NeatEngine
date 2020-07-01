@@ -8,6 +8,9 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 
+#undef near
+#undef far
+
 
 namespace Neat
 {

@@ -3,8 +3,9 @@
 
 namespace Neat
 {
-   Camera2D::Camera2D(float size, KeepAspect keepAspect)
-      : m_camera(Camera())
+   Camera2D::Camera2D(const Vector2F& position, float size,
+      KeepAspect keepAspect)
+      : m_camera(Vector3F(position, m_zPos))
       , m_size(size)
       , m_keepAspect(keepAspect)
    {

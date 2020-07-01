@@ -2,9 +2,6 @@
 
 #include "Neat/Math/Types/TypeMatrixMxN.h"
 
-#undef near
-#undef far
-
 
 namespace Neat
 {

@@ -22,8 +22,10 @@ namespace Neat
 
       void init(EventManager& eventManager);
 
-      Camera2D& getCamera() { return m_camera; }
-      const Camera2D& getCamera() const { return m_camera; }
+      Camera& getCamera() { return m_camera.getCamera(); }
+      const Camera& getCamera() const { return m_camera.getCamera(); }
+      Camera2D& getCamera2D() { return m_camera; }
+      const Camera2D& getCamera2D() const { return m_camera; }
 
       void update(EntityManager& entityManager,
          EventManager& eventManager, DeltaTime deltaTime);
@@ -38,7 +40,8 @@ namespace Neat
       float m_translationSpeed = 1.0f;
       float m_rotationSpeed = 90.0f;
       float m_aspectRatio;
-      Vector2F m_lastMousePosition;
+      Vector2F m_lastMousePosition{ 0.0f };
+      bool m_firstMouse = true;
       bool m_rotationEnabled;
    };
 }

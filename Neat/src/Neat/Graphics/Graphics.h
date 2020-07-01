@@ -5,4 +5,5 @@
 #include "Neat/Graphics/RenderCommand.h"
 #include "Neat/Graphics/Texture.h"
 #include "Neat/Graphics/SubTexture2D.h"
-#include "Neat/Graphics/Camera.h"
+#include "Neat/Graphics/Cameras/Camera.h"
+#include "Neat/Graphics/Cameras/Camera2D.h"

@@ -45,6 +45,7 @@ namespace Neat
 
       Int32 getWidth() const;
       Int32 getHeight() const;
+      float getAspectRatio() const;
 
       void* getNativeWindow() const;
 

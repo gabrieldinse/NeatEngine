@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Neat/Graphics/Cameras/Camera.h"
+#include "Neat/Core/Log.h"
 
 
 namespace Neat
@@ -10,15 +11,21 @@ namespace Neat
       Height, Width
    };
 
+
    class Camera2D
    {
    public:
-      Camera2D(float size, KeepAspect keepAspect = KeepAspect::Height);
+      Camera2D(const Vector2F& position, float size,
+         KeepAspect keepAspect = KeepAspect::Height);
+
+      Camera& getCamera() { return m_camera; }
+      const Camera& getCamera() const { return m_camera; }
 
       const Vector2F& getPosition() const { return Vector2F(m_camera.getPosition()); }
       float getRotation() const { return m_camera.getRoll(); }
       const Vector2F& getUpDirection() const { return Vector2F(m_camera.getUpDirection()); }
       const Vector2F& getRightDirection() const { return Vector2F(m_camera.getRightDirection()); }
+      float getSize() const { return m_size; }
       float getZoomLevel() const { return m_zoomLevel; }
       float getNear() const { return m_camera.getNear(); }
       float getFar() const { return m_camera.getFar(); }
@@ -51,10 +58,10 @@ namespace Neat
       void updateProjection();
 
    private:
+      float m_zPos = 0.0f; // TODO: check this value
+      float m_zoomLevel = 1.0f;
       Camera m_camera;
-      float m_zoomLevel;
-      float m_size = 0.0f;
-      float m_zPos = 0.0f;
+      float m_size;
       KeepAspect m_keepAspect = KeepAspect::Height;
    };
 }

@@ -67,8 +67,7 @@ namespace Neat
    {
    }
 
-   template <typename C>
-   void Renderer2D::beginScene(const C& camera)
+   void Renderer2D::beginScene(const Camera& camera)
    {
       s_data.textureShader->setCameraTransform(camera.getCameraTransform());
 
@@ -206,7 +205,7 @@ namespace Neat
 
       auto model_matrix =
          translate(Matrix4F(1.0f),position) *
-         rotate(radians(angleDegrees), { 0, 0, 1 }) *
+         rotateZ(radians(angleDegrees)) *
          scale(Vector3F(size.x, size.y, 1.0f));
 
       s_data.quadVextexDataBuffer.addQuad(model_matrix, color,
@@ -254,7 +253,7 @@ namespace Neat
 
       auto model_matrix =
          translate(position) *
-         rotate(radians(angleDegrees), { 0, 0, 1 }) *
+         rotateZ(radians(angleDegrees)) *
          scale(Vector3F(size.x, size.y, 1.0f));
 
       s_data.quadVextexDataBuffer.addQuad(model_matrix, tint,

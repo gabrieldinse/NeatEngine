@@ -4,7 +4,7 @@
 #include <array>
 
 #include "Neat/Core/Types.h"
-#include "Neat/Graphics/Camera.h"
+#include "Neat/Graphics/Cameras/Camera.h"
 #include "Neat/Graphics/Shaders.h"
 #include "Neat/Graphics/VertexArray.h"
 #include "Neat/Graphics/Texture.h"
@@ -18,8 +18,7 @@ namespace Neat
       static void init();
       static void shutdown();
 
-      template <typename C>
-      static void beginScene(const C& camera);
+      static void beginScene(const Camera& camera);
       static void endScene();
 
       // Primitives -----------------------------------------------------------
