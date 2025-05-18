@@ -81,7 +81,7 @@ namespace Neat
 
    template <typename T>
    inline Matrix<4, 4, T> eulerAnglesXYX(const T& angle1, const T& angle2,
-      const T& angle)
+      const T& angle3)
    {
       T c1 = cos(angle1);
       T s1 = sin(angle1);

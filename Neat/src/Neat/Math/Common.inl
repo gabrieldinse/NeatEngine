@@ -43,7 +43,7 @@ namespace Neat
    template <typename T>
    T fract(T value)
    {
-      return std::fract(value);
+      return value - floor(value);
    }
 
    template <typename T>

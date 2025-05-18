@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include "Neat/Graphics/Renderer2D.h"
 #include "Neat/Graphics/RenderCommand.h"
 #include "Neat/Graphics/ShaderDataType.h"

@@ -188,7 +188,7 @@ namespace Neat
       m_rows[1] = m[1];
       m_rows[2] = m[2];
 
-      return *this
+      return *this;
    }
 
 

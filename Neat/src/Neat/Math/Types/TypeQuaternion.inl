@@ -70,7 +70,7 @@ namespace Neat
       switch (biggest_index)
       {
          case 0:
-            return qua<T, Q>(
+            return Quaternion<T>(
                biggest_value,
                (m[1][2] - m[2][1]) * factor,
                (m[2][0] - m[0][2]) * factor,
@@ -78,7 +78,7 @@ namespace Neat
                );
 
          case 1:
-            return qua<T, Q>(
+            return Quaternion<T>(
                (m[1][2] - m[2][1]) * factor,
                biggest_value,
                (m[0][1] + m[1][0]) * factor,
@@ -86,14 +86,14 @@ namespace Neat
                );
 
          case 2:
-            return qua<T, Q>((m[2][0] - m[0][2]) * factor,
+            return Quaternion<T>((m[2][0] - m[0][2]) * factor,
                (m[0][1] + m[1][0]) * factor,
                biggest_value,
                (m[1][2] + m[2][1]) * factor
                );
 
          case 3:
-            return qua<T, Q>(
+            return Quaternion<T>(
                (m[0][1] - m[1][0]) * factor,
                (m[2][0] + m[0][2]) * factor,
                (m[1][2] + m[2][1]) * factor,
@@ -101,7 +101,6 @@ namespace Neat
                );
 
          default:
-            NT_CORE_ASSERT(false, "Sanity check.");
             return Quaternion<T>();
       }
    }

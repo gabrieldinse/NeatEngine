@@ -5,6 +5,7 @@
 #include "Neat/Math/Types/FunctorVector.h"
 #include "Neat/Math/Types/FunctorDoubleVector.h"
 #include "Neat/Math/Constants.h"
+#include "Neat/Core/Limits.h"
 
 
 namespace Neat

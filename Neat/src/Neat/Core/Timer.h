@@ -124,8 +124,8 @@ namespace Neat
       }
 
    private:
-      std::chrono::steady_clock::time_point m_startTicks;
-      std::chrono::steady_clock::time_point m_currentTicks;
+      std::chrono::high_resolution_clock::time_point m_startTicks;
+      std::chrono::high_resolution_clock::time_point m_currentTicks;
       bool m_started = false;
    };
 }

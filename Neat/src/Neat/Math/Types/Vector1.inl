@@ -143,7 +143,7 @@ namespace Neat
    inline constexpr Vector<1, T> operator+(const Vector<1, T>& va,
       const Vector<1, T>& vb)
    {
-      return Vector<1, T>(*this) += vb;
+      return Vector<1, T>(va) += vb;
    }
 
    template <typename T>

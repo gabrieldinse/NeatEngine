@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Neat/Core/Types.h"
+#include "Neat/Math/Constants.h"
 #include "Neat/Core/Exceptions.h"
 
 

@@ -44,8 +44,8 @@
    #error "Android is not supported!"
 
 #elif defined(__linux__)
+   /* Linux x64 */
    #define NT_PLATFORM_LINUX
-   #error "Linux is not supported!"
 #else
    /* Unknown compiler/platform */
    #error "Unknown platform!"

@@ -3,7 +3,7 @@
 #include "Neat/Core/Log.h"
 
 
-#ifdef NT_PLATFORM_WINDOWS
+#ifdef NT_PLATFORM_LINUX
 
 extern std::unique_ptr<Neat::Application> Neat::createApplication();
 

@@ -29,7 +29,7 @@ namespace Neat
          bool ignoreIfHandled = false)
       {
          auto event_connection = getEventConnection<E>();
-         auto connection_id = event_connection->addListener<E>(
+         auto connection_id = event_connection->template addListener<E>(
             listener, priority, ignoreIfHandled);
 
          BaseEventListener& base = listener;
@@ -48,7 +48,7 @@ namespace Neat
       void removeListener(Listener& listener)
       {
          BaseEventListener& base = listener;
-         Event<E>::Family family = Event<E>::getFamily();
+         auto family = Event<E>::getFamily();
 
          if (base.m_connectedEvents.find(family)
             == base.m_connectedEvents.end())
@@ -68,21 +68,21 @@ namespace Neat
       void publish(const E& event)
       {
          auto event_connection = getEventConnection<E>();
-         event_connection->publishEvent<E>(event);
+         event_connection->template publishEvent<E>(event);
       }
 
       template <typename E>
       void publish(std::unique_ptr<E> event)
       {
          auto event_connection = getEventConnection<E>();
-         event_connection->publishEvent<E>(event);
+         event_connection->template publishEvent<E>(event);
       }
 
       template <typename E, typename... Args>
       void publish(Args&&... args)
       {
          auto event_connection = getEventConnection<E>();
-         event_connection->publishEvent<E>(std::forward<Args>(args)...);
+         event_connection->template publishEvent<E>(std::forward<Args>(args)...);
       }
 
 
@@ -100,7 +100,7 @@ namespace Neat
       template <typename E>
       std::shared_ptr<EventToListenersConnection>& getEventConnection()
       {
-         Event<E>::Family family = Event<E>::getFamily();
+         auto family = Event<E>::getFamily();
 
          if (family >= m_eventsConnections.size())
             m_eventsConnections.resize(family + 1);

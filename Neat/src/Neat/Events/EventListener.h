@@ -153,7 +153,7 @@ namespace Neat
          std::pair<std::weak_ptr<EventToListenersConnection>, std::size_t>>;
 
    public:
-      BaseEventListener::~BaseEventListener()
+      ~BaseEventListener()
       {
          for (auto&& [family, connection_pair] : m_connectedEvents)
          {
@@ -163,7 +163,7 @@ namespace Neat
          }
       }
 
-      UInt32 BaseEventListener::getNumberOfConnectedSignals() const
+      UInt32 getNumberOfConnectedSignals() const
       {
          UInt32 count = 0;
          for (auto&& [family, connection_pair] : m_connectedEvents)

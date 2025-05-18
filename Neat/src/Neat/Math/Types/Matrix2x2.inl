@@ -121,7 +121,7 @@ namespace Neat
          ma[0][0] * mb[0][0] + ma[0][1] * mb[1][0],
          ma[0][0] * mb[0][1] + ma[0][1] * mb[1][1],
          ma[1][0] * mb[0][0] + ma[1][1] * mb[1][0],
-         ma[1][0] * mb[0][1] + ma[1][1] * mb[1][1],
+         ma[1][0] * mb[0][1] + ma[1][1] * mb[1][1]
          );
    }
 
@@ -172,7 +172,7 @@ namespace Neat
       m_rows[0] = m[0];
       m_rows[1] = m[1];
 
-      return *this
+      return *this;
    }
 
 

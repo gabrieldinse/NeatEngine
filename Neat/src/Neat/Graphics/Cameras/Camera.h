@@ -25,11 +25,6 @@ namespace Neat
          OrthographicProps(float left = 0.0f, float right = 0.0f,
             float bottom = 0.0f, float top = 0.0f)
             : left(left), right(right), bottom(bottom), top(top) {}
-
-         float left;
-         float right;
-         float bottom;
-         float top;
       };
 
 
@@ -38,9 +33,6 @@ namespace Neat
          PerspectiveProps(float fieldOfView = 0.0f,
             float aspectRatio = 0.0f)
           : fieldOfView(fieldOfView), aspectRatio(aspectRatio) {}
-
-         float fieldOfView;
-         float aspectRatio;
       };
 
    public:
@@ -149,7 +141,7 @@ namespace Neat
 
    private:
       CameraType m_cameraType = CameraType::None;
-      std::variant<OrthographicProps, PerspectiveProps> m_cameraData;
+      std::variant<OrthographicProps, PerspectiveProps> m_cameraData = OrthographicProps{}; // TODO review initialization and if variant is necessary
       Vector3F m_position;
       Vector3F m_worldUpDirection;
       Vector3F m_forwardDirection{ 0.0f };

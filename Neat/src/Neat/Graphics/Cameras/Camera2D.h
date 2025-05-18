@@ -21,10 +21,10 @@ namespace Neat
       Camera& getCamera() { return m_camera; }
       const Camera& getCamera() const { return m_camera; }
 
-      const Vector2F& getPosition() const { return Vector2F(m_camera.getPosition()); }
+      const Vector2F getPosition() const { return Vector2F(m_camera.getPosition()); }
       float getRotation() const { return m_camera.getRoll(); }
-      const Vector2F& getUpDirection() const { return Vector2F(m_camera.getUpDirection()); }
-      const Vector2F& getRightDirection() const { return Vector2F(m_camera.getRightDirection()); }
+      const Vector2F getUpDirection() const { return Vector2F(m_camera.getUpDirection()); }
+      const Vector2F getRightDirection() const { return Vector2F(m_camera.getRightDirection()); }
       float getSize() const { return m_size; }
       float getZoomLevel() const { return m_zoomLevel; }
       float getNear() const { return m_camera.getNear(); }
@@ -50,8 +50,8 @@ namespace Neat
       void moveRight(float distance) { m_camera.moveRight(distance); }
       void moveLeft(float distance) { m_camera.moveLeft(distance); }
 
-      Matrix4F getProjectionMatrix() const { m_camera.getProjectionMatrix(); }
-      Matrix4F getViewMatrix() const { m_camera.getViewMatrix(); }
+      Matrix4F getProjectionMatrix() const { return m_camera.getProjectionMatrix(); }
+      Matrix4F getViewMatrix() const { return m_camera.getViewMatrix(); }
       Matrix4F getCameraTransform() const { return m_camera.getCameraTransform(); }
 
    private:

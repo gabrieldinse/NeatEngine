@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <memory>
 
 #include "Neat/Core/Base.h"
 #include "Neat/Core/Types.h"

@@ -3,6 +3,8 @@
 bin/
 bin-int/
 VSConfigs/
+build
+.vscode/
 
 # Files
 *.user
