@@ -54,7 +54,8 @@
 
 
 // Enable/disable ImGui
-#define NT_IMGUI
+// TODO fix ImGui compilation and redefine flag
+//#define NT_IMGUI
 
 
 // Debugging
