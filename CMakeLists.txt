@@ -25,18 +25,16 @@ set(CMAKE_CONFIGURATION_TYPES "Debug;Release;Dist")
 add_subdirectory(Neat/vendor/GLFW)
 
 # GLAD (custom setup)
-set(GLAD_SOURCES Neat/vendor/Glad/src/glad.c)
-add_library(Glad STATIC ${GLAD_SOURCES})
+add_subdirectory(Neat/vendor/Glad)
+#set(GLAD_SOURCES Neat/vendor/Glad/src/glad.c)
+#add_library(Glad STATIC ${GLAD_SOURCES})
 target_include_directories(Glad PUBLIC Neat/vendor/Glad/include)
-target_compile_definitions(Glad PRIVATE GLAD_GL_IMPLEMENTATION)
+#target_compile_definitions(Glad PRIVATE GLAD_GL_IMPLEMENTATION)
 
 # ImGui (custom setup)
-#file(GLOB IMGUI_SOURCES
-#    Neat/vendor/ImGui/*.cpp
-#    Neat/vendor/ImGui/*.h
-#)
 file(GLOB IMGUI_SOURCES
-Neat/vendor/ImGui/imstb_truetype.h Neat/vendor/ImGui/imstb_textedit.h Neat/vendor/ImGui/imstb_rectpack.h Neat/vendor/ImGui/imgui.h Neat/vendor/ImGui/imgui.cpp Neat/vendor/ImGui/imgui_widgets.cpp Neat/vendor/ImGui/imgui_internal.h Neat/vendor/ImGui/imgui_draw.cpp Neat/vendor/ImGui/imgui_demo.cpp Neat/vendor/ImGui/imconfig.h
+    Neat/vendor/ImGui/*.cpp
+    Neat/vendor/ImGui/*.h
 )
 add_library(ImGui STATIC ${IMGUI_SOURCES})
 target_include_directories(ImGui PUBLIC Neat/vendor/ImGui)
