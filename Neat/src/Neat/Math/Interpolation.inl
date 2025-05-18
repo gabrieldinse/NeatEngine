@@ -50,7 +50,7 @@ namespace Neat
    template <typename T, typename U>
    constexpr Quaternion<T> mix(const Quaternion<T>& a, const Quaternion<T>& b, const U& t)
    {
-      T cos_theta = dot(x, y);
+      T cos_theta = dot(a, b);
 
       // Performs linear interpolation when cos_theta is close to 1 to avoid
       // sin(angle) to become a division by 0
@@ -79,7 +79,7 @@ namespace Neat
    constexpr Quaternion<T> slerp(const Quaternion<T>& a,
       const Quaternion<T>& b, const U& t)
    {
-      T cos_theta = dot(x, y);
+      T cos_theta = dot(a, b);
       Quaternion<T> c(b);
 
       // If cos_theta is negative, slerp will take the longest path

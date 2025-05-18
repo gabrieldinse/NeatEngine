@@ -6,7 +6,8 @@
 #include "Neat/Core/Log.h"
 #include "Neat/Core/Timer.h"
 #include "Neat/Events/Event.h"
-#include "Neat/ImGui/ImGuiRender.h"
+// TODO add back
+//#include "Neat/ImGui/ImGuiRender.h"
 #include "Neat/Graphics/Renderer.h"
 #include "Neat/Helper/FPSCounter.h"
 
@@ -29,14 +30,16 @@ namespace Neat
          *this, EventPriority::Highest, true);
 
       Renderer::init();
-      ImGuiRender::init();
+      // TODO add back
+      //ImGuiRender::init();
       Input::setWindow(*m_window);
    }
 
    Application::~Application()
    {
       Renderer::shutdown();
-      ImGuiRender::shutdown();
+      // TODO add back
+      //ImGuiRender::shutdown();
    }
 
    void Application::stop()

@@ -32,17 +32,17 @@ target_include_directories(Glad PUBLIC Neat/vendor/Glad/include)
 #target_compile_definitions(Glad PRIVATE GLAD_GL_IMPLEMENTATION)
 
 # ImGui (custom setup)
-file(GLOB IMGUI_SOURCES
-    Neat/vendor/ImGui/*.cpp
-    Neat/vendor/ImGui/*.h
-)
-add_library(ImGui STATIC ${IMGUI_SOURCES})
-target_include_directories(ImGui PUBLIC Neat/vendor/ImGui)
+#file(GLOB IMGUI_SOURCES
+#    Neat/vendor/ImGui/*.cpp
+#    Neat/vendor/ImGui/*.h
+#)
+#add_library(ImGui STATIC ${IMGUI_SOURCES})
+#target_include_directories(ImGui PUBLIC Neat/vendor/ImGui)
 
 #-------------------------------------------------------------------------------
 # Neat Library
 #-------------------------------------------------------------------------------
-file(GLOB_RECURSE NEAT_SOURCES
+file(GLOB_RECURSE ALL_SOURCES
     Neat/src/Neat/**.h
     Neat/src/Neat/**.hpp
     Neat/src/Neat/**.cpp
@@ -53,6 +53,13 @@ file(GLOB_RECURSE NEAT_SOURCES
     Neat/vendor/stb_image/**.h
     Neat/vendor/stb_image/**.cpp
 )
+
+# TODO remove this
+foreach(file ${ALL_SOURCES})
+    if(NOT file MATCHES ".*/ImGui/.*")
+        list(APPEND NEAT_SOURCES ${file})
+    endif()
+endforeach()
 
 if(WIN32)
     file(GLOB_RECURSE NEAT_PLATFORM_SOURCES
@@ -71,6 +78,7 @@ if(UNIX AND NOT APPLE)  # Linux
         Neat/src/Platform/Linux/**.hpp
         Neat/src/Platform/Linux/**.cpp
     )
+    add_definitions(-DGLFW_INCLUDE_NONE)
     list(APPEND NEAT_SOURCES ${LINUX_SOURCES})
 endif()
 
@@ -85,7 +93,8 @@ target_include_directories(Neat PUBLIC
     Neat/vendor/stb_image
 )
 
-target_link_libraries(Neat PRIVATE GLFW Glad ImGui)
+#target_link_libraries(Neat PRIVATE GLFW Glad ImGui)
+target_link_libraries(Neat PRIVATE glfw Glad)
 
 find_package(OpenGL REQUIRED)
 if(WIN32)

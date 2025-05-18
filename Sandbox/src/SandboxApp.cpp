@@ -3,13 +3,10 @@
 #include <Neat.h>
 #include <Neat/Core/Main.h>
 
-#include <ImGui/imgui.h>
+//#include <ImGui/imgui.h>
 
 #include "Sandbox2D.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtx/quaternion.hpp>
-#include <glm/gtx/string_cast.hpp>
 
 
 class Sandbox : public Neat::Application
@@ -76,21 +73,21 @@ public:
 
    virtual void imGuiRender() override
    {
-      ImGui::Begin("Settings");
+      //ImGui::Begin("Settings");
 
       auto stats = Neat::Renderer2D::getStats();
-      ImGui::Text("Renderer2D stats:");
-      ImGui::Text("Draw calls: %d", stats.drawCalls);
-      ImGui::Text("Quads: %d", stats.quadCount);
-      ImGui::Text("Indexes: %d", stats.getTotalIndexCount());
-      ImGui::Text("Vertexes: %d\n", stats.getTotalVertexCount());
+      //ImGui::Text("Renderer2D stats:");
+      //ImGui::Text("Draw calls: %d", stats.drawCalls);
+      //ImGui::Text("Quads: %d", stats.quadCount);
+      //ImGui::Text("Indexes: %d", stats.getTotalIndexCount());
+      //ImGui::Text("Vertexes: %d\n", stats.getTotalVertexCount());
 
       //ImGui::SliderInt("Number of columns", &this->numberOfColumns, 0, 500);
       //ImGui::SliderInt("Number of lines", &this->numberOfLines, 0, 500);
 
       //ImGui::ColorEdit4("Square Color", this->tint.dataPointer());
 
-      ImGui::End();
+      //ImGui::End();
    }
 
 private:

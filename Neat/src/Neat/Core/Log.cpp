@@ -11,7 +11,7 @@ namespace Neat
    void Log::init(const char* pattern)
    {
       spdlog::set_pattern(pattern);
-      Log::s_coreLogger = spdlog::stdout_color_mt("DINGAL");
+      Log::s_coreLogger = spdlog::stdout_color_mt("NEAT");
       Log::s_coreLogger->set_level(spdlog::level::trace);
       Log::s_clientLogger = spdlog::stdout_color_mt("APP");
       Log::s_clientLogger->set_level(spdlog::level::trace);
