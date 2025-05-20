@@ -144,3 +144,9 @@ set_target_properties(Neat Sandbox PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}
     RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
 )
+
+add_custom_command(TARGET Sandbox POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/Sandbox/assets
+    $<TARGET_FILE_DIR:Sandbox>/assets
+)

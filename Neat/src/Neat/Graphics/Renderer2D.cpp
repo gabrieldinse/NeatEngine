@@ -1,4 +1,6 @@
 #include <cstring>
+#include <unistd.h>
+#include <limits.h>
 
 #include "Neat/Graphics/Renderer2D.h"
 #include "Neat/Graphics/RenderCommand.h"
@@ -57,9 +59,8 @@ namespace Neat
       Int32 samplers[Renderer2DData::maxTextureSlots];
       for (std::size_t i = 0; i < Renderer2DData::maxTextureSlots; ++i)
          samplers[i] = (Int32)i;
-
       s_data.textureShader = std::make_shared<TextureShader>(
-         "assets/shader_source/texture.glsl");
+         "./assets/shader_source/texture.glsl");
       s_data.textureShader->setTextures(samplers, (Int32)sizeof(samplers));
 
       s_data.textureSlots[0] = s_data.whiteTexture;
