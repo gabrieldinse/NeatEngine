@@ -5,7 +5,8 @@
 
 #include <GLFW/glfw3.h>
 
-
+// TODO bring together Linux and Windows platforms into a base shared class, as
+// both right now have the same implementation
 namespace Neat
 {
    std::unique_ptr<Input::InputImpl> Input::s_data;
@@ -17,8 +18,6 @@ namespace Neat
 
       GLFWwindow* window;
    };
-
-   
 
    void Input::setWindow(Window& window)
    {

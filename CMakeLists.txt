@@ -26,23 +26,13 @@ add_subdirectory(Neat/vendor/GLFW)
 
 # GLAD (custom setup)
 add_subdirectory(Neat/vendor/Glad)
-#set(GLAD_SOURCES Neat/vendor/Glad/src/glad.c)
-#add_library(Glad STATIC ${GLAD_SOURCES})
 target_include_directories(Glad PUBLIC Neat/vendor/Glad/include)
-#target_compile_definitions(Glad PRIVATE GLAD_GL_IMPLEMENTATION)
-
-# ImGui (custom setup)
-#file(GLOB IMGUI_SOURCES
-#    Neat/vendor/ImGui/*.cpp
-#    Neat/vendor/ImGui/*.h
-#)
-#add_library(ImGui STATIC ${IMGUI_SOURCES})
-#target_include_directories(ImGui PUBLIC Neat/vendor/ImGui)
 
 #-------------------------------------------------------------------------------
 # Neat Library
 #-------------------------------------------------------------------------------
-file(GLOB_RECURSE ALL_SOURCES
+add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD)
+file(GLOB_RECURSE NEAT_SOURCES
     Neat/src/Neat/**.h
     Neat/src/Neat/**.hpp
     Neat/src/Neat/**.cpp
@@ -52,14 +42,14 @@ file(GLOB_RECURSE ALL_SOURCES
     Neat/src/*.cpp
     Neat/vendor/stb_image/**.h
     Neat/vendor/stb_image/**.cpp
+    Neat/vendor/ImGui/imgui_demo.cpp
+    Neat/vendor/ImGui/imgui_draw.cpp
+    Neat/vendor/ImGui/imgui_widgets.cpp
+    Neat/vendor/ImGui/imgui_tables.cpp
+    Neat/vendor/ImGui/imgui.cpp
+    Neat/vendor/ImGui/backends/imgui_impl_glfw.cpp
+    Neat/vendor/ImGui/backends/imgui_impl_opengl3.cpp
 )
-
-# TODO remove this
-foreach(file ${ALL_SOURCES})
-    if(NOT file MATCHES ".*/ImGui/.*")
-        list(APPEND NEAT_SOURCES ${file})
-    endif()
-endforeach()
 
 if(WIN32)
     file(GLOB_RECURSE NEAT_PLATFORM_SOURCES
@@ -68,7 +58,6 @@ if(WIN32)
         Neat/src/Platform/Windows/**.cpp
     )
     list(APPEND NEAT_SOURCES ${NEAT_PLATFORM_SOURCES})
-    add_definitions(-DGLFW_INCLUDE_NONE)
 endif()
 
 if(UNIX AND NOT APPLE)  # Linux
@@ -78,10 +67,10 @@ if(UNIX AND NOT APPLE)  # Linux
         Neat/src/Platform/Linux/**.hpp
         Neat/src/Platform/Linux/**.cpp
     )
-    add_definitions(-DGLFW_INCLUDE_NONE)
     list(APPEND NEAT_SOURCES ${LINUX_SOURCES})
 endif()
 
+add_definitions(-DGLFW_INCLUDE_NONE)
 add_library(Neat STATIC ${NEAT_SOURCES})
 
 target_include_directories(Neat PUBLIC
@@ -93,20 +82,19 @@ target_include_directories(Neat PUBLIC
     Neat/vendor/stb_image
 )
 
-#target_link_libraries(Neat PRIVATE GLFW Glad ImGui)
-target_link_libraries(Neat PRIVATE glfw Glad)
+target_link_libraries(Neat PUBLIC glfw Glad)
 
 find_package(OpenGL REQUIRED)
 if(WIN32)
-    target_link_libraries(Neat PRIVATE opengl32.lib)
+    target_link_libraries(Neat PUBLIC opengl32.lib)
 else()
-    target_link_libraries(Neat PRIVATE OpenGL::GL)
-    target_link_libraries(Neat PRIVATE pthread dl)
+    target_link_libraries(Neat PUBLIC OpenGL::GL)
+    target_link_libraries(Neat PUBLIC pthread dl)
     if(UNIX AND NOT APPLE)
         # Moved Linux-specific linking here
         find_package(X11 REQUIRED)
         find_package(Threads REQUIRED)
-        target_link_libraries(Neat PRIVATE 
+        target_link_libraries(Neat PUBLIC 
             X11::X11
             ${CMAKE_THREAD_LIBS_INIT}
         )
@@ -116,7 +104,7 @@ endif()
 # Configuration settings
 target_compile_definitions(Neat
     PRIVATE
-    $<$<CONFIG:Debug>:NT_DEBUG>
+    $<$<CONFIG:Debug>:NT_DEBUG;NT_IMGUI>
     $<$<CONFIG:Release>:NT_RELEASE>
     $<$<CONFIG:Dist>:NT_DIST>
 )
@@ -145,6 +133,8 @@ set_target_properties(Neat Sandbox PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
 )
 
+# This was necessary when compiling on Linux for Renderer2D. On Windows, the
+# path was found for some reason
 add_custom_command(TARGET Sandbox POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/Sandbox/assets

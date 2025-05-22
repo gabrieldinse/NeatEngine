@@ -1,12 +1,13 @@
 #include "Neat/Core/Application.h"
 #include "Neat/ImGui/ImGuiRender.h"
 
-#include <imgui.h> // need to be before the next two includes
-#include "examples/imgui_impl_opengl3.h"
-#include "examples/imgui_impl_glfw.h"
 
-#include <GLFW/glfw3.h>
+#include <imgui.h> // need to be before the next two includes
+#include "backends/imgui_impl_opengl3.h"
+#include "backends/imgui_impl_glfw.h"
+
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 
 namespace Neat
@@ -21,6 +22,7 @@ namespace Neat
       io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;        // Enable Gamepad Controls
       io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
       io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+      // TODO check these flags
       //io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
       //io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
