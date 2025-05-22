@@ -25,7 +25,7 @@ namespace Neat
       static float getMouseY();
 
    private:
-      static std::unique_ptr<InputImpl> s_data;
+      static std::unique_ptr<InputImpl> s_impl;
    };
    
 }

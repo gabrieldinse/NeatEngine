@@ -5,11 +5,9 @@
 
 #include <GLFW/glfw3.h>
 
-// TODO bring together Linux and Windows platforms into a base shared class, as
-// both right now have the same implementation
 namespace Neat
 {
-   std::unique_ptr<Input::InputImpl> Input::s_data;
+   std::unique_ptr<Input::InputImpl> Input::s_impl;
 
 
    struct Input::InputImpl
@@ -21,20 +19,20 @@ namespace Neat
 
    void Input::setWindow(Window& window)
    {
-      s_data = std::make_unique<InputImpl>(
+      s_impl = std::make_unique<InputImpl>(
          static_cast<GLFWwindow*>(window.getNativeWindow()));
    }
 
    bool Input::isKeyPressed(KeyCode key)
    {
-      auto state = glfwGetKey(s_data->window, static_cast<Int32>(key));
+      auto state = glfwGetKey(s_impl->window, static_cast<Int32>(key));
 
       return (state == GLFW_PRESS || state == GLFW_REPEAT);
    }
 
    bool Input::isMouseButtonPressed(MouseCode button)
    {
-      auto state = glfwGetMouseButton(s_data->window, static_cast<Int32>(button));
+      auto state = glfwGetMouseButton(s_impl->window, static_cast<Int32>(button));
 
       return (state == GLFW_PRESS);
    }
@@ -42,7 +40,7 @@ namespace Neat
    Vector2F Input::getMousePosition()
    {
       double xPos, yPos;
-      glfwGetCursorPos(s_data->window, &xPos, &yPos);
+      glfwGetCursorPos(s_impl->window, &xPos, &yPos);
 
       return { (float)xPos, (float)yPos };
    }

@@ -51,15 +51,6 @@ file(GLOB_RECURSE NEAT_SOURCES
     Neat/vendor/ImGui/backends/imgui_impl_opengl3.cpp
 )
 
-if(WIN32)
-    file(GLOB_RECURSE NEAT_PLATFORM_SOURCES
-        Neat/src/Platform/Windows/**.h
-        Neat/src/Platform/Windows/**.hpp
-        Neat/src/Platform/Windows/**.cpp
-    )
-    list(APPEND NEAT_SOURCES ${NEAT_PLATFORM_SOURCES})
-endif()
-
 if(UNIX AND NOT APPLE)  # Linux
     # Add Linux platform sources
     file(GLOB_RECURSE LINUX_SOURCES

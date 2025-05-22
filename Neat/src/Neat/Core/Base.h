@@ -53,11 +53,6 @@
 #endif // End of platform detection
 
 
-// Enable/disable ImGui
-// TODO fix ImGui compilation and redefine flag
-//#define NT_IMGUI
-
-
 // Debugging
 #ifdef NT_DEBUG
    #define NT_ENABLE_ASSERTS
