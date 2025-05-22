@@ -1,4 +1,4 @@
-#include "Neat/Graphics/RenderCommand.h"
+#include "Neat/Graphics/RenderCommand.hpp"
 
 #include <glad/glad.h>
 

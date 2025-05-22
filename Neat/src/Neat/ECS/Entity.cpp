@@ -1,5 +1,5 @@
-#include "Neat/Core/Exceptions.h"
-#include "Neat/ECS/Entity.h"
+#include "Neat/Core/Exceptions.hpp"
+#include "Neat/ECS/Entity.hpp"
 
 
 namespace Neat

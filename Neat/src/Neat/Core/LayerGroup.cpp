@@ -1,5 +1,5 @@
-#include "Neat/Core/LayerGroup.h"
-#include "Neat/Core/Log.h"
+#include "Neat/Core/LayerGroup.hpp"
+#include "Neat/Core/Log.hpp"
 
 
 namespace Neat

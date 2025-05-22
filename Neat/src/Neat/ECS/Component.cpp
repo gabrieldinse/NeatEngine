@@ -1,4 +1,4 @@
-#include "Neat/ECS/Component.h"
+#include "Neat/ECS/Component.hpp"
 
 
 namespace Neat

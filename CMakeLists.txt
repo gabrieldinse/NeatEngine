@@ -33,12 +33,7 @@ target_include_directories(Glad PUBLIC Neat/vendor/Glad/include)
 #-------------------------------------------------------------------------------
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD)
 file(GLOB_RECURSE NEAT_SOURCES
-    Neat/src/Neat/**.h
-    Neat/src/Neat/**.hpp
     Neat/src/Neat/**.cpp
-    Neat/src/Neat/**.inl
-    Neat/src/*.h
-    Neat/src/*.hpp
     Neat/src/*.cpp
     Neat/vendor/stb_image/**.h
     Neat/vendor/stb_image/**.cpp
@@ -54,7 +49,6 @@ file(GLOB_RECURSE NEAT_SOURCES
 if(UNIX AND NOT APPLE)  # Linux
     # Add Linux platform sources
     file(GLOB_RECURSE LINUX_SOURCES
-        Neat/src/Platform/Linux/**.h
         Neat/src/Platform/Linux/**.hpp
         Neat/src/Platform/Linux/**.cpp
     )

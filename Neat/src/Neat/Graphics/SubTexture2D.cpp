@@ -1,4 +1,4 @@
-#include "Neat/Graphics/SubTexture2D.h"
+#include "Neat/Graphics/SubTexture2D.hpp"
 
 
 namespace Neat

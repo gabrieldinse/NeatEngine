@@ -1,7 +1,7 @@
 #include <memory>
 
-#include "Neat/Core/Input.h"
-#include "Neat/Core/Application.h"
+#include "Neat/Core/Input.hpp"
+#include "Neat/Core/Application.hpp"
 
 #include <GLFW/glfw3.h>
 

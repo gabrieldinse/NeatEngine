@@ -1,5 +1,5 @@
-#include "Neat/Helper/FPSCounter.h"
-#include "Neat/Core/Log.h"
+#include "Neat/Helper/FPSCounter.hpp"
+#include "Neat/Core/Log.hpp"
 
 
 namespace Neat

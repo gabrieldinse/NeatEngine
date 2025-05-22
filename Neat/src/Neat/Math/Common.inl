@@ -1,10 +1,10 @@
 #include <cmath>
 #include <algorithm>
 
-#include "Neat/Math/Types/TypeVectorN.h"
-#include "Neat/Math/Types/FunctorVector.h"
-#include "Neat/Math/Types/FunctorDoubleVector.h"
-#include "Neat/Math/Types/FunctorTripleVector.h"
+#include "Neat/Math/Types/TypeVectorN.hpp"
+#include "Neat/Math/Types/FunctorVector.hpp"
+#include "Neat/Math/Types/FunctorDoubleVector.hpp"
+#include "Neat/Math/Types/FunctorTripleVector.hpp"
 
 
 namespace Neat

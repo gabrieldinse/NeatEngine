@@ -1,4 +1,4 @@
-#include "Neat/Math/Exponential.h"
+#include "Neat/Math/Exponential.hpp"
 
 
 namespace Neat

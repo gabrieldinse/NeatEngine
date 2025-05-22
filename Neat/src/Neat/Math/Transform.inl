@@ -1,8 +1,8 @@
 #include <cmath>
 
-#include "Neat/Math/Constants.h"
-#include "Neat/Math/Trigonometric.h"
-#include "Transform.h"
+#include "Neat/Math/Constants.hpp"
+#include "Neat/Math/Trigonometric.hpp"
+#include "Transform.hpp"
 
 
 namespace Neat

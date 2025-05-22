@@ -1,14 +1,14 @@
 #include <chrono>
 #include <thread>
 
-#include "Neat/Core/Application.h"
-#include "Neat/Core/Input.h"
-#include "Neat/Core/Log.h"
-#include "Neat/Core/Timer.h"
-#include "Neat/Events/Event.h"
-#include "Neat/ImGui/ImGuiRender.h"
-#include "Neat/Graphics/Renderer.h"
-#include "Neat/Helper/FPSCounter.h"
+#include "Neat/Core/Application.hpp"
+#include "Neat/Core/Input.hpp"
+#include "Neat/Core/Log.hpp"
+#include "Neat/Core/Timer.hpp"
+#include "Neat/Events/Event.hpp"
+#include "Neat/ImGui/ImGuiRender.hpp"
+#include "Neat/Graphics/Renderer.hpp"
+#include "Neat/Helper/FPSCounter.hpp"
 
 
 namespace Neat

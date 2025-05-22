@@ -1,11 +1,11 @@
 #include <cmath>
 
-#include "Neat/Math/Types/TypeVectorN.h"
-#include "Neat/Math/Types/TypeQuaternion.h"
-#include "Neat/Math/Types/FunctorVector.h"
-#include "Neat/Math/Types/FunctorDoubleVector.h"
-#include "Neat/Math/Constants.h"
-#include "Neat/Core/Limits.h"
+#include "Neat/Math/Types/TypeVectorN.hpp"
+#include "Neat/Math/Types/TypeQuaternion.hpp"
+#include "Neat/Math/Types/FunctorVector.hpp"
+#include "Neat/Math/Types/FunctorDoubleVector.hpp"
+#include "Neat/Math/Constants.hpp"
+#include "Neat/Core/Limits.hpp"
 
 
 namespace Neat

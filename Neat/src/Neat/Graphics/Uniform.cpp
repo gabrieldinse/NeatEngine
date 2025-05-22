@@ -1,6 +1,6 @@
-#include "Neat/Graphics/Uniform.h"
-#include "Neat/Graphics/ShaderProgram.h"
-#include "Neat/Core/Log.h"
+#include "Neat/Graphics/Uniform.hpp"
+#include "Neat/Graphics/ShaderProgram.hpp"
+#include "Neat/Core/Log.hpp"
 
 #include <glad/glad.h>
 

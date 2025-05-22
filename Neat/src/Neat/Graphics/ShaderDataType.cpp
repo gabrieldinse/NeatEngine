@@ -1,5 +1,5 @@
-#include "Neat/Graphics/ShaderDataType.h"
-#include "Neat/Core/Log.h"
+#include "Neat/Graphics/ShaderDataType.hpp"
+#include "Neat/Core/Log.hpp"
 
 #include <glad/glad.h>
 

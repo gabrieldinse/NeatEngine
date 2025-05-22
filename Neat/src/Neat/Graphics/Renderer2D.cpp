@@ -2,12 +2,12 @@
 #include <unistd.h>
 #include <limits.h>
 
-#include "Neat/Graphics/Renderer2D.h"
-#include "Neat/Graphics/RenderCommand.h"
-#include "Neat/Graphics/ShaderDataType.h"
-#include "Neat/Math/Transform.h"
-#include "Neat/Math/Vector.h"
-#include "Neat/Math/Trigonometric.h"
+#include "Neat/Graphics/Renderer2D.hpp"
+#include "Neat/Graphics/RenderCommand.hpp"
+#include "Neat/Graphics/ShaderDataType.hpp"
+#include "Neat/Math/Transform.hpp"
+#include "Neat/Math/Vector.hpp"
+#include "Neat/Math/Trigonometric.hpp"
 
 
 namespace Neat

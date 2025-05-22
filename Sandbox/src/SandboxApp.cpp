@@ -1,11 +1,11 @@
 #include <memory>
 
-#include <Neat.h>
-#include <Neat/Core/Main.h>
+#include <Neat.hpp>
+#include <Neat/Core/Main.hpp>
 
 //#include <ImGui/imgui.h>
 
-#include "Sandbox2D.h"
+#include "Sandbox2D.hpp"
 
 
 

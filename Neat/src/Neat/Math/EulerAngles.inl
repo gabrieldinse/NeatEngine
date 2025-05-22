@@ -1,5 +1,5 @@
-#include "Neat/Math/Constants.h"
-#include "Neat/Math/Trigonometric.h"
+#include "Neat/Math/Constants.hpp"
+#include "Neat/Math/Trigonometric.hpp"
 
 
 namespace Neat

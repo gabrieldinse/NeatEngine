@@ -1,7 +1,7 @@
 #include <chrono>
 #include <thread>
 
-#include "Sandbox2D.h"
+#include "Sandbox2D.hpp"
 
 
 //struct Component1 {};

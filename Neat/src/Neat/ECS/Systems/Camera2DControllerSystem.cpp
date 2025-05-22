@@ -1,6 +1,6 @@
-#include "Neat/Core/Application.h"
-#include "Neat/Core/Input.h"
-#include "Neat/ECS/Systems/Camera2DControllerSystem.h"
+#include "Neat/Core/Application.hpp"
+#include "Neat/Core/Input.hpp"
+#include "Neat/ECS/Systems/Camera2DControllerSystem.hpp"
 
 
 namespace Neat

@@ -1,4 +1,4 @@
-#include "Neat/Graphics/Cameras/Camera2D.h"
+#include "Neat/Graphics/Cameras/Camera2D.hpp"
 
 
 namespace Neat

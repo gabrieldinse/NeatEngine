@@ -1,4 +1,4 @@
-#include "Neat/Helper/MemoryPool.h"
+#include "Neat/Helper/MemoryPool.hpp"
 
 
 namespace Neat

@@ -1,11 +1,11 @@
 #include <cmath>
 
-#include "Neat/Core/Log.h"
-#include "Neat/Graphics/Cameras/Camera.h"
-#include "Neat/Math/Quaternion.h"
-#include "Neat/Math/Transform.h"
-#include "Neat/Math/Projection.h"
-#include "Neat/Math/EulerAngles.h"
+#include "Neat/Core/Log.hpp"
+#include "Neat/Graphics/Cameras/Camera.hpp"
+#include "Neat/Math/Quaternion.hpp"
+#include "Neat/Math/Transform.hpp"
+#include "Neat/Math/Projection.hpp"
+#include "Neat/Math/EulerAngles.hpp"
 
 
 namespace Neat

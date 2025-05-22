@@ -1,5 +1,5 @@
-#include "Neat/Graphics/Renderer.h"
-#include "Neat/Graphics/Renderer2D.h"
+#include "Neat/Graphics/Renderer.hpp"
+#include "Neat/Graphics/Renderer2D.hpp"
 
 
 namespace Neat

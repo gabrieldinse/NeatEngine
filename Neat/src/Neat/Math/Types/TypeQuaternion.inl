@@ -1,5 +1,5 @@
-#include "Neat/Math/Trigonometric.h"
-#include "TypeQuaternion.h"
+#include "Neat/Math/Trigonometric.hpp"
+#include "TypeQuaternion.hpp"
 
 
 namespace Neat

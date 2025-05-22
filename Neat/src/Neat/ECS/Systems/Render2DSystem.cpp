@@ -1,4 +1,4 @@
-#include "Neat/ECS/Systems/Render2DSystem.h"
+#include "Neat/ECS/Systems/Render2DSystem.hpp"
 
 
 namespace Neat

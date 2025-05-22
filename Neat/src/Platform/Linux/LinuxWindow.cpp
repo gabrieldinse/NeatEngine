@@ -1,7 +1,7 @@
-#include "Neat/Core/Window.h"
-#include "Neat/Core/Log.h"
-#include "Neat/Core/Application.h"
-#include "Neat/Events/Event.h"
+#include "Neat/Core/Window.hpp"
+#include "Neat/Core/Log.hpp"
+#include "Neat/Core/Application.hpp"
+#include "Neat/Events/Event.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

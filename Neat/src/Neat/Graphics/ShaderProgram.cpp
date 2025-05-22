@@ -6,9 +6,9 @@
 #include <cctype>
 #include <filesystem>
 
-#include "Neat/Core/Log.h"
-#include "Neat/Graphics/ShaderProgram.h"
-#include "Neat/Graphics/ShaderDataType.h"
+#include "Neat/Core/Log.hpp"
+#include "Neat/Graphics/ShaderProgram.hpp"
+#include "Neat/Graphics/ShaderDataType.hpp"
 
 #include <glad/glad.h>
 

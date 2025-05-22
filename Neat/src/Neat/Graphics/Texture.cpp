@@ -1,6 +1,6 @@
-#include "Neat/Graphics/Texture.h"
-#include "Neat/Graphics/Renderer.h"
-#include "Neat/Core/Log.h"
+#include "Neat/Graphics/Texture.hpp"
+#include "Neat/Graphics/Renderer.hpp"
+#include "Neat/Core/Log.hpp"
 
 #include <stb_image.h>
 #include <glad/glad.h>

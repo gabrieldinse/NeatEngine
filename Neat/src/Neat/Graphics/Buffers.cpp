@@ -1,4 +1,4 @@
-#include "Neat/Graphics/Buffers.h"
+#include "Neat/Graphics/Buffers.hpp"
 
 #include <glad/glad.h>
 

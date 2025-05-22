@@ -1,5 +1,5 @@
-#include "Neat/Core/Application.h"
-#include "Neat/ImGui/ImGuiRender.h"
+#include "Neat/Core/Application.hpp"
+#include "Neat/ImGui/ImGuiRender.hpp"
 
 
 #include <imgui.h> // need to be before the next two includes

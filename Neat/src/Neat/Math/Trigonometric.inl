@@ -1,9 +1,9 @@
 #include <cmath>
 
-#include "Neat/Math/Types/FunctorVector.h"
-#include "Neat/Math/Types/FunctorDoubleVector.h"
-#include "Neat/Math/Common.h"
-#include "Trigonometric.h"
+#include "Neat/Math/Types/FunctorVector.hpp"
+#include "Neat/Math/Types/FunctorDoubleVector.hpp"
+#include "Neat/Math/Common.hpp"
+#include "Trigonometric.hpp"
 
 
 namespace Neat

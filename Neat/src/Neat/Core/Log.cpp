@@ -1,4 +1,4 @@
-#include "Neat/Core/Log.h"
+#include "Neat/Core/Log.hpp"
 
 #include "spdlog/sinks/stdout_color_sinks.h"
 
