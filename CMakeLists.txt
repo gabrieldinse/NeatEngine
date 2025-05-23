@@ -1,11 +1,5 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.28)
 project(NeatProject)
-
-# Set OpenGL policy
-if(POLICY CMP0072)
-    cmake_policy(SET CMP0072 NEW)
-    set(OpenGL_GL_PREFERENCE GLVND)
-endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -105,7 +99,6 @@ file(GLOB_RECURSE SANDBOX_SOURCES
 
 add_executable(Sandbox ${SANDBOX_SOURCES})
 target_include_directories(Sandbox PRIVATE
-    Neat/vendor/spdlog/include
     Neat/src
     Neat/vendor
 )
