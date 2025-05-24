@@ -16,3 +16,4 @@ add_subdirectory(Neat/vendor/Glad)
 # Projects
 add_subdirectory(Neat)
 add_subdirectory(Sandbox)
+add_subdirectory(Tests)
