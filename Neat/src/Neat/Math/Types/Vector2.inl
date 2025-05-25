@@ -190,13 +190,13 @@ inline constexpr Vector<2, T> operator/(const Vector<2, T> &v,
 template <typename T>
 inline constexpr bool operator==(const Vector<2, T> &va,
                                  const Vector<2, T> &vb) {
-  return va.x == vb.x && va.y == vb.y;
+  return va.x == vb.x and va.y == vb.y;
 }
 
 template <typename T, UInt32 N>
 inline constexpr bool operator!=(const Vector<2, T> &va,
                                  const Vector<2, T> &vb) {
-  return !(va == vb);
+  return not (va == vb);
 }
 
 // Vector operations

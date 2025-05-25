@@ -24,7 +24,7 @@ public:
   void start() {
     m_startTicks = std::chrono::high_resolution_clock::now();
 
-    if (!m_started)
+    if (not m_started)
       m_started = true;
   }
 

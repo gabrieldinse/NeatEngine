@@ -45,7 +45,7 @@ public:
 
     auto &[event_connection, connection_id] = base.m_connectedEvents[family];
 
-    if (!event_connection.expired())
+    if (not event_connection.expired())
       event_connection.lock()->removeListener(connection_id);
 
     base.m_connectedEvents.erase(family);
@@ -83,7 +83,7 @@ private:
     if (family >= m_eventsConnections.size())
       m_eventsConnections.resize(family + 1);
 
-    if (!m_eventsConnections[family])
+    if (not m_eventsConnections[family])
       m_eventsConnections[family] =
           std::make_shared<EventToListenersConnection>();
 

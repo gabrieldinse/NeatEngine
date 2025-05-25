@@ -57,7 +57,7 @@ public:
             m_connectedListenersCallbacks.begin(),
             m_connectedListenersCallbacks.end(), priority,
             [](const EventCallbackElement &element, EventPriority priority) {
-              return !(element.priority < priority);
+              return not (element.priority < priority);
             }),
         callback_element);
 
@@ -101,8 +101,8 @@ private:
   void executeCallbacks(const void *event) {
     bool handled = false;
     for (auto &callback_element : m_connectedListenersCallbacks)
-      if (callback_element.callback != nullptr &&
-          (callback_element.ignoreIfHandled || !handled)) {
+      if (callback_element.callback != nullptr and
+          (callback_element.ignoreIfHandled or !handled)) {
         handled |= (*callback_element.callback)(event);
       }
   }
@@ -124,7 +124,7 @@ public:
   ~BaseEventListener() {
     for (auto &&[family, connection_pair] : m_connectedEvents) {
       auto &&[connection, connection_id] = connection_pair;
-      if (!connection.expired())
+      if (not connection.expired())
         connection.lock()->removeListener(connection_id);
     }
   }
@@ -133,7 +133,7 @@ public:
     UInt32 count = 0;
     for (auto &&[family, connection_pair] : m_connectedEvents) {
       auto &&[connection, connection_id] = connection_pair;
-      if (!connection.expired())
+      if (not connection.expired())
         ++count;
     }
 

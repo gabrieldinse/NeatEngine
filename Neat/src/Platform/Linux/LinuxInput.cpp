@@ -22,7 +22,7 @@ void Input::setWindow(Window &window) {
 bool Input::isKeyPressed(KeyCode key) {
   auto state = glfwGetKey(s_impl->window, static_cast<Int32>(key));
 
-  return (state == GLFW_PRESS || state == GLFW_REPEAT);
+  return (state == GLFW_PRESS or state == GLFW_REPEAT);
 }
 
 bool Input::isMouseButtonPressed(MouseCode button) {

@@ -186,7 +186,7 @@ UInt32 OpenGLTypeConverter::fromStringToShaderType(const std::string &type) {
   if (type == "vertex")
     return GL_VERTEX_SHADER;
 
-  if (type == "fragment" || type == "pixel")
+  if (type == "fragment" or type == "pixel")
     return GL_FRAGMENT_SHADER;
 
   NT_CORE_ASSERT(false, "Unkown shader type.");

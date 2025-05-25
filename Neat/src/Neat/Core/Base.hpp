@@ -13,7 +13,7 @@
 
 #endif
 
-#elif defined(__APPLE__) || defined(__MACH__)
+#elif defined(__APPLE__) or defined(__MACH__)
 #include <TargetConditionals.h>
 /* TARGET_OS_MAC exists on all the platforms
  * so we must check all of them (in this order)

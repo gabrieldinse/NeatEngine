@@ -46,7 +46,7 @@ public:
   }
 
   template <typename S> void update(DeltaTime deltaTime) {
-    if (!m_initialized)
+    if (not m_initialized)
       throw SystemManagerNotInitializedError();
 
     auto system = getSystem<S>();
@@ -54,7 +54,7 @@ public:
   }
 
   void updateAll(DeltaTime deltaTime) {
-    if (!m_initialized)
+    if (not m_initialized)
       throw SystemManagerNotInitializedError();
 
     for (auto &&[family, system] : m_systems)

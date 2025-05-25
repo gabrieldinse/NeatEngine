@@ -113,7 +113,7 @@ template <typename T> inline Quaternion<T> exp(const Quaternion<T> &q) {
 template <typename T>
 inline Quaternion<T> pow(const Quaternion<T> &q, T exponent) {
   // Raising to the power of 0 should return identity
-  if (exponent > -epsilon<T> && exponent < epsilon<T>)
+  if (exponent > -epsilon<T> and exponent < epsilon<T>)
     return Quaternion<T>::identity();
 
   T norm_q = norm(q);

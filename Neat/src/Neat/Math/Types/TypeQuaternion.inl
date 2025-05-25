@@ -332,13 +332,13 @@ inline constexpr Quaternion<T> operator/(const Quaternion<T> &q,
 template <typename T>
 inline constexpr bool operator==(const Quaternion<T> &qa,
                                  const Quaternion<T> &qb) {
-  return qa.x == qb.x && qa.y == qb.y && qa.z == qb.z && qa.w == qb.w;
+  return qa.x == qb.x and qa.y == qb.y and qa.z == qb.z and qa.w == qb.w;
 }
 
 template <typename T>
 inline constexpr bool operator!=(const Quaternion<T> &qa,
                                  const Quaternion<T> &qb) {
-  return !(qa == qb);
+  return not (qa == qb);
 }
 
 // Quaternion operations

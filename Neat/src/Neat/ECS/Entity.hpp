@@ -68,10 +68,10 @@ public:
   explicit operator bool() const { return isValid(); }
 
   bool operator==(const Entity &other) const {
-    return other.m_entityManager == m_entityManager && other.m_id == m_id;
+    return other.m_entityManager == m_entityManager and other.m_id == m_id;
   }
 
-  bool operator!=(const Entity &other) const { return !(other == *this); }
+  bool operator!=(const Entity &other) const { return not (other == *this); }
 
   bool operator<(const Entity &other) const { return other.m_id < m_id; }
 
@@ -145,11 +145,11 @@ public:
   void remove();
 
   bool operator==(const ComponentHandle<C> &other) const {
-    return m_entityManager == other.m_entityManager && m_id == other.m_id;
+    return m_entityManager == other.m_entityManager and m_id == other.m_id;
   }
 
   bool operator!=(const ComponentHandle<C> &other) const {
-    return !(*this == other);
+    return not (*this == other);
   }
 
 private:
@@ -266,8 +266,8 @@ public:
     }
 
     void next() {
-      while (m_pos < m_capacity &&
-             !((IterateOverAll && IsValidEntity()) || matchComponentMask())) {
+      while (m_pos < m_capacity and
+             not ((IterateOverAll and IsValidEntity()) or matchComponentMask())) {
         ++m_pos;
       }
 
@@ -284,7 +284,7 @@ public:
     }
 
     bool IsValidEntity() {
-      if (m_freeCursor < m_entityManager->m_freeEntityIds.size() &&
+      if (m_freeCursor < m_entityManager->m_freeEntityIds.size() and
           m_entityManager->m_freeEntityIds[m_freeCursor] == m_pos) {
         ++m_freeCursor;
         return false;
@@ -453,7 +453,7 @@ public:
   void reset();
 
   bool isValid(const Entity::Id &id) const {
-    return id.index() < m_entityIdsVersion.size() &&
+    return id.index() < m_entityIdsVersion.size() and
            m_entityIdsVersion[id.index()] == id.version();
   }
 
@@ -487,7 +487,7 @@ public:
 
     for (std::size_t i = 0; i < m_componentArrays.size(); ++i) {
       BaseMemoryPool *component_array = m_componentArrays[i];
-      if ((component_array != nullptr) && component_mask.test(i))
+      if ((component_array != nullptr) and component_mask.test(i))
         component_array->destroy(index);
     }
 
@@ -552,7 +552,7 @@ public:
 
     BaseMemoryPool *component_array = m_componentArrays[family];
 
-    if (component_array == nullptr ||
+    if (component_array == nullptr or
         !m_entityComponentMasks[id.index()][family])
       return false;
 
@@ -564,7 +564,7 @@ public:
   ComponentHandle<C> getComponent(const Entity::Id &id) {
     checkIsValid(id);
 
-    if (!hasComponent<C>(id))
+    if (not hasComponent<C>(id))
       return ComponentHandle<C>();
 
     return ComponentHandle<C>(this, id);
@@ -576,7 +576,7 @@ public:
   getComponent(const Entity::Id &id) const {
     checkIsValid(id);
 
-    if (!hasComponent<C>())
+    if (not hasComponent<C>())
       return ComponentHandle<C, const EntityManager>();
 
     return ComponentHandle<C, const EntityManager>(this, id);
@@ -739,7 +739,7 @@ private:
 
 // Entity methods ------------------------------------------------------- //
 inline bool Entity::isValid() const {
-  return m_entityManager != nullptr && m_entityManager->isValid(m_id);
+  return m_entityManager != nullptr and m_entityManager->isValid(m_id);
 }
 
 inline void Entity::checkIsValid() const {
@@ -786,7 +786,7 @@ inline ComponentHandle<C> Entity::replaceComponent(Args &&...args) {
 template <typename C> inline void Entity::removeComponent() {
   checkIsValid();
 
-  if (!hasComponent<C>())
+  if (not hasComponent<C>())
     throw ComponentNotPresentError();
 
   m_entityManager->removeComponent<C>(m_id);
@@ -858,7 +858,7 @@ inline ComponentHandle<C, EM>::operator bool() const {
 // ComponentHandle methods ---------------------------------------------- //
 template <typename C, typename EM>
 inline bool ComponentHandle<C, EM>::isValid() const {
-  return m_entityManager != nullptr && !m_entityManager->isValid(m_id) &&
+  return m_entityManager != nullptr and !m_entityManager->isValid(m_id) and
          m_entityManager->template hasComponent<C>(m_id);
 }
 
@@ -873,7 +873,7 @@ inline void ComponentHandle<C, EM>::checkIsValid() const {
     throw InvalidComponentError("Assigned Entity is invalid.\n" + e.msg());
   }
 
-  if (!m_entityManager->template hasComponent<C>(m_id))
+  if (not m_entityManager->template hasComponent<C>(m_id))
     throw InvalidComponentError();
 }
 

@@ -129,7 +129,7 @@ void windowResizeCallback(GLFWwindow *window, Int32 width, Int32 height) {
   impl.props.width = width;
   impl.props.height = height;
 
-  if (impl.props.width == 0 || impl.props.height == 0)
+  if (impl.props.width == 0 or impl.props.height == 0)
     impl.minimized = true;
   else
     impl.minimized = false;

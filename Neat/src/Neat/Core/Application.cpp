@@ -15,7 +15,7 @@ Application *Application::s_instance = nullptr;
 
 Application::Application() {
   // Check of there's another application running
-  NT_CORE_ASSERT(!s_instance, "Application already exists!");
+  NT_CORE_ASSERT(not s_instance, "Application already exists!");
   s_instance = this;
 
   m_window = std::make_unique<Window>(m_events);
@@ -82,7 +82,7 @@ bool Application::listenEvent(const WindowCloseEvent &event) {
 }
 
 bool Application::listenEvent(const WindowResizeEvent &event) {
-  if (!m_window->isMinimized())
+  if (not m_window->isMinimized())
     Renderer::onWindowResize(event.width, event.height);
 
   return false;
