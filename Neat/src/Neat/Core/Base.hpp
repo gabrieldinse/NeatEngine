@@ -1,59 +1,57 @@
 #pragma once
 
-
 // Platform detection
 #ifdef _WIN32
-   /* Windows x64/x86 */
-   #ifdef _WIN64
-	   /* Windows x64  */
-      #define NT_PLATFORM_WINDOWS
+/* Windows x64/x86 */
+#ifdef _WIN64
+/* Windows x64  */
+#define NT_PLATFORM_WINDOWS
 
-   #else
-	   /* Windows x86 */
-      #error "x86 Builds are not supported!"
+#else
+/* Windows x86 */
+#error "x86 Builds are not supported!"
 
-   #endif
+#endif
 
 #elif defined(__APPLE__) || defined(__MACH__)
-   #include <TargetConditionals.h>
-   /* TARGET_OS_MAC exists on all the platforms
-    * so we must check all of them (in this order)
-    * to ensure that we're running on MAC
-    * and not some other Apple platform */
-   #if TARGET_IPHONE_SIMULATOR == 1
-      #error "IOS simulator is not supported!"
+#include <TargetConditionals.h>
+/* TARGET_OS_MAC exists on all the platforms
+ * so we must check all of them (in this order)
+ * to ensure that we're running on MAC
+ * and not some other Apple platform */
+#if TARGET_IPHONE_SIMULATOR == 1
+#error "IOS simulator is not supported!"
 
-   #elif TARGET_OS_IPHONE == 1
-      #define NT_PLATFORM_IOS
-      #error "IOS is not supported!"
+#elif TARGET_OS_IPHONE == 1
+#define NT_PLATFORM_IOS
+#error "IOS is not supported!"
 
-   #elif TARGET_OS_MAC == 1
-      #define NT_PLATFORM_MACOS
-      #error "MacOS is not supported!"
+#elif TARGET_OS_MAC == 1
+#define NT_PLATFORM_MACOS
+#error "MacOS is not supported!"
 
-   #else
-      #error "Unknown Apple platform!"
+#else
+#error "Unknown Apple platform!"
 
-   #endif
+#endif
 
- /* We also have to check __ANDROID__ before __linux__
-  * since android is based on the linux kernel
-  * it has __linux__ defined */
+/* We also have to check __ANDROID__ before __linux__
+ * since android is based on the linux kernel
+ * it has __linux__ defined */
 #elif defined(__ANDROID__)
-   #define NT_PLATFORM_ANDROID
-   #error "Android is not supported!"
+#define NT_PLATFORM_ANDROID
+#error "Android is not supported!"
 
 #elif defined(__linux__)
-   /* Linux x64 */
-   #define NT_PLATFORM_LINUX
+/* Linux x64 */
+#define NT_PLATFORM_LINUX
 #else
-   /* Unknown compiler/platform */
-   #error "Unknown platform!"
+/* Unknown compiler/platform */
+#error "Unknown platform!"
 
 #endif // End of platform detection
 
-
 // Debugging
 #ifdef NT_DEBUG
-   #define NT_ENABLE_ASSERTS
+#define NT_ENABLE_ASSERTS
 #endif

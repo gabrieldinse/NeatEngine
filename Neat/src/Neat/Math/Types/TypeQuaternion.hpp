@@ -1,195 +1,183 @@
 #pragma once
 
-#include "Neat/Math/Types/TypeVectorN.hpp"
 #include "Neat/Math/Types/TypeMatrixMxN.hpp"
+#include "Neat/Math/Types/TypeVectorN.hpp"
 
+namespace Neat {
+template <typename T> struct Quaternion {
+  using Type = Quaternion<T>;
+  using ValueType = T;
 
-namespace Neat
-{
-   template <typename T>
-   struct Quaternion
-   {
-      using Type = Quaternion<T>;
-      using ValueType = T;
+  // Class data
+  union {
+    struct {
+      T w, x, y, z;
+    };
+    struct {
+      T a, b, c, d;
+    };
+    struct {
+      T q0, q1, q2, q3;
+    };
+    struct {
+      T s;
+      Vector<3, T> v;
+    };
+  };
 
+  // Default constructor
+  constexpr Quaternion();
 
-      // Class data
-      union
-      {
-         struct { T w, x, y, z; };
-         struct { T a, b, c, d; };
-         struct { T q0, q1, q2, q3; };
-         struct { T s; Vector<3, T> v; };
-      };
+  // Basic constructors
+  constexpr Quaternion(T s, const Vector<3, T> &v);
+  constexpr Quaternion(T w, T x, T y, T z);
 
+  // Copy constructor
+  constexpr Quaternion(const Quaternion<T> &q);
 
-      // Default constructor
-      constexpr Quaternion();
+  // Conversion constructors
+  template <typename U> constexpr explicit Quaternion(const Quaternion<U> &q);
 
-      // Basic constructors
-      constexpr Quaternion(T s, const Vector<3, T>& v);
-      constexpr Quaternion(T w, T x, T y, T z);
+  // Matrix constructor
+  constexpr explicit Quaternion(const Matrix<3, 3, T> &rotation);
+  constexpr explicit Quaternion(const Matrix<4, 4, T> &rotation);
 
-      // Copy constructor
-      constexpr Quaternion(const Quaternion<T>& q);
+  // Assignment operators
+  constexpr Quaternion<T> &operator=(const Quaternion<T> &q) = default;
+  template <typename U>
+  constexpr Quaternion<T> &operator=(const Quaternion<U> &q);
 
-      // Conversion constructors
-      template <typename U>
-      constexpr explicit Quaternion(const Quaternion<U>& q);
+  // Compound assignment operators
+  template <typename U>
+  constexpr Quaternion<T> &operator+=(const Quaternion<U> &q);
+  template <typename U>
+  constexpr Quaternion<T> &operator-=(const Quaternion<U> &q);
+  template <typename U>
+  constexpr Quaternion<T> &operator*=(const Quaternion<U> &q);
+  template <typename U> constexpr Quaternion<T> &operator*=(U scalar);
+  template <typename U> constexpr Quaternion<T> &operator/=(U scalar);
 
-      // Matrix constructor
-      constexpr explicit Quaternion(const Matrix<3, 3, T>& rotation);
-      constexpr explicit Quaternion(const Matrix<4, 4, T>& rotation);
+  // Static factory constructors
+  static constexpr Quaternion<T> fromAngleAxis(T angleRadians,
+                                               const Vector<3, T> &axis);
+  static constexpr Quaternion<T>
+  fromEulerAngles(const Vector<3, T> &pitchYawRoll);
+  static constexpr Quaternion<T> fromEulerAngles(T pitch, T yaw, T roll);
+  static constexpr Quaternion<T> identity() { return Quaternion<T>(); }
 
-      // Assignment operators
-      constexpr Quaternion<T>& operator=(const Quaternion<T>& q) = default;
-      template <typename U>
-      constexpr Quaternion<T>& operator=(const Quaternion<U>& q);
+  // Member converters
+  constexpr Matrix<3, 3, T> toMatrix3() const;
+  constexpr Matrix<4, 4, T> toMatrix4() const;
 
-      // Compound assignment operators
-      template <typename U>
-      constexpr Quaternion<T>& operator+=(const Quaternion<U>& q);
-      template <typename U>
-      constexpr Quaternion<T>& operator-=(const Quaternion<U>& q);
-      template <typename U>
-      constexpr Quaternion<T>& operator*=(const Quaternion<U>& q);
-      template <typename U>
-      constexpr Quaternion<T>& operator*=(U scalar);
-      template <typename U>
-      constexpr Quaternion<T>& operator/=(U scalar);
+  // Explicit conversion operators
+  explicit operator Matrix<3, 3, T>() const;
+  explicit operator Matrix<4, 4, T>() const;
 
-      // Static factory constructors
-      static constexpr Quaternion<T> fromAngleAxis(T angleRadians,
-         const Vector<3, T>& axis);
-      static constexpr Quaternion<T> fromEulerAngles(
-         const Vector<3, T>& pitchYawRoll);
-      static constexpr Quaternion<T> fromEulerAngles(T pitch, T yaw, T roll);
-      static constexpr Quaternion<T> identity() { return Quaternion<T>(); }
+  // Element accessing
+  constexpr T &operator[](UInt32 pos);
+  constexpr const T &operator[](UInt32 pos) const;
 
-      // Member converters
-      constexpr Matrix<3, 3, T> toMatrix3() const;
-      constexpr Matrix<4, 4, T> toMatrix4() const;
+  // Static member functions
+  static constexpr UInt32 size() { return 4; }
+  static constexpr UInt32 length() { return size(); }
+};
 
-      // Explicit conversion operators
-      explicit operator Matrix<3, 3, T>() const;
-      explicit operator Matrix<4, 4, T>() const;
+// Predefined types
+using QuaternionF = Quaternion<float>;
+using QuaternionD = Quaternion<double>;
 
-      // Element accessing
-      constexpr T& operator[](UInt32 pos);
-      constexpr const T& operator[](UInt32 pos) const;
+// Quaternion/Matrix conversion
+template <typename T> Matrix<3, 3, T> Matrix3Cast(const Quaternion<T> &q);
 
-      // Static member functions
-      static constexpr UInt32 size() { return 4; }
-      static constexpr UInt32 length() { return size(); }
-   };
+template <typename T> Matrix<4, 4, T> Matrix4Cast(const Quaternion<T> &q);
 
+template <typename T> Quaternion<T> QuaternionCast(const Matrix<3, 3, T> &m);
 
-   // Predefined types
-   using QuaternionF = Quaternion<float>;
-   using QuaternionD = Quaternion<double>;
+template <typename T> Quaternion<T> QuaternionCast(const Matrix<4, 4, T> &m4);
 
+// Non members operators
+template <typename T>
+inline constexpr Quaternion<T> operator+(const Quaternion<T> &qa,
+                                         const Quaternion<T> &qb);
 
-   // Quaternion/Matrix conversion
-   template <typename T>
-   Matrix<3, 3, T> Matrix3Cast(const Quaternion<T>& q);
+template <typename T>
+inline constexpr Quaternion<T> operator-(const Quaternion<T> &q);
 
-   template <typename T>
-   Matrix<4, 4, T> Matrix4Cast(const Quaternion<T>& q);
+template <typename T>
+inline constexpr Quaternion<T> operator-(const Quaternion<T> &qa,
+                                         const Quaternion<T> &qb);
 
-   template <typename T>
-   Quaternion<T> QuaternionCast(const Matrix<3, 3, T>& m);
+template <typename T>
+inline constexpr Quaternion<T> operator*(const Quaternion<T> &qa,
+                                         const Quaternion<T> &qb);
 
-   template<typename T>
-   Quaternion<T> QuaternionCast(const Matrix<4, 4, T>& m4);
+template <typename T>
+inline constexpr Vector<3, T> operator*(const Quaternion<T> &q,
+                                        const Vector<3, T> &v);
 
+template <typename T>
+inline constexpr Vector<3, T> operator*(const Vector<3, T> &v,
+                                        const Quaternion<T> &q);
 
-   // Non members operators
-   template <typename T>
-   inline constexpr Quaternion<T> operator+(const Quaternion<T>& qa,
-      const Quaternion<T>& qb);
+template <typename T>
+inline constexpr Vector<4, T> operator*(const Quaternion<T> &q,
+                                        const Vector<4, T> &v);
 
-   template <typename T>
-   inline constexpr Quaternion<T> operator-(const Quaternion<T>& q);
+template <typename T>
+inline constexpr Vector<4, T> operator*(const Vector<4, T> &v,
+                                        const Quaternion<T> &q);
 
-   template <typename T>
-   inline constexpr Quaternion<T> operator-(const Quaternion<T>& qa,
-      const Quaternion<T>& qb);
+template <typename T>
+inline constexpr Quaternion<T> operator*(const Quaternion<T> &q,
+                                         T const &scalar);
 
-   template <typename T>
-   inline constexpr Quaternion<T> operator*(const Quaternion<T>& qa,
-      const Quaternion<T>& qb);
+template <typename T>
+inline constexpr Quaternion<T> operator*(T const &scalar,
+                                         const Quaternion<T> &q);
 
-   template <typename T>
-   inline constexpr Vector<3, T> operator*(const Quaternion<T>& q,
-      const Vector<3, T>& v);
+template <typename T>
+inline constexpr Quaternion<T> operator/(const Quaternion<T> &q,
+                                         T const &scalar);
 
-   template <typename T>
-   inline constexpr Vector<3, T> operator*(const Vector<3, T>& v,
-      const Quaternion<T>& q);
+// Relational operators
+template <typename T>
+inline constexpr bool operator==(const Quaternion<T> &qa,
+                                 const Quaternion<T> &qb);
 
-   template <typename T>
-   inline constexpr Vector<4, T> operator*(const Quaternion<T>& q,
-      const Vector<4, T>& v);
+template <typename T>
+inline constexpr bool operator!=(const Quaternion<T> &qa,
+                                 const Quaternion<T> &qb);
 
-   template <typename T>
-   inline constexpr Vector<4, T> operator*(const Vector<4, T>& v,
-      const Quaternion<T>& q);
+// Quaternion operations
+template <typename T>
+inline constexpr T dot(const Quaternion<T> &qa, const Quaternion<T> &qb);
 
-   template <typename T>
-   inline constexpr Quaternion<T> operator*(const Quaternion<T>& q,
-      T const& scalar);
+template <typename T>
+inline constexpr Quaternion<T> cross(const Quaternion<T> &qa,
+                                     const Quaternion<T> &qb);
 
-   template <typename T>
-   inline constexpr Quaternion<T> operator*(T const& scalar,
-      const Quaternion<T>& q);
+template <typename T> inline constexpr T norm(const Quaternion<T> &q);
 
-   template <typename T>
-   inline constexpr Quaternion<T> operator/(const Quaternion<T>& q,
-      T const& scalar);
+template <typename T>
+inline constexpr Quaternion<T> normalize(const Quaternion<T> &q);
 
+template <typename T>
+inline constexpr Quaternion<T> conjugate(const Quaternion<T> &q);
 
-   // Relational operators
-   template <typename T>
-   inline constexpr bool operator==(const Quaternion<T>& qa,
-      const Quaternion<T>& qb);
+template <typename T>
+inline constexpr Quaternion<T> inverse(const Quaternion<T> &q);
 
-   template <typename T>
-   inline constexpr bool operator!=(const Quaternion<T>& qa,
-      const Quaternion<T>& qb);
+template <typename T>
+inline constexpr Vector<3, T> rotate(const Quaternion<T> &q,
+                                     const Vector<3, T> &v);
 
+template <typename T>
+inline constexpr Vector<4, T> rotate(const Quaternion<T> &q,
+                                     const Vector<4, T> &v);
 
-   // Quaternion operations
-   template <typename T>
-   inline constexpr T dot(const Quaternion<T>& qa, const Quaternion<T>& qb);
-
-   template <typename T>
-   inline constexpr Quaternion<T> cross(const Quaternion<T>& qa,
-      const Quaternion<T>& qb);
-
-   template <typename T>
-   inline constexpr T norm(const Quaternion<T>& q);
-
-   template <typename T>
-   inline constexpr Quaternion<T> normalize(const Quaternion<T>& q);
-
-   template <typename T>
-   inline constexpr Quaternion<T> conjugate(const Quaternion<T>& q);
-
-   template <typename T>
-   inline constexpr Quaternion<T> inverse(const Quaternion<T>& q);
-
-   template<typename T>
-   inline constexpr Vector<3, T> rotate(const Quaternion<T>& q,
-      const Vector<3, T>& v);
-
-   template<typename T>
-   inline constexpr Vector<4, T> rotate(const Quaternion<T>& q,
-      const Vector<4, T>& v);
-   
-
-   // Ostream operators
-   template <typename T, UInt32 N>
-   std::ostream& operator<<(std::ostream& os, const Quaternion<T>& q);
-}
+// Ostream operators
+template <typename T, UInt32 N>
+std::ostream &operator<<(std::ostream &os, const Quaternion<T> &q);
+} // namespace Neat
 
 #include "Neat/Math/Types/TypeQuaternion.inl"

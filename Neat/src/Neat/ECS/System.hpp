@@ -4,51 +4,43 @@
 #include "Neat/Events/EventManager.hpp"
 #include "Neat/Helper/NonCopyable.hpp"
 
+namespace Neat {
+class SystemManager;
+class EntityManager;
 
-namespace Neat
-{
-   class SystemManager;
-   class EntityManager;
+// ---------------------------------------------------------------------- //
+// BaseSystem ----------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+class BaseSystem : public NonCopyable {
+public:
+  using Family = UInt32;
 
+  virtual ~BaseSystem() = default;
 
-   // ---------------------------------------------------------------------- //
-   // BaseSystem ----------------------------------------------------------- //
-   // ---------------------------------------------------------------------- //
-   class BaseSystem : public NonCopyable
-   {
-   public:
-      using Family = UInt32;
+  virtual void init(EventManager &eventManager) {}
+  virtual void update(EntityManager &entityManager, EventManager &eventManager,
+                      DeltaTime deltaTime) = 0;
 
-      virtual ~BaseSystem() = default;
+protected:
+  static Family s_familyCounter;
+};
 
-      virtual void init(EventManager& eventManager) {}
-      virtual void update(EntityManager& entityManager,
-         EventManager& eventManager, DeltaTime deltaTime) = 0;
+// ---------------------------------------------------------------------- //
+// System --------------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+template <typename DerivedSystem> class System : public BaseSystem {
+public:
+  virtual ~System() = default;
 
-   protected:
-      static Family s_familyCounter;
-   };
+  virtual void update(EntityManager &entityManager, EventManager &eventManager,
+                      DeltaTime deltaTime) override {}
 
+private:
+  friend class SystemManager;
 
-   // ---------------------------------------------------------------------- //
-   // System --------------------------------------------------------------- //
-   // ---------------------------------------------------------------------- //
-   template <typename DerivedSystem>
-   class System : public BaseSystem
-   {
-   public:
-      virtual ~System() = default;
-
-      virtual void update(EntityManager& entityManager,
-         EventManager& eventManager, DeltaTime deltaTime) override {}
-
-   private:
-      friend class SystemManager;
-
-      static Family getFamily()
-      {
-         static Family family = s_familyCounter++;
-         return family;
-      }
-   };
-}
+  static Family getFamily() {
+    static Family family = s_familyCounter++;
+    return family;
+  }
+};
+} // namespace Neat

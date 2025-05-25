@@ -1,84 +1,70 @@
 #pragma once
 
 #include <memory>
-#include <utility>
 #include <unordered_map>
+#include <utility>
 
-#include "Neat/Core/Log.hpp"
 #include "Neat/Core/Exceptions.hpp"
+#include "Neat/Core/Log.hpp"
 #include "Neat/ECS/System.hpp"
 #include "Neat/Helper/NonCopyable.hpp"
 
+namespace Neat {
+class SystemManager : public NonCopyable {
+public:
+  SystemManager(EntityManager &entityManager, EventManager &eventManager)
+      : m_entityManager(entityManager), m_eventManager(eventManager) {}
 
-namespace Neat
-{
-   class SystemManager : public NonCopyable
-   {
-   public:
-      SystemManager(EntityManager& entityManager, EventManager& eventManager)
-         : m_entityManager(entityManager), m_eventManager(eventManager) {}
+  void init() {
+    for (auto &&[family, system] : m_systems)
+      system->init(m_eventManager);
 
+    m_initialized = true;
+  }
 
-      void init()
-      {
-         for(auto&& [family, system] : m_systems)
-            system->init(m_eventManager);
+  template <typename S> void addSystem(std::shared_ptr<S> system) {
+    m_systems[S::getFamily()] = system;
+  }
 
-         m_initialized = true;
-      }
+  template <typename S, typename... Args>
+  std::shared_ptr<S> addSystem(Args &&...args) {
+    auto system = std::make_shared<S>(std::forward<Args>(args)...);
+    addSystem(system);
 
-      template <typename S>
-      void addSystem(std::shared_ptr<S> system)
-      {
-         m_systems[S::getFamily()] = system;
-      }
+    return system;
+  }
 
-      template <typename S, typename... Args>
-      std::shared_ptr<S> addSystem(Args&&... args)
-      {
-         auto system = std::make_shared<S>(std::forward<Args>(args)...);
-         addSystem(system);
+  template <typename S> std::shared_ptr<S> getSystem() {
+    auto it = m_systems.find(S::getFamily());
 
-         return system;
-      }
+    if (it == m_systems.end())
+      throw InvalidSystemError();
 
-      template <typename S>
-      std::shared_ptr<S> getSystem()
-      {
-         auto it = m_systems.find(S::getFamily());
+    auto &&[family, system] = *it;
 
-         if (it == m_systems.end())
-            throw InvalidSystemError();
+    return std::shared_ptr<S>(std::static_pointer_cast<S>(system));
+  }
 
-         auto&& [family, system] = *it;
+  template <typename S> void update(DeltaTime deltaTime) {
+    if (!m_initialized)
+      throw SystemManagerNotInitializedError();
 
-         return
-            std::shared_ptr<S>(std::static_pointer_cast<S>(system));
-      }
+    auto system = getSystem<S>();
+    system->update(m_entityManager, m_eventManager, deltaTime);
+  }
 
-      template <typename S>
-      void update(DeltaTime deltaTime)
-      {
-         if (!m_initialized)
-            throw SystemManagerNotInitializedError();
+  void updateAll(DeltaTime deltaTime) {
+    if (!m_initialized)
+      throw SystemManagerNotInitializedError();
 
-         auto system = getSystem<S>();
-         system->update(m_entityManager, m_eventManager, deltaTime);
-      }
+    for (auto &&[family, system] : m_systems)
+      system->update(m_entityManager, m_eventManager, deltaTime);
+  }
 
-      void updateAll(DeltaTime deltaTime)
-      {
-         if (!m_initialized)
-            throw SystemManagerNotInitializedError();
-
-         for (auto&& [family, system] : m_systems)
-            system->update(m_entityManager, m_eventManager, deltaTime);
-      }
-
-   private:
-      bool m_initialized = false;
-      EntityManager& m_entityManager;
-      EventManager& m_eventManager;
-      std::unordered_map<BaseSystem::Family, std::shared_ptr<BaseSystem>> m_systems;
-   };
-}
+private:
+  bool m_initialized = false;
+  EntityManager &m_entityManager;
+  EventManager &m_eventManager;
+  std::unordered_map<BaseSystem::Family, std::shared_ptr<BaseSystem>> m_systems;
+};
+} // namespace Neat

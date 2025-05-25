@@ -1,5 +1,5 @@
 file(GLOB_RECURSE SANDBOX_SOURCES
-    src/**.cpp
+    src/SandboxApp.cpp
 )
 
 add_executable(Sandbox ${SANDBOX_SOURCES})

@@ -1,146 +1,109 @@
 #pragma once
 
-#include "Neat/Core/Types.hpp"
-#include "Neat/Core/MouseCodes.hpp"
 #include "Neat/Core/KeyCodes.hpp"
+#include "Neat/Core/MouseCodes.hpp"
+#include "Neat/Core/Types.hpp"
 
+namespace Neat {
+class EventManager;
 
-namespace Neat
-{
-   class EventManager;
+// ---------------------------------------------------------------------- //
+// BaseEvent ------------------------------------------------------------ //
+// ---------------------------------------------------------------------- //
+class BaseEvent {
+public:
+  using Family = UInt32;
 
+  virtual ~BaseEvent() {}
 
-   // ---------------------------------------------------------------------- //
-   // BaseEvent ------------------------------------------------------------ //
-   // ---------------------------------------------------------------------- //
-   class BaseEvent
-   {
-   public:
-      using Family = UInt32;
+protected:
+  static Family s_familyCounter;
+};
 
-      virtual ~BaseEvent() {}
+// ---------------------------------------------------------------------- //
+// Event ---------------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+template <typename Derived> class Event : public BaseEvent {
+private:
+  friend class EventManager;
 
-   protected:
-      static Family s_familyCounter;
-   };
+  static Family getFamily() {
+    static Family family = s_familyCounter++;
+    return family;
+  }
+};
 
+// ---------------------------------------------------------------------- //
+// Window events -------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+struct WindowResizeEvent {
+  WindowResizeEvent(UInt32 width, UInt32 height)
+      : width(width), height(height) {}
 
-   // ---------------------------------------------------------------------- //
-   // Event ---------------------------------------------------------------- //
-   // ---------------------------------------------------------------------- //
-   template <typename Derived>
-   class Event : public BaseEvent
-   {
-   private:
-      friend class EventManager;
+  UInt32 width;
+  UInt32 height;
+};
 
-      static Family getFamily()
-      {
-         static Family family = s_familyCounter++;
-         return family;
-      }
-   };
+struct WindowCloseEvent {
+  WindowCloseEvent() = default;
+};
 
+// ---------------------------------------------------------------------- //
+// Mouse events --------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+struct MouseButtonEvent {
+  MouseCode button;
 
-   // ---------------------------------------------------------------------- //
-   // Window events -------------------------------------------------------- //
-   // ---------------------------------------------------------------------- //
-   struct WindowResizeEvent
-   {
-      WindowResizeEvent(UInt32 width, UInt32 height)
-         : width(width), height(height) {}
+protected:
+  MouseButtonEvent(MouseCode button) : button(button) {}
+};
 
-      UInt32 width;
-      UInt32 height;
-   };
+struct MouseButtonPressedEvent : public MouseButtonEvent {
+  MouseButtonPressedEvent(MouseCode button) : MouseButtonEvent(button) {}
+};
 
+struct MouseButtonReleasedEvent : public MouseButtonEvent {
+  MouseButtonReleasedEvent(MouseCode button) : MouseButtonEvent(button) {}
+};
 
-   struct WindowCloseEvent
-   {
-      WindowCloseEvent() = default;
-   };
+struct MouseMovedEvent {
+  MouseMovedEvent(float xPos, float yPos) : xPos(xPos), yPos(yPos) {}
 
+  float xPos;
+  float yPos;
+};
 
-   // ---------------------------------------------------------------------- //
-   // Mouse events --------------------------------------------------------- //
-   // ---------------------------------------------------------------------- //
-   struct MouseButtonEvent
-   {
-      MouseCode button;
+struct MouseScrolledEvent {
+public:
+  MouseScrolledEvent(float xOffset, float yOffset)
+      : xOffset(xOffset), yOffset(yOffset) {}
 
-   protected:
-      MouseButtonEvent(MouseCode button)
-         : button(button) {}
-   };
+  float xOffset;
+  float yOffset;
+};
 
+// ---------------------------------------------------------------------- //
+// Key events ----------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+struct KeyEvent {
+  KeyCode keyCode;
 
-   struct MouseButtonPressedEvent : public MouseButtonEvent
-   {
-      MouseButtonPressedEvent(MouseCode button)
-         : MouseButtonEvent(button) {}
-   };
+protected:
+  KeyEvent(KeyCode keyCode) : keyCode(keyCode) {}
+};
 
+struct KeyPressedEvent : public KeyEvent {
+  KeyPressedEvent(KeyCode keyCode, Int32 repeatCount = 0)
+      : KeyEvent(keyCode), repeatCount(repeatCount) {}
 
-   struct MouseButtonReleasedEvent : public MouseButtonEvent
-   {
-      MouseButtonReleasedEvent(MouseCode button)
-         : MouseButtonEvent(button) {}
-   };
+  Int32 repeatCount;
+};
 
+struct KeyReleasedEvent : public KeyEvent {
+  KeyReleasedEvent(KeyCode keycode) : KeyEvent(keycode) {}
+};
 
-   struct MouseMovedEvent
-   {
-      MouseMovedEvent(float xPos, float yPos)
-         : xPos(xPos), yPos(yPos) {}
-
-      float xPos;
-      float yPos;
-   };
-
-
-   struct MouseScrolledEvent
-   {
-   public:
-      MouseScrolledEvent(float xOffset, float yOffset)
-         : xOffset(xOffset), yOffset(yOffset) {}
-
-      float xOffset;
-      float yOffset;
-   };
-
-
-   // ---------------------------------------------------------------------- //
-   // Key events ----------------------------------------------------------- //
-   // ---------------------------------------------------------------------- //
-   struct KeyEvent
-   {
-      KeyCode keyCode;
-
-   protected:
-      KeyEvent(KeyCode keyCode)
-         : keyCode(keyCode) {}
-   };
-
-
-   struct KeyPressedEvent : public KeyEvent
-   {
-      KeyPressedEvent(KeyCode keyCode, Int32 repeatCount = 0)
-         : KeyEvent(keyCode), repeatCount(repeatCount) {}
-
-      Int32 repeatCount;
-   };
-
-
-   struct KeyReleasedEvent : public KeyEvent
-   {
-      KeyReleasedEvent(KeyCode keycode)
-         : KeyEvent(keycode) {}
-   };
-
-
-   struct KeyTypedEvent : public KeyEvent
-   {
-      KeyTypedEvent(KeyCode keyCode)
-         : KeyEvent(keyCode) {}
-   };
-}
+struct KeyTypedEvent : public KeyEvent {
+  KeyTypedEvent(KeyCode keyCode) : KeyEvent(keyCode) {}
+};
+} // namespace Neat
