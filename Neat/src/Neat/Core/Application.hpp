@@ -29,12 +29,10 @@ public:
   Window &getWindow() { return *m_window; }
 
   // Events receiving
-  bool listenEvent(const WindowCloseEvent &event);
-  bool listenEvent(const WindowResizeEvent &event);
+  bool handleEvent(const WindowCloseEvent &event);
+  bool handleEvent(const WindowResizeEvent &event);
 
   EventManager &events() { return m_events; }
-
-  virtual void imGuiRender() {}
 
 private:
   static Application *s_instance;

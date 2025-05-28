@@ -25,9 +25,9 @@ public:
   void update(EntityManager &entityManager, EventManager &eventManager,
               DeltaTime deltaTime);
 
-  bool listenEvent(const MouseScrolledEvent &event);
-  bool listenEvent(const MouseMovedEvent &event);
-  bool listenEvent(const WindowResizeEvent &event);
+  bool handleEvent(const MouseScrolledEvent &event);
+  bool handleEvent(const MouseMovedEvent &event);
+  bool handleEvent(const WindowResizeEvent &event);
 
 private:
   Camera m_camera;

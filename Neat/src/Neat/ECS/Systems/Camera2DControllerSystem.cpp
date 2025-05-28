@@ -42,7 +42,7 @@ void Camera2DControllerSystem::update(EntityManager &entityManager,
   }
 }
 
-bool Camera2DControllerSystem::listenEvent(const MouseScrolledEvent &event) {
+bool Camera2DControllerSystem::handleEvent(const MouseScrolledEvent &event) {
   m_zoomLevel -= event.yOffset * 0.2f;
   m_zoomLevel = std::max(m_zoomLevel, 0.25f);
   m_translationSpeed = 2.0f * m_zoomLevel;
@@ -51,7 +51,7 @@ bool Camera2DControllerSystem::listenEvent(const MouseScrolledEvent &event) {
   return false;
 }
 
-bool Camera2DControllerSystem::listenEvent(const MouseMovedEvent &event) {
+bool Camera2DControllerSystem::handleEvent(const MouseMovedEvent &event) {
   if (m_firstMouse) {
     m_lastMousePosition = Vector2F(event.xPos, event.yPos);
     m_firstMouse = false;
@@ -74,7 +74,7 @@ bool Camera2DControllerSystem::listenEvent(const MouseMovedEvent &event) {
   return false;
 }
 
-bool Camera2DControllerSystem::listenEvent(const WindowResizeEvent &event) {
+bool Camera2DControllerSystem::handleEvent(const WindowResizeEvent &event) {
   m_aspectRatio = (float)event.width / (float)event.height;
   m_camera.setSize(m_aspectRatio);
 

@@ -51,7 +51,7 @@ void Camera3DControllerSystem::update(EntityManager &entityManager,
   }
 }
 
-bool Camera3DControllerSystem::listenEvent(const MouseScrolledEvent &event) {
+bool Camera3DControllerSystem::handleEvent(const MouseScrolledEvent &event) {
   auto fov = clamp(-event.yOffset + m_camera.getFieldOfView(), 1.0f, 60.0f);
   m_translationSpeed = fov * 0.5f;
   m_camera.setFieldOfView(fov);
@@ -59,7 +59,7 @@ bool Camera3DControllerSystem::listenEvent(const MouseScrolledEvent &event) {
   return false;
 }
 
-bool Camera3DControllerSystem::listenEvent(const MouseMovedEvent &event) {
+bool Camera3DControllerSystem::handleEvent(const MouseMovedEvent &event) {
   if (m_firstMouse) {
     m_lastMousePosition = Vector2F(event.xPos, event.yPos);
     m_firstMouse = false;
@@ -77,7 +77,7 @@ bool Camera3DControllerSystem::listenEvent(const MouseMovedEvent &event) {
   return false;
 }
 
-bool Camera3DControllerSystem::listenEvent(const WindowResizeEvent &event) {
+bool Camera3DControllerSystem::handleEvent(const WindowResizeEvent &event) {
   m_camera.setAspectRatio((float)event.width / (float)event.height);
 
   return false;

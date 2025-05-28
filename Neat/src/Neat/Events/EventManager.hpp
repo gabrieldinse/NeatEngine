@@ -80,12 +80,14 @@ private:
   std::shared_ptr<EventToListenersConnection> &getEventConnection() {
     auto family = Event<E>::getFamily();
 
-    if (family >= m_eventsConnections.size())
+    if (family >= m_eventsConnections.size()) {
       m_eventsConnections.resize(family + 1);
+    }
 
-    if (not m_eventsConnections[family])
+    if (not m_eventsConnections[family]) {
       m_eventsConnections[family] =
           std::make_shared<EventToListenersConnection>();
+    }
 
     return m_eventsConnections[family];
   }

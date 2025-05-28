@@ -44,10 +44,10 @@ public:
   template <typename E, typename Listener>
   std::size_t addListener(Listener &listener, EventPriority priority,
                           bool ignoreIfHandled) {
-    bool (Listener::*listenEvent)(const E &) = &Listener::listenEvent;
+    bool (Listener::*handleEvent)(const E &) = &Listener::handleEvent;
 
     auto callback = EventCallbackWrapper<E>(
-        std::bind(listenEvent, &listener, std::placeholders::_1));
+        std::bind(handleEvent, &listener, std::placeholders::_1));
 
     auto callback_element = EventCallbackElement(
         std::make_shared<EventCallback>(callback), priority, ignoreIfHandled);

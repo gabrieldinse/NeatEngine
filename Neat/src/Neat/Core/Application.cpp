@@ -1,14 +1,9 @@
-#include <chrono>
-#include <thread>
-
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Input.hpp"
 #include "Neat/Core/Log.hpp"
 #include "Neat/Core/Timer.hpp"
 #include "Neat/Events/Event.hpp"
 #include "Neat/Graphics/Renderer.hpp"
-#include "Neat/Helper/FPSCounter.hpp"
-#include "Neat/ImGui/ImGuiRender.hpp"
 
 namespace Neat {
 Application *Application::s_instance = nullptr;
@@ -24,36 +19,22 @@ Application::Application() {
   m_events.addListener<WindowResizeEvent>(*this, EventPriority::Highest, true);
 
   Renderer::init();
-  ImGuiRender::init();
   Input::setWindow(*m_window);
 }
 
 Application::~Application() {
   Renderer::shutdown();
-  ImGuiRender::shutdown();
 }
 
 void Application::stop() { m_running = false; }
 
 void Application::run() {
-  FPSCounter fps_counter;
   Timer timer;
-
   m_running = true;
-
   timer.start();
-  fps_counter.start();
 
   while (m_running) {
-    fps_counter.addFrame();
     update(timer.restart());
-
-#ifdef NT_IMGUI
-    ImGuiRender::begin();
-    imGuiRender();
-    ImGuiRender::end();
-#endif
-
     m_window->swapBuffers();
     m_window->pollEvents();
   }
@@ -75,13 +56,12 @@ std::unique_ptr<Layer> Application::popOverlay(Int32 position) {
   return m_layerGroup.popOverlay(position);
 }
 
-// Events receiving
-bool Application::listenEvent(const WindowCloseEvent &event) {
+bool Application::handleEvent(const WindowCloseEvent &event) {
   stop();
   return true;
 }
 
-bool Application::listenEvent(const WindowResizeEvent &event) {
+bool Application::handleEvent(const WindowResizeEvent &event) {
   if (not m_window->isMinimized())
     Renderer::onWindowResize(event.width, event.height);
 
