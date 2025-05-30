@@ -11,20 +11,21 @@ class EventManager;
 // BaseEvent ------------------------------------------------------------ //
 // ---------------------------------------------------------------------- //
 class BaseEvent {
-public:
+ public:
   using Family = UInt32;
 
   virtual ~BaseEvent() {}
 
-protected:
+ protected:
   static Family s_familyCounter;
 };
 
 // ---------------------------------------------------------------------- //
 // Event ---------------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
-template <typename Derived> class Event : public BaseEvent {
-private:
+template <typename Derived>
+class Event : public BaseEvent {
+ private:
   friend class EventManager;
 
   static Family getFamily() {
@@ -54,7 +55,7 @@ struct WindowCloseEvent {
 struct MouseButtonEvent {
   MouseCode button;
 
-protected:
+ protected:
   MouseButtonEvent(MouseCode button) : button(button) {}
 };
 
@@ -74,7 +75,7 @@ struct MouseMovedEvent {
 };
 
 struct MouseScrolledEvent {
-public:
+ public:
   MouseScrolledEvent(float xOffset, float yOffset)
       : xOffset(xOffset), yOffset(yOffset) {}
 
@@ -88,7 +89,7 @@ public:
 struct KeyEvent {
   Key key;
 
-protected:
+ protected:
   KeyEvent(Key key) : key(key) {}
 };
 
@@ -106,4 +107,4 @@ struct KeyReleasedEvent : public KeyEvent {
 struct KeyTypedEvent : public KeyEvent {
   KeyTypedEvent(Key key) : KeyEvent(key) {}
 };
-} // namespace Neat
+}  // namespace Neat

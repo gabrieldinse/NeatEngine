@@ -170,4 +170,4 @@ void Uniform<ShaderDataType::Matrix3F>::set(Matrix3F matrix) {
 void Uniform<ShaderDataType::Matrix4F>::set(Matrix4F matrix) {
   glUniformMatrix4fv(m_data->location, 1, GL_TRUE, matrix.dataPointer());
 }
-} // namespace Neat
+}  // namespace Neat

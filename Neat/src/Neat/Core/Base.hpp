@@ -49,7 +49,7 @@
 /* Unknown compiler/platform */
 #error "Unknown platform!"
 
-#endif // End of platform detection
+#endif  // End of platform detection
 
 // Debugging
 #ifdef NT_DEBUG

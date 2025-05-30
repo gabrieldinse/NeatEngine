@@ -8,19 +8,21 @@
 
 namespace Neat {
 class LayerGroup {
-public:
+ public:
   using LayerVector = std::vector<std::unique_ptr<Layer>>;
   using LayerVectorIt = LayerVector::iterator;
   using LayerVectorConstIt = LayerVector::const_iterator;
   using LayerVectorRevIt = LayerVector::reverse_iterator;
   using LayerVectorConstRevIt = LayerVector::const_reverse_iterator;
 
-public:
+ public:
   LayerGroup();
   ~LayerGroup();
 
-  template <typename T, typename... Args> void pushLayer(Args &&...args);
-  template <typename T, typename... Args> void pushOverlay(Args &&...args);
+  template <typename T, typename... Args>
+  void pushLayer(Args &&...args);
+  template <typename T, typename... Args>
+  void pushOverlay(Args &&...args);
   void pushLayer(std::unique_ptr<Layer> &&layer);
   void pushOverlay(std::unique_ptr<Layer> &&layer);
   std::unique_ptr<Layer> popLayer(Int32 position);
@@ -35,7 +37,7 @@ public:
   LayerVectorConstRevIt rbegin() const { return m_layers.rbegin(); }
   LayerVectorConstRevIt rend() const { return m_layers.rend(); }
 
-private:
+ private:
   LayerVector m_layers;
   LayerVector::size_type m_insertIndex;
 };
@@ -49,4 +51,4 @@ template <typename T, typename... Args>
 void LayerGroup::pushOverlay(Args &&...args) {
   pushOverlay(std::make_unique<T>(std::forward<Args>(args)...));
 }
-} // namespace Neat
+}  // namespace Neat

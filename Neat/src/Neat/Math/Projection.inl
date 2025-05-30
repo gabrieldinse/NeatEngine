@@ -55,4 +55,4 @@ Matrix<4, 4, T> lookAtLH(const Vector<3, T> &eye, const Vector<3, T> &target,
                          up.y, up.z, -dot(eye, up), front.x, front.y, front.z,
                          -dot(eye, front), 0, 0, 0, 1);
 }
-} // namespace Neat
+}  // namespace Neat

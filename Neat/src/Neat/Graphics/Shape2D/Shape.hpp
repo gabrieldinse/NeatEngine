@@ -4,10 +4,10 @@
 
 namespace Neat {
 class Shape {
-public:
+ public:
   Shape() = default;
   virtual ~Shape() = default;
 
   virtual void draw() const = 0;
 };
-} // namespace Neat
+}  // namespace Neat

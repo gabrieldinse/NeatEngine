@@ -14,16 +14,16 @@ namespace Neat {
 // ShaderProgramBuilder ------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class ShaderProgramBuilder {
-public:
+ public:
   ShaderProgramBuilder(UInt32 programId, const std::string &filepath);
   ShaderProgramBuilder(UInt32 programId, const std::string &vertexSource,
                        const std::string &fragmentSource);
   void build();
 
-private:
+ private:
   void preprocessShaderSource();
 
-private:
+ private:
   UInt32 m_id = 0;
   std::string m_fileContent;
   std::unordered_map<UInt32, std::string> m_shaderSources;
@@ -33,7 +33,7 @@ private:
 // ShaderProgram -------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class ShaderProgram {
-public:
+ public:
   ShaderProgram(const std::string &filepath);
   ShaderProgram(const std::string &name, const std::string &filepath);
   ShaderProgram(const std::string &name, const std::string &vertexSource,
@@ -53,7 +53,7 @@ public:
     return Uniform<UniformType>(name, *m_uniformLibrary);
   }
 
-private:
+ private:
   UInt32 m_id = 0;
   std::unique_ptr<UniformLibrary> m_uniformLibrary;
   std::string m_name;
@@ -63,7 +63,7 @@ private:
 // ShaderLibrary -------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class ShaderLibrary {
-public:
+ public:
   void add(const std::shared_ptr<ShaderProgram> &shader);
   void add(const std::string &name,
            const std::shared_ptr<ShaderProgram> &shader);
@@ -74,7 +74,7 @@ public:
 
   bool exists(const std::string &name) const;
 
-private:
+ private:
   std::unordered_map<std::string, std::shared_ptr<ShaderProgram>> m_shaders;
 };
-} // namespace Neat
+}  // namespace Neat

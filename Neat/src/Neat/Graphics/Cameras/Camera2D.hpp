@@ -7,7 +7,7 @@ namespace Neat {
 enum class KeepAspect { Height, Width };
 
 class Camera2D {
-public:
+ public:
   Camera2D(const Vector2F &position, float size,
            KeepAspect keepAspect = KeepAspect::Height);
 
@@ -59,14 +59,14 @@ public:
   Matrix4F getViewMatrix() const { return m_camera.getViewMatrix(); }
   Matrix4F getCameraTransform() const { return m_camera.getCameraTransform(); }
 
-private:
+ private:
   void updateProjection();
 
-private:
-  float m_zPos = 0.0f; // TODO: check this value
+ private:
+  float m_zPos = 0.0f;  // TODO: check this value
   float m_zoomLevel = 1.0f;
   Camera m_camera;
   float m_size;
   KeepAspect m_keepAspect = KeepAspect::Height;
 };
-} // namespace Neat
+}  // namespace Neat

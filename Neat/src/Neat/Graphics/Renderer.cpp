@@ -15,4 +15,4 @@ void Renderer::shutdown() { Renderer2D::shutdown(); }
 void Renderer::onWindowResize(UInt32 width, UInt32 height) {
   RenderCommand::setViewport(0, 0, width, height);
 }
-} // namespace Neat
+}  // namespace Neat

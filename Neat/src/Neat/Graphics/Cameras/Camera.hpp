@@ -8,7 +8,7 @@
 
 namespace Neat {
 class Camera {
-public:
+ public:
   enum class CameraType { None, Orthographic, Perspective };
 
   struct OrthographicProps {
@@ -30,7 +30,7 @@ public:
     float aspectRatio = 0.0f;
   };
 
-public:
+ public:
   Camera(const Vector3F &position = {0.0f, 0.0f, 1.0f},
          const Vector3F &upDirection = {0.0f, 1.0f, 0.0f});
 
@@ -106,7 +106,7 @@ public:
   void setBottom(float bottom);
   void setTop(float top);
 
-private:
+ private:
   const OrthographicProps &getOrthographicData() const {
     return std::get<OrthographicProps>(m_cameraData);
   }
@@ -127,13 +127,12 @@ private:
     if (m_cameraType == CameraType::None)
       throw CameraTypeHasNotBeenSettedError();
 
-    if (m_cameraType != type)
-      throw WrongCameraTypeError();
+    if (m_cameraType != type) throw WrongCameraTypeError();
   }
 
   void updateOrientationVectors();
 
-private:
+ private:
   CameraType m_cameraType = CameraType::None;
   std::variant<OrthographicProps, PerspectiveProps> m_cameraData =
       OrthographicProps{};
@@ -148,4 +147,4 @@ private:
   float m_near = -1.0f;
   float m_far = 1.0f;
 };
-} // namespace Neat
+}  // namespace Neat

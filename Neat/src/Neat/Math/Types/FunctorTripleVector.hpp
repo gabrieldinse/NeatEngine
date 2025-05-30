@@ -44,4 +44,4 @@ struct FunctorTripleVector<Vector, 4, R, T> {
                         function(va.z, vb.z, vc.z), function(va.w, vb.w, vc.w));
   }
 };
-} // namespace Neat
+}  // namespace Neat

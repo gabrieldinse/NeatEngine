@@ -39,4 +39,4 @@ struct FunctorVector<Vector, 4, R, T> {
                         function(v.w));
   }
 };
-} // namespace Neat
+}  // namespace Neat

@@ -14,4 +14,4 @@ std::ostream &operator<<(std::ostream &os, const Vector<N, T> &v) {
 
   return os;
 }
-} // namespace Neat
+}  // namespace Neat

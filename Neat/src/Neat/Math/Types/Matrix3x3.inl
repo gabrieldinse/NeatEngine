@@ -126,8 +126,8 @@ inline constexpr Matrix<3, 3, T> operator/(const Matrix<3, 3, T> &m,
 // Assignment operators
 template <typename T>
 template <typename U>
-inline constexpr Matrix<3, 3, T> &
-Matrix<3, 3, T>::operator=(const Matrix<3, 3, U> &m) {
+inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator=(
+    const Matrix<3, 3, U> &m) {
   m_rows[0] = m[0];
   m_rows[1] = m[1];
   m_rows[2] = m[2];
@@ -138,8 +138,8 @@ Matrix<3, 3, T>::operator=(const Matrix<3, 3, U> &m) {
 // Compound assigment operators
 template <typename T>
 template <typename U>
-inline constexpr Matrix<3, 3, T> &
-Matrix<3, 3, T>::operator+=(Matrix<3, 3, U> const &m) {
+inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator+=(
+    Matrix<3, 3, U> const &m) {
   m_rows[0] += m[0];
   m_rows[1] += m[1];
   m_rows[2] += m[2];
@@ -159,8 +159,8 @@ inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator-=(const U &scalar) {
 
 template <typename T>
 template <typename U>
-inline constexpr Matrix<3, 3, T> &
-Matrix<3, 3, T>::operator-=(Matrix<3, 3, U> const &m) {
+inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator-=(
+    Matrix<3, 3, U> const &m) {
   m_rows[0] -= m[0];
   m_rows[1] -= m[1];
   m_rows[2] -= m[2];
@@ -180,8 +180,8 @@ inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator*=(const U &scalar) {
 
 template <typename T>
 template <typename U>
-inline constexpr Matrix<3, 3, T> &
-Matrix<3, 3, T>::operator*=(Matrix<3, 3, U> const &m) {
+inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator*=(
+    Matrix<3, 3, U> const &m) {
   return (*this = *this * m);
 }
 
@@ -197,8 +197,8 @@ inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator/=(const U &scalar) {
 
 // Element accessing
 template <typename T>
-inline constexpr typename Matrix<3, 3, T>::RowType &
-Matrix<3, 3, T>::operator[](UInt32 row) {
+inline constexpr typename Matrix<3, 3, T>::RowType &Matrix<3, 3, T>::operator[](
+    UInt32 row) {
   return m_rows[row];
 }
 
@@ -219,7 +219,8 @@ inline constexpr const T &Matrix<3, 3, T>::operator()(UInt32 pos) const {
 }
 
 // Matrix operations
-template <typename T> inline T determinant(const Matrix<3, 3, T> &m) {
+template <typename T>
+inline T determinant(const Matrix<3, 3, T> &m) {
   return +m[0][0] * (m[1][1] * m[2][2] - m[2][1] * m[1][2]) -
          m[1][0] * (m[0][1] * m[2][2] - m[2][1] * m[0][2]) +
          m[2][0] * (m[0][1] * m[1][2] - m[1][1] * m[0][2]);
@@ -231,7 +232,8 @@ inline Matrix<3, 3, T> transpose(const Matrix<3, 3, T> &m) {
                          m[0][2], m[1][2], m[2][2]);
 }
 
-template <typename T> inline Matrix<3, 3, T> inverse(const Matrix<3, 3, T> &m) {
+template <typename T>
+inline Matrix<3, 3, T> inverse(const Matrix<3, 3, T> &m) {
   T inverse_determinant = one<T> / determinant(m);
 
   return Matrix<3, 3, T>(
@@ -245,4 +247,4 @@ template <typename T> inline Matrix<3, 3, T> inverse(const Matrix<3, 3, T> &m) {
       -(m[0][0] * m[2][1] - m[2][0] * m[0][1]) * inverse_determinant,
       (m[0][0] * m[1][1] - m[1][0] * m[0][1]) * inverse_determinant);
 }
-} // namespace Neat
+}  // namespace Neat

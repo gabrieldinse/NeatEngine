@@ -4,7 +4,8 @@
 #include "Neat/Math/Types/TypeVectorN.hpp"
 
 namespace Neat {
-template <typename T> struct Matrix<4, 4, T> {
+template <typename T>
+struct Matrix<4, 4, T> {
   using Type = Matrix<4, 4, T>;
   using RowType = Vector<4, T>;
   using ValueType = T;
@@ -33,9 +34,12 @@ template <typename T> struct Matrix<4, 4, T> {
                    const X3 &m20, const Y3 &m21, const Z3 &m22, const W3 &m23,
                    const X4 &m30, const Y4 &m31, const Z4 &m32, const W4 &m33);
 
-  template <typename U> constexpr explicit Matrix(const Matrix<4, 4, U> &m);
-  template <typename U> constexpr explicit Matrix(const Matrix<3, 3, U> &m);
-  template <typename U> constexpr explicit Matrix(const Matrix<2, 2, U> &m);
+  template <typename U>
+  constexpr explicit Matrix(const Matrix<4, 4, U> &m);
+  template <typename U>
+  constexpr explicit Matrix(const Matrix<3, 3, U> &m);
+  template <typename U>
+  constexpr explicit Matrix(const Matrix<2, 2, U> &m);
 
   template <typename V1, typename V2, typename V3, typename V4>
   constexpr Matrix(const Vector<4, V1> &row1, const Vector<4, V2> &row2,
@@ -53,13 +57,16 @@ template <typename T> struct Matrix<4, 4, T> {
   // Compound assigment operators
   template <typename U>
   constexpr Matrix<4, 4, T> &operator+=(Matrix<4, 4, U> const &m);
-  template <typename U> constexpr Matrix<4, 4, T> &operator-=(const U &scalar);
+  template <typename U>
+  constexpr Matrix<4, 4, T> &operator-=(const U &scalar);
   template <typename U>
   constexpr Matrix<4, 4, T> &operator-=(Matrix<4, 4, U> const &m);
-  template <typename U> constexpr Matrix<4, 4, T> &operator*=(const U &scalar);
+  template <typename U>
+  constexpr Matrix<4, 4, T> &operator*=(const U &scalar);
   template <typename U>
   constexpr Matrix<4, 4, T> &operator*=(Matrix<4, 4, U> const &m);
-  template <typename U> constexpr Matrix<4, 4, T> &operator/=(const U &scalar);
+  template <typename U>
+  constexpr Matrix<4, 4, T> &operator/=(const U &scalar);
 
   // Elements accessing
   constexpr T *dataPointer() { return m_flattened; }
@@ -74,7 +81,7 @@ template <typename T> struct Matrix<4, 4, T> {
   static constexpr UInt32 size() { return 4 * 4; }
   static constexpr UInt32 length() { return size(); }
 
-private:
+ private:
   // Class data
   union {
     RowType m_rows[4];
@@ -119,12 +126,14 @@ inline constexpr Matrix<4, 4, T> operator/(const Matrix<4, 4, T> &m,
                                            const T &scalar);
 
 // Matrix operations
-template <typename T> inline T determinant(const Matrix<4, 4, T> &m);
+template <typename T>
+inline T determinant(const Matrix<4, 4, T> &m);
 
 template <typename T>
 inline Matrix<4, 4, T> transpose(const Matrix<4, 4, T> &m);
 
-template <typename T> inline Matrix<4, 4, T> inverse(const Matrix<4, 4, T> &m);
-} // namespace Neat
+template <typename T>
+inline Matrix<4, 4, T> inverse(const Matrix<4, 4, T> &m);
+}  // namespace Neat
 
 #include "Neat/Math/Types/Matrix4x4.inl"

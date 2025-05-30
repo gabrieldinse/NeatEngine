@@ -6,7 +6,8 @@
 
 namespace Neat {
 // Vector
-template <typename T> inline Matrix<4, 4, T> translate(const Vector<3, T> &v) {
+template <typename T>
+inline Matrix<4, 4, T> translate(const Vector<3, T> &v) {
   return Matrix<4, 4, T>(one<T>, zero<T>, zero<T>, v.x, zero<T>, one<T>,
                          zero<T>, v.y, zero<T>, zero<T>, one<T>, v.z, zero<T>,
                          zero<T>, zero<T>, one<T>);
@@ -99,7 +100,8 @@ inline Matrix<4, 4, T> rotate(const Matrix<4, 4, T> &m, const T &angleRadians,
                          zero<T>, zero<T>, m(3, 3));
 }
 
-template <typename T> inline Matrix<4, 4, T> rotateX(const T &angleRadians) {
+template <typename T>
+inline Matrix<4, 4, T> rotateX(const T &angleRadians) {
   T cos_x = cos(angleRadians);
   T sin_x = sin(angleRadians);
 
@@ -108,7 +110,8 @@ template <typename T> inline Matrix<4, 4, T> rotateX(const T &angleRadians) {
                          zero<T>, zero<T>, zero<T>, one<T>);
 }
 
-template <typename T> inline Matrix<4, 4, T> rotateY(const T &angleRadians) {
+template <typename T>
+inline Matrix<4, 4, T> rotateY(const T &angleRadians) {
   T cos_y = cos(angleRadians);
   T sin_y = sin(angleRadians);
 
@@ -117,7 +120,8 @@ template <typename T> inline Matrix<4, 4, T> rotateY(const T &angleRadians) {
                          zero<T>, zero<T>, zero<T>, one<T>);
 }
 
-template <typename T> inline Matrix<4, 4, T> rotateZ(const T &angleRadians) {
+template <typename T>
+inline Matrix<4, 4, T> rotateZ(const T &angleRadians) {
   T cos_z = cos(angleRadians);
   T sin_z = sin(angleRadians);
 
@@ -126,7 +130,8 @@ template <typename T> inline Matrix<4, 4, T> rotateZ(const T &angleRadians) {
                          zero<T>, zero<T>, one<T>);
 }
 
-template <typename T> inline Matrix<4, 4, T> scale(const Vector<3, T> &v) {
+template <typename T>
+inline Matrix<4, 4, T> scale(const Vector<3, T> &v) {
   return Matrix<4, 4, T>(v.x, zero<T>, zero<T>, zero<T>, zero<T>, v.y, zero<T>,
                          zero<T>, zero<T>, zero<T>, v.z, zero<T>, zero<T>,
                          zero<T>, zero<T>, one<T>);
@@ -147,4 +152,4 @@ inline Quaternion<T> rotate(const Quaternion<T> &q, const T &angleRadians,
   return q *
          Quaternion<T>::fromAngleAxis(angleRadians, normalize(rotationAxis));
 }
-} // namespace Neat
+}  // namespace Neat

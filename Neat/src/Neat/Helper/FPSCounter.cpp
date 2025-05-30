@@ -12,4 +12,4 @@ void FPSCounter::addFrame() {
     NT_CORE_TRACE("FPS: {0}", m_fps);
   }
 }
-} // namespace Neat
+}  // namespace Neat

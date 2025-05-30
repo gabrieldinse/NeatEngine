@@ -2,10 +2,10 @@
 
 namespace Neat {
 class ImGuiRender {
-public:
+ public:
   static void init();
   static void shutdown();
   static void begin();
   static void end();
 };
-} // namespace Neat
+}  // namespace Neat

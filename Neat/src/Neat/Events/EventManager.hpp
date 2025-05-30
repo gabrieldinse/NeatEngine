@@ -8,11 +8,11 @@
 
 namespace Neat {
 class EventManager {
-public:
+ public:
   using EventsConnectionsVector =
       std::vector<std::shared_ptr<EventToListenersConnection>>;
 
-public:
+ public:
   EventManager() = default;
   virtual ~EventManager() = default;
 
@@ -28,11 +28,11 @@ public:
         listener, priority, ignoreIfHandled);
 
     BaseEventListener &base = listener;
-    base.m_connectedEvents.insert(
-        std::make_pair(Event<E>::getFamily(),
-                       std::make_pair(std::weak_ptr<EventToListenersConnection>(
-                                          event_connection),
-                                      connection_id)));
+    base.m_connectedEvents.insert(std::make_pair(
+        Event<E>::getFamily(),
+        std::make_pair(
+            std::weak_ptr<EventToListenersConnection>(event_connection),
+            connection_id)));
   }
 
   template <typename E, typename Listener>
@@ -51,17 +51,20 @@ public:
     base.m_connectedEvents.erase(family);
   }
 
-  template <typename E> void publish(const E &event) {
+  template <typename E>
+  void publish(const E &event) {
     auto event_connection = getEventConnection<E>();
     event_connection->template publishEvent<E>(event);
   }
 
-  template <typename E> void publish(std::unique_ptr<E> event) {
+  template <typename E>
+  void publish(std::unique_ptr<E> event) {
     auto event_connection = getEventConnection<E>();
     event_connection->template publishEvent<E>(event);
   }
 
-  template <typename E, typename... Args> void publish(Args &&...args) {
+  template <typename E, typename... Args>
+  void publish(Args &&...args) {
     auto event_connection = getEventConnection<E>();
     event_connection->template publishEvent<E>(std::forward<Args>(args)...);
   }
@@ -69,13 +72,12 @@ public:
   std::size_t getNumberOfListeners() const {
     std::size_t count = 0;
     for (auto &event_connection : m_eventsConnections)
-      if (event_connection)
-        count += event_connection->size();
+      if (event_connection) count += event_connection->size();
 
     return count;
   }
 
-private:
+ private:
   template <typename E>
   std::shared_ptr<EventToListenersConnection> &getEventConnection() {
     auto family = Event<E>::getFamily();
@@ -92,8 +94,8 @@ private:
     return m_eventsConnections[family];
   }
 
-private:
+ private:
   EventsConnectionsVector m_eventsConnections;
 };
 
-} // namespace Neat
+}  // namespace Neat

@@ -12,7 +12,7 @@ namespace Neat {
 class Camera2DControllerSystem
     : public System<Camera2DControllerSystem>,
       public EventListener<Camera2DControllerSystem> {
-public:
+ public:
   Camera2DControllerSystem(float aspectRatio, bool rotationEnabled = true);
 
   ~Camera2DControllerSystem();
@@ -31,7 +31,7 @@ public:
   bool handleEvent(const MouseMovedEvent &event);
   bool handleEvent(const WindowResizeEvent &event);
 
-private:
+ private:
   Camera2D m_camera;
   float m_zoomLevel = 1.0f;
   float m_translationSpeed = 1.0f;
@@ -41,4 +41,4 @@ private:
   bool m_firstMouse = true;
   bool m_rotationEnabled;
 };
-} // namespace Neat
+}  // namespace Neat

@@ -21,4 +21,4 @@ std::ostream &operator<<(std::ostream &os, const Matrix<M, N, T> &m) {
 
   return os;
 }
-} // namespace Neat
+}  // namespace Neat

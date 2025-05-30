@@ -10,7 +10,7 @@
 
 namespace Neat {
 class FPSCounter {
-public:
+ public:
   FPSCounter(double intervalSeconds = 1.0) : m_interval(intervalSeconds) {}
 
   void start() { timer.start(); }
@@ -18,10 +18,10 @@ public:
 
   void addFrame();
 
-private:
+ private:
   double m_interval;
   double m_fps = 0.0;
   Timer timer;
   UInt32 m_frameCount = 0;
 };
-} // namespace Neat
+}  // namespace Neat

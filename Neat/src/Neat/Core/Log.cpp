@@ -13,4 +13,4 @@ void Log::init(const char *pattern) {
   Log::s_clientLogger = spdlog::stdout_color_mt("APP");
   Log::s_clientLogger->set_level(spdlog::level::trace);
 }
-} // namespace Neat
+}  // namespace Neat

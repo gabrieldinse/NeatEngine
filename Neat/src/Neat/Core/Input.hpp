@@ -10,10 +10,10 @@
 
 namespace Neat {
 class Input {
-public:
+ public:
   struct InputImpl;
 
-public:
+ public:
   static void setWindow(Window &window);
   static bool isKeyPressed(Key key);
   static bool isMouseButtonPressed(MouseCode button);
@@ -21,8 +21,8 @@ public:
   static float getMouseX();
   static float getMouseY();
 
-private:
+ private:
   static std::unique_ptr<InputImpl> s_impl;
 };
 
-} // namespace Neat
+}  // namespace Neat

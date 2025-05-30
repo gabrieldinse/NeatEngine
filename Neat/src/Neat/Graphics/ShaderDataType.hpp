@@ -39,7 +39,7 @@ enum class ShaderDataType {
 };
 
 class OpenGLTypeConverter {
-public:
+ public:
   static UInt32 sizeInBytes(ShaderDataType type);
   static UInt32 componentCount(ShaderDataType type);
   static UInt32 baseType(ShaderDataType type);
@@ -47,4 +47,4 @@ public:
   static ShaderDataType toShaderDataType(UInt32 type, UInt32 count);
   static UInt32 fromStringToShaderType(const std::string &type);
 };
-} // namespace Neat
+}  // namespace Neat

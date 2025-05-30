@@ -10,7 +10,7 @@ namespace Neat {
 // BaseMemoryPool ------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class BaseMemoryPool {
-public:
+ public:
   explicit BaseMemoryPool(std::size_t elementSize, std::size_t blockSize)
       : m_elementSize(elementSize), m_blockSize(blockSize) {}
 
@@ -40,7 +40,7 @@ public:
 
   virtual void destroy(std::size_t n) = 0;
 
-protected:
+ protected:
   std::vector<Byte *> m_memoryBlocks;
   std::size_t m_blockSize;
   std::size_t m_elementSize;
@@ -53,7 +53,7 @@ protected:
 // ---------------------------------------------------------------------- //
 template <typename T, std::size_t BlockSize = 8192>
 class MemoryPool : public BaseMemoryPool {
-public:
+ public:
   MemoryPool() : BaseMemoryPool(sizeof(T), BlockSize) {}
 
   virtual ~MemoryPool() = default;
@@ -65,4 +65,4 @@ public:
     ptr->~T();
   }
 };
-} // namespace Neat
+}  // namespace Neat

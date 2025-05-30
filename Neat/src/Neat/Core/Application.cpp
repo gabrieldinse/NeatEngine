@@ -65,4 +65,4 @@ bool Application::handleEvent(const WindowResizeEvent &event) {
 
   return false;
 }
-} // namespace Neat
+}  // namespace Neat

@@ -103,7 +103,7 @@ void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
     startNewBatch();
   }
 
-  constexpr Int32 textureIndex = 0; // white texture;
+  constexpr Int32 textureIndex = 0;  // white texture;
   constexpr float tilingFactor = 1.0f;
   constexpr Vector2F textureCoordinates[] = {
       {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
@@ -168,7 +168,7 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
     startNewBatch();
   }
 
-  constexpr Int32 textureIndex = 0; // white texture;
+  constexpr Int32 textureIndex = 0;  // white texture;
   constexpr float tilingFactor = 1.0f;
   constexpr Vector2F textureCoordinates[] = {
       {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
@@ -230,4 +230,4 @@ Renderer2D::Statistics Renderer2D::getStats() { return s_data.stats; }
 void Renderer2D::resetStats() {
   std::memset(&s_data.stats, 0, sizeof(Statistics));
 }
-} // namespace Neat
+}  // namespace Neat

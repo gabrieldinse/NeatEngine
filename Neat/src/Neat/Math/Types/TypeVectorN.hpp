@@ -8,11 +8,12 @@
 
 namespace Neat {
 // Vector class template
-template <UInt32 N, typename T> struct Vector {};
+template <UInt32 N, typename T>
+struct Vector {};
 
 // Ostream operator
 template <typename T, UInt32 N>
 std::ostream &operator<<(std::ostream &os, const Vector<N, T> &v);
-} // namespace Neat
+}  // namespace Neat
 
 #include "Neat/Math/Types/TypeVectorN.inl"

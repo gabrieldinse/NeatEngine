@@ -2,7 +2,8 @@
 
 namespace Neat {
 // Default constructor
-template <typename T> inline constexpr Vector<1, T>::Vector() : x(zero<T>) {}
+template <typename T>
+inline constexpr Vector<1, T>::Vector() : x(zero<T>) {}
 
 // Basic Constructors
 template <typename T>
@@ -47,8 +48,8 @@ inline constexpr Vector<1, T> &Vector<1, T>::operator=(const T &scalar) {
 
 template <typename T>
 template <typename U>
-inline constexpr Vector<1, T> &
-Vector<1, T>::operator=(const Vector<1, U> &other) {
+inline constexpr Vector<1, T> &Vector<1, T>::operator=(
+    const Vector<1, U> &other) {
   x = other.x;
 
   return *this;
@@ -95,17 +96,16 @@ inline constexpr Vector<1, T> &Vector<1, T>::operator/=(const U &scalar) {
   return *this;
 }
 
-template <typename T> inline constexpr T &Vector<1, T>::operator[](UInt32 pos) {
-  if (pos >= size())
-    throw VectorDimensionError();
+template <typename T>
+inline constexpr T &Vector<1, T>::operator[](UInt32 pos) {
+  if (pos >= size()) throw VectorDimensionError();
 
   return (&x)[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<1, T>::operator[](UInt32 pos) const {
-  if (pos >= size())
-    throw VectorDimensionError();
+  if (pos >= size()) throw VectorDimensionError();
 
   return (&x)[pos];
 }
@@ -166,15 +166,20 @@ inline constexpr bool operator!=(const Vector<1, T> &va,
 }
 
 // Vector operations
-template <typename T> T dot(const Vector<1, T> &va, const Vector<1, T> &vb) {
+template <typename T>
+T dot(const Vector<1, T> &va, const Vector<1, T> &vb) {
   return va.x * vb.x;
 }
 
-template <typename T> T norm(const Vector<1, T> &v) { return abs(v.x); }
+template <typename T>
+T norm(const Vector<1, T> &v) {
+  return abs(v.x);
+}
 
-template <typename T> Vector<1, T> normalize(const Vector<1, T> &v) {
+template <typename T>
+Vector<1, T> normalize(const Vector<1, T> &v) {
   T one_over_norm = one<T> / norm(v);
 
   return one_over_norm * v;
 }
-} // namespace Neat
+}  // namespace Neat

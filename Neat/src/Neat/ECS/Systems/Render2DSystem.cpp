@@ -15,4 +15,4 @@ void Render2DSystem::update(EntityManager &entityManager,
 
   Renderer2D::endScene();
 }
-} // namespace Neat
+}  // namespace Neat

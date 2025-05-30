@@ -37,4 +37,4 @@ void RenderCommand::setViewport(UInt32 xOffset, UInt32 yOffset, UInt32 width,
                                 UInt32 height) {
   glViewport(xOffset, yOffset, width, height);
 }
-} // namespace Neat
+}  // namespace Neat

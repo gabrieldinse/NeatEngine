@@ -5,7 +5,7 @@
 
 namespace Neat {
 class VertexArray {
-public:
+ public:
   VertexArray();
   ~VertexArray();
   void bind() const;
@@ -22,9 +22,9 @@ public:
     return m_indexBuffer;
   }
 
-private:
+ private:
   UInt32 m_id = 0;
   std::vector<std::shared_ptr<VertexBuffer>> m_vertexBuffers;
   std::shared_ptr<IndexBuffer> m_indexBuffer;
 };
-} // namespace Neat
+}  // namespace Neat

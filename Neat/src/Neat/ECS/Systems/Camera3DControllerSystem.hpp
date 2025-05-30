@@ -12,7 +12,7 @@ namespace Neat {
 class Camera3DControllerSystem
     : public System<Camera3DControllerSystem>,
       public EventListener<Camera3DControllerSystem> {
-public:
+ public:
   Camera3DControllerSystem(float aspectRatio, bool rotationEnabled = true);
 
   ~Camera3DControllerSystem();
@@ -29,7 +29,7 @@ public:
   bool handleEvent(const MouseMovedEvent &event);
   bool handleEvent(const WindowResizeEvent &event);
 
-private:
+ private:
   Camera m_camera;
   float m_translationSpeed = 0.0f;
   float m_rotationSpeed = 90.0f;
@@ -38,4 +38,4 @@ private:
   bool m_firstMouse = true;
   bool m_rotationEnabled;
 };
-} // namespace Neat
+}  // namespace Neat

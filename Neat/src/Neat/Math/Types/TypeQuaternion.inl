@@ -3,7 +3,8 @@
 
 namespace Neat {
 // Quaternion/Matrix conversion
-template <typename T> Matrix<3, 3, T> Matrix3Cast(const Quaternion<T> &q) {
+template <typename T>
+Matrix<3, 3, T> Matrix3Cast(const Quaternion<T> &q) {
   Matrix<3, 3, T> result;
   T qxx = q.x * q.x;
   T qyy = q.y * q.y;
@@ -28,11 +29,13 @@ template <typename T> Matrix<3, 3, T> Matrix3Cast(const Quaternion<T> &q) {
   return result;
 }
 
-template <typename T> Matrix<4, 4, T> Matrix4Cast(const Quaternion<T> &q) {
+template <typename T>
+Matrix<4, 4, T> Matrix4Cast(const Quaternion<T> &q) {
   return Matrix<4, 4, T>(Matrix3Cast(q));
 }
 
-template <typename T> Quaternion<T> QuaternionCast(const Matrix<3, 3, T> &m) {
+template <typename T>
+Quaternion<T> QuaternionCast(const Matrix<3, 3, T> &m) {
   T four_x_squared_minus1 = m[0][0] - m[1][1] - m[2][2];
   T four_y_squared_minus1 = m[1][1] - m[0][0] - m[2][2];
   T four_z_squared_minus1 = m[2][2] - m[0][0] - m[1][1];
@@ -57,32 +60,33 @@ template <typename T> Quaternion<T> QuaternionCast(const Matrix<3, 3, T> &m) {
   T factor = oneForth<T> / biggest_value;
 
   switch (biggest_index) {
-  case 0:
-    return Quaternion<T>(biggest_value, (m[1][2] - m[2][1]) * factor,
-                         (m[2][0] - m[0][2]) * factor,
-                         (m[0][1] - m[1][0]) * factor);
+    case 0:
+      return Quaternion<T>(biggest_value, (m[1][2] - m[2][1]) * factor,
+                           (m[2][0] - m[0][2]) * factor,
+                           (m[0][1] - m[1][0]) * factor);
 
-  case 1:
-    return Quaternion<T>((m[1][2] - m[2][1]) * factor, biggest_value,
-                         (m[0][1] + m[1][0]) * factor,
-                         (m[2][0] + m[0][2]) * factor);
+    case 1:
+      return Quaternion<T>((m[1][2] - m[2][1]) * factor, biggest_value,
+                           (m[0][1] + m[1][0]) * factor,
+                           (m[2][0] + m[0][2]) * factor);
 
-  case 2:
-    return Quaternion<T>((m[2][0] - m[0][2]) * factor,
-                         (m[0][1] + m[1][0]) * factor, biggest_value,
-                         (m[1][2] + m[2][1]) * factor);
+    case 2:
+      return Quaternion<T>((m[2][0] - m[0][2]) * factor,
+                           (m[0][1] + m[1][0]) * factor, biggest_value,
+                           (m[1][2] + m[2][1]) * factor);
 
-  case 3:
-    return Quaternion<T>((m[0][1] - m[1][0]) * factor,
-                         (m[2][0] + m[0][2]) * factor,
-                         (m[1][2] + m[2][1]) * factor, biggest_value);
+    case 3:
+      return Quaternion<T>((m[0][1] - m[1][0]) * factor,
+                           (m[2][0] + m[0][2]) * factor,
+                           (m[1][2] + m[2][1]) * factor, biggest_value);
 
-  default:
-    return Quaternion<T>();
+    default:
+      return Quaternion<T>();
   }
 }
 
-template <typename T> Quaternion<T> QuaternionCast(const Matrix<4, 4, T> &m) {
+template <typename T>
+Quaternion<T> QuaternionCast(const Matrix<4, 4, T> &m) {
   return QuaternionCast(Matrix<3, 3, T>(m));
 }
 
@@ -109,7 +113,9 @@ inline constexpr Quaternion<T>::Quaternion(const Quaternion<T> &q)
 template <typename T>
 template <typename U>
 inline constexpr Quaternion<T>::Quaternion(const Quaternion<U> &q)
-    : w(static_cast<T>(q.w)), x(static_cast<T>(q.x)), y(static_cast<T>(q.y)),
+    : w(static_cast<T>(q.w)),
+      x(static_cast<T>(q.x)),
+      y(static_cast<T>(q.y)),
       z(static_cast<T>(q.z)) {}
 
 // Matrix constructor
@@ -125,8 +131,8 @@ inline constexpr Quaternion<T>::Quaternion(const Matrix<4, 4, T> &rotation) {
 
 // Static factory constructors
 template <typename T>
-inline constexpr Quaternion<T>
-Quaternion<T>::fromAngleAxis(T angleRadians, const Vector<3, T> &axis) {
+inline constexpr Quaternion<T> Quaternion<T>::fromAngleAxis(
+    T angleRadians, const Vector<3, T> &axis) {
   return Quaternion<T>(cos(angleRadians / 2), sin(angleRadians / 2) * axis);
 }
 
@@ -137,8 +143,8 @@ inline constexpr Quaternion<T> Quaternion<T>::fromEulerAngles(T pitch, T yaw,
 }
 
 template <typename T>
-inline constexpr Quaternion<T>
-Quaternion<T>::fromEulerAngles(const Vector<3, T> &pitchYawRoll) {
+inline constexpr Quaternion<T> Quaternion<T>::fromEulerAngles(
+    const Vector<3, T> &pitchYawRoll) {
   Vector<3, T> c = cos(pitchYawRoll * oneHalf<T>);
   Vector<3, T> s = sin(pitchYawRoll * oneHalf<T>);
 
@@ -161,8 +167,8 @@ inline constexpr Matrix<4, 4, T> Quaternion<T>::toMatrix4() const {
 // Assignment operators
 template <typename T>
 template <typename U>
-inline constexpr Quaternion<T> &
-Quaternion<T>::operator=(const Quaternion<U> &q) {
+inline constexpr Quaternion<T> &Quaternion<T>::operator=(
+    const Quaternion<U> &q) {
   w = static_cast<T>(q.w);
   x = static_cast<T>(q.x);
   y = static_cast<T>(q.y);
@@ -174,8 +180,8 @@ Quaternion<T>::operator=(const Quaternion<U> &q) {
 // Compound assignment operators
 template <typename T>
 template <typename U>
-inline constexpr Quaternion<T> &
-Quaternion<T>::operator+=(const Quaternion<U> &q) {
+inline constexpr Quaternion<T> &Quaternion<T>::operator+=(
+    const Quaternion<U> &q) {
   w += static_cast<T>(q.w);
   x += static_cast<T>(q.x);
   y += static_cast<T>(q.y);
@@ -186,8 +192,8 @@ Quaternion<T>::operator+=(const Quaternion<U> &q) {
 
 template <typename T>
 template <typename U>
-inline constexpr Quaternion<T> &
-Quaternion<T>::operator-=(const Quaternion<U> &q) {
+inline constexpr Quaternion<T> &Quaternion<T>::operator-=(
+    const Quaternion<U> &q) {
   w -= static_cast<T>(q.w);
   x -= static_cast<T>(q.x);
   y -= static_cast<T>(q.y);
@@ -198,8 +204,8 @@ Quaternion<T>::operator-=(const Quaternion<U> &q) {
 
 template <typename T>
 template <typename U>
-inline constexpr Quaternion<T> &
-Quaternion<T>::operator*=(const Quaternion<U> &q) {
+inline constexpr Quaternion<T> &Quaternion<T>::operator*=(
+    const Quaternion<U> &q) {
   w = w * q.w - x * q.x - y * q.y - z * q.z;
   x = w * q.x + x * q.w + y * q.z - z * q.y;
   y = w * q.y + y * q.w + z * q.x - x * q.z;
@@ -231,27 +237,27 @@ inline constexpr Quaternion<T> &Quaternion<T>::operator/=(U scalar) {
 }
 
 // Explicit conversion operators
-template <typename T> inline Quaternion<T>::operator Matrix<3, 3, T>() const {
+template <typename T>
+inline Quaternion<T>::operator Matrix<3, 3, T>() const {
   return Matrix3Cast(*this);
 }
 
-template <typename T> inline Quaternion<T>::operator Matrix<4, 4, T>() const {
+template <typename T>
+inline Quaternion<T>::operator Matrix<4, 4, T>() const {
   return Matrix4Cast(*this);
 }
 
 // Elements accessing
 template <typename T>
 inline constexpr T &Quaternion<T>::operator[](UInt32 pos) {
-  if (pos >= 4)
-    throw QuaternionDimensionError();
+  if (pos >= 4) throw QuaternionDimensionError();
 
   return (&w)[pos];
 }
 
 template <typename T>
 inline constexpr const T &Quaternion<T>::operator[](UInt32 pos) const {
-  if (pos >= 4)
-    throw QuaternionDimensionError();
+  if (pos >= 4) throw QuaternionDimensionError();
 
   return (&w)[pos];
 }
@@ -353,7 +359,8 @@ inline constexpr Quaternion<T> cross(const Quaternion<T> &qa,
   return qa * qb;
 }
 
-template <typename T> inline constexpr T norm(const Quaternion<T> &q) {
+template <typename T>
+inline constexpr T norm(const Quaternion<T> &q) {
   return sqrt(dot(q, q));
 }
 
@@ -392,8 +399,7 @@ std::ostream &operator<<(std::ostream &os, const Quaternion<T> &q) {
   for (UInt32 i = 0; i < q.size(); ++i) {
     if (i < q.size() - 1) {
       os << std::setw(10) << std::setprecision(6) << q[i] << ", ";
-      if (i == 0)
-        os << "[";
+      if (i == 0) os << "[";
     } else
       os << std::setw(10) << std::setprecision(6) << q[i];
   }
@@ -401,4 +407,4 @@ std::ostream &operator<<(std::ostream &os, const Quaternion<T> &q) {
 
   return os;
 }
-} // namespace Neat
+}  // namespace Neat

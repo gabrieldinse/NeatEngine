@@ -15,7 +15,7 @@ struct BaseComponent {
   void operator delete(void *ptr) { fail(); }
   void operator delete[](void *ptr) { fail(); }
 
-protected:
+ protected:
   static void fail() { throw BadComponentAllocationError(); }
 
   static Family s_familyCounter;
@@ -24,16 +24,16 @@ protected:
 // ---------------------------------------------------------------------- //
 // Component ------------------------------------------------------------ //
 // ---------------------------------------------------------------------- //
-template <typename Derived> struct Component : public BaseComponent {
-private:
+template <typename Derived>
+struct Component : public BaseComponent {
+ private:
   friend class EntityManager;
 
   static Family getFamily() {
     static Family family = s_familyCounter++;
-    if (family >= maxComponents)
-      throw MaximumNumberOfComponentsError();
+    if (family >= maxComponents) throw MaximumNumberOfComponentsError();
 
     return family;
   }
 };
-} // namespace Neat
+}  // namespace Neat

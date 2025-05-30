@@ -10,10 +10,9 @@ SubTexture2D::SubTexture2D(const Texture2D &texture,
                            upperRightCoordinate,
                            {bottomLeftCoordinate.x, upperRightCoordinate.y}} {}
 
-std::shared_ptr<SubTexture2D>
-SubTexture2D::createFromIndex(const Texture2D &texture, const Vector2F &indexes,
-                              const Vector2F &cellSize,
-                              const Vector2F &subTextureSizeInCells) {
+std::shared_ptr<SubTexture2D> SubTexture2D::createFromIndex(
+    const Texture2D &texture, const Vector2F &indexes, const Vector2F &cellSize,
+    const Vector2F &subTextureSizeInCells) {
   Vector2F bottom_left_coordinate(indexes.i * cellSize.x / texture.getWidth(),
                                   indexes.j * cellSize.y / texture.getHeight());
   Vector2F upper_right_coordinate(
@@ -23,4 +22,4 @@ SubTexture2D::createFromIndex(const Texture2D &texture, const Vector2F &indexes,
   return std::make_shared<SubTexture2D>(texture, bottom_left_coordinate,
                                         upper_right_coordinate);
 }
-} // namespace Neat
+}  // namespace Neat

@@ -5,7 +5,8 @@
 namespace Neat {
 Camera2DControllerSystem::Camera2DControllerSystem(float aspectRatio,
                                                    bool rotationEnabled)
-    : m_camera(Vector2F(0.0f), aspectRatio), m_aspectRatio(aspectRatio),
+    : m_camera(Vector2F(0.0f), aspectRatio),
+      m_aspectRatio(aspectRatio),
       m_rotationEnabled(rotationEnabled) {}
 
 Camera2DControllerSystem::~Camera2DControllerSystem() {}
@@ -20,17 +21,13 @@ void Camera2DControllerSystem::update(EntityManager &entityManager,
                                       EventManager &eventManager,
                                       DeltaTime deltaTime) {
   auto distance = (float)(m_translationSpeed * deltaTime);
-  if (Input::isKeyPressed(Key::W))
-    m_camera.moveUp(distance);
+  if (Input::isKeyPressed(Key::W)) m_camera.moveUp(distance);
 
-  if (Input::isKeyPressed(Key::S))
-    m_camera.moveDown(distance);
+  if (Input::isKeyPressed(Key::S)) m_camera.moveDown(distance);
 
-  if (Input::isKeyPressed(Key::D))
-    m_camera.moveRight(distance);
+  if (Input::isKeyPressed(Key::D)) m_camera.moveRight(distance);
 
-  if (Input::isKeyPressed(Key::A))
-    m_camera.moveLeft(distance);
+  if (Input::isKeyPressed(Key::A)) m_camera.moveLeft(distance);
 
   if (m_rotationEnabled) {
     auto rotation = (float)(m_rotationSpeed * deltaTime);
@@ -80,4 +77,4 @@ bool Camera2DControllerSystem::handleEvent(const WindowResizeEvent &event) {
 
   return false;
 }
-} // namespace Neat
+}  // namespace Neat

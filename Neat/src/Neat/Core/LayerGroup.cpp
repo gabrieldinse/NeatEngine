@@ -33,4 +33,4 @@ std::unique_ptr<Layer> LayerGroup::popOverlay(Int32 position) {
   m_layers.erase(m_layers.begin() + position);
   return layer;
 }
-} // namespace Neat
+}  // namespace Neat

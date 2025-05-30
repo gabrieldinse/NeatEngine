@@ -7,7 +7,7 @@
 
 namespace Neat {
 class Layer {
-public:
+ public:
   Layer() = default;
   virtual ~Layer() = default;
 
@@ -17,4 +17,4 @@ public:
   virtual void render() {}
   virtual void inGuiRender() {}
 };
-} // namespace Neat
+}  // namespace Neat

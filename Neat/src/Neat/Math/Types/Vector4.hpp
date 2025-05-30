@@ -5,7 +5,8 @@
 #include "Neat/Math/Types/TypeVectorN.hpp"
 
 namespace Neat {
-template <typename T> struct Vector<4, T> {
+template <typename T>
+struct Vector<4, T> {
   using Type = Vector<4, T>;
   using ValueType = T;
 
@@ -37,10 +38,14 @@ template <typename T> struct Vector<4, T> {
   constexpr Vector(const Vector<4, T> &v);
 
   // Conversion constructors
-  template <typename U> constexpr explicit Vector(const Vector<4, U> &v);
-  template <typename U> constexpr explicit Vector(const Vector<3, U> &v);
-  template <typename U> constexpr explicit Vector(const Vector<2, U> &v);
-  template <typename U> constexpr explicit Vector(const Vector<1, U> &v);
+  template <typename U>
+  constexpr explicit Vector(const Vector<4, U> &v);
+  template <typename U>
+  constexpr explicit Vector(const Vector<3, U> &v);
+  template <typename U>
+  constexpr explicit Vector(const Vector<2, U> &v);
+  template <typename U>
+  constexpr explicit Vector(const Vector<1, U> &v);
   template <typename A, typename B>
   constexpr explicit Vector(const Vector<3, A> &v, const B &scalar);
 
@@ -71,8 +76,10 @@ template <typename T> struct Vector<4, T> {
   constexpr Vector<4, T> &operator*=(const Vector<4, U> &v);
   template <typename U>
   constexpr Vector<4, T> &operator*=(const Vector<1, U> &v);
-  template <typename U> constexpr Vector<4, T> &operator*=(const U &scalar);
-  template <typename U> constexpr Vector<4, T> &operator/=(const U &scalar);
+  template <typename U>
+  constexpr Vector<4, T> &operator*=(const U &scalar);
+  template <typename U>
+  constexpr Vector<4, T> &operator/=(const U &scalar);
 
   // Explicit conversion operators
   constexpr explicit operator bool() const;
@@ -143,9 +150,11 @@ inline constexpr bool operator!=(const Vector<4, T> &va,
 template <typename T>
 inline T dot(const Vector<4, T> &va, const Vector<4, T> &vb);
 
-template <typename T> inline T norm(const Vector<4, T> &v);
+template <typename T>
+inline T norm(const Vector<4, T> &v);
 
-template <typename T> inline Vector<4, T> normalize(const Vector<4, T> &v);
-} // namespace Neat
+template <typename T>
+inline Vector<4, T> normalize(const Vector<4, T> &v);
+}  // namespace Neat
 
 #include "Neat/Math/Types/Vector4.inl"

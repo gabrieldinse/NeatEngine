@@ -3,7 +3,7 @@
 
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
-#include <imgui.h> // need to be before the next two includes
+#include <imgui.h>  // need to be before the next two includes
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -15,12 +15,12 @@ void ImGuiRender::init() {
   ImGui::CreateContext();
   auto &io = ImGui::GetIO();
   io.ConfigFlags |=
-      ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+      ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
   io.ConfigFlags |=
-      ImGuiConfigFlags_NavEnableGamepad;              // Enable Gamepad Controls
-  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;   // Enable Docking
-  io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport /
-                                                      // Platform Windows
+      ImGuiConfigFlags_NavEnableGamepad;             // Enable Gamepad Controls
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;  // Enable Docking
+  io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;  // Enable Multi-Viewport
+                                                       // / Platform Windows
   // TODO check these flags
   // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
   // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
@@ -74,4 +74,4 @@ void ImGuiRender::end() {
     glfwMakeContextCurrent(backup_current_context);
   }
 }
-} // namespace Neat
+}  // namespace Neat

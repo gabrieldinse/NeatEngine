@@ -11,7 +11,7 @@
 
 namespace Neat {
 class Renderer2D {
-public:
+ public:
   static void init();
   static void shutdown();
 
@@ -67,7 +67,7 @@ public:
   static Statistics getStats();
   static void resetStats();
 
-private:
+ private:
   static void draw();
   static void startNewBatch();
   static bool reachedBatchDataLimit() {
@@ -75,7 +75,7 @@ private:
            QuadVextexDataBuffer::maxIndexes;
   }
 
-private:
+ private:
   struct QuadVertexData {
     Vector4F position{0.0f};
     Vector4F color{1.0f, 0.0f, 1.0f, 1.0f};
@@ -137,12 +137,12 @@ private:
     QuadVextexDataBuffer quadVextexDataBuffer;
 
     std::array<std::shared_ptr<Texture2D>, maxTextureSlots> textureSlots;
-    UInt32 textureSlotIndex = 1; // unit 0 = default white texture
+    UInt32 textureSlotIndex = 1;  // unit 0 = default white texture
 
     Statistics stats;
   };
 
-private:
+ private:
   static Renderer2DData s_data;
 };
-} // namespace Neat
+}  // namespace Neat

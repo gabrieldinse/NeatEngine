@@ -33,12 +33,12 @@ struct BufferElement {
 // BUfferLayout --------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class BufferLayout {
-public:
+ public:
   using BufferElementsVector = std::vector<BufferElement>;
   using BufferElementsVectorIt = BufferElementsVector::iterator;
   using BufferElementsVectorConstIt = BufferElementsVector::const_iterator;
 
-public:
+ public:
   BufferLayout() = default;
 
   BufferLayout(const std::initializer_list<BufferElement> &elements);
@@ -51,7 +51,7 @@ public:
   BufferElementsVectorConstIt begin() const { return m_elements.begin(); }
   BufferElementsVectorConstIt end() const { return m_elements.end(); }
 
-private:
+ private:
   BufferElementsVector m_elements;
   UInt32 m_offset = 0;
 };
@@ -60,7 +60,7 @@ private:
 // VertexBuffer --------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class VertexBuffer {
-public:
+ public:
   VertexBuffer(UInt32 size);
   VertexBuffer(float *vertices, UInt32 size);
   ~VertexBuffer();
@@ -75,7 +75,7 @@ public:
 
   void setData(const void *data, UInt32 size);
 
-private:
+ private:
   UInt32 m_id = 0;
   BufferLayout m_layout;
 };
@@ -84,7 +84,7 @@ private:
 // Indexbuffer ---------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class IndexBuffer {
-public:
+ public:
   IndexBuffer(UInt32 *indices, UInt32 count);
   ~IndexBuffer();
 
@@ -93,8 +93,8 @@ public:
 
   UInt32 getCount() const { return m_count; }
 
-private:
+ private:
   UInt32 m_id = 0;
   UInt32 m_count;
 };
-} // namespace Neat
+}  // namespace Neat

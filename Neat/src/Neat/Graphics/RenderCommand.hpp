@@ -6,7 +6,7 @@
 
 namespace Neat {
 class RenderCommand {
-public:
+ public:
   static void init();
 
   static void setClearColor(const Vector4F color);
@@ -19,4 +19,4 @@ public:
   static void setViewport(UInt32 xOffset, UInt32 yOffset, UInt32 width,
                           UInt32 height);
 };
-} // namespace Neat
+}  // namespace Neat

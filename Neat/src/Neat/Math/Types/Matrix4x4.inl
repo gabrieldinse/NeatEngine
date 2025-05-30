@@ -160,8 +160,8 @@ inline constexpr Matrix<4, 4, T> operator/(const Matrix<4, 4, T> &m,
 // Assignment operators
 template <typename T>
 template <typename U>
-inline constexpr Matrix<4, 4, T> &
-Matrix<4, 4, T>::operator=(const Matrix<4, 4, U> &m) {
+inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator=(
+    const Matrix<4, 4, U> &m) {
   m_rows[0] = m[0];
   m_rows[1] = m[1];
   m_rows[2] = m[2];
@@ -173,8 +173,8 @@ Matrix<4, 4, T>::operator=(const Matrix<4, 4, U> &m) {
 // Compound assigment operators
 template <typename T>
 template <typename U>
-inline constexpr Matrix<4, 4, T> &
-Matrix<4, 4, T>::operator+=(Matrix<4, 4, U> const &m) {
+inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator+=(
+    Matrix<4, 4, U> const &m) {
   m_rows[0] += m[0];
   m_rows[1] += m[1];
   m_rows[2] += m[2];
@@ -196,8 +196,8 @@ inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator-=(const U &scalar) {
 
 template <typename T>
 template <typename U>
-inline constexpr Matrix<4, 4, T> &
-Matrix<4, 4, T>::operator-=(Matrix<4, 4, U> const &m) {
+inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator-=(
+    Matrix<4, 4, U> const &m) {
   m_rows[0] -= m[0];
   m_rows[1] -= m[1];
   m_rows[2] -= m[2];
@@ -219,8 +219,8 @@ inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator*=(const U &scalar) {
 
 template <typename T>
 template <typename U>
-inline constexpr Matrix<4, 4, T> &
-Matrix<4, 4, T>::operator*=(Matrix<4, 4, U> const &m) {
+inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator*=(
+    Matrix<4, 4, U> const &m) {
   return (*this = *this * m);
 }
 
@@ -237,8 +237,8 @@ inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator/=(const U &scalar) {
 
 // Element accessing
 template <typename T>
-inline constexpr typename Matrix<4, 4, T>::RowType &
-Matrix<4, 4, T>::operator[](UInt32 row) {
+inline constexpr typename Matrix<4, 4, T>::RowType &Matrix<4, 4, T>::operator[](
+    UInt32 row) {
   return m_rows[row];
 }
 
@@ -259,7 +259,8 @@ inline constexpr const T &Matrix<4, 4, T>::operator()(UInt32 pos) const {
 }
 
 // Matrix operations
-template <typename T> inline T determinant(const Matrix<4, 4, T> &m) {
+template <typename T>
+inline T determinant(const Matrix<4, 4, T> &m) {
   T sub1 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
   T sub2 = m[2][3] * m[3][1] - m[2][1] * m[3][3];
   T sub3 = m[2][1] * m[3][2] - m[2][2] * m[3][1];
@@ -284,7 +285,8 @@ inline Matrix<4, 4, T> transpose(const Matrix<4, 4, T> &m) {
                          m[0][3], m[1][3], m[2][3], m[3][3]);
 }
 
-template <typename T> inline Matrix<4, 4, T> inverse(const Matrix<4, 4, T> &m) {
+template <typename T>
+inline Matrix<4, 4, T> inverse(const Matrix<4, 4, T> &m) {
   T s0 = m[0][0] * m[1][1] - m[1][0] * m[0][1];
   T s1 = m[0][0] * m[1][2] - m[1][0] * m[0][2];
   T s2 = m[0][0] * m[1][3] - m[1][0] * m[0][3];
@@ -320,4 +322,4 @@ template <typename T> inline Matrix<4, 4, T> inverse(const Matrix<4, 4, T> &m) {
       (-m[3][0] * s3 + m[3][1] * s1 - m[3][2] * s0) * inverse_determinant,
       (m[2][0] * s3 - m[2][1] * s1 + m[2][2] * s0) * inverse_determinant);
 }
-} // namespace Neat
+}  // namespace Neat

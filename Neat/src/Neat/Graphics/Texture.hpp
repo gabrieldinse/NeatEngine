@@ -9,7 +9,7 @@
 
 namespace Neat {
 class Texture {
-public:
+ public:
   virtual ~Texture() = default;
 
   virtual Int32 getWidth() const = 0;
@@ -21,7 +21,7 @@ public:
 };
 
 class Texture2D : public Texture {
-public:
+ public:
   Texture2D(Int32 width, Int32 height);
   Texture2D(const std::string &filepath);
   ~Texture2D();
@@ -37,7 +37,7 @@ public:
 
   bool operator==(const Texture2D &other) const { return (m_id == other.m_id); }
 
-private:
+ private:
   UInt32 m_id;
   Int32 m_width;
   Int32 m_height;
@@ -46,4 +46,4 @@ private:
   const Vector2F m_coordinates[4] = {
       {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
 };
-} // namespace Neat
+}  // namespace Neat

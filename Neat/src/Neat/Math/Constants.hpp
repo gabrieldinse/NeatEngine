@@ -5,35 +5,44 @@
 #include "Neat/Core/Types.hpp"
 
 namespace Neat {
-template <typename T> inline constexpr T zero = static_cast<T>(0);
+template <typename T>
+inline constexpr T zero = static_cast<T>(0);
 
 template <typename T>
 inline constexpr T oneSixth =
     static_cast<T>(0.16666666666666666666666666666667);
 
-template <typename T> inline constexpr T oneTenth = static_cast<T>(0.1);
+template <typename T>
+inline constexpr T oneTenth = static_cast<T>(0.1);
 
-template <typename T> inline constexpr T oneFifth = static_cast<T>(0.2);
+template <typename T>
+inline constexpr T oneFifth = static_cast<T>(0.2);
 
-template <typename T> inline constexpr T oneForth = static_cast<T>(0.25);
+template <typename T>
+inline constexpr T oneForth = static_cast<T>(0.25);
 
 template <typename T>
 inline constexpr T oneThird =
     static_cast<T>(0.33333333333333333333333333333333);
 
-template <typename T> inline constexpr T oneHalf = static_cast<T>(0.5);
+template <typename T>
+inline constexpr T oneHalf = static_cast<T>(0.5);
 
 template <typename T>
 inline constexpr T twoThirds =
     static_cast<T>(0.66666666666666666666666666666667);
 
-template <typename T> inline constexpr T one = static_cast<T>(1);
+template <typename T>
+inline constexpr T one = static_cast<T>(1);
 
-template <typename T> inline constexpr T oneAndOneHalf = static_cast<T>(1.5);
+template <typename T>
+inline constexpr T oneAndOneHalf = static_cast<T>(1.5);
 
-template <typename T> inline constexpr T two = static_cast<T>(2);
+template <typename T>
+inline constexpr T two = static_cast<T>(2);
 
-template <typename T> inline constexpr T twoAndOneHalf = static_cast<T>(2.5);
+template <typename T>
+inline constexpr T twoAndOneHalf = static_cast<T>(2.5);
 
 template <typename T>
 inline constexpr T e = static_cast<T>(2.7182818284590452353602874713527);
@@ -111,7 +120,8 @@ template <typename T>
 inline constexpr T radianInDegrees =
     static_cast<T>(57.295779513082320876798154814105);
 
-template <typename T> inline constexpr T sinSixthPi = static_cast<T>(0.5);
+template <typename T>
+inline constexpr T sinSixthPi = static_cast<T>(0.5);
 
 template <typename T>
 inline constexpr T sinQuarterPi =
@@ -136,7 +146,8 @@ template <typename T>
 inline constexpr T cosQuarterPi =
     static_cast<T>(0.70710678118654752440084436210485);
 
-template <typename T> inline constexpr T cosThirdPi = static_cast<T>(0.5);
+template <typename T>
+inline constexpr T cosThirdPi = static_cast<T>(0.5);
 
 template <typename T>
 inline constexpr T cosOneHalf =
@@ -178,4 +189,4 @@ inline constexpr T logETwo = static_cast<T>(0.69314718055994530941723212145818);
 
 template <typename T>
 inline constexpr T logETen = static_cast<T>(2.3025850929940456840179914546844);
-} // namespace Neat
+}  // namespace Neat

@@ -44,4 +44,4 @@ inline constexpr T nan = std::numeric_limits<T>::quiet_NaN();
 
 template <typename T>
 inline constexpr T signalNan = std::numeric_limits<T>::signaling_NaN();
-} // namespace Neat
+}  // namespace Neat

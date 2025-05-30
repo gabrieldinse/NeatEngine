@@ -12,7 +12,7 @@ class EntityManager;
 // BaseSystem ----------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class BaseSystem : public NonCopyable {
-public:
+ public:
   using Family = UInt32;
 
   virtual ~BaseSystem() = default;
@@ -21,21 +21,22 @@ public:
   virtual void update(EntityManager &entityManager, EventManager &eventManager,
                       DeltaTime deltaTime) = 0;
 
-protected:
+ protected:
   static Family s_familyCounter;
 };
 
 // ---------------------------------------------------------------------- //
 // System --------------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
-template <typename DerivedSystem> class System : public BaseSystem {
-public:
+template <typename DerivedSystem>
+class System : public BaseSystem {
+ public:
   virtual ~System() = default;
 
   virtual void update(EntityManager &entityManager, EventManager &eventManager,
                       DeltaTime deltaTime) override {}
 
-private:
+ private:
   friend class SystemManager;
 
   static Family getFamily() {
@@ -43,4 +44,4 @@ private:
     return family;
   }
 };
-} // namespace Neat
+}  // namespace Neat

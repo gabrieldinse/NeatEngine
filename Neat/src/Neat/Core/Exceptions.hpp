@@ -12,7 +12,7 @@ struct Exception : public std::exception {
   const std::string &msg() const { return m_msg; }
   virtual const char *what() const noexcept override { return m_msg.c_str(); }
 
-private:
+ private:
   std::string m_msg;
 };
 // -------------------------------------------------------------------------
@@ -184,4 +184,4 @@ struct InvalidSystemError : public SystemError {
       : SystemError(msg) {}
 };
 // -------------------------------------------------------------------------
-} // namespace Neat
+}  // namespace Neat

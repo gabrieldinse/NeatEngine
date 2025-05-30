@@ -7,7 +7,9 @@
 
 namespace Neat {
 Texture2D::Texture2D(Int32 width, Int32 height)
-    : m_width(width), m_height(height), m_internalFormat(GL_RGBA8),
+    : m_width(width),
+      m_height(height),
+      m_internalFormat(GL_RGBA8),
       m_dataFormat(GL_RGBA) {
   NT_CORE_ASSERT(m_internalFormat & m_dataFormat,
                  "Color channel format not supported!");
@@ -30,7 +32,7 @@ Texture2D::Texture2D(const std::string &filepath)
     : m_internalFormat(0), m_dataFormat(0) {
   // stbi_load uses signed Int32
   Int32 width, height, channels;
-  stbi_set_flip_vertically_on_load(1); // flip the image loaded vertically
+  stbi_set_flip_vertically_on_load(1);  // flip the image loaded vertically
   auto data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
   NT_CORE_ASSERT(data, "Failed to load texture image!");
 
@@ -79,4 +81,4 @@ void Texture2D::setData(void *data, UInt32 size) {
 }
 
 void Texture2D::bind(UInt32 unit) const { glBindTextureUnit(unit, m_id); }
-} // namespace Neat
+}  // namespace Neat

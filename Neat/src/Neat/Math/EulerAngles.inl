@@ -481,4 +481,4 @@ inline void extractEulerAnglesZXY(Matrix<4, 4, T> const &m, T &angle1,
   angle2 = at2;
   angle3 = at3;
 }
-} // namespace Neat
+}  // namespace Neat

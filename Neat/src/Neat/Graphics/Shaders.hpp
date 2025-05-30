@@ -4,7 +4,7 @@
 
 namespace Neat {
 class TextureShader : public ShaderProgram {
-public:
+ public:
   using ShaderProgram::ShaderProgram;
 
   void setTextures(Int32 *values, Int32 count) {
@@ -17,10 +17,10 @@ public:
     m_cameraTransform.set(projectionView);
   }
 
-private:
+ private:
   Uniform<ShaderDataType::IntArray> m_uniformTextures{
       getUniform<ShaderDataType::IntArray>("u_textures[0]")};
   Uniform<ShaderDataType::Matrix4F> m_cameraTransform{
       getUniform<ShaderDataType::Matrix4F>("u_cameraTransform")};
 };
-} // namespace Neat
+}  // namespace Neat

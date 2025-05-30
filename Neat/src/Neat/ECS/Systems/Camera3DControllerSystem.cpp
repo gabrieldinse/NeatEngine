@@ -23,23 +23,17 @@ void Camera3DControllerSystem::update(EntityManager &entityManager,
                                       EventManager &eventManager,
                                       DeltaTime deltaTime) {
   auto distance = (float)(m_translationSpeed * deltaTime);
-  if (Input::isKeyPressed(Key::W))
-    m_camera.moveForward(distance);
+  if (Input::isKeyPressed(Key::W)) m_camera.moveForward(distance);
 
-  if (Input::isKeyPressed(Key::S))
-    m_camera.moveBackward(distance);
+  if (Input::isKeyPressed(Key::S)) m_camera.moveBackward(distance);
 
-  if (Input::isKeyPressed(Key::D))
-    m_camera.moveRight(distance);
+  if (Input::isKeyPressed(Key::D)) m_camera.moveRight(distance);
 
-  if (Input::isKeyPressed(Key::A))
-    m_camera.moveLeft(distance);
+  if (Input::isKeyPressed(Key::A)) m_camera.moveLeft(distance);
 
-  if (Input::isKeyPressed(Key::Z))
-    m_camera.moveUp(distance);
+  if (Input::isKeyPressed(Key::Z)) m_camera.moveUp(distance);
 
-  if (Input::isKeyPressed(Key::X))
-    m_camera.moveDown(distance);
+  if (Input::isKeyPressed(Key::X)) m_camera.moveDown(distance);
 
   if (m_rotationEnabled) {
     auto rotation = (float)(m_rotationSpeed * deltaTime);
@@ -82,4 +76,4 @@ bool Camera3DControllerSystem::handleEvent(const WindowResizeEvent &event) {
 
   return false;
 }
-} // namespace Neat
+}  // namespace Neat

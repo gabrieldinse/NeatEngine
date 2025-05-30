@@ -1,3 +1,4 @@
-BasedOnStyle: LLVM
+#BasedOnStyle: LLVM
+BasedOnStyle: Google
 SortIncludes: false
 # Add any other preferences here

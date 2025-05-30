@@ -59,8 +59,8 @@ inline constexpr Vector<2, T>::Vector(const T *data, UInt32 count) {
 // Assignment operators
 template <typename T>
 template <typename U>
-inline constexpr Vector<2, T> &
-Vector<2, T>::operator=(const Vector<2, U> &other) {
+inline constexpr Vector<2, T> &Vector<2, T>::operator=(
+    const Vector<2, U> &other) {
   x = other.x;
   y = other.y;
 
@@ -113,21 +113,21 @@ inline constexpr Vector<2, T> &Vector<2, T>::operator/=(const U &scalar) {
   return *this;
 }
 
-template <typename T> inline constexpr Vector<2, T>::operator bool() const {
+template <typename T>
+inline constexpr Vector<2, T>::operator bool() const {
   return (norm(*this) > zero<T>);
 }
 
-template <typename T> inline constexpr T &Vector<2, T>::operator[](UInt32 pos) {
-  if (pos >= size())
-    throw VectorDimensionError();
+template <typename T>
+inline constexpr T &Vector<2, T>::operator[](UInt32 pos) {
+  if (pos >= size()) throw VectorDimensionError();
 
   return (&x)[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<2, T>::operator[](UInt32 pos) const {
-  if (pos >= size())
-    throw VectorDimensionError();
+  if (pos >= size()) throw VectorDimensionError();
 
   return (&x)[pos];
 }
@@ -200,15 +200,20 @@ inline constexpr bool operator!=(const Vector<2, T> &va,
 }
 
 // Vector operations
-template <typename T> T dot(const Vector<2, T> &va, const Vector<2, T> &vb) {
+template <typename T>
+T dot(const Vector<2, T> &va, const Vector<2, T> &vb) {
   return va.x * vb.x + va.y * vb.y;
 }
 
-template <typename T> T norm(const Vector<2, T> &v) { return sqrt(dot(v, v)); }
+template <typename T>
+T norm(const Vector<2, T> &v) {
+  return sqrt(dot(v, v));
+}
 
-template <typename T> Vector<2, T> normalize(const Vector<2, T> &v) {
+template <typename T>
+Vector<2, T> normalize(const Vector<2, T> &v) {
   T one_over_norm = static_cast<T>(1) / norm(v);
 
   return one_over_norm * v;
 }
-} // namespace Neat
+}  // namespace Neat

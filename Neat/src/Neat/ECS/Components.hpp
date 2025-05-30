@@ -26,4 +26,4 @@ struct Renderable {
 
   std::unique_ptr<Shape> shape;
 };
-} // namespace Neat
+}  // namespace Neat

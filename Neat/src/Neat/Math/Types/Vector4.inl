@@ -25,13 +25,17 @@ inline constexpr Vector<4, T>::Vector(const Vector<4, T> &v)
 template <typename T>
 template <typename U>
 inline constexpr Vector<4, T>::Vector(const Vector<4, U> &v)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)),
+    : x(static_cast<T>(v.x)),
+      y(static_cast<T>(v.y)),
+      z(static_cast<T>(v.z)),
       w(static_cast<T>(v.w)) {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<4, T>::Vector(const Vector<3, U> &v)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)),
+    : x(static_cast<T>(v.x)),
+      y(static_cast<T>(v.y)),
+      z(static_cast<T>(v.z)),
       w(zero<T>) {}
 
 template <typename T>
@@ -47,28 +51,36 @@ inline constexpr Vector<4, T>::Vector(const Vector<1, U> &v)
 template <typename T>
 template <typename A, typename B>
 inline constexpr Vector<4, T>::Vector(const Vector<3, A> &v, const B &scalar)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)),
+    : x(static_cast<T>(v.x)),
+      y(static_cast<T>(v.y)),
+      z(static_cast<T>(v.z)),
       w(static_cast<T>(scalar)) {}
 
 template <typename T>
 template <typename A, typename B, typename C>
 inline constexpr Vector<4, T>::Vector(const Vector<2, A> &v, const B &scalar1,
                                       const C &scalar2)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)),
-      z(static_cast<T>(scalar1)), w(static_cast<T>(scalar2)) {}
+    : x(static_cast<T>(v.x)),
+      y(static_cast<T>(v.y)),
+      z(static_cast<T>(scalar1)),
+      w(static_cast<T>(scalar2)) {}
 
 template <typename T>
 template <typename A, typename B, typename C, typename D>
 inline constexpr Vector<4, T>::Vector(const Vector<1, A> &v, const B &scalar1,
                                       const C &scalar2, const D &scalar3)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(scalar1)),
-      z(static_cast<T>(scalar2)), w(static_cast<T>(scalar3)) {}
+    : x(static_cast<T>(v.x)),
+      y(static_cast<T>(scalar1)),
+      z(static_cast<T>(scalar2)),
+      w(static_cast<T>(scalar3)) {}
 
 template <typename T>
 template <typename X, typename Y, typename Z, typename W>
 inline constexpr Vector<4, T>::Vector(const X &x, const Y &y, const Z &z,
                                       const W &w)
-    : x(static_cast<T>(x)), y(static_cast<T>(y)), z(static_cast<T>(z)),
+    : x(static_cast<T>(x)),
+      y(static_cast<T>(y)),
+      z(static_cast<T>(z)),
       w(static_cast<T>(w)) {}
 
 template <typename T>
@@ -83,8 +95,8 @@ inline constexpr Vector<4, T>::Vector(const T *data, UInt32 count) {
 // Assignment operators
 template <typename T>
 template <typename U>
-inline constexpr Vector<4, T> &
-Vector<4, T>::operator=(const Vector<4, U> &other) {
+inline constexpr Vector<4, T> &Vector<4, T>::operator=(
+    const Vector<4, U> &other) {
   x = other.x;
   y = other.y;
   z = other.z;
@@ -149,21 +161,21 @@ inline constexpr Vector<4, T> &Vector<4, T>::operator/=(const U &scalar) {
   return *this;
 }
 
-template <typename T> inline constexpr Vector<4, T>::operator bool() const {
+template <typename T>
+inline constexpr Vector<4, T>::operator bool() const {
   return (norm(*this) > zero<T>);
 }
 
-template <typename T> inline constexpr T &Vector<4, T>::operator[](UInt32 pos) {
-  if (pos >= size())
-    throw VectorDimensionError();
+template <typename T>
+inline constexpr T &Vector<4, T>::operator[](UInt32 pos) {
+  if (pos >= size()) throw VectorDimensionError();
 
   return (&x)[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<4, T>::operator[](UInt32 pos) const {
-  if (pos >= size())
-    throw VectorDimensionError();
+  if (pos >= size()) throw VectorDimensionError();
 
   return (&x)[pos];
 }
@@ -236,15 +248,20 @@ inline constexpr bool operator!=(const Vector<4, T> &va,
 }
 
 // Vector operations
-template <typename T> T dot(const Vector<4, T> &va, const Vector<4, T> &vb) {
+template <typename T>
+T dot(const Vector<4, T> &va, const Vector<4, T> &vb) {
   return va.x * vb.x + va.y * vb.y + va.z * vb.z + va.w * vb.w;
 }
 
-template <typename T> T norm(const Vector<4, T> &v) { return sqrt(dot(v, v)); }
+template <typename T>
+T norm(const Vector<4, T> &v) {
+  return sqrt(dot(v, v));
+}
 
-template <typename T> Vector<4, T> normalize(const Vector<4, T> &v) {
+template <typename T>
+Vector<4, T> normalize(const Vector<4, T> &v) {
   T one_over_norm = one<T> / norm(v);
 
   return one_over_norm * v;
 }
-} // namespace Neat
+}  // namespace Neat

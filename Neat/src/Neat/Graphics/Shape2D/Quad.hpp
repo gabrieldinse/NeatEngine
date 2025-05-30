@@ -5,7 +5,7 @@
 
 namespace Neat {
 class Quad : public Shape {
-public:
+ public:
   Quad(const Vector3F &position = {0.0f, 0.0f, 0.0f},
        const Vector2F &size = {1.0f, 1.0f},
        const Vector4F color = {1.0f, 0.0f, 1.0f, 1.0f})
@@ -15,9 +15,9 @@ public:
     Renderer2D::drawQuad(m_position, m_size, m_color);
   }
 
-private:
+ private:
   Vector3F m_position;
   Vector2F m_size;
   Vector4F m_color;
 };
-} // namespace Neat
+}  // namespace Neat

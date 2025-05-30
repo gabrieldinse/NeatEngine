@@ -8,7 +8,9 @@ namespace Neat {
 // ---------------------------------------------------------------------- //
 BufferElement::BufferElement(ShaderDataType type, const std::string &name,
                              bool normalized)
-    : type(type), name(name), size(OpenGLTypeConverter::sizeInBytes(type)),
+    : type(type),
+      name(name),
+      size(OpenGLTypeConverter::sizeInBytes(type)),
       componentCount(OpenGLTypeConverter::componentCount(type)),
       dataType(OpenGLTypeConverter::baseType(type)),
       normalized(normalized ? GL_TRUE : GL_FALSE) {}
@@ -70,4 +72,4 @@ void IndexBuffer::bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id); }
 
 void IndexBuffer::unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
 
-} // namespace Neat
+}  // namespace Neat

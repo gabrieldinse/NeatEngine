@@ -43,14 +43,16 @@ inline constexpr Vector<3, T>::Vector(const Vector<1, U> &v)
 template <typename T>
 template <typename A, typename B>
 inline constexpr Vector<3, T>::Vector(const Vector<2, A> &v, const B &scalar1)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)),
+    : x(static_cast<T>(v.x)),
+      y(static_cast<T>(v.y)),
       z(static_cast<T>(scalar1)) {}
 
 template <typename T>
 template <typename A, typename B, typename C>
 inline constexpr Vector<3, T>::Vector(const Vector<1, A> &v, const B &scalar1,
                                       const C &scalar2)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(scalar1)),
+    : x(static_cast<T>(v.x)),
+      y(static_cast<T>(scalar1)),
       z(static_cast<T>(scalar2)) {}
 
 template <typename T>
@@ -71,8 +73,8 @@ inline constexpr Vector<3, T>::Vector(const T *data, UInt32 count) {
 
 template <typename T>
 template <typename U>
-inline constexpr Vector<3, T> &
-Vector<3, T>::operator=(const Vector<3, U> &other) {
+inline constexpr Vector<3, T> &Vector<3, T>::operator=(
+    const Vector<3, U> &other) {
   x = other.x;
   y = other.y;
   z = other.z;
@@ -131,21 +133,21 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator/=(const U &scalar) {
   return *this;
 }
 
-template <typename T> inline constexpr Vector<3, T>::operator bool() const {
+template <typename T>
+inline constexpr Vector<3, T>::operator bool() const {
   return (norm(*this) > zero<T>);
 }
 
-template <typename T> inline constexpr T &Vector<3, T>::operator[](UInt32 pos) {
-  if (pos >= size())
-    throw VectorDimensionError();
+template <typename T>
+inline constexpr T &Vector<3, T>::operator[](UInt32 pos) {
+  if (pos >= size()) throw VectorDimensionError();
 
   return (&x)[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<3, T>::operator[](UInt32 pos) const {
-  if (pos >= size())
-    throw VectorDimensionError();
+  if (pos >= size()) throw VectorDimensionError();
 
   return (&x)[pos];
 }
@@ -218,7 +220,8 @@ inline constexpr bool operator!=(const Vector<3, T> &va,
 }
 
 // Vector operations
-template <typename T> T dot(const Vector<3, T> &va, const Vector<3, T> &vb) {
+template <typename T>
+T dot(const Vector<3, T> &va, const Vector<3, T> &vb) {
   return va.x * vb.x + va.y * vb.y + va.z * vb.z;
 }
 
@@ -228,11 +231,15 @@ Vector<3, T> cross(const Vector<3, T> &va, const Vector<3, T> &vb) {
                       va.x * vb.y - va.y * vb.x);
 }
 
-template <typename T> T norm(const Vector<3, T> &v) { return sqrt(dot(v, v)); }
+template <typename T>
+T norm(const Vector<3, T> &v) {
+  return sqrt(dot(v, v));
+}
 
-template <typename T> Vector<3, T> normalize(const Vector<3, T> &v) {
+template <typename T>
+Vector<3, T> normalize(const Vector<3, T> &v) {
   T one_over_norm = one<T> / norm(v);
 
   return one_over_norm * v;
 }
-} // namespace Neat
+}  // namespace Neat

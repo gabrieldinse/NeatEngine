@@ -87,20 +87,20 @@ void Camera::rotateRoll(float roll) {
 
 Matrix4F Camera::getProjectionMatrix() const {
   switch (m_cameraType) {
-  case CameraType::Orthographic: {
-    auto &camera_data = getOrthographicData();
-    return orthographic(camera_data.left, camera_data.right, camera_data.bottom,
-                        camera_data.top, m_near, m_far);
-  }
+    case CameraType::Orthographic: {
+      auto &camera_data = getOrthographicData();
+      return orthographic(camera_data.left, camera_data.right,
+                          camera_data.bottom, camera_data.top, m_near, m_far);
+    }
 
-  case CameraType::Perspective: {
-    auto &camera_data = getPerspectiveData();
-    return perspective(radians(camera_data.fieldOfView),
-                       camera_data.aspectRatio, m_near, m_far);
-  }
+    case CameraType::Perspective: {
+      auto &camera_data = getPerspectiveData();
+      return perspective(radians(camera_data.fieldOfView),
+                         camera_data.aspectRatio, m_near, m_far);
+    }
 
-  default:
-    throw CameraTypeHasNotBeenSettedError();
+    default:
+      throw CameraTypeHasNotBeenSettedError();
   }
 }
 
@@ -194,4 +194,4 @@ void Camera::updateOrientationVectors() {
   m_rightDirection = Neat::rotate(orientation, Vector3F(1, 0, 0));
   m_upDirection = Neat::rotate(orientation, Vector3F(0, 1, 0));
 }
-} // namespace Neat
+}  // namespace Neat

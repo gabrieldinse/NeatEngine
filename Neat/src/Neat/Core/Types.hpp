@@ -25,4 +25,4 @@ using UIntPointerType = uintptr_t;
 
 // Custom types
 using DeltaTime = double;
-} // namespace Neat
+}  // namespace Neat

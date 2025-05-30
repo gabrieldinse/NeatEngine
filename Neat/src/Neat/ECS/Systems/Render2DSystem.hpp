@@ -9,13 +9,13 @@
 
 namespace Neat {
 class Render2DSystem : public System<Render2DSystem> {
-public:
+ public:
   Render2DSystem(Camera &camera) : m_camera(camera) {}
 
   virtual void update(EntityManager &entityManager, EventManager &eventManager,
                       DeltaTime deltaTime);
 
-private:
+ private:
   Camera &m_camera;
 };
-} // namespace Neat
+}  // namespace Neat

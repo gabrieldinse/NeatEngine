@@ -12,7 +12,7 @@ struct GLFWwindow;
 
 namespace Neat {
 class Window {
-public:
+ public:
   struct WindowImpl;
 
   // WindowProps ----------------------------------------------------------
@@ -27,7 +27,7 @@ public:
   };
   // ----------------------------------------------------------------------
 
-public:
+ public:
   Window(EventManager &eventManager, const WindowProps &props = WindowProps());
   ~Window();
 
@@ -45,7 +45,7 @@ public:
   void setVSync(bool enabled);
   bool isSync() const;
 
-private:
+ private:
   std::unique_ptr<WindowImpl> m_impl;
 };
-} // namespace Neat
+}  // namespace Neat

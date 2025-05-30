@@ -39,4 +39,4 @@ void VertexArray::setIndexBuffer(
   indexBuffer->bind();
   m_indexBuffer = indexBuffer;
 }
-} // namespace Neat
+}  // namespace Neat

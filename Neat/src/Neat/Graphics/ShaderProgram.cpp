@@ -35,9 +35,9 @@ ShaderProgramBuilder::ShaderProgramBuilder(UInt32 programId,
 ShaderProgramBuilder::ShaderProgramBuilder(UInt32 programId,
                                            const std::string &vertexSource,
                                            const std::string &fragmentSource)
-    : m_id(programId), m_shaderSources({{GL_VERTEX_SHADER, vertexSource},
-                                        {GL_FRAGMENT_SHADER, fragmentSource}}) {
-}
+    : m_id(programId),
+      m_shaderSources({{GL_VERTEX_SHADER, vertexSource},
+                       {GL_FRAGMENT_SHADER, fragmentSource}}) {}
 
 void ShaderProgramBuilder::build() {
   NT_CORE_ASSERT(m_shaderSources.size() <= 2,
@@ -84,15 +84,13 @@ void ShaderProgramBuilder::build() {
 
     glDeleteProgram(m_id);
 
-    for (auto shader_id : shaders_id)
-      glDeleteShader(shader_id);
+    for (auto shader_id : shaders_id) glDeleteShader(shader_id);
 
     NT_CORE_ERROR("ShaderProgram link failure\n{0}", info_log.data());
     NT_CORE_ASSERT(false, "");
   }
 
-  for (auto shader_id : shaders_id)
-    glDetachShader(m_id, shader_id);
+  for (auto shader_id : shaders_id) glDetachShader(m_id, shader_id);
 }
 
 void ShaderProgramBuilder::preprocessShaderSource() {
@@ -171,16 +169,16 @@ void ShaderLibrary::add(const std::string &name,
   m_shaders[name] = shader;
 }
 
-std::shared_ptr<ShaderProgram>
-ShaderLibrary::load(const std::string &filepath) {
+std::shared_ptr<ShaderProgram> ShaderLibrary::load(
+    const std::string &filepath) {
   auto shader = std::make_shared<ShaderProgram>(filepath);
   add(shader);
 
   return shader;
 }
 
-std::shared_ptr<ShaderProgram>
-ShaderLibrary::load(const std::string &name, const std::string &filepath) {
+std::shared_ptr<ShaderProgram> ShaderLibrary::load(
+    const std::string &name, const std::string &filepath) {
   auto shader = std::make_shared<ShaderProgram>(name, filepath);
   add(shader);
 
@@ -196,4 +194,4 @@ std::shared_ptr<ShaderProgram> ShaderLibrary::get(const std::string &name) {
 bool ShaderLibrary::exists(const std::string &name) const {
   return (m_shaders.find(name) != m_shaders.end());
 }
-} // namespace Neat
+}  // namespace Neat

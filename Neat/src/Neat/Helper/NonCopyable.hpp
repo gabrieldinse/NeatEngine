@@ -2,11 +2,11 @@
 
 namespace Neat {
 class NonCopyable {
-protected:
+ protected:
   NonCopyable() = default;
   ~NonCopyable() = default;
 
   NonCopyable(const NonCopyable &) = delete;
   NonCopyable &operator=(const NonCopyable &) = delete;
 };
-} // namespace Neat
+}  // namespace Neat

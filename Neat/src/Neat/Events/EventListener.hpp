@@ -23,13 +23,13 @@ bool operator==(EventPriority priorityA, EventPriority priorityB);
 // EventToListenersConnection ------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class EventToListenersConnection {
-public:
+ public:
   // EventCallbackElement -------------------------------------------------
   struct EventCallbackElement {
-
     EventCallbackElement(const std::shared_ptr<EventCallback> &callback,
                          EventPriority priority, bool ignoreIfHandled)
-        : callback(callback), priority(priority),
+        : callback(callback),
+          priority(priority),
           ignoreIfHandled(ignoreIfHandled) {}
 
     std::shared_ptr<EventCallback> callback;
@@ -38,7 +38,7 @@ public:
   };
   // ----------------------------------------------------------------------
 
-public:
+ public:
   EventToListenersConnection() = default;
 
   template <typename E, typename Listener>
@@ -71,23 +71,27 @@ public:
         });
   }
 
-  template <typename E> void publishEvent(const E &event) {
+  template <typename E>
+  void publishEvent(const E &event) {
     executeCallbacks(&event);
   }
 
-  template <typename E> void publishEvent(std::unique_ptr<E> event) {
+  template <typename E>
+  void publishEvent(std::unique_ptr<E> event) {
     executeCallbacks(event.get());
   }
 
-  template <typename E, typename... Args> void publishEvent(Args &&...args) {
+  template <typename E, typename... Args>
+  void publishEvent(Args &&...args) {
     E event(std::forward<Args>(args)...);
     executeCallbacks(&event);
   }
 
   std::size_t size() const { return m_connectedListenersCallbacks.size(); }
 
-private:
-  template <typename E> struct EventCallbackWrapper {
+ private:
+  template <typename E>
+  struct EventCallbackWrapper {
     std::function<bool(const E &)> callback;
 
     EventCallbackWrapper(std::function<bool(const E &)> callback)
@@ -107,7 +111,7 @@ private:
       }
   }
 
-private:
+ private:
   std::list<EventCallbackElement> m_connectedListenersCallbacks;
 };
 
@@ -115,12 +119,12 @@ private:
 // BaseEventListener ---------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class BaseEventListener {
-public:
+ public:
   using ConnectedEventsMap = std::unordered_map<
       BaseEvent::Family,
       std::pair<std::weak_ptr<EventToListenersConnection>, std::size_t>>;
 
-public:
+ public:
   ~BaseEventListener() {
     for (auto &&[family, connection_pair] : m_connectedEvents) {
       auto &&[connection, connection_id] = connection_pair;
@@ -133,14 +137,13 @@ public:
     UInt32 count = 0;
     for (auto &&[family, connection_pair] : m_connectedEvents) {
       auto &&[connection, connection_id] = connection_pair;
-      if (not connection.expired())
-        ++count;
+      if (not connection.expired()) ++count;
     }
 
     return count;
   }
 
-private:
+ private:
   friend class EventManager;
 
   ConnectedEventsMap m_connectedEvents;
@@ -149,7 +152,8 @@ private:
 // ---------------------------------------------------------------------- //
 // EventListener ------------------------------------------------------ //
 // ---------------------------------------------------------------------- //
-template <typename Derived> struct EventListener : public BaseEventListener {
+template <typename Derived>
+struct EventListener : public BaseEventListener {
   virtual ~EventListener() {}
 };
-} // namespace Neat
+}  // namespace Neat

@@ -102,6 +102,6 @@ inline void extractEulerAnglesZYX(Matrix<4, 4, T> const &m, T &angle1,
 template <typename T>
 inline void extractEulerAnglesZXY(Matrix<4, 4, T> const &m, T &angle1,
                                   T &angle2, T &angle3);
-} // namespace Neat
+}  // namespace Neat
 
 #include "Neat/Math/EulerAngles.inl"

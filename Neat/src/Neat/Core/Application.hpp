@@ -8,7 +8,7 @@
 
 namespace Neat {
 class Application : public EventListener<Application> {
-public:
+ public:
   Application();
   virtual ~Application();
 
@@ -16,8 +16,10 @@ public:
   void stop();
   virtual void update(DeltaTime deltaTime) {}
 
-  template <typename T, typename... Args> void pushLayer(Args &&...args);
-  template <typename T, typename... Args> void pushOverlay(Args &&...args);
+  template <typename T, typename... Args>
+  void pushLayer(Args &&...args);
+  template <typename T, typename... Args>
+  void pushOverlay(Args &&...args);
   void pushLayer(std::unique_ptr<Layer> &&layer);
   void pushOverlay(std::unique_ptr<Layer> &&layer);
   std::unique_ptr<Layer> popLayer(Int32 position);
@@ -34,7 +36,7 @@ public:
 
   EventManager &events() { return m_events; }
 
-private:
+ private:
   static Application *s_instance;
 
   std::unique_ptr<Window> m_window;
@@ -56,4 +58,4 @@ template <typename T, typename... Args>
 void Application::pushOverlay(Args &&...args) {
   m_layerGroup.pushOverlay<T>(std::forward<Args>(args)...);
 }
-} // namespace Neat
+}  // namespace Neat

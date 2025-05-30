@@ -11,7 +11,8 @@
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {
-template <ShaderDataType UniformType> struct Uniform;
+template <ShaderDataType UniformType>
+struct Uniform;
 struct UniformData;
 class ShaderProgram;
 
@@ -19,7 +20,7 @@ class ShaderProgram;
 // UniformLibrary-------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class UniformLibrary {
-public:
+ public:
   UniformLibrary(ShaderProgram &shader);
   UniformLibrary() = delete;
   ~UniformLibrary();
@@ -29,7 +30,7 @@ public:
   UniformData &operator[](const std::string &name);
   const UniformData &operator[](const std::string &name) const;
 
-private:
+ private:
   std::unordered_map<std::string, std::unique_ptr<UniformData>> m_uniforms;
   ShaderProgram &m_shader;
 };
@@ -38,7 +39,7 @@ private:
 // UniformBase ---------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class UniformBase {
-public:
+ public:
   virtual ~UniformBase();
 
   const std::string &getName() const;
@@ -46,80 +47,89 @@ public:
   Int32 getSize() const;
   Int32 getLocation() const;
 
-protected:
+ protected:
   void checkUniform(ShaderDataType uniformType, const std::string &name,
                     const UniformLibrary &uniformLibrary);
 
-protected:
+ protected:
   std::unique_ptr<UniformData> m_data;
 };
 
 // ---------------------------------------------------------------------- //
 // Uniform -------------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
-template <ShaderDataType uniformType> struct Uniform : public UniformBase {};
+template <ShaderDataType uniformType>
+struct Uniform : public UniformBase {};
 
-template <> struct Uniform<ShaderDataType::Float> : public UniformBase {
+template <>
+struct Uniform<ShaderDataType::Float> : public UniformBase {
   void set(float value);
 
-private:
+ private:
   friend class ShaderProgram;
   Uniform(const std::string &name, const UniformLibrary &uniformLibrary);
 };
 
-template <> struct Uniform<ShaderDataType::Vector2F> : public UniformBase {
+template <>
+struct Uniform<ShaderDataType::Vector2F> : public UniformBase {
   void set(Vector2F values);
 
-private:
+ private:
   friend class ShaderProgram;
   Uniform(const std::string &name, const UniformLibrary &uniformLibrary);
 };
 
-template <> struct Uniform<ShaderDataType::Vector3F> : public UniformBase {
+template <>
+struct Uniform<ShaderDataType::Vector3F> : public UniformBase {
   void set(Vector3F values);
 
-private:
+ private:
   friend class ShaderProgram;
   Uniform(const std::string &name, const UniformLibrary &uniformLibrary);
 };
 
-template <> struct Uniform<ShaderDataType::Vector4F> : public UniformBase {
+template <>
+struct Uniform<ShaderDataType::Vector4F> : public UniformBase {
   void set(Vector4F values);
 
-private:
+ private:
   friend class ShaderProgram;
   Uniform(const std::string &name, const UniformLibrary &uniformLibrary);
 };
 
-template <> struct Uniform<ShaderDataType::Int> : public UniformBase {
+template <>
+struct Uniform<ShaderDataType::Int> : public UniformBase {
   void set(Int32 value);
 
-private:
+ private:
   friend class ShaderProgram;
   Uniform(const std::string &name, const UniformLibrary &uniformLibrary);
 };
 
-template <> struct Uniform<ShaderDataType::IntArray> : public UniformBase {
+template <>
+struct Uniform<ShaderDataType::IntArray> : public UniformBase {
   void set(Int32 *values, UInt32 count);
 
-private:
+ private:
   friend class ShaderProgram;
   Uniform(const std::string &name, const UniformLibrary &uniformLibrary);
 };
 
-template <> struct Uniform<ShaderDataType::Matrix3F> : public UniformBase {
+template <>
+struct Uniform<ShaderDataType::Matrix3F> : public UniformBase {
   void set(Matrix3F matrix);
 
-private:
+ private:
   friend class ShaderProgram;
   Uniform(const std::string &name, const UniformLibrary &uniformLibrary);
 };
 
-template <> struct Uniform<ShaderDataType::Matrix4F> : public UniformBase {
+template <>
+struct Uniform<ShaderDataType::Matrix4F> : public UniformBase {
   void set(Matrix4F matrix);
 
-private:
+ private:
   friend class ShaderProgram;
   Uniform(const std::string &name, const UniformLibrary &uniformLibrary);
 };
-} // namespace Neat
+}  // namespace Neat

@@ -9,12 +9,10 @@ EntityManager::EntityManager(EventManager &eventManager)
 EntityManager::~EntityManager() { reset(); }
 
 void EntityManager::reset() {
-  for (Entity entity : entitiesForDebugging())
-    entity.destroy();
+  for (Entity entity : entitiesForDebugging()) entity.destroy();
 
   for (BaseMemoryPool *pool : m_componentArrays)
-    if (pool != nullptr)
-      delete pool;
+    if (pool != nullptr) delete pool;
 
   m_componentArrays.clear();
   m_entityComponentMasks.clear();
@@ -32,4 +30,4 @@ std::ostream &operator<<(std::ostream &os, const Entity::Id &id) {
   os << "Entity::Id(" << id.index() << "." << id.version() << ")";
   return os;
 }
-} // namespace Neat
+}  // namespace Neat

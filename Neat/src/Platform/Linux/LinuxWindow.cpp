@@ -149,18 +149,18 @@ void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
       *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
 
   switch (action) {
-  case GLFW_PRESS: {
-    impl.events.publish<KeyPressedEvent>(static_cast<Key>(key), 0);
-    break;
-  }
-  case GLFW_RELEASE: {
-    impl.events.publish<KeyReleasedEvent>(static_cast<Key>(key));
-    break;
-  }
-  case GLFW_REPEAT: {
-    impl.events.publish<KeyPressedEvent>(static_cast<Key>(key), 1);
-    break;
-  }
+    case GLFW_PRESS: {
+      impl.events.publish<KeyPressedEvent>(static_cast<Key>(key), 0);
+      break;
+    }
+    case GLFW_RELEASE: {
+      impl.events.publish<KeyReleasedEvent>(static_cast<Key>(key));
+      break;
+    }
+    case GLFW_REPEAT: {
+      impl.events.publish<KeyPressedEvent>(static_cast<Key>(key), 1);
+      break;
+    }
   }
 }
 
@@ -176,18 +176,18 @@ void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
       *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
 
   switch (action) {
-  case GLFW_PRESS: {
-    MouseButtonPressedEvent event(static_cast<MouseCode>(button));
-    impl.events.publish<MouseButtonPressedEvent>(
-        static_cast<MouseCode>(button));
-    break;
-  }
-  case GLFW_RELEASE: {
-    MouseButtonReleasedEvent event(static_cast<MouseCode>(button));
-    impl.events.publish<MouseButtonReleasedEvent>(
-        static_cast<MouseCode>(button));
-    break;
-  }
+    case GLFW_PRESS: {
+      MouseButtonPressedEvent event(static_cast<MouseCode>(button));
+      impl.events.publish<MouseButtonPressedEvent>(
+          static_cast<MouseCode>(button));
+      break;
+    }
+    case GLFW_RELEASE: {
+      MouseButtonReleasedEvent event(static_cast<MouseCode>(button));
+      impl.events.publish<MouseButtonReleasedEvent>(
+          static_cast<MouseCode>(button));
+      break;
+    }
   }
 }
 
@@ -206,4 +206,4 @@ void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos) {
   MouseMovedEvent event((float)xPos, (float)yPos);
   impl.events.publish<MouseMovedEvent>((float)xPos, (float)yPos);
 }
-} // namespace Neat
+}  // namespace Neat

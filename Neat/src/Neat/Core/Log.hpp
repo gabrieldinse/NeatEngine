@@ -13,7 +13,7 @@
 
 namespace Neat {
 class Log {
-public:
+ public:
   Log() = default;
   ~Log() = default;
   static void init(const char *pattern = "%^[%T] %n: %v%$");
@@ -26,11 +26,11 @@ public:
     return Log::s_clientLogger;
   }
 
-private:
+ private:
   static std::shared_ptr<spdlog::logger> s_coreLogger;
   static std::shared_ptr<spdlog::logger> s_clientLogger;
 };
-} // namespace Neat
+}  // namespace Neat
 
 // Core log macros
 #ifdef NT_DEBUG
@@ -62,18 +62,18 @@ private:
 #endif
 
 #ifdef NT_ENABLE_ASSERTS
-#define NT_ASSERT(x, ...)                                                      \
-  {                                                                            \
-    if (not(x)) {                                                              \
-      NT_ERROR("Assertion Failed: {0}", __VA_ARGS__);                          \
-      __debugbreak();                                                          \
-    }                                                                          \
+#define NT_ASSERT(x, ...)                             \
+  {                                                   \
+    if (not(x)) {                                     \
+      NT_ERROR("Assertion Failed: {0}", __VA_ARGS__); \
+      __debugbreak();                                 \
+    }                                                 \
   }
-#define NT_CORE_ASSERT(x, ...)                                                 \
-  {                                                                            \
-    if (not(x)) {                                                              \
-      NT_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__);                     \
-    }                                                                          \
+#define NT_CORE_ASSERT(x, ...)                             \
+  {                                                        \
+    if (not(x)) {                                          \
+      NT_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); \
+    }                                                      \
   }
 
 #else

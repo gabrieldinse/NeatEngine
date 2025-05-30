@@ -6,7 +6,7 @@
 
 namespace Neat {
 class Renderer {
-public:
+ public:
   static void init();
   static void shutdown();
 
@@ -19,12 +19,12 @@ public:
 
   static void onWindowResize(UInt32 width, UInt32 height);
 
-private:
+ private:
   struct SceneData {
     Matrix4F viewProjectionMatrix;
   };
 
-private:
+ private:
   static std::unique_ptr<SceneData> m_sceneData;
 };
-} // namespace Neat
+}  // namespace Neat

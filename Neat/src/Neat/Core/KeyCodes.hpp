@@ -281,4 +281,4 @@ constexpr auto KEY_RIGHT_CONTROL = Neat::enumToInt(Neat::Key::RightControl);
 constexpr auto KEY_RIGHT_ALT = Neat::enumToInt(Neat::Key::RightAlt);
 constexpr auto KEY_RIGHT_SUPER = Neat::enumToInt(Neat::Key::RightSuper);
 constexpr auto KEY_MENU = Neat::enumToInt(Neat::Key::Menu);
-} // namespace Neat
+}  // namespace Neat

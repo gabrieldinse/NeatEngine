@@ -24,7 +24,7 @@ inline std::ostream &operator<<(std::ostream &os, MouseCode mouseCode) {
   os << static_cast<Int32>(mouseCode);
   return os;
 }
-} // namespace Neat
+}  // namespace Neat
 
 // Compatibility with glfw3.h -----------------------------------
 #define NT_MOUSE_BUTTON_0 Neat::Mouse::Button0
