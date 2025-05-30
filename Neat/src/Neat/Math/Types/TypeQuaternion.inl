@@ -338,7 +338,7 @@ inline constexpr bool operator==(const Quaternion<T> &qa,
 template <typename T>
 inline constexpr bool operator!=(const Quaternion<T> &qa,
                                  const Quaternion<T> &qb) {
-  return not (qa == qb);
+  return not(qa == qb);
 }
 
 // Quaternion operations

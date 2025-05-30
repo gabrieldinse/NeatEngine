@@ -23,30 +23,30 @@ void Camera3DControllerSystem::update(EntityManager &entityManager,
                                       EventManager &eventManager,
                                       DeltaTime deltaTime) {
   auto distance = (float)(m_translationSpeed * deltaTime);
-  if (Input::isKeyPressed(KeyCode::W))
+  if (Input::isKeyPressed(Key::W))
     m_camera.moveForward(distance);
 
-  if (Input::isKeyPressed(KeyCode::S))
+  if (Input::isKeyPressed(Key::S))
     m_camera.moveBackward(distance);
 
-  if (Input::isKeyPressed(KeyCode::D))
+  if (Input::isKeyPressed(Key::D))
     m_camera.moveRight(distance);
 
-  if (Input::isKeyPressed(KeyCode::A))
+  if (Input::isKeyPressed(Key::A))
     m_camera.moveLeft(distance);
 
-  if (Input::isKeyPressed(KeyCode::Z))
+  if (Input::isKeyPressed(Key::Z))
     m_camera.moveUp(distance);
 
-  if (Input::isKeyPressed(KeyCode::X))
+  if (Input::isKeyPressed(Key::X))
     m_camera.moveDown(distance);
 
   if (m_rotationEnabled) {
     auto rotation = (float)(m_rotationSpeed * deltaTime);
-    if (Input::isKeyPressed(KeyCode::Q))
+    if (Input::isKeyPressed(Key::Q))
       m_camera.setRoll(wrap360(m_camera.getRoll() + rotation));
 
-    if (Input::isKeyPressed(KeyCode::E))
+    if (Input::isKeyPressed(Key::E))
       m_camera.setRoll(wrap360(m_camera.getRoll() - rotation));
   }
 }

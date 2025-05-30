@@ -22,9 +22,7 @@ Application::Application() {
   Input::setWindow(*m_window);
 }
 
-Application::~Application() {
-  Renderer::shutdown();
-}
+Application::~Application() { Renderer::shutdown(); }
 
 void Application::stop() { m_running = false; }
 

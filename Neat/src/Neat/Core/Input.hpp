@@ -15,7 +15,7 @@ public:
 
 public:
   static void setWindow(Window &window);
-  static bool isKeyPressed(KeyCode key);
+  static bool isKeyPressed(Key key);
   static bool isMouseButtonPressed(MouseCode button);
   static Vector2F getMousePosition();
   static float getMouseX();

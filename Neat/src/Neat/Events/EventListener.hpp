@@ -57,7 +57,7 @@ public:
             m_connectedListenersCallbacks.begin(),
             m_connectedListenersCallbacks.end(), priority,
             [](const EventCallbackElement &element, EventPriority priority) {
-              return not (element.priority < priority);
+              return not(element.priority < priority);
             }),
         callback_element);
 

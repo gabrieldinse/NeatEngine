@@ -150,15 +150,15 @@ void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
 
   switch (action) {
   case GLFW_PRESS: {
-    impl.events.publish<KeyPressedEvent>(static_cast<KeyCode>(key), 0);
+    impl.events.publish<KeyPressedEvent>(static_cast<Key>(key), 0);
     break;
   }
   case GLFW_RELEASE: {
-    impl.events.publish<KeyReleasedEvent>(static_cast<KeyCode>(key));
+    impl.events.publish<KeyReleasedEvent>(static_cast<Key>(key));
     break;
   }
   case GLFW_REPEAT: {
-    impl.events.publish<KeyPressedEvent>(static_cast<KeyCode>(key), 1);
+    impl.events.publish<KeyPressedEvent>(static_cast<Key>(key), 1);
     break;
   }
   }
@@ -167,7 +167,7 @@ void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
 void keyTypeCallback(GLFWwindow *window, UInt32 key) {
   auto &impl =
       *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
-  impl.events.publish<KeyTypedEvent>(static_cast<KeyCode>(key));
+  impl.events.publish<KeyTypedEvent>(static_cast<Key>(key));
 }
 
 void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,

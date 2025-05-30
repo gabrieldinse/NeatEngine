@@ -5,7 +5,7 @@
 #include "Neat/Core/Types.hpp"
 
 namespace Neat {
-typedef enum class KeyCode : UInt16 {
+enum class Key : UInt16 {
   Space = 32,
   Apostrophe = 39, /* ' */
   Comma = 44,      /* , */
@@ -137,138 +137,148 @@ typedef enum class KeyCode : UInt16 {
   RightAlt = 346,
   RightSuper = 347,
   Menu = 348
-} Key;
+};
 
-inline std::ostream &operator<<(std::ostream &os, KeyCode keyCode) {
-  os << static_cast<Int32>(keyCode);
+inline std::ostream &operator<<(std::ostream &os, Key key) {
+  os << static_cast<Int32>(key);
   return os;
 }
-} // namespace Neat
+
+template <typename E>
+constexpr typename std::enable_if<std::is_enum<E>::value,
+                                  std::underlying_type_t<E>>::type
+enumToInt(E e) {
+  return static_cast<std::underlying_type_t<E>>(e);
+}
 
 // Compatibility with glfw3.h -----------------------------------
-#define NT_KEY_SPACE Neat::Key::Space
-#define NT_KEY_APOSTROPHE Neat::Key::Apostrophe /* ' */
-#define NT_KEY_COMMA Neat::Key::Comma           /* , */
-#define NT_KEY_MINUS Neat::Key::Minus           /* - */
-#define NT_KEY_PERIOD Neat::Key::Period         /* . */
-#define NT_KEY_SLASH Neat::Key::Slash           /* / */
-#define NT_KEY_0 Neat::Key::D0
-#define NT_KEY_1 Neat::Key::D1
-#define NT_KEY_2 Neat::Key::D2
-#define NT_KEY_3 Neat::Key::D3
-#define NT_KEY_4 Neat::Key::D4
-#define NT_KEY_5 Neat::Key::D5
-#define NT_KEY_6 Neat::Key::D6
-#define NT_KEY_7 Neat::Key::D7
-#define NT_KEY_8 Neat::Key::D8
-#define NT_KEY_9 Neat::Key::D9
-#define NT_KEY_SEMICOLON Neat::Key::Semicolon /* ; */
-#define NT_KEY_EQUAL Neat::Key::Equal         /* = */
-#define NT_KEY_A Neat::Key::A
-#define NT_KEY_B Neat::Key::B
-#define NT_KEY_C Neat::Key::C
-#define NT_KEY_D Neat::Key::D
-#define NT_KEY_E Neat::Key::E
-#define NT_KEY_F Neat::Key::F
-#define NT_KEY_G Neat::Key::G
-#define NT_KEY_H Neat::Key::H
-#define NT_KEY_I Neat::Key::I
-#define NT_KEY_J Neat::Key::J
-#define NT_KEY_K Neat::Key::K
-#define NT_KEY_L Neat::Key::L
-#define NT_KEY_M Neat::Key::M
-#define NT_KEY_N Neat::Key::N
-#define NT_KEY_O Neat::Key::O
-#define NT_KEY_P Neat::Key::P
-#define NT_KEY_Q Neat::Key::Q
-#define NT_KEY_R Neat::Key::R
-#define NT_KEY_S Neat::Key::S
-#define NT_KEY_T Neat::Key::T
-#define NT_KEY_U Neat::Key::U
-#define NT_KEY_V Neat::Key::V
-#define NT_KEY_W Neat::Key::W
-#define NT_KEY_X Neat::Key::X
-#define NT_KEY_Y Neat::Key::Y
-#define NT_KEY_Z Neat::Key::Z
-#define NT_KEY_LEFT_BRACKET Neat::Key::LeftBracket   /* [ */
-#define NT_KEY_BACKSLASH Neat::Key::Backslash        /* \ */
-#define NT_KEY_RIGHT_BRACKET Neat::Key::RightBracket /* ] */
-#define NT_KEY_GRAVE_ACCENT Neat::Key::GraveAccent   /* ` */
-#define NT_KEY_WORLD_1 Neat::Key::World1             /* non-US #1 */
-#define NT_KEY_WORLD_2 Neat::Key::World2             /* non-US #2 */
+constexpr auto KEY_SPACE = Neat::enumToInt(Neat::Key::Space);
+constexpr auto KEY_APOSTROPHE = Neat::enumToInt(Neat::Key::Apostrophe); /* ' */
+constexpr auto KEY_COMMA = Neat::enumToInt(Neat::Key::Comma);           /* , */
+constexpr auto KEY_MINUS = Neat::enumToInt(Neat::Key::Minus);           /* - */
+constexpr auto KEY_PERIOD = Neat::enumToInt(Neat::Key::Period);         /* . */
+constexpr auto KEY_SLASH = Neat::enumToInt(Neat::Key::Slash);           /* / */
+constexpr auto KEY_0 = Neat::enumToInt(Neat::Key::D0);
+constexpr auto KEY_1 = Neat::enumToInt(Neat::Key::D1);
+constexpr auto KEY_2 = Neat::enumToInt(Neat::Key::D2);
+constexpr auto KEY_3 = Neat::enumToInt(Neat::Key::D3);
+constexpr auto KEY_4 = Neat::enumToInt(Neat::Key::D4);
+constexpr auto KEY_5 = Neat::enumToInt(Neat::Key::D5);
+constexpr auto KEY_6 = Neat::enumToInt(Neat::Key::D6);
+constexpr auto KEY_7 = Neat::enumToInt(Neat::Key::D7);
+constexpr auto KEY_8 = Neat::enumToInt(Neat::Key::D8);
+constexpr auto KEY_9 = Neat::enumToInt(Neat::Key::D9);
+constexpr auto KEY_SEMICOLON = Neat::enumToInt(Neat::Key::Semicolon); /* ; */
+constexpr auto KEY_EQUAL = Neat::enumToInt(Neat::Key::Equal);         /* = */
+constexpr auto KEY_A = Neat::enumToInt(Neat::Key::A);
+constexpr auto KEY_B = Neat::enumToInt(Neat::Key::B);
+constexpr auto KEY_C = Neat::enumToInt(Neat::Key::C);
+constexpr auto KEY_D = Neat::enumToInt(Neat::Key::D);
+constexpr auto KEY_E = Neat::enumToInt(Neat::Key::E);
+constexpr auto KEY_F = Neat::enumToInt(Neat::Key::F);
+constexpr auto KEY_G = Neat::enumToInt(Neat::Key::G);
+constexpr auto KEY_H = Neat::enumToInt(Neat::Key::H);
+constexpr auto KEY_I = Neat::enumToInt(Neat::Key::I);
+constexpr auto KEY_J = Neat::enumToInt(Neat::Key::J);
+constexpr auto KEY_K = Neat::enumToInt(Neat::Key::K);
+constexpr auto KEY_L = Neat::enumToInt(Neat::Key::L);
+constexpr auto KEY_M = Neat::enumToInt(Neat::Key::M);
+constexpr auto KEY_N = Neat::enumToInt(Neat::Key::N);
+constexpr auto KEY_O = Neat::enumToInt(Neat::Key::O);
+constexpr auto KEY_P = Neat::enumToInt(Neat::Key::P);
+constexpr auto KEY_Q = Neat::enumToInt(Neat::Key::Q);
+constexpr auto KEY_R = Neat::enumToInt(Neat::Key::R);
+constexpr auto KEY_S = Neat::enumToInt(Neat::Key::S);
+constexpr auto KEY_T = Neat::enumToInt(Neat::Key::T);
+constexpr auto KEY_U = Neat::enumToInt(Neat::Key::U);
+constexpr auto KEY_V = Neat::enumToInt(Neat::Key::V);
+constexpr auto KEY_W = Neat::enumToInt(Neat::Key::W);
+constexpr auto KEY_X = Neat::enumToInt(Neat::Key::X);
+constexpr auto KEY_Y = Neat::enumToInt(Neat::Key::Y);
+constexpr auto KEY_Z = Neat::enumToInt(Neat::Key::Z);
+constexpr auto KEY_LEFT_BRACKET =
+    Neat::enumToInt(Neat::Key::LeftBracket);                          /* [ */
+constexpr auto KEY_BACKSLASH = Neat::enumToInt(Neat::Key::Backslash); /* \ */
+constexpr auto KEY_RIGHT_BRACKET =
+    Neat::enumToInt(Neat::Key::RightBracket); /* ] */
+constexpr auto KEY_GRAVE_ACCENT =
+    Neat::enumToInt(Neat::Key::GraveAccent);                     /* ` */
+constexpr auto KEY_WORLD_1 = Neat::enumToInt(Neat::Key::World1); /* non-US #1 */
+constexpr auto KEY_WORLD_2 = Neat::enumToInt(Neat::Key::World2); /* non-US #2 */
 
 /* Function keys */
-#define NT_KEY_ESCAPE Neat::Key::Escape
-#define NT_KEY_ENTER Neat::Key::Enter
-#define NT_KEY_TAB Neat::Key::Tab
-#define NT_KEY_BACKSPACE Neat::Key::Backspace
-#define NT_KEY_INSERT Neat::Key::Insert
-#define NT_KEY_DELETE Neat::Key::Delete
-#define NT_KEY_RIGHT Neat::Key::Right
-#define NT_KEY_LEFT Neat::Key::Left
-#define NT_KEY_DOWN Neat::Key::Down
-#define NT_KEY_UP Neat::Key::Up
-#define NT_KEY_PAGE_UP Neat::Key::PageUp
-#define NT_KEY_PAGE_DOWN Neat::Key::PageDown
-#define NT_KEY_HOME Neat::Key::Home
-#define NT_KEY_END Neat::Key::End
-#define NT_KEY_CAPS_LOCK Neat::Key::CapsLock
-#define NT_KEY_SCROLL_LOCK Neat::Key::ScrollLock
-#define NT_KEY_NUM_LOCK Neat::Key::NumLock
-#define NT_KEY_PRINT_SCREEN Neat::Key::PrintScreen
-#define NT_KEY_PAUSE Neat::Key::Pause
-#define NT_KEY_F1 Neat::Key::F1
-#define NT_KEY_F2 Neat::Key::F2
-#define NT_KEY_F3 Neat::Key::F3
-#define NT_KEY_F4 Neat::Key::F4
-#define NT_KEY_F5 Neat::Key::F5
-#define NT_KEY_F6 Neat::Key::F6
-#define NT_KEY_F7 Neat::Key::F7
-#define NT_KEY_F8 Neat::Key::F8
-#define NT_KEY_F9 Neat::Key::F9
-#define NT_KEY_F10 Neat::Key::F10
-#define NT_KEY_F11 Neat::Key::F11
-#define NT_KEY_F12 Neat::Key::F12
-#define NT_KEY_F13 Neat::Key::F13
-#define NT_KEY_F14 Neat::Key::F14
-#define NT_KEY_F15 Neat::Key::F15
-#define NT_KEY_F16 Neat::Key::F16
-#define NT_KEY_F17 Neat::Key::F17
-#define NT_KEY_F18 Neat::Key::F18
-#define NT_KEY_F19 Neat::Key::F19
-#define NT_KEY_F20 Neat::Key::F20
-#define NT_KEY_F21 Neat::Key::F21
-#define NT_KEY_F22 Neat::Key::F22
-#define NT_KEY_F23 Neat::Key::F23
-#define NT_KEY_F24 Neat::Key::F24
-#define NT_KEY_F25 Neat::Key::F25
+constexpr auto KEY_ESCAPE = Neat::enumToInt(Neat::Key::Escape);
+constexpr auto KEY_ENTER = Neat::enumToInt(Neat::Key::Enter);
+constexpr auto KEY_TAB = Neat::enumToInt(Neat::Key::Tab);
+constexpr auto KEY_BACKSPACE = Neat::enumToInt(Neat::Key::Backspace);
+constexpr auto KEY_INSERT = Neat::enumToInt(Neat::Key::Insert);
+constexpr auto KEY_DELETE = Neat::enumToInt(Neat::Key::Delete);
+constexpr auto KEY_RIGHT = Neat::enumToInt(Neat::Key::Right);
+constexpr auto KEY_LEFT = Neat::enumToInt(Neat::Key::Left);
+constexpr auto KEY_DOWN = Neat::enumToInt(Neat::Key::Down);
+constexpr auto KEY_UP = Neat::enumToInt(Neat::Key::Up);
+constexpr auto KEY_PAGE_UP = Neat::enumToInt(Neat::Key::PageUp);
+constexpr auto KEY_PAGE_DOWN = Neat::enumToInt(Neat::Key::PageDown);
+constexpr auto KEY_HOME = Neat::enumToInt(Neat::Key::Home);
+constexpr auto KEY_END = Neat::enumToInt(Neat::Key::End);
+constexpr auto KEY_CAPS_LOCK = Neat::enumToInt(Neat::Key::CapsLock);
+constexpr auto KEY_SCROLL_LOCK = Neat::enumToInt(Neat::Key::ScrollLock);
+constexpr auto KEY_NUM_LOCK = Neat::enumToInt(Neat::Key::NumLock);
+constexpr auto KEY_PRINT_SCREEN = Neat::enumToInt(Neat::Key::PrintScreen);
+constexpr auto KEY_PAUSE = Neat::enumToInt(Neat::Key::Pause);
+constexpr auto KEY_F1 = Neat::enumToInt(Neat::Key::F1);
+constexpr auto KEY_F2 = Neat::enumToInt(Neat::Key::F2);
+constexpr auto KEY_F3 = Neat::enumToInt(Neat::Key::F3);
+constexpr auto KEY_F4 = Neat::enumToInt(Neat::Key::F4);
+constexpr auto KEY_F5 = Neat::enumToInt(Neat::Key::F5);
+constexpr auto KEY_F6 = Neat::enumToInt(Neat::Key::F6);
+constexpr auto KEY_F7 = Neat::enumToInt(Neat::Key::F7);
+constexpr auto KEY_F8 = Neat::enumToInt(Neat::Key::F8);
+constexpr auto KEY_F9 = Neat::enumToInt(Neat::Key::F9);
+constexpr auto KEY_F10 = Neat::enumToInt(Neat::Key::F10);
+constexpr auto KEY_F11 = Neat::enumToInt(Neat::Key::F11);
+constexpr auto KEY_F12 = Neat::enumToInt(Neat::Key::F12);
+constexpr auto KEY_F13 = Neat::enumToInt(Neat::Key::F13);
+constexpr auto KEY_F14 = Neat::enumToInt(Neat::Key::F14);
+constexpr auto KEY_F15 = Neat::enumToInt(Neat::Key::F15);
+constexpr auto KEY_F16 = Neat::enumToInt(Neat::Key::F16);
+constexpr auto KEY_F17 = Neat::enumToInt(Neat::Key::F17);
+constexpr auto KEY_F18 = Neat::enumToInt(Neat::Key::F18);
+constexpr auto KEY_F19 = Neat::enumToInt(Neat::Key::F19);
+constexpr auto KEY_F20 = Neat::enumToInt(Neat::Key::F20);
+constexpr auto KEY_F21 = Neat::enumToInt(Neat::Key::F21);
+constexpr auto KEY_F22 = Neat::enumToInt(Neat::Key::F22);
+constexpr auto KEY_F23 = Neat::enumToInt(Neat::Key::F23);
+constexpr auto KEY_F24 = Neat::enumToInt(Neat::Key::F24);
+constexpr auto KEY_F25 = Neat::enumToInt(Neat::Key::F25);
 
 /* Keypad */
-#define NT_KEY_KP_0 Neat::Key::KP0
-#define NT_KEY_KP_1 Neat::Key::KP1
-#define NT_KEY_KP_2 Neat::Key::KP2
-#define NT_KEY_KP_3 Neat::Key::KP3
-#define NT_KEY_KP_4 Neat::Key::KP4
-#define NT_KEY_KP_5 Neat::Key::KP5
-#define NT_KEY_KP_6 Neat::Key::KP6
-#define NT_KEY_KP_7 Neat::Key::KP7
-#define NT_KEY_KP_8 Neat::Key::KP8
-#define NT_KEY_KP_9 Neat::Key::KP9
-#define NT_KEY_KP_DECIMAL Neat::Key::KPDecimal
-#define NT_KEY_KP_DIVIDE Neat::Key::KPDivide
-#define NT_KEY_KP_MULTIPLY Neat::Key::KPMultiply
-#define NT_KEY_KP_SUBTRACT Neat::Key::KPSubtract
-#define NT_KEY_KP_ADD Neat::Key::KPAdd
-#define NT_KEY_KP_ENTER Neat::Key::KPEnter
-#define NT_KEY_KP_EQUAL Neat::Key::KPEqual
+constexpr auto KEY_KP_0 = Neat::enumToInt(Neat::Key::KP0);
+constexpr auto KEY_KP_1 = Neat::enumToInt(Neat::Key::KP1);
+constexpr auto KEY_KP_2 = Neat::enumToInt(Neat::Key::KP2);
+constexpr auto KEY_KP_3 = Neat::enumToInt(Neat::Key::KP3);
+constexpr auto KEY_KP_4 = Neat::enumToInt(Neat::Key::KP4);
+constexpr auto KEY_KP_5 = Neat::enumToInt(Neat::Key::KP5);
+constexpr auto KEY_KP_6 = Neat::enumToInt(Neat::Key::KP6);
+constexpr auto KEY_KP_7 = Neat::enumToInt(Neat::Key::KP7);
+constexpr auto KEY_KP_8 = Neat::enumToInt(Neat::Key::KP8);
+constexpr auto KEY_KP_9 = Neat::enumToInt(Neat::Key::KP9);
+constexpr auto KEY_KP_DECIMAL = Neat::enumToInt(Neat::Key::KPDecimal);
+constexpr auto KEY_KP_DIVIDE = Neat::enumToInt(Neat::Key::KPDivide);
+constexpr auto KEY_KP_MULTIPLY = Neat::enumToInt(Neat::Key::KPMultiply);
+constexpr auto KEY_KP_SUBTRACT = Neat::enumToInt(Neat::Key::KPSubtract);
+constexpr auto KEY_KP_ADD = Neat::enumToInt(Neat::Key::KPAdd);
+constexpr auto KEY_KP_ENTER = Neat::enumToInt(Neat::Key::KPEnter);
+constexpr auto KEY_KP_EQUAL = Neat::enumToInt(Neat::Key::KPEqual);
 
 /* Command keys */
-#define NT_KEY_LEFT_SHIFT Neat::Key::LeftShift
-#define NT_KEY_LEFT_CONTROL Neat::Key::LeftControl
-#define NT_KEY_LEFT_ALT Neat::Key::LeftAlt
-#define NT_KEY_LEFT_SUPER Neat::Key::LeftSuper
-#define NT_KEY_RIGHT_SHIFT Neat::Key::RightShift
-#define NT_KEY_RIGHT_CONTROL Neat::Key::RightControl
-#define NT_KEY_RIGHT_ALT Neat::Key::RightAlt
-#define NT_KEY_RIGHT_SUPER Neat::Key::RightSuper
-#define NT_KEY_MENU Neat::Key::Menu
+constexpr auto KEY_LEFT_SHIFT = Neat::enumToInt(Neat::Key::LeftShift);
+constexpr auto KEY_LEFT_CONTROL = Neat::enumToInt(Neat::Key::LeftControl);
+constexpr auto KEY_LEFT_ALT = Neat::enumToInt(Neat::Key::LeftAlt);
+constexpr auto KEY_LEFT_SUPER = Neat::enumToInt(Neat::Key::LeftSuper);
+constexpr auto KEY_RIGHT_SHIFT = Neat::enumToInt(Neat::Key::RightShift);
+constexpr auto KEY_RIGHT_CONTROL = Neat::enumToInt(Neat::Key::RightControl);
+constexpr auto KEY_RIGHT_ALT = Neat::enumToInt(Neat::Key::RightAlt);
+constexpr auto KEY_RIGHT_SUPER = Neat::enumToInt(Neat::Key::RightSuper);
+constexpr auto KEY_MENU = Neat::enumToInt(Neat::Key::Menu);
+} // namespace Neat

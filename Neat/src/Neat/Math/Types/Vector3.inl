@@ -214,7 +214,7 @@ inline constexpr bool operator==(const Vector<3, T> &va,
 template <typename T, UInt32 N>
 inline constexpr bool operator!=(const Vector<3, T> &va,
                                  const Vector<3, T> &vb) {
-  return not (va == vb);
+  return not(va == vb);
 }
 
 // Vector operations

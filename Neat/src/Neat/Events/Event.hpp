@@ -86,24 +86,24 @@ public:
 // Key events ----------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 struct KeyEvent {
-  KeyCode keyCode;
+  Key key;
 
 protected:
-  KeyEvent(KeyCode keyCode) : keyCode(keyCode) {}
+  KeyEvent(Key key) : key(key) {}
 };
 
 struct KeyPressedEvent : public KeyEvent {
-  KeyPressedEvent(KeyCode keyCode, Int32 repeatCount = 0)
-      : KeyEvent(keyCode), repeatCount(repeatCount) {}
+  KeyPressedEvent(Key key, Int32 repeatCount = 0)
+      : KeyEvent(key), repeatCount(repeatCount) {}
 
   Int32 repeatCount;
 };
 
 struct KeyReleasedEvent : public KeyEvent {
-  KeyReleasedEvent(KeyCode keycode) : KeyEvent(keycode) {}
+  KeyReleasedEvent(Key key) : KeyEvent(key) {}
 };
 
 struct KeyTypedEvent : public KeyEvent {
-  KeyTypedEvent(KeyCode keyCode) : KeyEvent(keyCode) {}
+  KeyTypedEvent(Key key) : KeyEvent(key) {}
 };
 } // namespace Neat

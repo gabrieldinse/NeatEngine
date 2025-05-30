@@ -19,7 +19,7 @@ void Input::setWindow(Window &window) {
       static_cast<GLFWwindow *>(window.getNativeWindow()));
 }
 
-bool Input::isKeyPressed(KeyCode key) {
+bool Input::isKeyPressed(Key key) {
   auto state = glfwGetKey(s_impl->window, static_cast<Int32>(key));
 
   return (state == GLFW_PRESS or state == GLFW_REPEAT);

@@ -71,7 +71,7 @@ public:
     return other.m_entityManager == m_entityManager and other.m_id == m_id;
   }
 
-  bool operator!=(const Entity &other) const { return not (other == *this); }
+  bool operator!=(const Entity &other) const { return not(other == *this); }
 
   bool operator<(const Entity &other) const { return other.m_id < m_id; }
 
@@ -149,7 +149,7 @@ public:
   }
 
   bool operator!=(const ComponentHandle<C> &other) const {
-    return not (*this == other);
+    return not(*this == other);
   }
 
 private:
@@ -266,8 +266,8 @@ public:
     }
 
     void next() {
-      while (m_pos < m_capacity and
-             not ((IterateOverAll and IsValidEntity()) or matchComponentMask())) {
+      while (m_pos < m_capacity and not((IterateOverAll and IsValidEntity()) or
+                                        matchComponentMask())) {
         ++m_pos;
       }
 
