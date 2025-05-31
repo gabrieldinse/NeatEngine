@@ -16,7 +16,7 @@ class Input {
  public:
   static void setWindow(Window &window);
   static bool isKeyPressed(Key key);
-  static bool isMouseButtonPressed(MouseCode button);
+  static bool isMouseButtonPressed(Mouse button);
   static Vector2F getMousePosition();
   static float getMouseX();
   static float getMouseY();

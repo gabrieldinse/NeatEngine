@@ -1,7 +1,14 @@
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Log.hpp"
 #include "Neat/Core/Window.hpp"
-#include "Neat/Events/Event.hpp"
+#include "Neat/Events/Events/KeyPressedEvent.hpp"
+#include "Neat/Events/Events/KeyReleasedEvent.hpp"
+#include "Neat/Events/Events/KeyTypedEvent.hpp"
+#include "Neat/Events/Events/MouseButtonPressedEvent.hpp"
+#include "Neat/Events/Events/MouseButtonReleasedEvent.hpp"
+#include "Neat/Events/Events/MouseMovedEvent.hpp"
+#include "Neat/Events/Events/MouseScrolledEvent.hpp"
+#include "Neat/Events/EventManager.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -134,13 +141,13 @@ void windowResizeCallback(GLFWwindow *window, Int32 width, Int32 height) {
   else
     impl.minimized = false;
 
-  impl.events.publish<WindowResizeEvent>(width, height);
+  impl.events.generateEvent<WindowResizeEvent>(width, height);
 }
 
 void windowCloseCallback(GLFWwindow *window) {
   auto &impl =
       *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
-  impl.events.publish<WindowCloseEvent>();
+  impl.events.generateEvent<WindowCloseEvent>();
 }
 
 void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
@@ -150,15 +157,15 @@ void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
 
   switch (action) {
     case GLFW_PRESS: {
-      impl.events.publish<KeyPressedEvent>(static_cast<Key>(key), 0);
+      impl.events.generateEvent<KeyPressedEvent>(static_cast<Key>(key), 0);
       break;
     }
     case GLFW_RELEASE: {
-      impl.events.publish<KeyReleasedEvent>(static_cast<Key>(key));
+      impl.events.generateEvent<KeyReleasedEvent>(static_cast<Key>(key));
       break;
     }
     case GLFW_REPEAT: {
-      impl.events.publish<KeyPressedEvent>(static_cast<Key>(key), 1);
+      impl.events.generateEvent<KeyPressedEvent>(static_cast<Key>(key), 1);
       break;
     }
   }
@@ -167,7 +174,7 @@ void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
 void keyTypeCallback(GLFWwindow *window, UInt32 key) {
   auto &impl =
       *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
-  impl.events.publish<KeyTypedEvent>(static_cast<Key>(key));
+  impl.events.generateEvent<KeyTypedEvent>(static_cast<Key>(key));
 }
 
 void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
@@ -177,15 +184,15 @@ void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
 
   switch (action) {
     case GLFW_PRESS: {
-      MouseButtonPressedEvent event(static_cast<MouseCode>(button));
-      impl.events.publish<MouseButtonPressedEvent>(
-          static_cast<MouseCode>(button));
+      MouseButtonPressedEvent event(static_cast<Mouse>(button));
+      impl.events.generateEvent<MouseButtonPressedEvent>(
+          static_cast<Mouse>(button));
       break;
     }
     case GLFW_RELEASE: {
-      MouseButtonReleasedEvent event(static_cast<MouseCode>(button));
-      impl.events.publish<MouseButtonReleasedEvent>(
-          static_cast<MouseCode>(button));
+      MouseButtonReleasedEvent event(static_cast<Mouse>(button));
+      impl.events.generateEvent<MouseButtonReleasedEvent>(
+          static_cast<Mouse>(button));
       break;
     }
   }
@@ -196,7 +203,7 @@ void mouseScrollCallback(GLFWwindow *window, double xOffset, double yOffset) {
       *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
 
   MouseScrolledEvent event((float)xOffset, (float)yOffset);
-  impl.events.publish<MouseScrolledEvent>((float)xOffset, (float)yOffset);
+  impl.events.generateEvent<MouseScrolledEvent>((float)xOffset, (float)yOffset);
 }
 
 void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos) {
@@ -204,6 +211,6 @@ void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos) {
       *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
 
   MouseMovedEvent event((float)xPos, (float)yPos);
-  impl.events.publish<MouseMovedEvent>((float)xPos, (float)yPos);
+  impl.events.generateEvent<MouseMovedEvent>((float)xPos, (float)yPos);
 }
 }  // namespace Neat

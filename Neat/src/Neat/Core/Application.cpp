@@ -2,7 +2,6 @@
 #include "Neat/Core/Input.hpp"
 #include "Neat/Core/Log.hpp"
 #include "Neat/Core/Timer.hpp"
-#include "Neat/Events/Event.hpp"
 #include "Neat/Graphics/Renderer.hpp"
 
 namespace Neat {

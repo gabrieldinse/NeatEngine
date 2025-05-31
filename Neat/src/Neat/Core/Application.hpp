@@ -3,7 +3,8 @@
 #include "Neat/Core/Base.hpp"
 #include "Neat/Core/LayerGroup.hpp"
 #include "Neat/Core/Window.hpp"
-#include "Neat/Events/Event.hpp"
+#include "Neat/Events/Events/WindowCloseEvent.hpp"
+#include "Neat/Events/Events/WindowResizeEvent.hpp"
 #include "Neat/Events/EventManager.hpp"
 
 namespace Neat {

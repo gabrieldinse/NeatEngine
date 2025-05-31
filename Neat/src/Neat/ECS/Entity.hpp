@@ -484,7 +484,7 @@ class EntityManager : public NonCopyable {
     }
 
     Entity entity(this, Entity::Id(index, version));
-    m_eventManager.publish<EntityCreatedEvent>(entity);
+    m_eventManager.generateEvent<EntityCreatedEvent>(entity);
 
     return entity;
   }
@@ -495,7 +495,7 @@ class EntityManager : public NonCopyable {
     UInt32 index = id.index();
     auto component_mask = m_entityComponentMasks[index];
 
-    m_eventManager.publish<EntityDestroyedEvent>(Entity(this, id));
+    m_eventManager.generateEvent<EntityDestroyedEvent>(Entity(this, id));
 
     for (std::size_t i = 0; i < m_componentArrays.size(); ++i) {
       BaseMemoryPool *component_array = m_componentArrays[i];
@@ -534,7 +534,8 @@ class EntityManager : public NonCopyable {
     m_entityComponentMasks[index].set(family);
 
     ComponentHandle<C> component(this, id);
-    m_eventManager.publish<ComponentAddedEvent<C>>(Entity(this, id), component);
+    m_eventManager.generateEvent<ComponentAddedEvent<C>>(Entity(this, id),
+                                                         component);
 
     return component;
   }
@@ -547,8 +548,8 @@ class EntityManager : public NonCopyable {
 
     BaseMemoryPool *component_array = m_componentArrays[family];
     ComponentHandle<C> component(this, id);
-    m_eventManager.publish<ComponentRemovedEvent<C>>(Entity(this, id),
-                                                     component);
+    m_eventManager.generateEvent<ComponentRemovedEvent<C>>(Entity(this, id),
+                                                           component);
 
     m_entityComponentMasks[id.index()].reset(family);
 

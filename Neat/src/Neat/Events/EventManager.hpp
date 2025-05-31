@@ -52,19 +52,19 @@ class EventManager {
   }
 
   template <typename E>
-  void publish(const E &event) {
+  void generateEvent(const E &event) {
     auto event_connection = getEventConnection<E>();
     event_connection->template publishEvent<E>(event);
   }
 
   template <typename E>
-  void publish(std::unique_ptr<E> event) {
+  void generateEvent(std::unique_ptr<E> event) {
     auto event_connection = getEventConnection<E>();
     event_connection->template publishEvent<E>(event);
   }
 
   template <typename E, typename... Args>
-  void publish(Args &&...args) {
+  void generateEvent(Args &&...args) {
     auto event_connection = getEventConnection<E>();
     event_connection->template publishEvent<E>(std::forward<Args>(args)...);
   }
