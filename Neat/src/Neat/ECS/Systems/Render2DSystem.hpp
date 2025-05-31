@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/ECS/Components.hpp"
+#include "Neat/ECS/Components/Renderable.hpp"
 #include "Neat/ECS/Entity.hpp"
 #include "Neat/ECS/System.hpp"
 #include "Neat/Graphics/Cameras/Camera.hpp"

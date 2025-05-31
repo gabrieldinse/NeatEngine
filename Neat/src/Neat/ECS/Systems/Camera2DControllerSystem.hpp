@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Neat/ECS/Components.hpp"
-#include "Neat/ECS/Entity.hpp"
 #include "Neat/ECS/System.hpp"
 #include "Neat/Events/Event.hpp"
 #include "Neat/Events/EventManager.hpp"

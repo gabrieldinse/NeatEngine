@@ -11,7 +11,7 @@
 namespace Neat {
 class FPSCounter {
  public:
-  FPSCounter(double intervalSeconds = 1.0) : m_interval(intervalSeconds) {}
+  FPSCounter(double refreshRate = 1.0) : m_refreshRateSeconds(refreshRate) {}
 
   void start() { timer.start(); }
   double getFPS() const { return m_fps; }
@@ -19,7 +19,7 @@ class FPSCounter {
   void addFrame();
 
  private:
-  double m_interval;
+  double m_refreshRateSeconds;
   double m_fps = 0.0;
   Timer timer;
   UInt32 m_frameCount = 0;

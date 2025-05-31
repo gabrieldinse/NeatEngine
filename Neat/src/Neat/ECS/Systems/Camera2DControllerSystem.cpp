@@ -1,6 +1,7 @@
 #include "Neat/ECS/Systems/Camera2DControllerSystem.hpp"
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Input.hpp"
+#include "Neat/Math/Transform.hpp"
 
 namespace Neat {
 Camera2DControllerSystem::Camera2DControllerSystem(float aspectRatio,
