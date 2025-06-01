@@ -23,6 +23,9 @@ using UIntMaxType = uintmax_t;
 using IntPointerType = intptr_t;
 using UIntPointerType = uintptr_t;
 
+using SizeType = size_t;
+using PtrDiffType = ptrdiff_t;
+
 // Custom types
 using DeltaTime = double;
 }  // namespace Neat

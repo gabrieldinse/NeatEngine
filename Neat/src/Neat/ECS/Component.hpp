@@ -1,9 +1,12 @@
 #pragma once
 
+#include <bitset>
+
 #include "Neat/ECS/BaseComponent.hpp"
 
 namespace Neat {
 constexpr std::size_t maxComponents = 64;
+using ComponentMask = std::bitset<maxComponents>;
 
 template <typename Derived>
 struct Component : public BaseComponent {

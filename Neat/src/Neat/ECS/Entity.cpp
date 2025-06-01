@@ -1,33 +1,32 @@
 #include "Neat/ECS/Entity.hpp"
+#include "Neat/ECS/EntityManager.hpp"
 #include "Neat/Core/Exceptions.hpp"
 
 namespace Neat {
-const Entity::Id Entity::INVALID_ID;
-EntityManager::EntityManager(EventManager &eventManager)
-    : m_eventManager(eventManager) {}
+const EntityId Entity::INVALID_ID;
 
-EntityManager::~EntityManager() { reset(); }
+bool Entity::operator==(const Entity &other) const {
+  return other.m_entityManager == m_entityManager and other.m_id == m_id;
+}
 
-void EntityManager::reset() {
-  for (Entity entity : entitiesForDebugging()) entity.destroy();
+inline bool Entity::isValid() const {
+  return m_entityManager != nullptr and m_entityManager->isValid(m_id);
+}
 
-  for (BaseMemoryPool *pool : m_componentArrays)
-    if (pool != nullptr) delete pool;
+inline void Entity::checkIsValid() const {
+  if (m_entityManager == nullptr)
+    throw InvalidEntityError("Assigned EntityManager is null.");
 
-  m_componentArrays.clear();
-  m_entityComponentMasks.clear();
-  m_entityIdsVersion.clear();
-  m_freeEntityIds.clear();
-  m_indexCounter = 0;
+  m_entityManager->checkIsValid(m_id);
+}
+
+inline void Entity::invalidate() {
+  m_id = INVALID_ID;
+  m_entityManager = nullptr;
 }
 
 std::ostream &operator<<(std::ostream &os, const Entity &entity) {
   os << "Entity(" << entity.id() << ")";
-  return os;
-}
-
-std::ostream &operator<<(std::ostream &os, const Entity::Id &id) {
-  os << "Entity::Id(" << id.index() << "." << id.version() << ")";
   return os;
 }
 }  // namespace Neat
