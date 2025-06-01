@@ -1,4 +1,4 @@
-#include "Neat/Events/EventListener.hpp"
+#include "Neat/Events/EventPriority.hpp"
 
 namespace Neat {
 bool operator<(EventPriority priorityA, EventPriority priorityB) {

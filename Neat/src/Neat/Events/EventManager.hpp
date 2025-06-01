@@ -5,6 +5,7 @@
 #include "Neat/Core/Exceptions.hpp"
 #include "Neat/Core/Log.hpp"
 #include "Neat/Events/EventListener.hpp"
+#include "Neat/Events/Event.hpp"
 
 namespace Neat {
 class EventManager {
