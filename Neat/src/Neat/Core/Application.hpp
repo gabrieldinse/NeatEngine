@@ -6,6 +6,7 @@
 #include "Neat/Events/Events/WindowCloseEvent.hpp"
 #include "Neat/Events/Events/WindowResizeEvent.hpp"
 #include "Neat/Events/EventManager.hpp"
+#include "Neat/ImGui/ImGuiRender.hpp"
 
 namespace Neat {
 class Application : public EventListener<Application> {

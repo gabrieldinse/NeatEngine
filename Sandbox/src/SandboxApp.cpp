@@ -3,9 +3,7 @@
 #include <Neat.hpp>
 #include <Neat/Core/Main.hpp>
 #include "Neat/Helper/FPSCounter.hpp"
-#include "Neat/ImGui/ImGuiRender.hpp"
-
-#include <ImGui/imgui.h>
+#include "ExampleLayer.hpp"
 
 // #include "Sandbox2D.hpp"
 
@@ -21,6 +19,7 @@ public:
                                                           {7, 6}, {64, 64})),
         stairsTexture2(Neat::SubTexture2D::createFromIndex(*spritesheetTexture,
                                                            {8, 6}, {64, 64})) {
+    pushLayer(std::make_unique<ExampleLayer>());
     // auto q = Neat::Quaternion::fromAngleAxis(Neat::radians(45.0f),
     // Neat::Vector3F(1, 0, 0)); auto q2 = glm::angleAxis(glm::radians(45.0f),
     // glm::vec3(1.0f, 0.0f, 0.0f)); NT_TRACE(q); NT_TRACE(Neat::log(q));
@@ -50,43 +49,15 @@ public:
     }
 
     fps_counter.start();
-
-    Neat::ImGuiRender::init();
   }
 
   ~Sandbox() {
-    Neat::ImGuiRender::shutdown();
   }
 
   virtual void update(Neat::DeltaTime deltaTime) override {
     fps_counter.addFrame();
     systems.update<Neat::Camera3DControllerSystem>(deltaTime);
     systems.update<Neat::Render2DSystem>(deltaTime);
-
-#ifdef NT_IMGUI
-    Neat::ImGuiRender::begin();
-    imGuiRender();
-    Neat::ImGuiRender::end();
-#endif
-
-  }
-
-  void imGuiRender() {
-    ImGui::Begin("Settings");
-
-    auto stats = Neat::Renderer2D::getStats();
-    ImGui::Text("Renderer2D stats:");
-    ImGui::Text("Draw calls: %d", stats.drawCalls);
-    ImGui::Text("Quads: %d", stats.quadCount);
-    ImGui::Text("Indexes: %d", stats.getTotalIndexCount());
-    ImGui::Text("Vertexes: %d\n", stats.getTotalVertexCount());
-
-    ImGui::SliderInt("Number of columns", &this->numberOfColumns, 0, 500);
-    ImGui::SliderInt("Number of lines", &this->numberOfLines, 0, 500);
-
-    ImGui::ColorEdit4("Square Color", this->tint.dataPointer());
-
-    ImGui::End();
   }
 
 private:

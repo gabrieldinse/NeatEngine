@@ -1,5 +1,6 @@
 file(GLOB_RECURSE SANDBOX_SOURCES
     src/SandboxApp.cpp
+    src/ExampleLayer.cpp
 )
 
 add_executable(Sandbox ${SANDBOX_SOURCES})

@@ -19,9 +19,13 @@ Application::Application() {
 
   Renderer::init();
   Input::setWindow(*m_window);
+  ImGuiRender::init();
 }
 
-Application::~Application() { Renderer::shutdown(); }
+Application::~Application() {
+  ImGuiRender::shutdown();
+  Renderer::shutdown();
+}
 
 void Application::stop() { m_running = false; }
 
@@ -31,7 +35,16 @@ void Application::run() {
   timer.start();
 
   while (m_running) {
-    update(timer.restart());
+    double deltaTime = timer.restart();
+    update(deltaTime);
+    for (auto &layer : m_layerGroup) {
+      layer->update(deltaTime);
+    }
+    ImGuiRender::begin();
+    for (auto &layer : m_layerGroup) {
+      layer->onImGuiRender();
+    }
+    ImGuiRender::end();
     m_window->swapBuffers();
     m_window->pollEvents();
   }

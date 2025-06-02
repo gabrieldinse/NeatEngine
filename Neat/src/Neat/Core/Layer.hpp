@@ -11,10 +11,10 @@ class Layer {
   Layer() = default;
   virtual ~Layer() = default;
 
-  virtual void attach() {}
-  virtual void detach() {}
+  virtual void onAttach() {}
+  virtual void onDetach() {}
   virtual void update(DeltaTime deltaTime) {}
   virtual void render() {}
-  virtual void inGuiRender() {}
+  virtual void onImGuiRender() {}
 };
 }  // namespace Neat
