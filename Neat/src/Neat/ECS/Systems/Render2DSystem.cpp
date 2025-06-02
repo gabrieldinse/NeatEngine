@@ -1,8 +1,8 @@
 #include "Neat/ECS/Systems/Render2DSystem.hpp"
 
 namespace Neat {
-void Render2DSystem::update(EntityManager &entityManager,
-                            EventManager &eventManager, DeltaTime deltaTime) {
+void Render2DSystem::onUpdate(EntityManager &entityManager,
+                              EventManager &eventManager, DeltaTime deltaTime) {
   Neat::Renderer2D::resetStats();
   Neat::RenderCommand::clearWithColor({0.35f, 0.35f, 0.55f, 1.0f});
 

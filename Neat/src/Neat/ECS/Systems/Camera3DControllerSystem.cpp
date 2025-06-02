@@ -19,9 +19,9 @@ void Camera3DControllerSystem::init(EventManager &eventManager) {
   eventManager.addListener<WindowResizeEvent>(*this);
 }
 
-void Camera3DControllerSystem::update(EntityManager &entityManager,
-                                      EventManager &eventManager,
-                                      DeltaTime deltaTime) {
+void Camera3DControllerSystem::onUpdate(EntityManager &entityManager,
+                                        EventManager &eventManager,
+                                        DeltaTime deltaTime) {
   auto distance = (float)(m_translationSpeed * deltaTime);
   if (Input::isKeyPressed(Key::W)) m_camera.moveForward(distance);
 

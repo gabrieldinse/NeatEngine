@@ -16,7 +16,7 @@ class Application : public EventListener<Application> {
 
   void run();
   void stop();
-  virtual void update(DeltaTime deltaTime) {}
+  virtual void onUpdate(DeltaTime deltaTime) {}
 
   template <typename T, typename... Args>
   void pushLayer(Args &&...args);
@@ -36,13 +36,13 @@ class Application : public EventListener<Application> {
   bool handleEvent(const WindowCloseEvent &event);
   bool handleEvent(const WindowResizeEvent &event);
 
-  EventManager &events() { return m_events; }
+  EventManager &getEventManager() { return m_eventManager; }
 
  private:
   static Application *s_instance;
 
   std::unique_ptr<Window> m_window;
-  EventManager m_events;
+  EventManager m_eventManager;
   LayerGroup m_layerGroup;
   double m_updatePeriod = 1.0f / 120.0f;
 

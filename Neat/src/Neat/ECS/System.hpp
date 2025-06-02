@@ -11,8 +11,9 @@ class System : public BaseSystem {
  public:
   virtual ~System() = default;
 
-  virtual void update(EntityManager &entityManager, EventManager &eventManager,
-                      DeltaTime deltaTime) override {}
+  virtual void onUpdate(EntityManager &entityManager,
+                        EventManager &eventManager,
+                        DeltaTime deltaTime) override {}
 
  private:
   friend class SystemManager;

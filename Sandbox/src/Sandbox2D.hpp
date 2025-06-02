@@ -5,15 +5,15 @@
 #include <ImGui/imgui.h>
 
 class Sandbox2D : public Neat::Layer {
-public:
+ public:
   Sandbox2D();
 
   void attach() override;
   void detach() override;
-  void update(Neat::DeltaTime deltaTime) override;
-  void render() override;
+  void onUpdate(Neat::DeltaTime deltaTime) override;
+  void onRender() override;
 
-private:
+ private:
   std::shared_ptr<Neat::Texture2D> checkerboardTexture;
   std::shared_ptr<Neat::Texture2D> spritesheetTexture;
   std::shared_ptr<Neat::SubTexture2D> stairsTexture;

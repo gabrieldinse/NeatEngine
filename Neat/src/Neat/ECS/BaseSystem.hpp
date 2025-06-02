@@ -14,8 +14,8 @@ class BaseSystem : public NonCopyable {
   virtual ~BaseSystem() = default;
 
   virtual void init(EventManager &eventManager) {}
-  virtual void update(EntityManager &entityManager, EventManager &eventManager,
-                      DeltaTime deltaTime) = 0;
+  virtual void onUpdate(EntityManager &entityManager,
+                        EventManager &eventManager, DeltaTime deltaTime) = 0;
 
  protected:
   static Family s_familyCounter;

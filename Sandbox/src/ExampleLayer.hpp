@@ -7,8 +7,23 @@
 
 class ExampleLayer : public Neat::Layer {
  public:
-  ExampleLayer() = default;
+  ExampleLayer();
   ~ExampleLayer() = default;
 
-  virtual void onImGuiRender() override;
+  void onImGuiRender();
+  virtual void onUpdate(Neat::DeltaTime deltaTime) override;
+
+ private:
+  Neat::SystemManager systems;
+  Neat::EntityManager entities;
+
+  std::shared_ptr<Neat::Texture2D> checkerboardTexture;
+  std::shared_ptr<Neat::Texture2D> spritesheetTexture;
+  std::shared_ptr<Neat::SubTexture2D> stairsTexture;
+  std::shared_ptr<Neat::SubTexture2D> stairsTexture2;
+
+  Neat::Vector4F tint = {0.8f, 0.3f, 0.2f, 1.0f};
+
+  int numberOfColumns = 20;
+  int numberOfLines = 20;
 };

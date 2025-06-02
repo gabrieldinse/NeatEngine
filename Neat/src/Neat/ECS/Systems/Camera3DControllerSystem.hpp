@@ -22,8 +22,8 @@ class Camera3DControllerSystem
   Camera &getCamera() { return m_camera; }
   const Camera &getCamera() const { return m_camera; }
 
-  void update(EntityManager &entityManager, EventManager &eventManager,
-              DeltaTime deltaTime);
+  void onUpdate(EntityManager &entityManager, EventManager &eventManager,
+                DeltaTime deltaTime);
 
   bool handleEvent(const MouseScrolledEvent &event);
   bool handleEvent(const MouseMovedEvent &event);

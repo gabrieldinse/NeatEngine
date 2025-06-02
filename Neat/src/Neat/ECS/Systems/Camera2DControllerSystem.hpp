@@ -24,8 +24,8 @@ class Camera2DControllerSystem
   Camera2D &getCamera2D() { return m_camera; }
   const Camera2D &getCamera2D() const { return m_camera; }
 
-  void update(EntityManager &entityManager, EventManager &eventManager,
-              DeltaTime deltaTime);
+  void onUpdate(EntityManager &entityManager, EventManager &eventManager,
+                DeltaTime deltaTime);
 
   bool handleEvent(const MouseScrolledEvent &event);
   bool handleEvent(const MouseMovedEvent &event);

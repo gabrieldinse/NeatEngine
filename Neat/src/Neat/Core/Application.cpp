@@ -12,10 +12,12 @@ Application::Application() {
   NT_CORE_ASSERT(not s_instance, "Application already exists!");
   s_instance = this;
 
-  m_window = std::make_unique<Window>(m_events);
+  m_window = std::make_unique<Window>(m_eventManager);
 
-  m_events.addListener<WindowCloseEvent>(*this, EventPriority::Highest, true);
-  m_events.addListener<WindowResizeEvent>(*this, EventPriority::Highest, true);
+  m_eventManager.addListener<WindowCloseEvent>(*this, EventPriority::Highest,
+                                               true);
+  m_eventManager.addListener<WindowResizeEvent>(*this, EventPriority::Highest,
+                                                true);
 
   Renderer::init();
   Input::setWindow(*m_window);
@@ -36,13 +38,10 @@ void Application::run() {
 
   while (m_running) {
     double deltaTime = timer.restart();
-    update(deltaTime);
-    for (auto &layer : m_layerGroup) {
-      layer->update(deltaTime);
-    }
     ImGuiRender::begin();
+    onUpdate(deltaTime);
     for (auto &layer : m_layerGroup) {
-      layer->onImGuiRender();
+      layer->onUpdate(deltaTime);
     }
     ImGuiRender::end();
     m_window->swapBuffers();

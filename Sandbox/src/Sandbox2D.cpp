@@ -9,10 +9,10 @@
 //
 // class System1 : public Neat::System<System1>
 //{
-//    virtual void update(Neat::EntityManager& entityManager,
+//    virtual void onUpdate(Neat::EntityManager& entityManager,
 //       Neat::EventManager& eventManager, Neat::DeltaTime deltaTime) override
 //    {
-//       NT_TRACE("System 1 update");
+//       NT_TRACE("System 1 onUpdate");
 //
 //       for (auto& entity :
 //          entityManager.entitiesWithComponents<Component2>())
@@ -25,10 +25,10 @@
 //
 // class System2 : public Neat::System<System2>
 //{
-//    virtual void update(Neat::EntityManager& entityManager,
+//    virtual void onUpdate(Neat::EntityManager& entityManager,
 //       Neat::EventManager& eventManager, Neat::DeltaTime deltaTime) override
 //    {
-//       NT_TRACE("System 2 update");
+//       NT_TRACE("System 2 onUpdate");
 //
 //       for (auto& entity :
 //          entityManager.entitiesWithComponents<Component1>())
@@ -93,11 +93,11 @@
 //{
 // }
 //
-// void Sandbox2D::update(Neat::DeltaTime deltaTime)
+// void Sandbox2D::onUpdate(Neat::DeltaTime deltaTime)
 //{
 // }
 //
-// void Sandbox2D::render()
+// void Sandbox2D::onRender()
 //{
 //    Neat::Renderer2D::resetStats();
 //

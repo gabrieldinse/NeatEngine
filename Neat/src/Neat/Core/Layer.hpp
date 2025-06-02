@@ -13,8 +13,7 @@ class Layer {
 
   virtual void onAttach() {}
   virtual void onDetach() {}
-  virtual void update(DeltaTime deltaTime) {}
-  virtual void render() {}
-  virtual void onImGuiRender() {}
+  virtual void onUpdate(DeltaTime deltaTime) {}
+  virtual void onRender() {}
 };
 }  // namespace Neat

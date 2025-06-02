@@ -18,9 +18,9 @@ void Camera2DControllerSystem::init(EventManager &eventManager) {
   eventManager.addListener<WindowResizeEvent>(*this);
 }
 
-void Camera2DControllerSystem::update(EntityManager &entityManager,
-                                      EventManager &eventManager,
-                                      DeltaTime deltaTime) {
+void Camera2DControllerSystem::onUpdate(EntityManager &entityManager,
+                                        EventManager &eventManager,
+                                        DeltaTime deltaTime) {
   auto distance = (float)(m_translationSpeed * deltaTime);
   if (Input::isKeyPressed(Key::W)) m_camera.moveUp(distance);
 

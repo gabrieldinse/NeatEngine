@@ -8,72 +8,10 @@
 // #include "Sandbox2D.hpp"
 
 class Sandbox : public Neat::Application {
-public:
-  Sandbox()
-      : entities(events()), systems(entities, events()),
-        checkerboardTexture(
-            std::make_shared<Neat::Texture2D>("assets/textures/texture1.png")),
-        spritesheetTexture(std::make_shared<Neat::Texture2D>(
-            "assets/textures/spritesheet1.png")),
-        stairsTexture(Neat::SubTexture2D::createFromIndex(*spritesheetTexture,
-                                                          {7, 6}, {64, 64})),
-        stairsTexture2(Neat::SubTexture2D::createFromIndex(*spritesheetTexture,
-                                                           {8, 6}, {64, 64})) {
-    pushLayer(std::make_unique<ExampleLayer>());
-    // auto q = Neat::Quaternion::fromAngleAxis(Neat::radians(45.0f),
-    // Neat::Vector3F(1, 0, 0)); auto q2 = glm::angleAxis(glm::radians(45.0f),
-    // glm::vec3(1.0f, 0.0f, 0.0f)); NT_TRACE(q); NT_TRACE(Neat::log(q));
-    // NT_TRACE(Neat::pow(q, 0.5f));
-    // NT_TRACE("");
-    // NT_TRACE(glm::to_string(q2));
-    // NT_TRACE(glm::to_string(glm::log(q2)));
-    // NT_TRACE(glm::to_string(glm::pow(q2, 0.5f)));
-    // NT_ASSERT(false, "");
+ public:
+  Sandbox() { pushLayer<ExampleLayer>(); }
 
-    auto camera_controller_system =
-        systems.addSystem<Neat::Camera3DControllerSystem>(
-            getWindow().getAspectRatio());
-    systems.addSystem<Neat::Render2DSystem>(
-        camera_controller_system->getCamera());
-    systems.init();
-
-    for (std::size_t i = 0; i < this->numberOfLines; ++i) {
-      for (std::size_t j = 0; j < this->numberOfColumns; ++j) {
-        auto entity = entities.createEntity();
-        entity.addComponent<Neat::Renderable>(std::make_unique<Neat::Quad>(
-            Neat::Vector3F{0.1f * j, 0.1f * i, 0.0f},
-            Neat::Vector2F{0.1f, 0.1f},
-            Neat::Vector4F{float(i) / this->numberOfLines,
-                           float(j) / this->numberOfColumns, 1.0f, 1.0f}));
-      }
-    }
-
-    fps_counter.start();
-  }
-
-  ~Sandbox() {
-  }
-
-  virtual void update(Neat::DeltaTime deltaTime) override {
-    fps_counter.addFrame();
-    systems.update<Neat::Camera3DControllerSystem>(deltaTime);
-    systems.update<Neat::Render2DSystem>(deltaTime);
-  }
-
-private:
-  Neat::SystemManager systems;
-  Neat::EntityManager entities;
-
-  std::shared_ptr<Neat::Texture2D> checkerboardTexture;
-  std::shared_ptr<Neat::Texture2D> spritesheetTexture;
-  std::shared_ptr<Neat::SubTexture2D> stairsTexture;
-  std::shared_ptr<Neat::SubTexture2D> stairsTexture2;
-
-  Neat::Vector4F tint = {0.8f, 0.3f, 0.2f, 1.0f};
-
-  int numberOfColumns = 20;
-  int numberOfLines = 20;
-  Neat::FPSCounter fps_counter;
+  ~Sandbox() {}
 };
 
 std::unique_ptr<Neat::Application> Neat::createApplication() {
