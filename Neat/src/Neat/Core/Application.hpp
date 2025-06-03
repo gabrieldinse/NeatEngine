@@ -36,13 +36,13 @@ class Application : public EventListener<Application> {
   bool handleEvent(const WindowCloseEvent &event);
   bool handleEvent(const WindowResizeEvent &event);
 
-  EventManager &getEventManager() { return m_eventManager; }
+  std::shared_ptr<EventManager> &getEventManager() { return m_eventManager; }
 
  private:
   static Application *s_instance;
 
   std::unique_ptr<Window> m_window;
-  EventManager m_eventManager;
+  std::shared_ptr<EventManager> m_eventManager;
   LayerGroup m_layerGroup;
   double m_updatePeriod = 1.0f / 120.0f;
 

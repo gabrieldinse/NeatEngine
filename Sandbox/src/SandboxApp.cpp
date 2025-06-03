@@ -9,7 +9,7 @@
 
 class Sandbox : public Neat::Application {
  public:
-  Sandbox() { pushLayer<ExampleLayer>(); }
+  Sandbox() { pushLayer<ExampleLayer>(getEventManager()); }
 
   ~Sandbox() {}
 };

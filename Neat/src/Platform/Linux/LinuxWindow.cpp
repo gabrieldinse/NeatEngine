@@ -1,6 +1,6 @@
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Log.hpp"
-#include "Neat/Core/Window.hpp"
+#include "Platform/Linux/LinuxWindow.hpp"
 #include "Neat/Events/Events/KeyPressedEvent.hpp"
 #include "Neat/Events/Events/KeyReleasedEvent.hpp"
 #include "Neat/Events/Events/KeyTypedEvent.hpp"
@@ -14,6 +14,8 @@
 #include <glad/glad.h>
 
 namespace Neat {
+void GLFWwindowDeleter::operator()(GLFWwindow *ptr) { glfwDestroyWindow(ptr); }
+
 static void GLFWErrorCallback(Int32 error, const char *description) {
   NT_CORE_ERROR("GLFW Error ({0}); {1}", error, description);
 }
@@ -31,167 +33,149 @@ void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
 void mouseScrollCallback(GLFWwindow *window, double xOffset, double yOffset);
 void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos);
 
-// Defines a personalized std::unique_ptr for GLFWwindow
-struct GLFWwindowDeleter {
-  void operator()(GLFWwindow *ptr) { glfwDestroyWindow(ptr); }
-};
+// Defines a customized std::unique_ptr for GLFWwindow
 
-using GLFWwindowUniquePtr = std::unique_ptr<GLFWwindow, GLFWwindowDeleter>;
+LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
+  static Int32 windowCount = 0;
 
-// ---------------------------------------------------------------------- //
-// Window --------------------------------------------------------------- //
-// ---------------------------------------------------------------------- //
-struct Window::WindowImpl {
-  WindowProps props;
-  GLFWwindowUniquePtr window;
-  EventManager &events;
-  bool minimized = false;
-  bool vSync = false;
-
-  WindowImpl(EventManager &eventManager, const WindowProps &props)
-      : events(eventManager), props(props) {
-    static Int32 windowCount = 0;
-
-    if (windowCount == 0) {
-      Int32 status = glfwInit();
-      glfwSetErrorCallback(GLFWErrorCallback);
-      NT_CORE_ASSERT(status, "Failed to initialize GLFW!");
-    }
-
-    window = GLFWwindowUniquePtr(
-        glfwCreateWindow((Int32)props.width, (Int32)props.height,
-                         props.title.c_str(), NULL, NULL));
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    windowCount++;
-
-    NT_CORE_ASSERT(window.get(), "Window is null!");
-
-    glfwMakeContextCurrent(window.get());
-
-    // Glad initialization (need to be after window creation)
-    auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    NT_CORE_ASSERT(status, "Failed to initialize Glad!");
-
-    NT_CORE_INFO("OpenGL info:");
-    NT_CORE_INFO("Vendor: {0}", glGetString(GL_VENDOR));
-    NT_CORE_INFO("Renderer: {0}", glGetString(GL_RENDERER));
-    NT_CORE_INFO("Version: {0}", glGetString(GL_VERSION));
+  if (windowCount == 0) {
+    Int32 status = glfwInit();
+    glfwSetErrorCallback(GLFWErrorCallback);
+    NT_CORE_ASSERT(status, "Failed to initialize GLFW!");
   }
-};
 
-Window::Window(EventManager &eventManager, const WindowProps &props)
-    : m_impl(std::make_unique<WindowImpl>(eventManager, props)) {
-  NT_CORE_INFO("Created window {0} ({1}, {2})", props.title, props.width,
-               props.height);
+  m_glfwWindow = GLFWwindowUniquePtr(
+      glfwCreateWindow((Int32)m_windowProps.width, (Int32)m_windowProps.height,
+                       m_windowProps.title.c_str(), NULL, NULL));
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  windowCount++;
 
-  glfwSetWindowUserPointer(m_impl->window.get(), m_impl.get());
-  setVSync(m_impl->vSync);
+  NT_CORE_ASSERT(m_glfwWindow.get(), "Window is null!");
 
-  glfwSetWindowSizeCallback(m_impl->window.get(), windowResizeCallback);
-  glfwSetWindowCloseCallback(m_impl->window.get(), windowCloseCallback);
-  glfwSetKeyCallback(m_impl->window.get(), keyActionCallback);
-  glfwSetCharCallback(m_impl->window.get(), keyTypeCallback);
-  glfwSetMouseButtonCallback(m_impl->window.get(), mouseButtonActionCallback);
-  glfwSetScrollCallback(m_impl->window.get(), mouseScrollCallback);
-  glfwSetCursorPosCallback(m_impl->window.get(), mouseMoveCallback);
+  glfwMakeContextCurrent(m_glfwWindow.get());
+
+  // Glad initialization (need to be after window creation)
+  auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+  NT_CORE_ASSERT(status, "Failed to initialize Glad!");
+
+  NT_CORE_INFO("OpenGL info:");
+  NT_CORE_INFO("Vendor: {0}", glGetString(GL_VENDOR));
+  NT_CORE_INFO("Renderer: {0}", glGetString(GL_RENDERER));
+  NT_CORE_INFO("Version: {0}", glGetString(GL_VERSION));
+  NT_CORE_INFO("Created window {0} ({1}, {2})", m_windowProps.title,
+               m_windowProps.width, m_windowProps.height);
+
+  glfwSetWindowUserPointer(m_glfwWindow.get(), &m_windowProps);
+  setVSync(m_windowProps.vSync);
+
+  glfwSetWindowSizeCallback(m_glfwWindow.get(), windowResizeCallback);
+  glfwSetWindowCloseCallback(m_glfwWindow.get(), windowCloseCallback);
+  glfwSetKeyCallback(m_glfwWindow.get(), keyActionCallback);
+  glfwSetCharCallback(m_glfwWindow.get(), keyTypeCallback);
+  glfwSetMouseButtonCallback(m_glfwWindow.get(), mouseButtonActionCallback);
+  glfwSetScrollCallback(m_glfwWindow.get(), mouseScrollCallback);
+  glfwSetCursorPosCallback(m_glfwWindow.get(), mouseMoveCallback);
 }
 
-Int32 Window::getWidth() const { return m_impl->props.width; }
+Int32 LinuxWindow::getWidth() const { return m_windowProps.width; }
 
-Int32 Window::getHeight() const { return m_impl->props.height; }
+Int32 LinuxWindow::getHeight() const { return m_windowProps.height; }
 
-float Window::getAspectRatio() const {
-  return (float)m_impl->props.width / (float)m_impl->props.height;
+float LinuxWindow::getAspectRatio() const {
+  return (float)m_windowProps.width / (float)m_windowProps.height;
 }
 
-void *Window::getNativeWindow() const { return m_impl->window.get(); }
+void *LinuxWindow::getNativeWindow() const { return m_glfwWindow.get(); }
 
-Window::~Window() {}
+void LinuxWindow::onUpdate() {
+  glfwSwapBuffers(m_glfwWindow.get());
+  glfwPollEvents();
+}
 
-void Window::swapBuffers() { glfwSwapBuffers(m_impl->window.get()); }
+bool LinuxWindow::isMinimized() const { return m_windowProps.minimized; }
 
-void Window::pollEvents() { glfwPollEvents(); }
-
-bool Window::isMinimized() const { return m_impl->minimized; }
-
-void Window::setVSync(bool enabled) {
-  if (enabled)
+void LinuxWindow::setVSync(bool enabled) {
+  if (enabled) {
     glfwSwapInterval(1);
-  else
+  } else {
     glfwSwapInterval(0);
-  m_impl->vSync = enabled;
+  }
+  m_windowProps.vSync = enabled;
 }
 
-bool Window::isSync() const { return m_impl->vSync; }
+bool LinuxWindow::isSync() const { return m_windowProps.vSync; }
 
 // ---------------------------------------------------------------------- //
 // GLFW callbacks ------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 void windowResizeCallback(GLFWwindow *window, Int32 width, Int32 height) {
-  auto &impl =
-      *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
+  auto &windowProps =
+      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
 
-  impl.props.width = width;
-  impl.props.height = height;
+  windowProps.width = width;
+  windowProps.height = height;
 
-  if (impl.props.width == 0 or impl.props.height == 0)
-    impl.minimized = true;
+  if (windowProps.width == 0 or windowProps.height == 0)
+    windowProps.minimized = true;
   else
-    impl.minimized = false;
+    windowProps.minimized = false;
 
-  impl.events.generateEvent<WindowResizeEvent>(width, height);
+  windowProps.eventManager->generateEvent<WindowResizeEvent>(width, height);
 }
 
 void windowCloseCallback(GLFWwindow *window) {
-  auto &impl =
-      *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
-  impl.events.generateEvent<WindowCloseEvent>();
+  auto &windowProps =
+      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
+  windowProps.eventManager->generateEvent<WindowCloseEvent>();
 }
 
 void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
                        Int32 action, Int32 mods) {
-  auto &impl =
-      *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
+  auto &windowProps =
+      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
 
   switch (action) {
     case GLFW_PRESS: {
-      impl.events.generateEvent<KeyPressedEvent>(static_cast<Key>(key), 0);
+      windowProps.eventManager->generateEvent<KeyPressedEvent>(
+          static_cast<Key>(key), 0);
       break;
     }
     case GLFW_RELEASE: {
-      impl.events.generateEvent<KeyReleasedEvent>(static_cast<Key>(key));
+      windowProps.eventManager->generateEvent<KeyReleasedEvent>(
+          static_cast<Key>(key));
       break;
     }
     case GLFW_REPEAT: {
-      impl.events.generateEvent<KeyPressedEvent>(static_cast<Key>(key), 1);
+      windowProps.eventManager->generateEvent<KeyPressedEvent>(
+          static_cast<Key>(key), 1);
       break;
     }
   }
 }
 
 void keyTypeCallback(GLFWwindow *window, UInt32 key) {
-  auto &impl =
-      *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
-  impl.events.generateEvent<KeyTypedEvent>(static_cast<Key>(key));
+  auto &windowProps =
+      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
+  windowProps.eventManager->generateEvent<KeyTypedEvent>(static_cast<Key>(key));
 }
 
 void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
                                Int32 mods) {
-  auto &impl =
-      *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
+  auto &windowProps =
+      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
 
   switch (action) {
     case GLFW_PRESS: {
       MouseButtonPressedEvent event(static_cast<Mouse>(button));
-      impl.events.generateEvent<MouseButtonPressedEvent>(
+      windowProps.eventManager->generateEvent<MouseButtonPressedEvent>(
           static_cast<Mouse>(button));
       break;
     }
     case GLFW_RELEASE: {
       MouseButtonReleasedEvent event(static_cast<Mouse>(button));
-      impl.events.generateEvent<MouseButtonReleasedEvent>(
+      windowProps.eventManager->generateEvent<MouseButtonReleasedEvent>(
           static_cast<Mouse>(button));
       break;
     }
@@ -199,18 +183,20 @@ void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
 }
 
 void mouseScrollCallback(GLFWwindow *window, double xOffset, double yOffset) {
-  auto &impl =
-      *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
+  auto &windowProps =
+      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
 
   MouseScrolledEvent event((float)xOffset, (float)yOffset);
-  impl.events.generateEvent<MouseScrolledEvent>((float)xOffset, (float)yOffset);
+  windowProps.eventManager->generateEvent<MouseScrolledEvent>((float)xOffset,
+                                                              (float)yOffset);
 }
 
 void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos) {
-  auto &impl =
-      *static_cast<Window::WindowImpl *>(glfwGetWindowUserPointer(window));
+  auto &windowProps =
+      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
 
   MouseMovedEvent event((float)xPos, (float)yPos);
-  impl.events.generateEvent<MouseMovedEvent>((float)xPos, (float)yPos);
+  windowProps.eventManager->generateEvent<MouseMovedEvent>((float)xPos,
+                                                           (float)yPos);
 }
 }  // namespace Neat

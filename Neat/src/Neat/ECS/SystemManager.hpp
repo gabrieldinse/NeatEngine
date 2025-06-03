@@ -12,7 +12,8 @@
 namespace Neat {
 class SystemManager : public NonCopyable {
  public:
-  SystemManager(EntityManager &entityManager, EventManager &eventManager)
+  SystemManager(const std::shared_ptr<EntityManager> &entityManager,
+                const std::shared_ptr<EventManager> &eventManager)
       : m_entityManager(entityManager), m_eventManager(eventManager) {}
 
   void init() {
@@ -62,8 +63,8 @@ class SystemManager : public NonCopyable {
 
  private:
   bool m_initialized = false;
-  EntityManager &m_entityManager;
-  EventManager &m_eventManager;
+  std::shared_ptr<EntityManager> m_entityManager;
+  std::shared_ptr<EventManager> m_eventManager;
   std::unordered_map<BaseSystem::Family, std::shared_ptr<BaseSystem>> m_systems;
 };
 }  // namespace Neat

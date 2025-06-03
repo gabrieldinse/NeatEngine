@@ -12,15 +12,16 @@ Camera2DControllerSystem::Camera2DControllerSystem(float aspectRatio,
 
 Camera2DControllerSystem::~Camera2DControllerSystem() {}
 
-void Camera2DControllerSystem::init(EventManager &eventManager) {
-  eventManager.addListener<MouseMovedEvent>(*this);
-  eventManager.addListener<MouseScrolledEvent>(*this);
-  eventManager.addListener<WindowResizeEvent>(*this);
+void Camera2DControllerSystem::init(
+    const std::shared_ptr<EventManager> &eventManager) {
+  eventManager->addListener<MouseMovedEvent>(*this);
+  eventManager->addListener<MouseScrolledEvent>(*this);
+  eventManager->addListener<WindowResizeEvent>(*this);
 }
 
-void Camera2DControllerSystem::onUpdate(EntityManager &entityManager,
-                                        EventManager &eventManager,
-                                        DeltaTime deltaTime) {
+void Camera2DControllerSystem::onUpdate(
+    const std::shared_ptr<EntityManager> &entityManager,
+    const std::shared_ptr<EventManager> &eventManager, DeltaTime deltaTime) {
   auto distance = (float)(m_translationSpeed * deltaTime);
   if (Input::isKeyPressed(Key::W)) m_camera.moveUp(distance);
 

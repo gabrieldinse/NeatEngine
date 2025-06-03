@@ -1,21 +1,21 @@
 #include <memory>
 
-#include "Neat/Core/Layer.hpp"
+#include <Neat.hpp>
 #include "Neat/ImGui/ImGuiRender.hpp"
 
 #include <ImGui/imgui.h>
 
 class ExampleLayer : public Neat::Layer {
  public:
-  ExampleLayer();
+  ExampleLayer(const std::shared_ptr<Neat::EventManager> &eventManager);
   ~ExampleLayer() = default;
 
   void onImGuiRender();
   virtual void onUpdate(Neat::DeltaTime deltaTime) override;
 
  private:
-  Neat::SystemManager systems;
-  Neat::EntityManager entities;
+  std::shared_ptr<Neat::SystemManager> systems;
+  std::shared_ptr<Neat::EntityManager> entities;
 
   std::shared_ptr<Neat::Texture2D> checkerboardTexture;
   std::shared_ptr<Neat::Texture2D> spritesheetTexture;

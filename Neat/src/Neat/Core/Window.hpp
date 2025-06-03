@@ -1,51 +1,31 @@
 #pragma once
 
-#include <functional>
 #include <memory>
 #include <string>
 
 #include "Neat/Core/Base.hpp"
 #include "Neat/Core/Types.hpp"
-#include "Neat/Events/EventManager.hpp"
-
-struct GLFWwindow;
+#include "Neat/Core/WindowProps.hpp"
 
 namespace Neat {
+class EventManager;
 class Window {
  public:
-  struct WindowImpl;
+  virtual ~Window() = default;
 
-  // WindowProps ----------------------------------------------------------
-  struct WindowProps {
-    std::string title;
-    Int32 width;
-    Int32 height;
+  virtual void onUpdate() = 0;
 
-    WindowProps(const std::string &title = "Neat Engine", Int32 width = 1280,
-                Int32 height = 720)
-        : title(title), width(width), height(height) {}
-  };
-  // ----------------------------------------------------------------------
+  virtual Int32 getWidth() const = 0;
+  virtual Int32 getHeight() const = 0;
+  virtual float getAspectRatio() const = 0;
 
- public:
-  Window(EventManager &eventManager, const WindowProps &props = WindowProps());
-  ~Window();
+  virtual void *getNativeWindow() const = 0;
 
-  void swapBuffers();
-  void pollEvents();
+  virtual bool isMinimized() const = 0;
 
-  Int32 getWidth() const;
-  Int32 getHeight() const;
-  float getAspectRatio() const;
+  virtual void setVSync(bool enabled) = 0;
+  virtual bool isSync() const = 0;
 
-  void *getNativeWindow() const;
-
-  bool isMinimized() const;
-
-  void setVSync(bool enabled);
-  bool isSync() const;
-
- private:
-  std::unique_ptr<WindowImpl> m_impl;
+  static std::unique_ptr<Window> create(const WindowProps &props);
 };
 }  // namespace Neat

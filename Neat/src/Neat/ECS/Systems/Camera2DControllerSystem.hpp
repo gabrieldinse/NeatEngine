@@ -17,14 +17,15 @@ class Camera2DControllerSystem
 
   ~Camera2DControllerSystem();
 
-  void init(EventManager &eventManager);
+  void init(const std::shared_ptr<EventManager> &eventManager);
 
   Camera &getCamera() { return m_camera.getCamera(); }
   const Camera &getCamera() const { return m_camera.getCamera(); }
   Camera2D &getCamera2D() { return m_camera; }
   const Camera2D &getCamera2D() const { return m_camera; }
 
-  void onUpdate(EntityManager &entityManager, EventManager &eventManager,
+  void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
+                const std::shared_ptr<EventManager> &eventManager,
                 DeltaTime deltaTime);
 
   bool handleEvent(const MouseScrolledEvent &event);

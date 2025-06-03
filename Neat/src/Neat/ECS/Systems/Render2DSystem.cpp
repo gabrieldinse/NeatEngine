@@ -1,15 +1,16 @@
 #include "Neat/ECS/Systems/Render2DSystem.hpp"
 
 namespace Neat {
-void Render2DSystem::onUpdate(EntityManager &entityManager,
-                              EventManager &eventManager, DeltaTime deltaTime) {
+void Render2DSystem::onUpdate(
+    const std::shared_ptr<EntityManager> &entityManager,
+    const std::shared_ptr<EventManager> &eventManager, DeltaTime deltaTime) {
   Neat::Renderer2D::resetStats();
   Neat::RenderCommand::clearWithColor({0.35f, 0.35f, 0.55f, 1.0f});
 
   Renderer2D::beginScene(m_camera);
 
   ComponentHandle<Renderable> renderable;
-  for (auto &&entity : entityManager.entitiesWithComponents(renderable)) {
+  for (auto &&entity : entityManager->entitiesWithComponents(renderable)) {
     renderable->shape->draw();
   }
 

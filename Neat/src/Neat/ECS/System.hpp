@@ -11,8 +11,8 @@ class System : public BaseSystem {
  public:
   virtual ~System() = default;
 
-  virtual void onUpdate(EntityManager &entityManager,
-                        EventManager &eventManager,
+  virtual void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
+                        const std::shared_ptr<EventManager> &eventManager,
                         DeltaTime deltaTime) override {}
 
  private:
