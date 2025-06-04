@@ -16,6 +16,12 @@ set_target_properties(Sandbox PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
 )
 
+target_compile_definitions(Sandbox PRIVATE
+    $<$<CONFIG:Debug>:NT_DEBUG;NT_IMGUI>
+    $<$<CONFIG:Release>:NT_RELEASE>
+    $<$<CONFIG:Dist>:NT_DIST>
+)
+
 add_custom_command(TARGET Sandbox POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/Sandbox/assets

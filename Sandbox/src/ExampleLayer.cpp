@@ -14,6 +14,7 @@ ExampleLayer::ExampleLayer(
                                                          {8, 6}, {64, 64})) {
   entities = std::make_shared<Neat::EntityManager>(eventManager);
   systems = std::make_shared<Neat::SystemManager>(entities, eventManager);
+  eventManager->addListener<Neat::WindowResizeEvent>(*this);
   // auto q = Neat::Quaternion::fromAngleAxis(Neat::radians(45.0f),
   // Neat::Vector3F(1, 0, 0)); auto q2 = glm::angleAxis(glm::radians(45.0f),
   // glm::vec3(1.0f, 0.0f, 0.0f)); NT_TRACE(q); NT_TRACE(Neat::log(q));
@@ -59,4 +60,9 @@ void ExampleLayer::onUpdate(Neat::DeltaTime deltaTime) {
   systems->onUpdate<Neat::Camera3DControllerSystem>(deltaTime);
   systems->onUpdate<Neat::Render2DSystem>(deltaTime);
   onImGuiRender();
+}
+
+bool ExampleLayer::handleEvent(const Neat::WindowResizeEvent &event) {
+  NT_CORE_INFO("Example handle window resize event.");
+  return false;
 }
