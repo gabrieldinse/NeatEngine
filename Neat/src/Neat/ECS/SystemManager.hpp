@@ -7,7 +7,7 @@
 #include "Neat/Core/Exceptions.hpp"
 #include "Neat/Core/Log.hpp"
 #include "Neat/ECS/System.hpp"
-#include "Neat/Helper/NonCopyable.hpp"
+#include "Neat/Misc/NonCopyable.hpp"
 
 namespace Neat {
 class SystemManager : public NonCopyable {

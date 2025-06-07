@@ -1,4 +1,4 @@
-#include "Neat/Helper/FPSCounter.hpp"
+#include "Neat/Misc/FPSCounter.hpp"
 #include "Neat/Core/Log.hpp"
 
 namespace Neat {

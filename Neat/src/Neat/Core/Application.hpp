@@ -9,7 +9,7 @@
 #include "Neat/ImGui/ImGuiRender.hpp"
 
 namespace Neat {
-class Application : public EventListener<Application> {
+class Application : public EventHandler<Application> {
  public:
   Application();
   virtual ~Application();

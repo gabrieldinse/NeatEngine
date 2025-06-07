@@ -15,9 +15,9 @@ Camera3DControllerSystem::~Camera3DControllerSystem() {}
 
 void Camera3DControllerSystem::init(
     const std::shared_ptr<EventManager> &eventManager) {
-  eventManager->addListener<MouseMovedEvent>(*this);
-  eventManager->addListener<MouseScrolledEvent>(*this);
-  eventManager->addListener<WindowResizeEvent>(*this);
+  eventManager->addHandler<MouseMovedEvent>(*this);
+  eventManager->addHandler<MouseScrolledEvent>(*this);
+  eventManager->addHandler<WindowResizeEvent>(*this);
 }
 
 void Camera3DControllerSystem::onUpdate(

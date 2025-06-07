@@ -16,8 +16,8 @@
 #include "Neat/ECS/Component.hpp"
 #include "Neat/Events/Event.hpp"
 #include "Neat/Events/EventManager.hpp"
-#include "Neat/Helper/MemoryPool.hpp"
-#include "Neat/Helper/NonCopyable.hpp"
+#include "Neat/Misc/MemoryPool.hpp"
+#include "Neat/Misc/NonCopyable.hpp"
 
 namespace Neat {
 class EntityManager;

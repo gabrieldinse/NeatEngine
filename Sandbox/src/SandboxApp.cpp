@@ -2,7 +2,7 @@
 
 #include <Neat.hpp>
 #include <Neat/Core/Main.hpp>
-#include "Neat/Helper/FPSCounter.hpp"
+#include "Neat/Misc/FPSCounter.hpp"
 #include "ExampleLayer.hpp"
 
 // #include "Sandbox2D.hpp"

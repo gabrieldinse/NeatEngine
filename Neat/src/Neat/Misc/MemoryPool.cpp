@@ -1,4 +1,4 @@
-#include "Neat/Helper/MemoryPool.hpp"
+#include "Neat/Misc/MemoryPool.hpp"
 
 namespace Neat {
 BaseMemoryPool::~BaseMemoryPool() {

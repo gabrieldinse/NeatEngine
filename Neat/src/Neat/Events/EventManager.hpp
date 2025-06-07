@@ -4,14 +4,14 @@
 
 #include "Neat/Core/Exceptions.hpp"
 #include "Neat/Core/Log.hpp"
-#include "Neat/Events/EventListener.hpp"
+#include "Neat/Events/EventHandler.hpp"
 #include "Neat/Events/Event.hpp"
 
 namespace Neat {
 class EventManager {
  public:
-  using EventsConnectionsVector =
-      std::vector<std::shared_ptr<EventToListenersConnection>>;
+  using EventCallbacksListsVector =
+      std::vector<std::shared_ptr<EventCallbacksList>>;
 
  public:
   EventManager() = default;
@@ -20,83 +20,89 @@ class EventManager {
   EventManager(const EventManager &) = delete;
   EventManager &operator=(const EventManager &) = delete;
 
-  template <typename E, typename Listener>
-  void addListener(Listener &listener,
-                   EventPriority priority = EventPriority::Lowest,
-                   bool ignoreIfHandled = false) {
-    auto event_connection = getEventConnection<E>();
-    auto connection_id = event_connection->template addListener<E>(
-        listener, priority, ignoreIfHandled);
+  template <typename E, typename Handler>
+  void addHandler(Handler &eventHandler,
+                  EventPriority priority = EventPriority::Lowest,
+                  bool ignoreIfHandled = false) {
+    auto event_callbacks_list = getEventCallbacksList<E>();
+    auto event_callback_id = event_callbacks_list->template addHandler<E>(
+        eventHandler, priority, ignoreIfHandled);
 
-    BaseEventListener &base = listener;
-    base.m_connectedEvents.insert(std::make_pair(
+    BaseEventHandler &base_event_handler = eventHandler;
+    base_event_handler.m_eventsToHandleMap.insert(std::make_pair(
         Event<E>::getFamily(),
-        std::make_pair(
-            std::weak_ptr<EventToListenersConnection>(event_connection),
-            connection_id)));
+        std::make_pair(std::weak_ptr<EventCallbacksList>(event_callbacks_list),
+                       event_callback_id)));
   }
 
-  template <typename E, typename Listener>
-  void removeListener(Listener &listener) {
-    BaseEventListener &base = listener;
+  template <typename E, typename Handler>
+  void removeHandler(Handler &eventHandler) {
+    BaseEventHandler &base_event_handler = eventHandler;
     auto family = Event<E>::getFamily();
 
-    if (base.m_connectedEvents.find(family) == base.m_connectedEvents.end())
+    if (base_event_handler.m_eventsToHandleMap.find(family) ==
+        base_event_handler.m_eventsToHandleMap.end()) {
       throw EventListenerError();
+    }
 
-    auto &[event_connection, connection_id] = base.m_connectedEvents[family];
+    auto &[event_callbacks_list, event_callback_id] =
+        base_event_handler.m_eventsToHandleMap[family];
 
-    if (not event_connection.expired())
-      event_connection.lock()->removeListener(connection_id);
+    if (not event_callbacks_list.expired()) {
+      event_callbacks_list.lock()->removeHandler(event_callback_id);
+    }
 
-    base.m_connectedEvents.erase(family);
+    base_event_handler.m_eventsToHandleMap.erase(family);
   }
 
   template <typename E>
   void generateEvent(const E &event) {
-    auto event_connection = getEventConnection<E>();
-    event_connection->template publishEvent<E>(event);
+    auto event_callbacks_list = getEventCallbacksList<E>();
+    event_callbacks_list->template generateEvent<E>(event);
   }
 
   template <typename E>
   void generateEvent(std::unique_ptr<E> event) {
-    auto event_connection = getEventConnection<E>();
-    event_connection->template publishEvent<E>(event);
+    auto event_callbacks_list = getEventCallbacksList<E>();
+    event_callbacks_list->template generateEvent<E>(event);
   }
 
   template <typename E, typename... Args>
   void generateEvent(Args &&...args) {
-    auto event_connection = getEventConnection<E>();
-    event_connection->template publishEvent<E>(std::forward<Args>(args)...);
+    auto event_callbacks_list = getEventCallbacksList<E>();
+    event_callbacks_list->template generateEvent<E>(
+        std::forward<Args>(args)...);
   }
 
-  std::size_t getNumberOfListeners() const {
+  std::size_t getNumberOfHandlers() const {
     std::size_t count = 0;
-    for (auto &event_connection : m_eventsConnections)
-      if (event_connection) count += event_connection->size();
+    for (auto &event_callbacks_list : m_eventCallbacksLists) {
+      if (event_callbacks_list) {
+        count += event_callbacks_list->size();
+      }
+    }
 
     return count;
   }
 
  private:
   template <typename E>
-  std::shared_ptr<EventToListenersConnection> &getEventConnection() {
+  std::shared_ptr<EventCallbacksList> &getEventCallbacksList() {
     auto family = Event<E>::getFamily();
 
-    if (family >= m_eventsConnections.size()) {
-      m_eventsConnections.resize(family + 1);
+    if (family >= m_eventCallbacksLists.size()) {
+      m_eventCallbacksLists.resize(family + 1);
     }
 
-    if (not m_eventsConnections[family]) {
-      m_eventsConnections[family] =
-          std::make_shared<EventToListenersConnection>();
+    if (not m_eventCallbacksLists[family]) {
+      m_eventCallbacksLists[family] = std::make_shared<EventCallbacksList>();
     }
 
-    return m_eventsConnections[family];
+    return m_eventCallbacksLists[family];
   }
 
  private:
-  EventsConnectionsVector m_eventsConnections;
+  EventCallbacksListsVector m_eventCallbacksLists;
 };
 
 }  // namespace Neat

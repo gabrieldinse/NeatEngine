@@ -7,16 +7,15 @@
 namespace Neat {
 Application *Application::s_instance = nullptr;
 
-Application::Application() 
-  : m_eventManager(std::make_shared<EventManager>()){
+Application::Application() : m_eventManager(std::make_shared<EventManager>()) {
   // Check of there's another application running
   NT_CORE_ASSERT(not s_instance, "Application already exists!");
   s_instance = this;
 
   m_window = Window::create(WindowProps(m_eventManager));
-  m_eventManager->addListener<WindowCloseEvent>(*this, EventPriority::Highest,
+  m_eventManager->addHandler<WindowCloseEvent>(*this, EventPriority::Highest,
                                                true);
-  m_eventManager->addListener<WindowResizeEvent>(*this, EventPriority::Highest,
+  m_eventManager->addHandler<WindowResizeEvent>(*this, EventPriority::Highest,
                                                 true);
 
   Renderer::init();

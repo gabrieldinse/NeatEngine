@@ -9,9 +9,8 @@
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {
-class Camera2DControllerSystem
-    : public System<Camera2DControllerSystem>,
-      public EventListener<Camera2DControllerSystem> {
+class Camera2DControllerSystem : public System<Camera2DControllerSystem>,
+                                 public EventHandler<Camera2DControllerSystem> {
  public:
   Camera2DControllerSystem(float aspectRatio, bool rotationEnabled = true);
 

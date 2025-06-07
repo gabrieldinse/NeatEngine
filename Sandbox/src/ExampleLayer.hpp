@@ -5,7 +5,7 @@
 
 #include <ImGui/imgui.h>
 
-class ExampleLayer : public Neat::Layer, public Neat::EventListener<ExampleLayer> {
+class ExampleLayer : public Neat::Layer, public Neat::EventHandler<ExampleLayer> {
  public:
   ExampleLayer(const std::shared_ptr<Neat::EventManager> &eventManager);
   ~ExampleLayer() = default;

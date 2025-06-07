@@ -99,7 +99,7 @@ struct EventError : public Exception {
 // Event subscriptions
 struct EventListenerError : public EventError {
   EventListenerError(
-      const std::string &msg = "EventListener is not connected to Event.")
+      const std::string &msg = "EventHandler is not connected to Event.")
       : EventError(msg) {}
 };
 // -------------------------------------------------------------------------

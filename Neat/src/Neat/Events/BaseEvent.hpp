@@ -3,8 +3,6 @@
 #include "Neat/Core/Types.hpp"
 
 namespace Neat {
-class EventManager;
-
 class BaseEvent {
  public:
   using Family = UInt32;
