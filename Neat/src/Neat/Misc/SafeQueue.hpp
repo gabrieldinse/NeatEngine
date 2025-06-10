@@ -13,7 +13,7 @@ class SafeQueue {
  public:
   SafeQueue();
   ~SafeQueue();
-  std::optional<T> tryPop(UInt64 timeoutMilliseconds = 500);
+  std::optional<T> tryPop(UInt64 timeoutMilliseconds = 0);
   void push(T &&element);
   void push(const T &element);
 

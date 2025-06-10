@@ -17,6 +17,11 @@ using UInt32 = uint32_t;
 using Int64 = int64_t;
 using UInt64 = uint64_t;
 
+using Int = int;
+using Uint = unsigned;
+
+using SizeType = size_t;
+
 using IntMaxType = intmax_t;
 using UIntMaxType = uintmax_t;
 

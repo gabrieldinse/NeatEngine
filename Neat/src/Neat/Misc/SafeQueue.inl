@@ -15,7 +15,7 @@ std::optional<T> SafeQueue<T>::tryPop(UInt64 timeoutMilliseconds) {
       m_queueNotEmptyCondition.wait_for(
           unique_lock, std::chrono::milliseconds(timeoutMilliseconds),
           [this] { return not m_queue.empty(); })) {
-    T element = m_queue.front();
+    T element = std::move(m_queue.front());
     m_queue.pop();
     return element;
   }

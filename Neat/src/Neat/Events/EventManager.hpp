@@ -6,6 +6,7 @@
 #include "Neat/Core/Log.hpp"
 #include "Neat/Events/EventHandler.hpp"
 #include "Neat/Events/Event.hpp"
+#include "Neat/Misc/SafeQueue.hpp"
 
 namespace Neat {
 class EventManager {

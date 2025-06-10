@@ -36,6 +36,7 @@ class Application : public EventHandler<Application> {
   bool handleEvent(const WindowCloseEvent &event);
   bool handleEvent(const WindowResizeEvent &event);
 
+ protected:
   std::shared_ptr<EventManager> &getEventManager() { return m_eventManager; }
 
  private:

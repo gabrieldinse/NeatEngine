@@ -9,7 +9,7 @@ add_subdirectory(../Neat/vendor/GoogleTest ${CMAKE_BINARY_DIR}/GoogleTest-build)
 file(
     GLOB_RECURSE
     TEST_SOURCES
-    Unit/*.cpp
+    *.cpp
 )
 
 # Build the test executable
@@ -30,5 +30,5 @@ target_link_libraries(
 add_test(NAME AllTests COMMAND NeatTests)
 
 add_custom_command(TARGET NeatTests POST_BUILD
-    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+    COMMAND ${CMAKE_CTEST_COMMAND} --verbose
 )
