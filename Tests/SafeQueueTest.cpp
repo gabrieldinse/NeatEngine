@@ -90,7 +90,7 @@ TEST_F(SafeQueueTest, PushLvalueAndRvalueReferences) {
   EXPECT_TRUE(elem.has_value());
   EXPECT_EQ(elem.value(), test_string);
 
-  q4.push(std::move(test_string)); // test_string is now empty
+  q4.push(std::move(test_string));  // test_string is now empty
   EXPECT_TRUE(test_string.empty());
   auto elem2 = q4.tryPop();
   EXPECT_TRUE(elem2.has_value());
