@@ -2,9 +2,9 @@
 
 namespace Neat {
 template <typename T>
-void* getTypeId() {
+std::size_t getTypeId() {
   static Byte type_id;
-  return &type_id;
+  return reinterpret_cast<std::size_t>(&type_id);
 }
 
 template <auto method>

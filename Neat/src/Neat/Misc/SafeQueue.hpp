@@ -16,6 +16,7 @@ class SafeQueue {
   std::optional<T> tryPop(UInt64 timeoutMilliseconds = 0);
   void push(T &&element);
   void push(const T &element);
+  bool empty() { return m_queue.empty(); }
 
  private:
   std::queue<T> m_queue;

@@ -9,7 +9,7 @@ add_subdirectory(../Neat/vendor/GoogleTest ${CMAKE_BINARY_DIR}/GoogleTest-build)
 file(
     GLOB_RECURSE
     TEST_SOURCES
-    *.cpp
+    src/*.cpp
 )
 
 # Build the test executable
@@ -18,6 +18,7 @@ add_executable(NeatTests ${TEST_SOURCES})
 # Include headers
 target_include_directories(NeatTests PUBLIC
     ../Neat/src
+    src
 )
 
 # Link against Neat and GoogleTest

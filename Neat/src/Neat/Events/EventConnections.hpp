@@ -3,7 +3,6 @@
 #include <list>
 #include <any>
 
-#include "Neat/Misc/SafeQueue.hpp"
 #include "Neat/Misc/TypeId.hpp"
 
 namespace Neat {
@@ -44,17 +43,30 @@ class EventConnections : public IEventConnections {
     });
   }
 
-  void update(const std::any &event) {
+  void update(const EventType &event) {
     bool handled = false;
-    int i = 0;
     for (auto &handler : m_handlers) {
       if (not handled or handler.ignoreIfHandled) {
-        if (handler.function(std::any_cast<const EventType &>(event))) {
+        if (handler.function(event)) {
           handled = true;
         }
       }
-      i++;
     }
+  }
+
+  void update(EventType &&event) { update(event); }
+
+  void update(const std::any &event) {
+    update(std::any_cast<const EventType &>(event));
+  }
+
+  // Enable this template only if the Args is not EventType
+  template <typename... Args,
+            std::enable_if_t<!std::is_same_v<std::tuple<std::decay_t<Args>...>,
+                                             std::tuple<EventType>>,
+                             int> = 0>
+  void update(Args &&...args) {
+    update(EventType(std::forward<Args>(args)...));
   }
 
  private:
