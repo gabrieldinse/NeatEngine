@@ -13,6 +13,8 @@ file(GLOB_RECURSE NEAT_SOURCES
     vendor/ImGui/backends/imgui_impl_opengl3.cpp
 )
 
+message(STATUS "NEAT_SOURCES: ${NEAT_SOURCES}")
+
 if(UNIX AND NOT APPLE)
     file(GLOB_RECURSE LINUX_SOURCES
         src/Platform/Linux/**.cpp

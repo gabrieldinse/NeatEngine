@@ -25,6 +25,7 @@ target_include_directories(NeatTests PUBLIC
 target_link_libraries(
     NeatTests
     GTest::gtest_main
+    Neat
 )
 
 # Automatically run tests when building

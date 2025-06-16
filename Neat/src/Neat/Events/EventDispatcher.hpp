@@ -1,5 +1,6 @@
 #include "Neat/Events/EventConnections.hpp"
 #include "Neat/Misc/SafeQueue.hpp"
+#include <iostream>
 
 namespace Neat {
 class EventDispatcher {
@@ -24,11 +25,12 @@ class EventDispatcher {
 
   template <typename EventType>
   void enqueue(EventType&& event) {
-    m_eventsQueue.push(std::make_unique<QueuedEvent>(
-        getTypeId<EventType>(), std::forward<EventType>(event)));
+    using DecayedEventType = std::remove_reference_t<EventType>;
+    m_eventsQueue.push(
+        std::make_unique<QueuedEvent>(getTypeId<DecayedEventType>(), event));
   }
 
-  template <typename... Args, typename EventType,
+  template <typename EventType, typename... Args,
             std::enable_if_t<!std::is_same_v<std::tuple<std::decay_t<Args>...>,
                                              std::tuple<EventType>>,
                              int> = 0>
@@ -53,8 +55,7 @@ class EventDispatcher {
                                              std::tuple<EventType>>,
                              int> = 0>
   void trigger(Args&&... args) {
-    using DecayedEventType = std::remove_reference_t<EventType>;
-    get<DecayedEventType>().update(std::forward<Args>(args)...);
+    get<EventType>().update(std::forward<Args>(args)...);
   }
 
   void update();
