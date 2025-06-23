@@ -59,3 +59,14 @@ struct ListenerC {
   float posY = 0.0f;
   int count = 0;
 };
+
+struct ListenerD {
+  bool handleA(const EventA& event) {
+    std::cout << "ListenerD EventA: val=" << event.val << std::endl;
+    count++;
+    val = event.val;
+    return true;
+  }
+  int val = 0;
+  int count = 0;
+};

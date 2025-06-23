@@ -10,6 +10,7 @@ class EventConnectionsTest : public testing::Test {
     connB.connect<&ListenerB::process>(listenerB);
     connC.connect<&ListenerB::handleEventC>(listenerB);
     connC.connect<&ListenerC::handle>(listenerC);
+    connA.connect<&ListenerD::handleA>(listenerD);
   }
   Neat::EventConnections<EventA> connA{};
   Neat::EventConnections<EventB> connB{};
@@ -20,6 +21,7 @@ class EventConnectionsTest : public testing::Test {
   ListenerC listenerC{};
   ListenerB listenerB2{};
   ListenerC listenerC2{};
+  ListenerD listenerD{};
 };
 
 TEST_F(EventConnectionsTest, SendEventsConnectingAndDisconnecting) {
@@ -116,4 +118,42 @@ TEST_F(EventConnectionsTest, MultipleEventListenersConstReference) {
   EXPECT_EQ(listenerC.posX, 3.14f);
   EXPECT_EQ(listenerC.posY, 2.72f);
   EXPECT_EQ(listenerC.count, 1);
+}
+
+TEST_F(EventConnectionsTest, ConnectWithPriority) {
+  std::string msg{"My message"};
+  std::string msg2{"My message"};
+
+  connA.disconnect<&ListenerA::handle>(listenerA);
+  connB.disconnect<&ListenerB::process>(listenerB);
+  connC.disconnect<&ListenerB::handleEventC>(listenerB);
+  connC.disconnect<&ListenerC::handle>(listenerC);
+  connA.disconnect<&ListenerD::handleA>(listenerD);
+
+  connA.connect<&ListenerA::handle>(listenerA, 10000);
+  connB.connect<&ListenerB::process>(listenerB, 20000);
+  connC.connect<&ListenerC::handle>(listenerC, 5);
+  connC.connect<&ListenerB::handleEventC>(listenerB, 5);
+  connA.connect<&ListenerD::handleA>(listenerD, 3);
+
+  EventA eventA{100};
+  EventB eventB{msg};
+  EventC eventC{3.14f, 2.72f};
+  EventB eventB2{msg2};
+  connA.update(100);
+  connB.update(msg);
+  connC.update(3.33f, 2.22f);
+  connB.update(msg2);
+
+  EXPECT_EQ(listenerA.val, 0);
+  EXPECT_EQ(listenerA.count, 0);
+  EXPECT_EQ(listenerB.posX, 0.0f);
+  EXPECT_EQ(listenerB.posY, 0.0f);
+  EXPECT_EQ(listenerB.msg, msg2);
+  EXPECT_EQ(listenerB.count, 2);
+  EXPECT_EQ(listenerC.posX, 3.33f);
+  EXPECT_EQ(listenerC.posY, 2.22f);
+  EXPECT_EQ(listenerC.count, 1);
+  EXPECT_EQ(listenerD.val, 100);
+  EXPECT_EQ(listenerD.count, 1);
 }

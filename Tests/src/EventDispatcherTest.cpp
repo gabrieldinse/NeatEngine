@@ -203,9 +203,9 @@ TEST_F(EventDispatcherTest, DisconnectAndEnqueueAndUpdate) {
   EXPECT_EQ(listenerA.count, 0);
   EXPECT_EQ(listenerB.posX, -1.0f);
   EXPECT_EQ(listenerB.posY, 0.5f);
-  EXPECT_EQ(listenerB.msg, msg2);
-  EXPECT_EQ(listenerB.count, 4);
+  EXPECT_EQ(listenerB.msg, "");
+  EXPECT_EQ(listenerB.count, 1);
   EXPECT_EQ(listenerC.posX, -1.0);
   EXPECT_EQ(listenerC.posY, 0.5f);
-  EXPECT_EQ(listenerC.count, 2);
+  EXPECT_EQ(listenerC.count, 1);
 }

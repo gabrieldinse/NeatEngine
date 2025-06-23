@@ -22,16 +22,19 @@ class EventConnections : public IEventConnections {
     void *instancePointer;
     std::size_t instanceMethodId;
     bool ignoreIfHandled;
+    UInt32 priority;
   };
 
   template <auto method, typename Instance>
-  void connect(Instance &instance, bool ignoreIfHandled = false) {
-    m_handlers.emplace_back(
-        [&instance](const EventType &event) {
+  void connect(Instance &instance, UInt32 priority = 1000, bool ignoreIfHandled = false) {
+    auto insert_it = std::find_if(m_handlers.begin(), m_handlers.end(), [priority](const Handler& handler) {
+      return handler.priority > priority;
+    });
+    m_handlers.emplace(insert_it, [&instance](const EventType &event) {
           return (instance.*method)(event);
         },
         static_cast<void *>(&instance), Neat::getMethodId<method>(),
-        ignoreIfHandled);
+        ignoreIfHandled, priority);
   }
 
   template <auto method, typename Instance>
