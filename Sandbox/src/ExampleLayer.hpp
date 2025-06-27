@@ -5,15 +5,14 @@
 
 #include <ImGui/imgui.h>
 
-class ExampleLayer : public Neat::Layer,
-                     public Neat::EventHandler<ExampleLayer> {
+class ExampleLayer : public Neat::Layer {
  public:
-  ExampleLayer(const std::shared_ptr<Neat::EventManager> &eventManager);
+  ExampleLayer(const std::shared_ptr<Neat::EventDispatcher> &eventManager);
   ~ExampleLayer() = default;
 
   void onImGuiRender();
   virtual void onUpdate(Neat::DeltaTime deltaTime) override;
-  bool handleEvent(const Neat::WindowResizeEvent &event);
+  bool onWindowResize(const Neat::WindowResizeEvent &event);
 
  private:
   std::shared_ptr<Neat::SystemManager> systems;

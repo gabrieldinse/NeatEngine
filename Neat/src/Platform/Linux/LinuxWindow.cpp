@@ -8,7 +8,7 @@
 #include "Neat/Events/Events/MouseButtonReleasedEvent.hpp"
 #include "Neat/Events/Events/MouseMovedEvent.hpp"
 #include "Neat/Events/Events/MouseScrolledEvent.hpp"
-#include "Neat/Events/EventManager.hpp"
+#include "Neat/Events/EventDispatcher.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -122,13 +122,13 @@ void windowResizeCallback(GLFWwindow *window, Int32 width, Int32 height) {
   else
     windowProps.minimized = false;
 
-  windowProps.eventManager->generateEvent<WindowResizeEvent>(width, height);
+  windowProps.eventDispatcher->enqueue<WindowResizeEvent>(width, height);
 }
 
 void windowCloseCallback(GLFWwindow *window) {
   auto &windowProps =
       *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
-  windowProps.eventManager->generateEvent<WindowCloseEvent>();
+  windowProps.eventDispatcher->enqueue<WindowCloseEvent>();
 }
 
 void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
@@ -138,17 +138,17 @@ void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
 
   switch (action) {
     case GLFW_PRESS: {
-      windowProps.eventManager->generateEvent<KeyPressedEvent>(
+      windowProps.eventDispatcher->enqueue<KeyPressedEvent>(
           static_cast<Key>(key), 0);
       break;
     }
     case GLFW_RELEASE: {
-      windowProps.eventManager->generateEvent<KeyReleasedEvent>(
+      windowProps.eventDispatcher->enqueue<KeyReleasedEvent>(
           static_cast<Key>(key));
       break;
     }
     case GLFW_REPEAT: {
-      windowProps.eventManager->generateEvent<KeyPressedEvent>(
+      windowProps.eventDispatcher->enqueue<KeyPressedEvent>(
           static_cast<Key>(key), 1);
       break;
     }
@@ -158,7 +158,7 @@ void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
 void keyTypeCallback(GLFWwindow *window, UInt32 key) {
   auto &windowProps =
       *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
-  windowProps.eventManager->generateEvent<KeyTypedEvent>(static_cast<Key>(key));
+  windowProps.eventDispatcher->enqueue<KeyTypedEvent>(static_cast<Key>(key));
 }
 
 void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
@@ -169,13 +169,13 @@ void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
   switch (action) {
     case GLFW_PRESS: {
       MouseButtonPressedEvent event(static_cast<Mouse>(button));
-      windowProps.eventManager->generateEvent<MouseButtonPressedEvent>(
+      windowProps.eventDispatcher->enqueue<MouseButtonPressedEvent>(
           static_cast<Mouse>(button));
       break;
     }
     case GLFW_RELEASE: {
       MouseButtonReleasedEvent event(static_cast<Mouse>(button));
-      windowProps.eventManager->generateEvent<MouseButtonReleasedEvent>(
+      windowProps.eventDispatcher->enqueue<MouseButtonReleasedEvent>(
           static_cast<Mouse>(button));
       break;
     }
@@ -187,8 +187,8 @@ void mouseScrollCallback(GLFWwindow *window, double xOffset, double yOffset) {
       *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
 
   MouseScrolledEvent event((float)xOffset, (float)yOffset);
-  windowProps.eventManager->generateEvent<MouseScrolledEvent>((float)xOffset,
-                                                              (float)yOffset);
+  windowProps.eventDispatcher->enqueue<MouseScrolledEvent>((float)xOffset,
+                                                           (float)yOffset);
 }
 
 void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos) {
@@ -196,7 +196,7 @@ void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos) {
       *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
 
   MouseMovedEvent event((float)xPos, (float)yPos);
-  windowProps.eventManager->generateEvent<MouseMovedEvent>((float)xPos,
-                                                           (float)yPos);
+  windowProps.eventDispatcher->enqueue<MouseMovedEvent>((float)xPos,
+                                                        (float)yPos);
 }
 }  // namespace Neat

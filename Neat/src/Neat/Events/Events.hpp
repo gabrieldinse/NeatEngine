@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Neat/Events/Event.hpp"
-#include "Neat/Events/EventHandler.hpp"
-#include "Neat/Events/EventManager.hpp"
+#include "Neat/Events/EventDispatcher.hpp"
 #include "Neat/Events/Events/KeyPressedEvent.hpp"
 #include "Neat/Events/Events/KeyReleasedEvent.hpp"
 #include "Neat/Events/Events/KeyTypedEvent.hpp"

@@ -1,3 +1,4 @@
+#pragma once
 
 namespace Neat {
 template <typename E>

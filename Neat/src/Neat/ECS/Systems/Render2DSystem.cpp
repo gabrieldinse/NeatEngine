@@ -3,7 +3,8 @@
 namespace Neat {
 void Render2DSystem::onUpdate(
     const std::shared_ptr<EntityManager> &entityManager,
-    const std::shared_ptr<EventManager> &eventManager, DeltaTime deltaTime) {
+    const std::shared_ptr<EventDispatcher> &eventDispatcher,
+    DeltaTime deltaTime) {
   Neat::Renderer2D::resetStats();
   Neat::RenderCommand::clearWithColor({0.35f, 0.35f, 0.55f, 1.0f});
 

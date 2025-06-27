@@ -4,19 +4,18 @@
 #include "Neat/Events/Events/MouseScrolledEvent.hpp"
 #include "Neat/Events/Events/MouseMovedEvent.hpp"
 #include "Neat/Events/Events/WindowResizeEvent.hpp"
-#include "Neat/Events/EventManager.hpp"
+#include "Neat/Events/EventDispatcher.hpp"
 #include "Neat/Graphics/Cameras/Camera2D.hpp"
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {
-class Camera2DControllerSystem : public System<Camera2DControllerSystem>,
-                                 public EventHandler<Camera2DControllerSystem> {
+class Camera2DControllerSystem : public System<Camera2DControllerSystem> {
  public:
   Camera2DControllerSystem(float aspectRatio, bool rotationEnabled = true);
 
   ~Camera2DControllerSystem();
 
-  void init(const std::shared_ptr<EventManager> &eventManager);
+  void init(const std::shared_ptr<EventDispatcher> &eventDispatcher);
 
   Camera &getCamera() { return m_camera.getCamera(); }
   const Camera &getCamera() const { return m_camera.getCamera(); }
@@ -24,12 +23,12 @@ class Camera2DControllerSystem : public System<Camera2DControllerSystem>,
   const Camera2D &getCamera2D() const { return m_camera; }
 
   void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
-                const std::shared_ptr<EventManager> &eventManager,
+                const std::shared_ptr<EventDispatcher> &eventDispatcher,
                 DeltaTime deltaTime);
 
-  bool handleEvent(const MouseScrolledEvent &event);
-  bool handleEvent(const MouseMovedEvent &event);
-  bool handleEvent(const WindowResizeEvent &event);
+  bool onMouseScrolled(const MouseScrolledEvent &event);
+  bool onMouseMoved(const MouseMovedEvent &event);
+  bool onWindowResize(const WindowResizeEvent &event);
 
  private:
   Camera2D m_camera;

@@ -1,5 +1,4 @@
 #include "Neat/Core/Window.hpp"
-#include "Neat/Events/EventManager.hpp"
 
 #ifdef NT_PLATFORM_LINUX
 #include "Platform/Linux/LinuxWindow.hpp"

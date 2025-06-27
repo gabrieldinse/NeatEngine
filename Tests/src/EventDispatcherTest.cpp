@@ -117,23 +117,23 @@ TEST_F(EventDispatcherTest, DisconnectAndTrigger) {
 
 TEST_F(EventDispatcherTest, EnqueueAndUpdateSingleEvents) {
   dispatcher1.enqueue(EventA{100});
-  dispatcher1.update();
+  dispatcher1.onUpdate();
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
 
   dispatcher1.enqueue(EventA{200});
-  dispatcher1.update();
+  dispatcher1.onUpdate();
   EXPECT_EQ(listenerA.val, 200);
   EXPECT_EQ(listenerA.count, 2);
 
   dispatcher1.enqueue<EventA>(300);
-  dispatcher1.update();
+  dispatcher1.onUpdate();
   EXPECT_EQ(listenerA.val, 300);
   EXPECT_EQ(listenerA.count, 3);
 
   EventA eventA{400};
   dispatcher1.enqueue(eventA);
-  dispatcher1.update();
+  dispatcher1.onUpdate();
   EXPECT_EQ(listenerA.val, 400);
   EXPECT_EQ(listenerA.count, 4);
 }
@@ -149,7 +149,7 @@ TEST_F(EventDispatcherTest, EnqueueAndUpdateMultipleEventListeners) {
 
   expectDefault();
 
-  dispatcher1.update();
+  dispatcher1.onUpdate();
 
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
@@ -174,7 +174,7 @@ TEST_F(EventDispatcherTest, DisconnectAndEnqueueAndUpdate) {
 
   expectDefault();
 
-  dispatcher1.update();
+  dispatcher1.onUpdate();
 
   EXPECT_EQ(listenerA.val, 0);
   EXPECT_EQ(listenerA.count, 0);
@@ -197,7 +197,7 @@ TEST_F(EventDispatcherTest, DisconnectAndEnqueueAndUpdate) {
 
   expectDefault();
 
-  dispatcher1.update();
+  dispatcher1.onUpdate();
 
   EXPECT_EQ(listenerA.val, 0);
   EXPECT_EQ(listenerA.count, 0);

@@ -3,7 +3,7 @@
 #include "ExampleLayer.hpp"
 
 ExampleLayer::ExampleLayer(
-    const std::shared_ptr<Neat::EventManager> &eventManager)
+    const std::shared_ptr<Neat::EventDispatcher> &eventDispatcher)
     : checkerboardTexture(
           std::make_shared<Neat::Texture2D>("assets/textures/texture1.png")),
       spritesheetTexture(std::make_shared<Neat::Texture2D>(
@@ -12,9 +12,10 @@ ExampleLayer::ExampleLayer(
                                                         {7, 6}, {64, 64})),
       stairsTexture2(Neat::SubTexture2D::createFromIndex(*spritesheetTexture,
                                                          {8, 6}, {64, 64})) {
-  entities = std::make_shared<Neat::EntityManager>(eventManager);
-  systems = std::make_shared<Neat::SystemManager>(entities, eventManager);
-  eventManager->addHandler<Neat::WindowResizeEvent>(*this);
+  entities = std::make_shared<Neat::EntityManager>(eventDispatcher);
+  systems = std::make_shared<Neat::SystemManager>(entities, eventDispatcher);
+  eventDispatcher->get<Neat::WindowResizeEvent>()
+      .connect<&ExampleLayer::onWindowResize>(*this);
   // auto q = Neat::Quaternion::fromAngleAxis(Neat::radians(45.0f),
   // Neat::Vector3F(1, 0, 0)); auto q2 = glm::angleAxis(glm::radians(45.0f),
   // glm::vec3(1.0f, 0.0f, 0.0f)); NT_TRACE(q); NT_TRACE(Neat::log(q));
@@ -62,7 +63,7 @@ void ExampleLayer::onUpdate(Neat::DeltaTime deltaTime) {
   onImGuiRender();
 }
 
-bool ExampleLayer::handleEvent(const Neat::WindowResizeEvent &event) {
+bool ExampleLayer::onWindowResize(const Neat::WindowResizeEvent &event) {
   NT_CORE_INFO("Example handle window resize event.");
   return false;
 }

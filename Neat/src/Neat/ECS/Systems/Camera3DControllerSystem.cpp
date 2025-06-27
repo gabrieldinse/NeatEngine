@@ -14,15 +14,19 @@ Camera3DControllerSystem::Camera3DControllerSystem(float aspectRatio,
 Camera3DControllerSystem::~Camera3DControllerSystem() {}
 
 void Camera3DControllerSystem::init(
-    const std::shared_ptr<EventManager> &eventManager) {
-  eventManager->addHandler<MouseMovedEvent>(*this);
-  eventManager->addHandler<MouseScrolledEvent>(*this);
-  eventManager->addHandler<WindowResizeEvent>(*this);
+    const std::shared_ptr<EventDispatcher> &eventDispatcher) {
+  eventDispatcher->get<MouseMovedEvent>()
+      .connect<&Camera3DControllerSystem::onMouseMoved>(*this);
+  eventDispatcher->get<MouseScrolledEvent>()
+      .connect<&Camera3DControllerSystem::onMouseScrolled>(*this);
+  eventDispatcher->get<WindowResizeEvent>()
+      .connect<&Camera3DControllerSystem::onWindowResize>(*this);
 }
 
 void Camera3DControllerSystem::onUpdate(
     const std::shared_ptr<EntityManager> &entityManager,
-    const std::shared_ptr<EventManager> &eventManager, DeltaTime deltaTime) {
+    const std::shared_ptr<EventDispatcher> &eventDispatcher,
+    DeltaTime deltaTime) {
   auto distance = (float)(m_translationSpeed * deltaTime);
   if (Input::isKeyPressed(Key::W)) m_camera.moveForward(distance);
 
@@ -46,7 +50,8 @@ void Camera3DControllerSystem::onUpdate(
   }
 }
 
-bool Camera3DControllerSystem::handleEvent(const MouseScrolledEvent &event) {
+bool Camera3DControllerSystem::onMouseScrolled(
+    const MouseScrolledEvent &event) {
   auto fov = clamp(-event.yOffset + m_camera.getFieldOfView(), 1.0f, 60.0f);
   m_translationSpeed = fov * 0.5f;
   m_camera.setFieldOfView(fov);
@@ -54,7 +59,7 @@ bool Camera3DControllerSystem::handleEvent(const MouseScrolledEvent &event) {
   return false;
 }
 
-bool Camera3DControllerSystem::handleEvent(const MouseMovedEvent &event) {
+bool Camera3DControllerSystem::onMouseMoved(const MouseMovedEvent &event) {
   if (m_firstMouse) {
     m_lastMousePosition = Vector2F(event.xPos, event.yPos);
     m_firstMouse = false;
@@ -72,7 +77,7 @@ bool Camera3DControllerSystem::handleEvent(const MouseMovedEvent &event) {
   return false;
 }
 
-bool Camera3DControllerSystem::handleEvent(const WindowResizeEvent &event) {
+bool Camera3DControllerSystem::onWindowResize(const WindowResizeEvent &event) {
   m_camera.setAspectRatio((float)event.width / (float)event.height);
 
   return false;

@@ -1,12 +1,10 @@
 #pragma once
 
-#include "Neat/Events/Events/MouseEvent.hpp"
+#include "Neat/Core/MouseCodes.hpp"
 
 namespace Neat {
 
-struct MouseMovedEvent : public MouseEvent {
-  MouseMovedEvent(float xPos, float yPos) : xPos(xPos), yPos(yPos) {}
-
+struct MouseMovedEvent {
   float xPos;
   float yPos;
 };

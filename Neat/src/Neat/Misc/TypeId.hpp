@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Neat/Core/Types.hpp"
 
 namespace Neat {

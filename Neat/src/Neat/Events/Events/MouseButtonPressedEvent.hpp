@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Neat/Events/Events/MouseButtonEvent.hpp"
+#include "Neat/Core/MouseCodes.hpp"
 
 namespace Neat {
 
-struct MouseButtonPressedEvent : public MouseButtonEvent {
-  MouseButtonPressedEvent(Mouse button) : MouseButtonEvent(button) {}
+struct MouseButtonPressedEvent {
+  Mouse button;
 };
 }  // namespace Neat

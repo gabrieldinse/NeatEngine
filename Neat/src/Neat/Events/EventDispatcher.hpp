@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Neat/Events/EventConnections.hpp"
 #include "Neat/Misc/SafeQueue.hpp"
 #include <iostream>
@@ -41,13 +43,13 @@ class EventDispatcher {
 
   template <typename EventType>
   void trigger(const EventType& event) {
-    get<EventType>().update(event);
+    get<EventType>().onUpdate(event);
   }
 
   template <typename EventType>
   void trigger(EventType&& event) {
     using DecayedEventType = std::remove_reference_t<EventType>;
-    get<DecayedEventType>().update(std::forward<EventType>(event));
+    get<DecayedEventType>().onUpdate(std::forward<EventType>(event));
   }
 
   template <typename EventType, typename... Args,
@@ -55,10 +57,10 @@ class EventDispatcher {
                                              std::tuple<EventType>>,
                              int> = 0>
   void trigger(Args&&... args) {
-    get<EventType>().update(std::forward<Args>(args)...);
+    get<EventType>().onUpdate(std::forward<Args>(args)...);
   }
 
-  void update();
+  void onUpdate();
 
  private:
   struct QueuedEvent {

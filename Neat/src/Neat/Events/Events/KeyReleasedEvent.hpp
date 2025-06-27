@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Neat/Events/Events/KeyEvent.hpp"
+#include "Neat/Core/KeyCodes.hpp"
 
 namespace Neat {
-struct KeyReleasedEvent : public KeyEvent {
-  KeyReleasedEvent(Key key) : KeyEvent(key) {}
+struct KeyReleasedEvent {
+  Key key;
 };
 }  // namespace Neat

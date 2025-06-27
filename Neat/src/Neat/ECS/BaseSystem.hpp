@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Neat/Core/Types.hpp"
-#include "Neat/Events/EventManager.hpp"
+#include "Neat/Events/EventDispatcher.hpp"
 #include "Neat/Misc/NonCopyable.hpp"
 
 namespace Neat {
@@ -13,9 +13,9 @@ class BaseSystem : public NonCopyable {
 
   virtual ~BaseSystem() = default;
 
-  virtual void init(const std::shared_ptr<EventManager> &eventManager) {}
+  virtual void init(const std::shared_ptr<EventDispatcher> &eventDispatcher) {}
   virtual void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
-                        const std::shared_ptr<EventManager> &eventManager,
+                        const std::shared_ptr<EventDispatcher> &eventDispatcher,
                         DeltaTime deltaTime) = 0;
 
  protected:

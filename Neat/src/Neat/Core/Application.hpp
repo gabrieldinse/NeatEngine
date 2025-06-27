@@ -5,11 +5,11 @@
 #include "Neat/Core/Window.hpp"
 #include "Neat/Events/Events/WindowCloseEvent.hpp"
 #include "Neat/Events/Events/WindowResizeEvent.hpp"
-#include "Neat/Events/EventManager.hpp"
+#include "Neat/Events/EventDispatcher.hpp"
 #include "Neat/ImGui/ImGuiRender.hpp"
 
 namespace Neat {
-class Application : public EventHandler<Application> {
+class Application {
  public:
   Application();
   virtual ~Application();
@@ -32,18 +32,19 @@ class Application : public EventHandler<Application> {
   static Application &get() { return *s_instance; }
   Window &getWindow() { return *m_window; }
 
-  // Events receiving
-  bool handleEvent(const WindowCloseEvent &event);
-  bool handleEvent(const WindowResizeEvent &event);
+  bool onWindowClose(const WindowCloseEvent &event);
+  bool onWindowResize(const WindowResizeEvent &event);
 
  protected:
-  std::shared_ptr<EventManager> &getEventManager() { return m_eventManager; }
+  std::shared_ptr<EventDispatcher> &getEventDispatcher() {
+    return m_eventDispatcher;
+  }
 
  private:
   static Application *s_instance;
 
   std::unique_ptr<Window> m_window;
-  std::shared_ptr<EventManager> m_eventManager;
+  std::shared_ptr<EventDispatcher> m_eventDispatcher;
   LayerGroup m_layerGroup;
   double m_updatePeriod = 1.0f / 120.0f;
 

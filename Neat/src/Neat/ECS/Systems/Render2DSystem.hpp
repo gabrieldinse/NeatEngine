@@ -13,7 +13,7 @@ class Render2DSystem : public System<Render2DSystem> {
   Render2DSystem(Camera &camera) : m_camera(camera) {}
 
   virtual void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
-                        const std::shared_ptr<EventManager> &eventManager,
+                        const std::shared_ptr<EventDispatcher> &eventDispatcher,
                         DeltaTime deltaTime);
 
  private:

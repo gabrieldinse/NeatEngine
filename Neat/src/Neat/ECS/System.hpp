@@ -12,7 +12,7 @@ class System : public BaseSystem {
   virtual ~System() = default;
 
   virtual void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
-                        const std::shared_ptr<EventManager> &eventManager,
+                        const std::shared_ptr<EventDispatcher> &eventDispatcher,
                         DeltaTime deltaTime) override {}
 
  private:

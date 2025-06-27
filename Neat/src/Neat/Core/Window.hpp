@@ -8,7 +8,7 @@
 #include "Neat/Core/WindowProps.hpp"
 
 namespace Neat {
-class EventManager;
+class EventDispatcher;
 class Window {
  public:
   virtual ~Window() = default;

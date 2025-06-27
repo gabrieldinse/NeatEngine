@@ -25,16 +25,16 @@ class EventConnectionsTest : public testing::Test {
 };
 
 TEST_F(EventConnectionsTest, SendEventsConnectingAndDisconnecting) {
-  connA.update(EventA{100});
+  connA.onUpdate(EventA{100});
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
 
-  connA.update(EventA{200});
+  connA.onUpdate(EventA{200});
   EXPECT_EQ(listenerA.val, 200);
   EXPECT_EQ(listenerA.count, 2);
 
   connA.disconnect<&ListenerA::handle>(listenerA);
-  connA.update(EventA{300});
+  connA.onUpdate(EventA{300});
   EXPECT_EQ(listenerA.val, 200);
   EXPECT_EQ(listenerA.count, 2);
 }
@@ -43,10 +43,10 @@ TEST_F(EventConnectionsTest, MultipleEventListeners) {
   std::string msg{"My message"};
   std::string msg2{"My message"};
 
-  connA.update(EventA{100});
-  connB.update(EventB{msg});
-  connC.update(EventC{3.14f, 2.72f});
-  connB.update(EventB{msg2});
+  connA.onUpdate(EventA{100});
+  connB.onUpdate(EventB{msg});
+  connC.onUpdate(EventC{3.14f, 2.72f});
+  connB.onUpdate(EventB{msg2});
 
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
@@ -63,7 +63,7 @@ TEST_F(EventConnectionsTest, EventHandled) {
   connC2.connect<&ListenerC::handle>(listenerC2);  // listenerC2 connects first
   connC2.connect<&ListenerB::handleEventC>(listenerB2);
 
-  connC2.update(
+  connC2.onUpdate(
       EventC{1.11f, 2.22f});  // listenerC2 handles the event (returns true)
   EXPECT_EQ(listenerC2.posX, 1.11f);
   EXPECT_EQ(listenerC2.posY, 2.22f);
@@ -80,10 +80,10 @@ TEST_F(EventConnectionsTest, MultipleEventListenersVariadicTemplate) {
   std::string msg{"My message"};
   std::string msg2{"My message"};
 
-  connA.update(100);
-  connB.update(msg);
-  connC.update(3.14f, 2.72f);
-  connB.update(msg2);
+  connA.onUpdate(100);
+  connB.onUpdate(msg);
+  connC.onUpdate(3.14f, 2.72f);
+  connB.onUpdate(msg2);
 
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
@@ -104,10 +104,10 @@ TEST_F(EventConnectionsTest, MultipleEventListenersConstReference) {
   EventB eventB{msg};
   EventC eventC{3.14f, 2.72f};
   EventB eventB2{msg2};
-  connA.update(eventA);
-  connB.update(eventB);
-  connC.update(eventC);
-  connB.update(eventB2);
+  connA.onUpdate(eventA);
+  connB.onUpdate(eventB);
+  connC.onUpdate(eventC);
+  connB.onUpdate(eventB2);
 
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
@@ -140,10 +140,10 @@ TEST_F(EventConnectionsTest, ConnectWithPriority) {
   EventB eventB{msg};
   EventC eventC{3.14f, 2.72f};
   EventB eventB2{msg2};
-  connA.update(100);
-  connB.update(msg);
-  connC.update(3.33f, 2.22f);
-  connB.update(msg2);
+  connA.onUpdate(100);
+  connB.onUpdate(msg);
+  connC.onUpdate(3.33f, 2.22f);
+  connB.onUpdate(msg2);
 
   EXPECT_EQ(listenerA.val, 0);
   EXPECT_EQ(listenerA.count, 0);

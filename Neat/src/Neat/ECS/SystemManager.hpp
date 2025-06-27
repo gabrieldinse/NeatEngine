@@ -13,11 +13,11 @@ namespace Neat {
 class SystemManager : public NonCopyable {
  public:
   SystemManager(const std::shared_ptr<EntityManager> &entityManager,
-                const std::shared_ptr<EventManager> &eventManager)
-      : m_entityManager(entityManager), m_eventManager(eventManager) {}
+                const std::shared_ptr<EventDispatcher> &eventDispatcher)
+      : m_entityManager(entityManager), m_eventDispatcher(eventDispatcher) {}
 
   void init() {
-    for (auto &&[family, system] : m_systems) system->init(m_eventManager);
+    for (auto &&[family, system] : m_systems) system->init(m_eventDispatcher);
 
     m_initialized = true;
   }
@@ -51,20 +51,20 @@ class SystemManager : public NonCopyable {
     if (not m_initialized) throw SystemManagerNotInitializedError();
 
     auto system = getSystem<S>();
-    system->onUpdate(m_entityManager, m_eventManager, deltaTime);
+    system->onUpdate(m_entityManager, m_eventDispatcher, deltaTime);
   }
 
   void updateAll(DeltaTime deltaTime) {
     if (not m_initialized) throw SystemManagerNotInitializedError();
 
     for (auto &&[family, system] : m_systems)
-      system->onUpdate(m_entityManager, m_eventManager, deltaTime);
+      system->onUpdate(m_entityManager, m_eventDispatcher, deltaTime);
   }
 
  private:
   bool m_initialized = false;
   std::shared_ptr<EntityManager> m_entityManager;
-  std::shared_ptr<EventManager> m_eventManager;
+  std::shared_ptr<EventDispatcher> m_eventDispatcher;
   std::unordered_map<BaseSystem::Family, std::shared_ptr<BaseSystem>> m_systems;
 };
 }  // namespace Neat

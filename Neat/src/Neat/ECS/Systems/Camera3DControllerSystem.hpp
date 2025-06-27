@@ -4,30 +4,29 @@
 #include "Neat/Events/Events/MouseScrolledEvent.hpp"
 #include "Neat/Events/Events/MouseMovedEvent.hpp"
 #include "Neat/Events/Events/WindowResizeEvent.hpp"
-#include "Neat/Events/EventManager.hpp"
+#include "Neat/Events/EventDispatcher.hpp"
 #include "Neat/Graphics/Cameras/Camera.hpp"
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {
-class Camera3DControllerSystem : public System<Camera3DControllerSystem>,
-                                 public EventHandler<Camera3DControllerSystem> {
+class Camera3DControllerSystem : public System<Camera3DControllerSystem> {
  public:
   Camera3DControllerSystem(float aspectRatio, bool rotationEnabled = true);
 
   ~Camera3DControllerSystem();
 
-  void init(const std::shared_ptr<EventManager> &eventManager);
+  void init(const std::shared_ptr<EventDispatcher> &eventDispatcher);
 
   Camera &getCamera() { return m_camera; }
   const Camera &getCamera() const { return m_camera; }
 
   void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
-                const std::shared_ptr<EventManager> &eventManager,
+                const std::shared_ptr<EventDispatcher> &eventDispatcher,
                 DeltaTime deltaTime);
 
-  bool handleEvent(const MouseScrolledEvent &event);
-  bool handleEvent(const MouseMovedEvent &event);
-  bool handleEvent(const WindowResizeEvent &event);
+  bool onMouseScrolled(const MouseScrolledEvent &event);
+  bool onMouseMoved(const MouseMovedEvent &event);
+  bool onWindowResize(const WindowResizeEvent &event);
 
  private:
   Camera m_camera;

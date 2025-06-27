@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Neat/Core/Types.hpp"
+#include "Neat/Misc/TypeConversions.hpp"
 
 namespace Neat {
 enum class Mouse : UInt16 {

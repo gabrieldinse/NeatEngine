@@ -13,15 +13,19 @@ Camera2DControllerSystem::Camera2DControllerSystem(float aspectRatio,
 Camera2DControllerSystem::~Camera2DControllerSystem() {}
 
 void Camera2DControllerSystem::init(
-    const std::shared_ptr<EventManager> &eventManager) {
-  eventManager->addHandler<MouseMovedEvent>(*this);
-  eventManager->addHandler<MouseScrolledEvent>(*this);
-  eventManager->addHandler<WindowResizeEvent>(*this);
+    const std::shared_ptr<EventDispatcher> &eventDispatcher) {
+  eventDispatcher->get<MouseMovedEvent>()
+      .connect<&Camera2DControllerSystem::onMouseMoved>(*this);
+  eventDispatcher->get<MouseScrolledEvent>()
+      .connect<&Camera2DControllerSystem::onMouseScrolled>(*this);
+  eventDispatcher->get<WindowResizeEvent>()
+      .connect<&Camera2DControllerSystem::onWindowResize>(*this);
 }
 
 void Camera2DControllerSystem::onUpdate(
     const std::shared_ptr<EntityManager> &entityManager,
-    const std::shared_ptr<EventManager> &eventManager, DeltaTime deltaTime) {
+    const std::shared_ptr<EventDispatcher> &eventDispatcher,
+    DeltaTime deltaTime) {
   auto distance = (float)(m_translationSpeed * deltaTime);
   if (Input::isKeyPressed(Key::W)) m_camera.moveUp(distance);
 
@@ -41,7 +45,8 @@ void Camera2DControllerSystem::onUpdate(
   }
 }
 
-bool Camera2DControllerSystem::handleEvent(const MouseScrolledEvent &event) {
+bool Camera2DControllerSystem::onMouseScrolled(
+    const MouseScrolledEvent &event) {
   m_zoomLevel -= event.yOffset * 0.2f;
   m_zoomLevel = std::max(m_zoomLevel, 0.25f);
   m_translationSpeed = 2.0f * m_zoomLevel;
@@ -50,7 +55,7 @@ bool Camera2DControllerSystem::handleEvent(const MouseScrolledEvent &event) {
   return false;
 }
 
-bool Camera2DControllerSystem::handleEvent(const MouseMovedEvent &event) {
+bool Camera2DControllerSystem::onMouseMoved(const MouseMovedEvent &event) {
   if (m_firstMouse) {
     m_lastMousePosition = Vector2F(event.xPos, event.yPos);
     m_firstMouse = false;
@@ -73,7 +78,7 @@ bool Camera2DControllerSystem::handleEvent(const MouseMovedEvent &event) {
   return false;
 }
 
-bool Camera2DControllerSystem::handleEvent(const WindowResizeEvent &event) {
+bool Camera2DControllerSystem::onWindowResize(const WindowResizeEvent &event) {
   m_aspectRatio = (float)event.width / (float)event.height;
   m_camera.setSize(m_aspectRatio);
 

@@ -14,8 +14,7 @@
 #include "Neat/Core/Log.hpp"
 #include "Neat/Core/Types.hpp"
 #include "Neat/ECS/Component.hpp"
-#include "Neat/Events/Event.hpp"
-#include "Neat/Events/EventManager.hpp"
+#include "Neat/Events/EventDispatcher.hpp"
 #include "Neat/Misc/MemoryPool.hpp"
 #include "Neat/Misc/NonCopyable.hpp"
 
@@ -210,7 +209,8 @@ struct ComponentRemovedEvent {
 // ---------------------------------------------------------------------- //
 class EntityManager : public NonCopyable {
  public:
-  explicit EntityManager(const std::shared_ptr<EventManager> &eventManager);
+  explicit EntityManager(
+      const std::shared_ptr<EventDispatcher> &eventDispatcher);
   virtual ~EntityManager();
 
  public:
@@ -484,7 +484,7 @@ class EntityManager : public NonCopyable {
     }
 
     Entity entity(this, Entity::Id(index, version));
-    m_eventManager->generateEvent<EntityCreatedEvent>(entity);
+    m_eventDispatcher->enqueue<EntityCreatedEvent>(entity);
 
     return entity;
   }
@@ -495,7 +495,7 @@ class EntityManager : public NonCopyable {
     UInt32 index = id.index();
     auto component_mask = m_entityComponentMasks[index];
 
-    m_eventManager->generateEvent<EntityDestroyedEvent>(Entity(this, id));
+    m_eventDispatcher->enqueue<EntityDestroyedEvent>(Entity(this, id));
 
     for (std::size_t i = 0; i < m_componentArrays.size(); ++i) {
       BaseMemoryPool *component_array = m_componentArrays[i];
@@ -534,8 +534,8 @@ class EntityManager : public NonCopyable {
     m_entityComponentMasks[index].set(family);
 
     ComponentHandle<C> component(this, id);
-    m_eventManager->generateEvent<ComponentAddedEvent<C>>(Entity(this, id),
-                                                          component);
+    m_eventDispatcher->enqueue<ComponentAddedEvent<C>>(Entity(this, id),
+                                                       component);
 
     return component;
   }
@@ -548,8 +548,8 @@ class EntityManager : public NonCopyable {
 
     BaseMemoryPool *component_array = m_componentArrays[family];
     ComponentHandle<C> component(this, id);
-    m_eventManager->generateEvent<ComponentRemovedEvent<C>>(Entity(this, id),
-                                                            component);
+    m_eventDispatcher->enqueue<ComponentRemovedEvent<C>>(Entity(this, id),
+                                                         component);
 
     m_entityComponentMasks[id.index()].reset(family);
 
@@ -742,7 +742,7 @@ class EntityManager : public NonCopyable {
  private:
   UInt32 m_indexCounter = 0;
 
-  std::shared_ptr<EventManager> m_eventManager;
+  std::shared_ptr<EventDispatcher> m_eventDispatcher;
   std::vector<BaseMemoryPool *> m_componentArrays;
   std::vector<ComponentMask> m_entityComponentMasks;
   std::vector<UInt32> m_entityIdsVersion;
