@@ -13,6 +13,7 @@ class ExampleLayer : public Neat::Layer {
   void onImGuiRender();
   virtual void onUpdate(Neat::DeltaTime deltaTime) override;
   bool onWindowResize(const Neat::WindowResizeEvent &event);
+  bool onMouseMoved(const Neat::MouseMovedEvent &event);
 
  private:
   std::shared_ptr<Neat::SystemManager> systems;

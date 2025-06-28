@@ -4,7 +4,7 @@
 
 #include "Neat/Core/Base.hpp"
 #include "Neat/Core/KeyCodes.hpp"
-#include "Neat/Core/MouseCodes.hpp"
+#include "Neat/Core/MouseButtonCodes.hpp"
 #include "Neat/Core/Window.hpp"
 #include "Neat/Math/Vector.hpp"
 
@@ -16,7 +16,7 @@ class Input {
  public:
   static void setWindow(Window &window);
   static bool isKeyPressed(Key key);
-  static bool isMouseButtonPressed(Mouse button);
+  static bool isMouseButtonPressed(MouseButton button);
   static Vector2F getMousePosition();
   static float getMouseX();
   static float getMouseY();

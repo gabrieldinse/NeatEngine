@@ -7,6 +7,6 @@
 #include "Neat/Core/Layer.hpp"
 #include "Neat/Core/Limits.hpp"
 #include "Neat/Core/Log.hpp"
-#include "Neat/Core/MouseCodes.hpp"
+#include "Neat/Core/MouseButtonCodes.hpp"
 #include "Neat/Core/Timer.hpp"
 #include "Neat/Core/Types.hpp"

@@ -20,13 +20,13 @@ void Input::setWindow(Window &window) {
 }
 
 bool Input::isKeyPressed(Key key) {
-  auto state = glfwGetKey(s_impl->window, static_cast<Int32>(key));
+  auto state = glfwGetKey(s_impl->window, enumToInt(key));
 
   return (state == GLFW_PRESS or state == GLFW_REPEAT);
 }
 
-bool Input::isMouseButtonPressed(Mouse button) {
-  auto state = glfwGetMouseButton(s_impl->window, static_cast<Int32>(button));
+bool Input::isMouseButtonPressed(MouseButton button) {
+  auto state = glfwGetMouseButton(s_impl->window, enumToInt(button));
 
   return (state == GLFW_PRESS);
 }

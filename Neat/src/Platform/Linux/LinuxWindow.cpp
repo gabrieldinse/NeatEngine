@@ -57,7 +57,7 @@ LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
   glfwMakeContextCurrent(m_glfwWindow.get());
 
   // Glad initialization (need to be after window creation)
-  auto status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+  int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
   NT_CORE_ASSERT(status, "Failed to initialize Glad!");
 
   NT_CORE_INFO("OpenGL info:");
@@ -168,15 +168,15 @@ void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
 
   switch (action) {
     case GLFW_PRESS: {
-      MouseButtonPressedEvent event(static_cast<Mouse>(button));
+      MouseButtonPressedEvent event(static_cast<MouseButton>(button));
       windowProps.eventDispatcher->enqueue<MouseButtonPressedEvent>(
-          static_cast<Mouse>(button));
+          static_cast<MouseButton>(button));
       break;
     }
     case GLFW_RELEASE: {
-      MouseButtonReleasedEvent event(static_cast<Mouse>(button));
+      MouseButtonReleasedEvent event(static_cast<MouseButton>(button));
       windowProps.eventDispatcher->enqueue<MouseButtonReleasedEvent>(
-          static_cast<Mouse>(button));
+          static_cast<MouseButton>(button));
       break;
     }
   }

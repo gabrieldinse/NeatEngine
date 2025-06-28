@@ -32,6 +32,7 @@ Application::~Application() {
 void Application::stop() { m_running = false; }
 
 void Application::run() {
+  NT_CORE_INFO("Application started");
   Timer timer;
   m_running = true;
   timer.start();
@@ -47,6 +48,7 @@ void Application::run() {
     m_window->onUpdate();
     m_eventDispatcher->onUpdate();
   }
+  NT_CORE_INFO("Application stopped");
 }
 
 void Application::pushLayer(std::unique_ptr<Layer> &&layer) {

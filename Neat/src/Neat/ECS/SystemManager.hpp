@@ -39,7 +39,9 @@ class SystemManager : public NonCopyable {
   std::shared_ptr<S> getSystem() {
     auto it = m_systems.find(S::getFamily());
 
-    if (it == m_systems.end()) throw InvalidSystemError();
+    if (it == m_systems.end()) {
+      throw InvalidSystemError();
+    }
 
     auto &&[family, system] = *it;
 
@@ -48,7 +50,9 @@ class SystemManager : public NonCopyable {
 
   template <typename S>
   void onUpdate(DeltaTime deltaTime) {
-    if (not m_initialized) throw SystemManagerNotInitializedError();
+    if (not m_initialized) {
+      throw SystemManagerNotInitializedError();
+    }
 
     auto system = getSystem<S>();
     system->onUpdate(m_entityManager, m_eventDispatcher, deltaTime);
@@ -57,8 +61,9 @@ class SystemManager : public NonCopyable {
   void updateAll(DeltaTime deltaTime) {
     if (not m_initialized) throw SystemManagerNotInitializedError();
 
-    for (auto &&[family, system] : m_systems)
+    for (auto &&[family, system] : m_systems) {
       system->onUpdate(m_entityManager, m_eventDispatcher, deltaTime);
+    }
   }
 
  private:

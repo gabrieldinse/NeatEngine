@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Neat/Core/MouseCodes.hpp"
+#include "Neat/Core/MouseButtonCodes.hpp"
 
 namespace Neat {
 struct MouseButtonReleasedEvent {
-  Mouse button;
+  MouseButton button;
 };
 }  // namespace Neat

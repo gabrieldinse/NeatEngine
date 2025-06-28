@@ -16,6 +16,8 @@ ExampleLayer::ExampleLayer(
   systems = std::make_shared<Neat::SystemManager>(entities, eventDispatcher);
   eventDispatcher->get<Neat::WindowResizeEvent>()
       .connect<&ExampleLayer::onWindowResize>(*this);
+  eventDispatcher->get<Neat::MouseMovedEvent>()
+      .connect<&ExampleLayer::onMouseMoved>(*this);
   // auto q = Neat::Quaternion::fromAngleAxis(Neat::radians(45.0f),
   // Neat::Vector3F(1, 0, 0)); auto q2 = glm::angleAxis(glm::radians(45.0f),
   // glm::vec3(1.0f, 0.0f, 0.0f)); NT_TRACE(q); NT_TRACE(Neat::log(q));
@@ -65,5 +67,10 @@ void ExampleLayer::onUpdate(Neat::DeltaTime deltaTime) {
 
 bool ExampleLayer::onWindowResize(const Neat::WindowResizeEvent &event) {
   NT_CORE_INFO("Example handle window resize event.");
+  return false;
+}
+
+bool ExampleLayer::onMouseMoved(const Neat::MouseMovedEvent &event) {
+  NT_CORE_TRACE("Mouse moved to ({0}, {1})", event.xPos, event.yPos);
   return false;
 }
