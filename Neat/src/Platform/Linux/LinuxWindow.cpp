@@ -14,7 +14,6 @@
 #include <glad/glad.h>
 
 namespace Neat {
-void GLFWwindowDeleter::operator()(GLFWwindow *ptr) { glfwDestroyWindow(ptr); }
 
 static void GLFWErrorCallback(Int32 error, const char *description) {
   NT_CORE_ERROR("GLFW Error ({0}); {1}", error, description);
@@ -44,17 +43,16 @@ LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
     NT_CORE_ASSERT(status, "Failed to initialize GLFW!");
   }
 
-  m_glfwWindow = GLFWwindowUniquePtr(
-      glfwCreateWindow((Int32)m_windowProps.width, (Int32)m_windowProps.height,
-                       m_windowProps.title.c_str(), NULL, NULL));
+  m_glfwWindow = glfwCreateWindow((Int32)m_windowProps.width, (Int32)m_windowProps.height,
+                       m_windowProps.title.c_str(), NULL, NULL);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   windowCount++;
 
-  NT_CORE_ASSERT(m_glfwWindow.get(), "Window is null!");
+  NT_CORE_ASSERT(m_glfwWindow, "Window is null!");
 
-  glfwMakeContextCurrent(m_glfwWindow.get());
+  glfwMakeContextCurrent(m_glfwWindow);
 
   // Glad initialization (need to be after window creation)
   int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -67,16 +65,21 @@ LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
   NT_CORE_INFO("Created window {0} ({1}, {2})", m_windowProps.title,
                m_windowProps.width, m_windowProps.height);
 
-  glfwSetWindowUserPointer(m_glfwWindow.get(), &m_windowProps);
+  glfwSetWindowUserPointer(m_glfwWindow, &m_windowProps);
   setVSync(m_windowProps.vSync);
 
-  glfwSetWindowSizeCallback(m_glfwWindow.get(), windowResizeCallback);
-  glfwSetWindowCloseCallback(m_glfwWindow.get(), windowCloseCallback);
-  glfwSetKeyCallback(m_glfwWindow.get(), keyActionCallback);
-  glfwSetCharCallback(m_glfwWindow.get(), keyTypeCallback);
-  glfwSetMouseButtonCallback(m_glfwWindow.get(), mouseButtonActionCallback);
-  glfwSetScrollCallback(m_glfwWindow.get(), mouseScrollCallback);
-  glfwSetCursorPosCallback(m_glfwWindow.get(), mouseMoveCallback);
+  glfwSetWindowSizeCallback(m_glfwWindow, windowResizeCallback);
+  glfwSetWindowCloseCallback(m_glfwWindow, windowCloseCallback);
+  glfwSetKeyCallback(m_glfwWindow, keyActionCallback);
+  glfwSetCharCallback(m_glfwWindow, keyTypeCallback);
+  glfwSetMouseButtonCallback(m_glfwWindow, mouseButtonActionCallback);
+  glfwSetScrollCallback(m_glfwWindow, mouseScrollCallback);
+  glfwSetCursorPosCallback(m_glfwWindow, mouseMoveCallback);
+}
+
+LinuxWindow::~LinuxWindow() {
+  glfwDestroyWindow(m_glfwWindow);
+  glfwTerminate();
 }
 
 Int32 LinuxWindow::getWidth() const { return m_windowProps.width; }
@@ -87,10 +90,10 @@ float LinuxWindow::getAspectRatio() const {
   return (float)m_windowProps.width / (float)m_windowProps.height;
 }
 
-void *LinuxWindow::getNativeWindow() const { return m_glfwWindow.get(); }
+void *LinuxWindow::getNativeWindow() const { return m_glfwWindow; }
 
 void LinuxWindow::onUpdate() {
-  glfwSwapBuffers(m_glfwWindow.get());
+  glfwSwapBuffers(m_glfwWindow);
   glfwPollEvents();
 }
 

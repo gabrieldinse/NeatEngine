@@ -5,15 +5,11 @@
 struct GLFWwindow;
 
 namespace Neat {
-struct GLFWwindowDeleter {
-  void operator()(GLFWwindow *ptr);
-};
-using GLFWwindowUniquePtr = std::unique_ptr<GLFWwindow, GLFWwindowDeleter>;
 
 class LinuxWindow : public Window {
  public:
   LinuxWindow(const WindowProps &props);
-  virtual ~LinuxWindow() = default;
+  virtual ~LinuxWindow();
 
   virtual void onUpdate() override;
 
@@ -29,7 +25,7 @@ class LinuxWindow : public Window {
   virtual bool isSync() const override;
 
  private:
-  GLFWwindowUniquePtr m_glfwWindow;
+  GLFWwindow *m_glfwWindow;
   WindowProps m_windowProps;
 };
 }  // namespace Neat
