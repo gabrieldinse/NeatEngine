@@ -11,7 +11,7 @@ class ExampleLayer : public Neat::Layer {
   ~ExampleLayer() = default;
 
   void onImGuiRender();
-  virtual void onUpdate(Neat::DeltaTime deltaTime) override;
+  virtual void onUpdate(double deltaTimeSeconds) override;
   bool onWindowResize(const Neat::WindowResizeEvent &event);
   bool onMouseMoved(const Neat::MouseMovedEvent &event);
 

@@ -10,7 +10,7 @@
 // class System1 : public Neat::System<System1>
 //{
 //    virtual void onUpdate(Neat::EntityManager& entityManager,
-//       Neat::EventDispatcher& eventManager, Neat::DeltaTime deltaTime)
+//       Neat::EventDispatcher& eventManager, double deltaTimeSeconds)
 //       override
 //    {
 //       NT_TRACE("System 1 onUpdate");
@@ -27,7 +27,7 @@
 // class System2 : public Neat::System<System2>
 //{
 //    virtual void onUpdate(Neat::EntityManager& entityManager,
-//       Neat::EventDispatcher& eventManager, Neat::DeltaTime deltaTime)
+//       Neat::EventDispatcher& eventManager, double deltaTimeSeconds)
 //       override
 //    {
 //       NT_TRACE("System 2 onUpdate");
@@ -95,7 +95,7 @@
 //{
 // }
 //
-// void Sandbox2D::onUpdate(Neat::DeltaTime deltaTime)
+// void Sandbox2D::onUpdate(double deltaTimeSeconds)
 //{
 // }
 //

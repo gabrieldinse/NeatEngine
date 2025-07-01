@@ -49,20 +49,20 @@ class SystemManager : public NonCopyable {
   }
 
   template <typename S>
-  void onUpdate(DeltaTime deltaTime) {
+  void onUpdate(double deltaTimeSeconds) {
     if (not m_initialized) {
       throw SystemManagerNotInitializedError();
     }
 
     auto system = getSystem<S>();
-    system->onUpdate(m_entityManager, m_eventDispatcher, deltaTime);
+    system->onUpdate(m_entityManager, m_eventDispatcher, deltaTimeSeconds);
   }
 
-  void updateAll(DeltaTime deltaTime) {
+  void updateAll(double deltaTimeSeconds) {
     if (not m_initialized) throw SystemManagerNotInitializedError();
 
     for (auto &&[family, system] : m_systems) {
-      system->onUpdate(m_entityManager, m_eventDispatcher, deltaTime);
+      system->onUpdate(m_entityManager, m_eventDispatcher, deltaTimeSeconds);
     }
   }
 

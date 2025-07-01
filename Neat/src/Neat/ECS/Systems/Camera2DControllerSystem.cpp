@@ -25,8 +25,8 @@ void Camera2DControllerSystem::init(
 void Camera2DControllerSystem::onUpdate(
     const std::shared_ptr<EntityManager> &entityManager,
     const std::shared_ptr<EventDispatcher> &eventDispatcher,
-    DeltaTime deltaTime) {
-  auto distance = (float)(m_translationSpeed * deltaTime);
+    double deltaTimeSeconds) {
+  auto distance = (float)(m_translationSpeed * deltaTimeSeconds);
   if (Input::isKeyPressed(Key::W)) m_camera.moveUp(distance);
 
   if (Input::isKeyPressed(Key::S)) m_camera.moveDown(distance);
@@ -36,7 +36,7 @@ void Camera2DControllerSystem::onUpdate(
   if (Input::isKeyPressed(Key::A)) m_camera.moveLeft(distance);
 
   if (m_rotationEnabled) {
-    auto rotation = (float)(m_rotationSpeed * deltaTime);
+    auto rotation = (float)(m_rotationSpeed * deltaTimeSeconds);
     if (Input::isKeyPressed(Key::Q))
       m_camera.setRotation(wrap360(m_camera.getRotation() + rotation));
 

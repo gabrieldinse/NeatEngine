@@ -18,7 +18,7 @@ using Int64 = int64_t;
 using UInt64 = uint64_t;
 
 using Int = int;
-using Uint = unsigned;
+using UInt = unsigned;
 
 using SizeType = size_t;
 
@@ -29,5 +29,5 @@ using IntPointerType = intptr_t;
 using UIntPointerType = uintptr_t;
 
 // Custom types
-using DeltaTime = double;
+using double = double;
 }  // namespace Neat

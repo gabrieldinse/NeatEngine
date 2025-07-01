@@ -24,7 +24,7 @@ class Camera2DControllerSystem : public System<Camera2DControllerSystem> {
 
   void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
                 const std::shared_ptr<EventDispatcher> &eventDispatcher,
-                DeltaTime deltaTime);
+                double deltaTimeSeconds);
 
   bool onMouseScrolled(const MouseScrolledEvent &event);
   bool onMouseMoved(const MouseMovedEvent &event);

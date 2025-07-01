@@ -10,7 +10,7 @@ class Sandbox2D : public Neat::Layer {
 
   void attach() override;
   void detach() override;
-  void onUpdate(Neat::DeltaTime deltaTime) override;
+  void onUpdate(double deltaTimeSeconds) override;
   void onRender() override;
 
  private:

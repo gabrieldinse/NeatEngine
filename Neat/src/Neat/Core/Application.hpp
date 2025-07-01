@@ -16,7 +16,7 @@ class Application {
 
   void run();
   void stop();
-  virtual void onUpdate(DeltaTime deltaTime) {}
+  virtual void onUpdate(double deltaTimeSeconds) {}
 
   template <typename T, typename... Args>
   void pushLayer(Args &&...args);

@@ -38,11 +38,11 @@ void Application::run() {
   timer.start();
 
   while (m_running) {
-    double deltaTime = timer.restart();
+    double deltaTimeSeconds = timer.restart();
     ImGuiRender::begin();
-    onUpdate(deltaTime);
+    onUpdate(deltaTimeSeconds);
     for (auto &layer : m_layerGroup) {
-      layer->onUpdate(deltaTime);
+      layer->onUpdate(deltaTimeSeconds);
     }
     ImGuiRender::end();
     m_window->onUpdate();

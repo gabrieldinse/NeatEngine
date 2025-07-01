@@ -59,9 +59,9 @@ void ExampleLayer::onImGuiRender() {
   // ImGui::ColorEdit4("Square Color", this->tint.dataPointer());
 }
 
-void ExampleLayer::onUpdate(Neat::DeltaTime deltaTime) {
-  systems->onUpdate<Neat::Camera3DControllerSystem>(deltaTime);
-  systems->onUpdate<Neat::Render2DSystem>(deltaTime);
+void ExampleLayer::onUpdate(double deltaTimeSeconds) {
+  systems->onUpdate<Neat::Camera3DControllerSystem>(deltaTimeSeconds);
+  systems->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);
   onImGuiRender();
 }
 
