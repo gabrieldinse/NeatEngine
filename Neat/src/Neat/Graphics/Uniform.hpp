@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "Neat/Core/Base.hpp"
+#include "Neat/Core/PlatformDetection.hpp"
 #include "Neat/Core/Types.hpp"
 #include "Neat/Graphics/ShaderDataType.hpp"
 #include "Neat/Math/Matrix.hpp"

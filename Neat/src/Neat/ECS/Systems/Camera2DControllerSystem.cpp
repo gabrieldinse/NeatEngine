@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/ECS/Systems/Camera2DControllerSystem.hpp"
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Input.hpp"

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "Neat/Core/Base.hpp"
+#include "Neat/Core/PlatformDetection.hpp"
 #include "Neat/Core/Types.hpp"
 
 namespace Neat {

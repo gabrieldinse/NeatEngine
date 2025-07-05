@@ -1,0 +1,44 @@
+#pragma once
+
+#include <memory>
+#include <utility>
+#include <algorithm>
+#include <functional>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <array>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+#include <stdexcept>
+#include <limits>
+#include <chrono>
+#include <climits>
+#include <bitset>
+#include <iterator>
+#include <queue>
+#include <tuple>
+#include <type_traits>
+#include <any>
+#include <list>
+#include <variant>
+#include <initializer_list>
+#include <filesystem>
+#include <iomanip>
+#include <numeric>
+#include <mutex>
+#include <condition_variable>
+#include <optional>
+#include <unistd.h>
+#include <limits.h>
+
+#include <cstddef>
+#include <cstdint>
+#include <cmath>
+#include <cctype>
+#include <cstring>
+
+#include "Neat/Core/Log.hpp"
+#include "Neat/Core/PlatformDetection.hpp"

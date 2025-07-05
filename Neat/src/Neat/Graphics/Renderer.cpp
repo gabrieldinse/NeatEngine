@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/Graphics/Renderer.hpp"
 #include "Neat/Graphics/Renderer2D.hpp"
 

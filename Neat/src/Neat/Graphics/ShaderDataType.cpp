@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/Graphics/ShaderDataType.hpp"
 #include "Neat/Core/Log.hpp"
 

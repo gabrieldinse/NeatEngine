@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/Graphics/RenderCommand.hpp"
 
 #include <glad/glad.h>

@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/ECS/System.hpp"
 
 namespace Neat {

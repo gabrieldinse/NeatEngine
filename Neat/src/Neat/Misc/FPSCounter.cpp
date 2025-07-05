@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/Misc/FPSCounter.hpp"
 #include "Neat/Core/Log.hpp"
 

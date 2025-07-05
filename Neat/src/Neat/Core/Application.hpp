@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Core/Base.hpp"
+#include "Neat/Core/PlatformDetection.hpp"
 #include "Neat/Core/LayerGroup.hpp"
 #include "Neat/Core/Window.hpp"
 #include "Neat/Events/Events/WindowCloseEvent.hpp"

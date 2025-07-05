@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/Graphics/Cameras/Camera2D.hpp"
 
 namespace Neat {

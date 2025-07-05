@@ -1,8 +1,8 @@
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DGLFW_INCLUDE_NONE)
 
 file(GLOB_RECURSE NEAT_SOURCES
-    src/Neat/**.cpp
-    src/*.cpp
+    src/Neat/**.cpp # TODO change to src/**.cpp
+    src/Platform/Linux/**.cpp # TODO change to src/**.cpp
     vendor/stb_image/**.cpp
     vendor/ImGui/imgui_demo.cpp
     vendor/ImGui/imgui_draw.cpp
@@ -15,14 +15,11 @@ file(GLOB_RECURSE NEAT_SOURCES
 
 message(STATUS "NEAT_SOURCES: ${NEAT_SOURCES}")
 
-if(UNIX AND NOT APPLE)
-    file(GLOB_RECURSE LINUX_SOURCES
-        src/Platform/Linux/**.cpp
-    )
-    list(APPEND NEAT_SOURCES ${LINUX_SOURCES})
-endif()
-
 add_library(Neat STATIC ${NEAT_SOURCES})
+
+target_precompile_headers(Neat PRIVATE
+    src/NeatPCH.hpp
+)
 
 target_include_directories(Neat PUBLIC
     src

@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "Neat/Core/Base.hpp"
+#include "Neat/Core/PlatformDetection.hpp"
 #include "Neat/Core/KeyCodes.hpp"
 #include "Neat/Core/MouseButtonCodes.hpp"
 #include "Neat/Core/Window.hpp"

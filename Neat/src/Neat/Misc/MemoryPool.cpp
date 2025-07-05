@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/Misc/MemoryPool.hpp"
 
 namespace Neat {

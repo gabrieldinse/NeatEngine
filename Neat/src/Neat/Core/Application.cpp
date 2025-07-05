@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Input.hpp"
 #include "Neat/Core/Log.hpp"

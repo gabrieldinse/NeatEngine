@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/Graphics/Buffers.hpp"
 
 #include <glad/glad.h>

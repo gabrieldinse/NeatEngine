@@ -1,4 +1,4 @@
-#include <cmath>
+#include "NeatPCH.hpp"
 
 #include "Neat/Core/Log.hpp"
 #include "Neat/Graphics/Cameras/Camera.hpp"

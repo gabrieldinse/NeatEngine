@@ -1,10 +1,4 @@
-#include <array>
-#include <cctype>
-#include <filesystem>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <vector>
+#include "NeatPCH.hpp"
 
 #include "Neat/Core/Log.hpp"
 #include "Neat/Graphics/ShaderDataType.hpp"

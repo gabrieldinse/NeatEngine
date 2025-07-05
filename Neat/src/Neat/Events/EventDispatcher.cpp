@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/Events/EventDispatcher.hpp"
 
 namespace Neat {

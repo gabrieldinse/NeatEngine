@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/ImGui/ImGuiRender.hpp"
 #include "Neat/Core/Application.hpp"
 

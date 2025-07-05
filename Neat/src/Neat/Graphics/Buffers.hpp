@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Neat/Core/Base.hpp"
+#include "Neat/Core/PlatformDetection.hpp"
 #include "Neat/Core/Types.hpp"
 #include "Neat/Graphics/ShaderDataType.hpp"
 

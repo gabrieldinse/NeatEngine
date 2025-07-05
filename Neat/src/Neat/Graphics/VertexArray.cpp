@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/Graphics/VertexArray.hpp"
 #include "Neat/Core/Log.hpp"
 #include "Neat/Graphics/Renderer.hpp"

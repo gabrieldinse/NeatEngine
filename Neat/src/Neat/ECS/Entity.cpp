@@ -1,3 +1,5 @@
+#include "NeatPCH.hpp"
+
 #include "Neat/ECS/Entity.hpp"
 #include "Neat/Core/Exceptions.hpp"
 
