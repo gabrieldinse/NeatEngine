@@ -71,7 +71,7 @@ class Renderer2D {
   static void draw();
   static void startNewBatch();
   static bool reachedBatchDataLimit() {
-    return s_data.quadVextexDataBuffer.indexCount >=
+    return s_data->quadVextexDataBuffer.indexCount >=
            QuadVextexDataBuffer::maxIndexes;
   }
 
@@ -143,6 +143,6 @@ class Renderer2D {
   };
 
  private:
-  static Renderer2DData s_data;
+  static Renderer2DData *s_data;
 };
 }  // namespace Neat

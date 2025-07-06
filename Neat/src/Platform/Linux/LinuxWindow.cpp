@@ -34,25 +34,23 @@ void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
 void mouseScrollCallback(GLFWwindow *window, double xOffset, double yOffset);
 void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos);
 
-// Defines a customized std::unique_ptr for GLFWwindow
+Int32 LinuxWindow::s_windowCount = 0;
 
 LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
-  static Int32 windowCount = 0;
-
-  if (windowCount == 0) {
+  if (s_windowCount == 0) {
     Int32 status = glfwInit();
     glfwSetErrorCallback(GLFWErrorCallback);
     NT_CORE_ASSERT(status, "Failed to initialize GLFW!");
   }
 
-  m_glfwWindow = glfwCreateWindow((Int32)m_windowProps.width, (Int32)m_windowProps.height,
+  m_glfwWindow =
+      glfwCreateWindow((Int32)m_windowProps.width, (Int32)m_windowProps.height,
                        m_windowProps.title.c_str(), NULL, NULL);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  windowCount++;
-
   NT_CORE_ASSERT(m_glfwWindow, "Window is null!");
+  s_windowCount++;
 
   glfwMakeContextCurrent(m_glfwWindow);
 
@@ -80,8 +78,11 @@ LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
 }
 
 LinuxWindow::~LinuxWindow() {
+  s_windowCount--;
   glfwDestroyWindow(m_glfwWindow);
-  //glfwTerminate(); # TODO this is causing segfault. Should probably be called later
+  if (s_windowCount == 0) {
+    glfwTerminate();
+  }
 }
 
 Int32 LinuxWindow::getWidth() const { return m_windowProps.width; }
@@ -110,7 +111,7 @@ void LinuxWindow::setVSync(bool enabled) {
   m_windowProps.vSync = enabled;
 }
 
-bool LinuxWindow::isSync() const { return m_windowProps.vSync; }
+bool LinuxWindow::isVSync() const { return m_windowProps.vSync; }
 
 // ---------------------------------------------------------------------- //
 // GLFW callbacks ------------------------------------------------------- //

@@ -22,10 +22,11 @@ class LinuxWindow : public Window {
   virtual bool isMinimized() const override;
 
   virtual void setVSync(bool enabled) override;
-  virtual bool isSync() const override;
+  virtual bool isVSync() const override;
 
  private:
   GLFWwindow *m_glfwWindow;
   WindowProps m_windowProps;
+  static Int32 s_windowCount;
 };
 }  // namespace Neat

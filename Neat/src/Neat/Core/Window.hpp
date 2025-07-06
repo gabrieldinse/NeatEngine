@@ -24,7 +24,7 @@ class Window {
   virtual bool isMinimized() const = 0;
 
   virtual void setVSync(bool enabled) = 0;
-  virtual bool isSync() const = 0;
+  virtual bool isVSync() const = 0;
 
   static std::unique_ptr<Window> create(const WindowProps &props);
 };
