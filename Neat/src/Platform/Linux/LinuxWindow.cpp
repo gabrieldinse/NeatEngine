@@ -81,7 +81,7 @@ LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
 
 LinuxWindow::~LinuxWindow() {
   glfwDestroyWindow(m_glfwWindow);
-  glfwTerminate();
+  //glfwTerminate(); # TODO this is causing segfault. Should probably be called later
 }
 
 Int32 LinuxWindow::getWidth() const { return m_windowProps.width; }
