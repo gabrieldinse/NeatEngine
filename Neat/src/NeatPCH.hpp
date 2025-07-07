@@ -42,3 +42,4 @@
 
 #include "Neat/Core/Log.hpp"
 #include "Neat/Core/PlatformDetection.hpp"
+#include "Neat/Core/Types.hpp"

@@ -17,8 +17,7 @@ struct BufferElement {
   ShaderDataType type;
   std::string name;
   UInt32 componentCount;
-  UInt32 dataType;
-  UInt32 normalized;
+  bool normalized;
   UInt32 size;
   UInt32 offset = 0;
   UInt32 index = 0;
@@ -61,23 +60,20 @@ class BufferLayout {
 // ---------------------------------------------------------------------- //
 class VertexBuffer {
  public:
-  VertexBuffer(UInt32 size);
-  VertexBuffer(float *vertices, UInt32 size);
-  ~VertexBuffer();
+  virtual ~VertexBuffer() = default;
 
-  void bind() const;
-  void unbind() const;
+  virtual void bind() const = 0;
+  virtual void unbind() const = 0;
 
-  UInt32 getId() const { return m_id; }
+  virtual UInt32 getId() const = 0;
 
-  const BufferLayout &getLayout() const { return m_layout; }
-  void setLayout(const BufferLayout &layout);
+  virtual const BufferLayout &getLayout() const = 0;
+  virtual void setLayout(const BufferLayout &layout) = 0;
 
-  void setData(const void *data, UInt32 size);
+  virtual void setData(const void *data, UInt32 size) = 0;
 
- private:
-  UInt32 m_id = 0;
-  BufferLayout m_layout;
+  static std::shared_ptr<VertexBuffer> create(UInt32 size);
+  static std::shared_ptr<VertexBuffer> create(float *vertices, UInt32 size);
 };
 
 // ---------------------------------------------------------------------- //
@@ -85,16 +81,12 @@ class VertexBuffer {
 // ---------------------------------------------------------------------- //
 class IndexBuffer {
  public:
-  IndexBuffer(UInt32 *indices, UInt32 count);
-  ~IndexBuffer();
+  virtual ~IndexBuffer() = default;
 
-  void bind() const;
-  void unbind() const;
+  virtual void bind() const = 0;
+  virtual void unbind() const = 0;
 
-  UInt32 getCount() const { return m_count; }
-
- private:
-  UInt32 m_id = 0;
-  UInt32 m_count;
+  virtual UInt32 getCount() const = 0;
+  static std::shared_ptr<IndexBuffer> create(UInt32 *indices, UInt32 count);
 };
 }  // namespace Neat

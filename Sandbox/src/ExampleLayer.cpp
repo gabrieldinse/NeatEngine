@@ -5,12 +5,12 @@
 ExampleLayer::ExampleLayer(
     const std::shared_ptr<Neat::EventDispatcher> &eventDispatcher)
     : checkerboardTexture(
-          std::make_shared<Neat::Texture2D>("assets/textures/texture1.png")),
-      spritesheetTexture(std::make_shared<Neat::Texture2D>(
-          "assets/textures/spritesheet1.png")),
-      stairsTexture(Neat::SubTexture2D::createFromIndex(*spritesheetTexture,
+          Neat::Texture2D::create("assets/textures/texture1.png")),
+      spritesheetTexture(
+          Neat::Texture2D::create("assets/textures/spritesheet1.png")),
+      stairsTexture(Neat::SubTexture2D::createFromIndex(spritesheetTexture,
                                                         {7, 6}, {64, 64})),
-      stairsTexture2(Neat::SubTexture2D::createFromIndex(*spritesheetTexture,
+      stairsTexture2(Neat::SubTexture2D::createFromIndex(spritesheetTexture,
                                                          {8, 6}, {64, 64})) {
   entities = std::make_shared<Neat::EntityManager>(eventDispatcher);
   systems = std::make_shared<Neat::SystemManager>(entities, eventDispatcher);

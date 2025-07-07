@@ -5,9 +5,9 @@
 
 #include "Neat/Core/Types.hpp"
 #include "Neat/Graphics/Cameras/Camera.hpp"
-#include "Neat/Graphics/Shaders.hpp"
 #include "Neat/Graphics/Texture.hpp"
 #include "Neat/Graphics/VertexArray.hpp"
+#include "Neat/Graphics/ShaderProgram.hpp"
 
 namespace Neat {
 class Renderer2D {
@@ -131,7 +131,7 @@ class Renderer2D {
 
     std::shared_ptr<VertexArray> quadVertexArray;
     std::shared_ptr<VertexBuffer> quadVertexBuffer;
-    std::shared_ptr<TextureShader> textureShader;
+    std::shared_ptr<ShaderProgram> textureShader;
     std::shared_ptr<Texture2D> whiteTexture;
 
     QuadVextexDataBuffer quadVextexDataBuffer;

@@ -27,5 +27,4 @@ using UIntMaxType = uintmax_t;
 
 using IntPointerType = intptr_t;
 using UIntPointerType = uintptr_t;
-
 }  // namespace Neat

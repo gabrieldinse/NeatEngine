@@ -5,58 +5,40 @@
 #include <unordered_map>
 
 #include "Neat/Core/Types.hpp"
-#include "Neat/Graphics/Uniform.hpp"
 #include "Neat/Math/Matrix.hpp"
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {
-// ---------------------------------------------------------------------- //
-// ShaderProgramBuilder ------------------------------------------------- //
-// ---------------------------------------------------------------------- //
-class ShaderProgramBuilder {
- public:
-  ShaderProgramBuilder(UInt32 programId, const std::string &filepath);
-  ShaderProgramBuilder(UInt32 programId, const std::string &vertexSource,
-                       const std::string &fragmentSource);
-  void build();
-
- private:
-  void preprocessShaderSource();
-
- private:
-  UInt32 m_id = 0;
-  std::string m_fileContent;
-  std::unordered_map<UInt32, std::string> m_shaderSources;
-};
 
 // ---------------------------------------------------------------------- //
 // ShaderProgram -------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 class ShaderProgram {
  public:
-  ShaderProgram(const std::string &filepath);
-  ShaderProgram(const std::string &name, const std::string &filepath);
-  ShaderProgram(const std::string &name, const std::string &vertexSource,
-                const std::string &fragmentSource);
-  virtual ~ShaderProgram();
+  virtual ~ShaderProgram() = default;
 
-  void use() const;
-  void unuse() const;
+  virtual void use() const = 0;
+  virtual void unuse() const = 0;
 
-  const std::string &getName() const { return m_name; }
-  void setName(const std::string &name) { m_name = name; }
+  virtual const std::string &getName() const = 0;
+  virtual void setName(const std::string &name) = 0;
 
-  UInt32 getId() const { return m_id; }
+  virtual void setUniform(const std::string &name, float value) = 0;
+  virtual void setUniform(const std::string &name, Vector2F values) = 0;
+  virtual void setUniform(const std::string &name, Vector3F values) = 0;
+  virtual void setUniform(const std::string &name, Vector4F values) = 0;
+  virtual void setUniform(const std::string &name, Int32 value) = 0;
+  virtual void setUniform(const std::string &name, Int32 *values,
+                          UInt32 count) = 0;
+  virtual void setUniform(const std::string &name, Matrix3F matrix) = 0;
+  virtual void setUniform(const std::string &name, Matrix4F matrix) = 0;
 
-  template <ShaderDataType UniformType>
-  Uniform<UniformType> getUniform(const std::string &name) {
-    return Uniform<UniformType>(name, *m_uniformLibrary);
-  }
-
- private:
-  UInt32 m_id = 0;
-  std::unique_ptr<UniformLibrary> m_uniformLibrary;
-  std::string m_name;
+  static std::shared_ptr<ShaderProgram> create(const std::string &filepath);
+  static std::shared_ptr<ShaderProgram> create(const std::string &name,
+                                               const std::string &filepath);
+  static std::shared_ptr<ShaderProgram> create(
+      const std::string &name, const std::string &vertexSource,
+      const std::string &fragmentSource);
 };
 
 // ---------------------------------------------------------------------- //

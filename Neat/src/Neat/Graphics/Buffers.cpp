@@ -1,8 +1,8 @@
 #include "NeatPCH.hpp"
 
 #include "Neat/Graphics/Buffers.hpp"
-
-#include <glad/glad.h>
+#include "Neat/Graphics/RendererAPI.hpp"
+#include "Platform/OpenGL/OpenGLBuffers.hpp"
 
 namespace Neat {
 // ---------------------------------------------------------------------- //
@@ -12,10 +12,9 @@ BufferElement::BufferElement(ShaderDataType type, const std::string &name,
                              bool normalized)
     : type(type),
       name(name),
-      size(OpenGLTypeConverter::sizeInBytes(type)),
-      componentCount(OpenGLTypeConverter::componentCount(type)),
-      dataType(OpenGLTypeConverter::baseType(type)),
-      normalized(normalized ? GL_TRUE : GL_FALSE) {}
+      size(getShaderDataTypeSize(type)),
+      componentCount(getShaderDataTypeComponentCount(type)),
+      normalized(normalized) {}
 
 // ---------------------------------------------------------------------- //
 // BufferLayout --------------------------------------------------------- //
@@ -30,48 +29,44 @@ BufferLayout::BufferLayout(const std::initializer_list<BufferElement> &elements)
   }
 }
 
-// ---------------------------------------------------------------------- //
-// VertexBuffer --------------------------------------------------------- //
-// ---------------------------------------------------------------------- //
-VertexBuffer::VertexBuffer(UInt32 size) {
-  glCreateBuffers(1, &m_id);
-  bind();
-  glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_DYNAMIC_DRAW);
+std::shared_ptr<VertexBuffer> VertexBuffer::create(UInt32 size) {
+  switch (RendererAPI::getAPI()) {
+    case RendererAPI::API::None:
+      NT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+      return nullptr;
+    case RendererAPI::API::OpenGL:
+      return std::make_shared<OpenGLVertexBuffer>(size);
+  }
+
+  NT_CORE_ASSERT(false, "Unknown RendererAPI!");
+  return nullptr;
 }
 
-VertexBuffer::VertexBuffer(float *vertices, UInt32 size) {
-  glCreateBuffers(1, &m_id);
-  bind();
-  glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+std::shared_ptr<VertexBuffer> VertexBuffer::create(float *vertices,
+                                                   UInt32 size) {
+  switch (RendererAPI::getAPI()) {
+    case RendererAPI::API::None:
+      NT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+      return nullptr;
+    case RendererAPI::API::OpenGL:
+      return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+  }
+
+  NT_CORE_ASSERT(false, "Unknown RendererAPI!");
+  return nullptr;
 }
 
-VertexBuffer::~VertexBuffer() { glDeleteBuffers(1, &m_id); }
+std::shared_ptr<IndexBuffer> IndexBuffer::create(UInt32 *indices,
+                                                 UInt32 count) {
+  switch (RendererAPI::getAPI()) {
+    case RendererAPI::API::None:
+      NT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
+      return nullptr;
+    case RendererAPI::API::OpenGL:
+      return std::make_shared<OpenGLIndexBuffer>(indices, count);
+  }
 
-void VertexBuffer::bind() const { glBindBuffer(GL_ARRAY_BUFFER, m_id); }
-
-void VertexBuffer::unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
-
-void VertexBuffer::setData(const void *data, UInt32 size) {
-  bind();
-  glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+  NT_CORE_ASSERT(false, "Unknown RendererAPI!");
+  return nullptr;
 }
-
-void VertexBuffer::setLayout(const BufferLayout &layout) { m_layout = layout; }
-
-// ---------------------------------------------------------------------- //
-// Indexbuffer ---------------------------------------------------------- //
-// ---------------------------------------------------------------------- //
-IndexBuffer::IndexBuffer(UInt32 *indices, UInt32 count) : m_count(count) {
-  glCreateBuffers(1, &m_id);
-  bind();
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_count * sizeof(m_count), indices,
-               GL_STATIC_DRAW);
-}
-
-IndexBuffer::~IndexBuffer() { glDeleteBuffers(1, &m_id); }
-
-void IndexBuffer::bind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id); }
-
-void IndexBuffer::unbind() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
-
 }  // namespace Neat

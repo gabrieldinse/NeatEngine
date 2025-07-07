@@ -1,8 +1,7 @@
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DGLFW_INCLUDE_NONE)
 
 file(GLOB_RECURSE NEAT_SOURCES
-    src/Neat/**.cpp # TODO change to src/**.cpp
-    src/Platform/Linux/**.cpp # TODO change to src/**.cpp
+    src/**.cpp
     vendor/stb_image/**.cpp
     vendor/ImGui/imgui_demo.cpp
     vendor/ImGui/imgui_draw.cpp
@@ -12,6 +11,7 @@ file(GLOB_RECURSE NEAT_SOURCES
     vendor/ImGui/backends/imgui_impl_glfw.cpp
     vendor/ImGui/backends/imgui_impl_opengl3.cpp
 )
+
 
 message(STATUS "NEAT_SOURCES: ${NEAT_SOURCES}")
 

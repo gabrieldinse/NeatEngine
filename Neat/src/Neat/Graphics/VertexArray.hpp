@@ -6,25 +6,19 @@
 namespace Neat {
 class VertexArray {
  public:
-  VertexArray();
-  ~VertexArray();
-  void bind() const;
-  void unbind() const;
+  virtual ~VertexArray() = default;
+  virtual void bind() const = 0;
+  virtual void unbind() const = 0;
 
-  void addVertexBuffer(const std::shared_ptr<VertexBuffer> &vertexBuffer);
-  void setIndexBuffer(const std::shared_ptr<IndexBuffer> &indexBuffer);
+  virtual void addVertexBuffer(
+      const std::shared_ptr<VertexBuffer> &vertexBuffer) = 0;
+  virtual void setIndexBuffer(
+      const std::shared_ptr<IndexBuffer> &indexBuffer) = 0;
 
-  const std::vector<std::shared_ptr<VertexBuffer>> &getVertexBuffers() const {
-    return m_vertexBuffers;
-  }
+  virtual const std::vector<std::shared_ptr<VertexBuffer>> &getVertexBuffers()
+      const = 0;
+  virtual const std::shared_ptr<IndexBuffer> &getIndexBuffer() const = 0;
 
-  const std::shared_ptr<IndexBuffer> &getIndexBuffer() const {
-    return m_indexBuffer;
-  }
-
- private:
-  UInt32 m_id = 0;
-  std::vector<std::shared_ptr<VertexBuffer>> m_vertexBuffers;
-  std::shared_ptr<IndexBuffer> m_indexBuffer;
+  static std::shared_ptr<VertexArray> create();
 };
 }  // namespace Neat

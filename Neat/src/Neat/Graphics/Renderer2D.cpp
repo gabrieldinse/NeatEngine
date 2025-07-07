@@ -12,8 +12,8 @@ Renderer2D::Renderer2DData *Renderer2D::s_data =
     new Renderer2D::Renderer2DData();
 
 void Renderer2D::init() {
-  s_data->quadVertexArray = std::make_shared<VertexArray>();
-  s_data->quadVertexBuffer = std::make_shared<VertexBuffer>(
+  s_data->quadVertexArray = VertexArray::create();
+  s_data->quadVertexBuffer = VertexBuffer::create(
       QuadVextexDataBuffer::maxVertices * (UInt32)sizeof(QuadVertexData));
 
   s_data->quadVertexBuffer->setLayout(
@@ -38,12 +38,12 @@ void Renderer2D::init() {
     quadIndexes[(std::size_t)i + 5] = offset + 0;
   }
 
-  auto squareIB = std::make_shared<IndexBuffer>(
-      quadIndexes.get(), QuadVextexDataBuffer::maxIndexes);
+  auto squareIB =
+      IndexBuffer::create(quadIndexes.get(), QuadVextexDataBuffer::maxIndexes);
 
   s_data->quadVertexArray->setIndexBuffer(squareIB);
 
-  s_data->whiteTexture = std::make_shared<Texture2D>(1, 1);
+  s_data->whiteTexture = Texture2D::create(1, 1);
   UInt32 white_texture_data = 0xffffffff;
   s_data->whiteTexture->setData(&white_texture_data, (UInt32)sizeof(UInt32));
 
@@ -53,8 +53,11 @@ void Renderer2D::init() {
   for (std::size_t i = 0; i < Renderer2DData::maxTextureSlots; ++i)
     samplers[i] = (Int32)i;
   s_data->textureShader =
-      std::make_shared<TextureShader>("./assets/shader_source/texture.glsl");
-  s_data->textureShader->setTextures(samplers, (Int32)sizeof(samplers));
+      ShaderProgram::create("./assets/shader_source/texture.glsl");
+  s_data->textureShader->use();
+  s_data->textureShader->setUniform(
+      "u_textures[0]", samplers,
+      static_cast<Int32>(sizeof(samplers) / sizeof(Int32)));
 
   s_data->textureSlots[0] = s_data->whiteTexture;
 }
@@ -62,8 +65,9 @@ void Renderer2D::init() {
 void Renderer2D::shutdown() { delete s_data; }
 
 void Renderer2D::beginScene(const Camera &camera) {
-  s_data->textureShader->setCameraTransform(camera.getCameraTransform());
-
+  s_data->textureShader->use();
+  s_data->textureShader->setUniform("u_cameraTransform",
+                                    camera.getCameraTransform());
   startNewBatch();
 }
 

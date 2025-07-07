@@ -19,6 +19,8 @@ class Renderer {
 
   static void onWindowResize(UInt32 width, UInt32 height);
 
+  static RendererAPI::API getAPI() { return RendererAPI::getAPI(); }
+
  private:
   struct SceneData {
     Matrix4F viewProjectionMatrix;
