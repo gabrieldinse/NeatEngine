@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLTexture.hpp"
+#include "Platform/OpenGL/OpenGLTexture2D.hpp"
 #include "Neat/Graphics/Renderer.hpp"
 
 #include <glad/glad.h>

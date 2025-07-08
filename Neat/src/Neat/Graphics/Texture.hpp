@@ -1,9 +1,5 @@
 #pragma once
 
-#include <cstdint>
-#include <memory>
-#include <string>
-
 #include "Neat/Core/Types.hpp"
 #include "Neat/Math/Vector.hpp"
 
@@ -21,11 +17,5 @@ class Texture {
 
   virtual void bind(UInt32 slot) const = 0;
   virtual bool operator==(const Texture &other) const = 0;
-};
-
-class Texture2D : public Texture {
- public:
-  static std::shared_ptr<Texture2D> create(Int32 width, Int32 height);
-  static std::shared_ptr<Texture2D> create(const std::string &filepath);
 };
 }  // namespace Neat

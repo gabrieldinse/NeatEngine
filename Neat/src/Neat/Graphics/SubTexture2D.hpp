@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Graphics/Texture.hpp"
+#include "Neat/Graphics/Texture2D.hpp"
 
 namespace Neat {
 class SubTexture2D {

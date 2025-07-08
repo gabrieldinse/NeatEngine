@@ -1,8 +1,8 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/Texture.hpp"
+#include "Neat/Graphics/Texture2D.hpp"
 #include "Neat/Graphics/Renderer.hpp"
-#include "Platform/OpenGL/OpenGLTexture.hpp"
+#include "Platform/OpenGL/OpenGLTexture2D.hpp"
 
 namespace Neat {
 std::shared_ptr<Texture2D> Texture2D::create(Int32 width, Int32 height) {

@@ -6,7 +6,7 @@
 
 #include "Neat/Core/Types.hpp"
 #include "Neat/Math/Vector.hpp"
-#include "Neat/Graphics/Texture.hpp"
+#include "Neat/Graphics/Texture2D.hpp"
 
 namespace Neat {
 class OpenGLTexture2D : public Texture2D {

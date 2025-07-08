@@ -5,7 +5,7 @@
 
 #include "Neat/Core/Types.hpp"
 #include "Neat/Graphics/Cameras/Camera.hpp"
-#include "Neat/Graphics/Texture.hpp"
+#include "Neat/Graphics/Texture2D.hpp"
 #include "Neat/Graphics/VertexArray.hpp"
 #include "Neat/Graphics/ShaderProgram.hpp"
 
