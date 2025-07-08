@@ -137,8 +137,9 @@ void windowCloseCallback(GLFWwindow *window) {
   windowProps.eventDispatcher->enqueue<WindowCloseEvent>();
 }
 
-void keyActionCallback(GLFWwindow *window, Int32 key, Int32 scancode,
-                       Int32 action, Int32 mods) {
+void keyActionCallback(GLFWwindow *window, Int32 key,
+                       [[maybe_unused]] Int32 scancode, Int32 action,
+                       [[maybe_unused]] Int32 mods) {
   auto &windowProps =
       *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
 
@@ -168,7 +169,7 @@ void keyTypeCallback(GLFWwindow *window, UInt32 key) {
 }
 
 void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
-                               Int32 mods) {
+                               [[maybe_unused]] Int32 mods) {
   auto &windowProps =
       *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
 

@@ -19,7 +19,7 @@ void LayerGroup::pushOverlay(std::unique_ptr<Layer> &&layer) {
   m_layers.push_back(std::move(layer));
 }
 
-std::unique_ptr<Layer> LayerGroup::popLayer(Int32 position) {
+std::unique_ptr<Layer> LayerGroup::popLayer(UInt32 position) {
   NT_CORE_ASSERT(position < m_layers.size(), "Invalid layer position!");
   auto layer = std::move(m_layers[position]);
   layer->onDetach();
@@ -28,7 +28,7 @@ std::unique_ptr<Layer> LayerGroup::popLayer(Int32 position) {
   return layer;
 }
 
-std::unique_ptr<Layer> LayerGroup::popOverlay(Int32 position) {
+std::unique_ptr<Layer> LayerGroup::popOverlay(UInt32 position) {
   NT_CORE_ASSERT(position < m_layers.size(), "Invalid overlay position!");
   auto layer = std::move(m_layers[position]);
   layer->onDetach();

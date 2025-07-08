@@ -27,8 +27,8 @@ void OpenGLVertexArray::addVertexBuffer(
   for (const auto &element : layout) {
     glVertexAttribPointer(
         element.index, element.componentCount,
-        OpenGLTypeConverter::getPrimitiveType(element.type), element.normalized,
-        layout.getOffset(),
+        OpenGLTypeConverter::getPrimitiveType(element.type),
+        static_cast<GLboolean>(element.normalized), layout.getOffset(),
         static_cast<void *>(static_cast<char *>(0) + element.offset));
     glEnableVertexAttribArray(element.index);
   }

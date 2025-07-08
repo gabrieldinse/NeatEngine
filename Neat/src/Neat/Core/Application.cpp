@@ -69,7 +69,8 @@ std::unique_ptr<Layer> Application::popOverlay(Int32 position) {
   return m_layerGroup.popOverlay(position);
 }
 
-bool Application::onWindowClose(const WindowCloseEvent &event) {
+bool Application::onWindowClose(
+    [[maybe_unused]] const WindowCloseEvent &event) {
   stop();
   return true;
 }

@@ -9,7 +9,8 @@ struct Quaternion {
   using Type = Quaternion<T>;
   using ValueType = T;
 
-  // Class data
+// Class data
+#include "Neat/Misc/WarningIgnorePush.hpp"
   union {
     struct {
       T w, x, y, z;
@@ -25,6 +26,7 @@ struct Quaternion {
       Vector<3, T> v;
     };
   };
+#include "Neat/Misc/WarningIgnorePop.hpp"
 
   // Default constructor
   constexpr Quaternion();

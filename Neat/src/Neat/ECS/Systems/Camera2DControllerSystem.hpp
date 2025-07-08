@@ -15,16 +15,16 @@ class Camera2DControllerSystem : public System<Camera2DControllerSystem> {
 
   ~Camera2DControllerSystem();
 
-  void init(const std::shared_ptr<EventDispatcher> &eventDispatcher);
+  virtual void init(
+      const std::shared_ptr<EventDispatcher> &eventDispatcher) override;
+  virtual void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
+                        const std::shared_ptr<EventDispatcher> &eventDispatcher,
+                        double deltaTimeSeconds) override;
 
   Camera &getCamera() { return m_camera.getCamera(); }
   const Camera &getCamera() const { return m_camera.getCamera(); }
   Camera2D &getCamera2D() { return m_camera; }
   const Camera2D &getCamera2D() const { return m_camera; }
-
-  void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
-                const std::shared_ptr<EventDispatcher> &eventDispatcher,
-                double deltaTimeSeconds);
 
   bool onMouseScrolled(const MouseScrolledEvent &event);
   bool onMouseMoved(const MouseMovedEvent &event);

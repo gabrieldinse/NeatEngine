@@ -13,10 +13,12 @@ class BaseSystem : public NonCopyable {
 
   virtual ~BaseSystem() = default;
 
-  virtual void init(const std::shared_ptr<EventDispatcher> &eventDispatcher) {}
-  virtual void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
-                        const std::shared_ptr<EventDispatcher> &eventDispatcher,
-                        double deltaTimeSeconds) = 0;
+  virtual void init([[maybe_unused]] const std::shared_ptr<EventDispatcher>
+                        &eventDispatcher) = 0;
+  virtual void onUpdate(
+      [[maybe_unused]] const std::shared_ptr<EntityManager> &entityManager,
+      [[maybe_unused]] const std::shared_ptr<EventDispatcher> &eventDispatcher,
+      double deltaTimeSeconds) = 0;
 
  protected:
   static Family s_familyCounter;

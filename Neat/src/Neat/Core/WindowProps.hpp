@@ -8,19 +8,21 @@
 namespace Neat {
 class EventDispatcher;
 struct WindowProps {
+  std::shared_ptr<EventDispatcher> eventDispatcher;
   std::string title;
   Int32 width;
   Int32 height;
-  bool minimized = false;
-  bool vSync = false;
-  std::shared_ptr<EventDispatcher> eventDispatcher;
+  bool minimized;
+  bool vSync;
 
   WindowProps(const std::shared_ptr<EventDispatcher> &eventDispatcher,
               const std::string &title = "Neat Engine", Int32 width = 1280,
-              Int32 height = 720)
+              Int32 height = 720, bool minimized = false, bool vSync = false)
       : eventDispatcher(eventDispatcher),
         title(title),
         width(width),
-        height(height) {}
+        height(height),
+        minimized(minimized),
+        vSync(vSync) {}
 };
 }  // namespace Neat

@@ -326,7 +326,7 @@ class EntityManager : public NonCopyable {
         ViewIterator<Iterator, IterateOverAll>::next();
       }
 
-      void nextEntity(Entity &entity) {}
+      void nextEntity([[maybe_unused]] Entity &entity) {}
     };
     // -------------------------------------------------------------------
 

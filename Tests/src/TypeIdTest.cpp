@@ -20,6 +20,9 @@ TEST(TypeIdTest, GetTypeIdTest) {
   EXPECT_NE(id2, id3);
   EXPECT_NE(id4, id3);
   EXPECT_NE(id4, id2);
+  EXPECT_EQ(Neat::getTypeId<int>(), Neat::getTypeId<int>());
+  EXPECT_NE(Neat::getTypeId<float>(), Neat::getTypeId<int>());
+  EXPECT_NE(Neat::getTypeId<double>(), Neat::getTypeId<float>());
 }
 
 TEST(TypeIdTest, GetMethodIdTest) {
@@ -29,4 +32,5 @@ TEST(TypeIdTest, GetMethodIdTest) {
   EXPECT_EQ(id1, id3);
   EXPECT_NE(id1, id2);
   EXPECT_NE(id2, id3);
+  EXPECT_EQ(Neat::getMethodId<&printf>(), Neat::getMethodId<&printf>());
 }

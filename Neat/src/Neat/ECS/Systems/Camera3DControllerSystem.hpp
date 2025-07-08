@@ -15,14 +15,14 @@ class Camera3DControllerSystem : public System<Camera3DControllerSystem> {
 
   ~Camera3DControllerSystem();
 
-  void init(const std::shared_ptr<EventDispatcher> &eventDispatcher);
+  virtual void init(
+      const std::shared_ptr<EventDispatcher> &eventDispatcher) override;
+  virtual void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
+                        const std::shared_ptr<EventDispatcher> &eventDispatcher,
+                        double deltaTimeSeconds) override;
 
   Camera &getCamera() { return m_camera; }
   const Camera &getCamera() const { return m_camera; }
-
-  void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
-                const std::shared_ptr<EventDispatcher> &eventDispatcher,
-                double deltaTimeSeconds);
 
   bool onMouseScrolled(const MouseScrolledEvent &event);
   bool onMouseMoved(const MouseMovedEvent &event);

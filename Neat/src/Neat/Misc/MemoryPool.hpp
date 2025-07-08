@@ -14,7 +14,7 @@ class BaseMemoryPool {
   explicit BaseMemoryPool(std::size_t elementSize, std::size_t blockSize)
       : m_elementSize(elementSize), m_blockSize(blockSize) {}
 
-  ~BaseMemoryPool();
+  virtual ~BaseMemoryPool();
 
   UInt32 size() const { return (UInt32)m_size; }
   UInt32 capacity() const { return (UInt32)m_capacity; }
@@ -41,9 +41,9 @@ class BaseMemoryPool {
   virtual void destroy(std::size_t n) = 0;
 
  protected:
-  std::vector<Byte *> m_memoryBlocks;
-  std::size_t m_blockSize;
   std::size_t m_elementSize;
+  std::size_t m_blockSize;
+  std::vector<Byte *> m_memoryBlocks;
   std::size_t m_size = 0;
   std::size_t m_capacity = 0;
 };

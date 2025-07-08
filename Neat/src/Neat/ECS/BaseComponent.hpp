@@ -7,12 +7,10 @@ namespace Neat {
 struct BaseComponent {
   using Family = UInt32;
 
-  void operator delete(void *ptr) { fail(); }
-  void operator delete[](void *ptr) { fail(); }
+  void operator delete(void *) = delete;
+  void operator delete[](void *) = delete;
 
  protected:
-  static void fail() { throw BadComponentAllocationError(); }
-
   static Family s_familyCounter;
 };
 }  // namespace Neat

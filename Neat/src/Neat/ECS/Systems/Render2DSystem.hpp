@@ -14,7 +14,7 @@ class Render2DSystem : public System<Render2DSystem> {
 
   virtual void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
                         const std::shared_ptr<EventDispatcher> &eventDispatcher,
-                        double deltaTimeSeconds);
+                        double deltaTimeSeconds) override;
 
  private:
   Camera &m_camera;

@@ -76,6 +76,9 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
 OpenGLTexture2D::~OpenGLTexture2D() { glDeleteTextures(1, &m_id); }
 
 void OpenGLTexture2D::setData(void *data, UInt32 size) {
+  uint32_t bytesPerPixel = m_dataFormat == GL_RGBA ? 4 : 3;
+  NT_CORE_ASSERT(size == m_width * m_height * bytesPerPixel,
+                 "Data must be entire texture!");
   glTextureSubImage2D(m_id, 0, 0, 0, m_width, m_height, m_dataFormat,
                       GL_UNSIGNED_BYTE, data);
   glGenerateMipmap(GL_TEXTURE_2D);

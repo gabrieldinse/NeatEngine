@@ -230,7 +230,5 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
 // Statistics
 Renderer2D::Statistics Renderer2D::getStats() { return s_data->stats; }
 
-void Renderer2D::resetStats() {
-  std::memset(&s_data->stats, 0, sizeof(Statistics));
-}
+void Renderer2D::resetStats() { s_data->stats = Statistics{}; }
 }  // namespace Neat

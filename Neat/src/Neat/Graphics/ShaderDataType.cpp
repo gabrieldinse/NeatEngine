@@ -29,10 +29,10 @@ UInt32 getShaderDataTypeSize(ShaderDataType type) {
       return 4 * 4;
     case ShaderDataType::Bool:
       return 4;
+    default:
+      NT_CORE_ASSERT(false, "Unknown or unsupported ShaderDataType!");
+      return 0;
   }
-
-  NT_CORE_ASSERT(false, "Unknown ShaderDataType!");
-  return 0;
 }
 
 UInt32 getShaderDataTypeComponentCount(ShaderDataType type) {
@@ -59,9 +59,9 @@ UInt32 getShaderDataTypeComponentCount(ShaderDataType type) {
       return 4;
     case ShaderDataType::Bool:
       return 1;
+    default:
+      NT_CORE_ASSERT(false, "Unknown or unsupported ShaderDataType!");
+      return 0;
   }
-
-  NT_CORE_ASSERT(false, "Unknown ShaderDataType!");
-  return 0;
 }
 }  // namespace Neat

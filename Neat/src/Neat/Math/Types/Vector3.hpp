@@ -11,6 +11,18 @@ struct Vector<3, T> {
   using ValueType = T;
 
   // Class Data
+//  #include "Neat/Misc/WarningIgnorePush.hpp"
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
+#pragma clang diagnostic ignored "-Wnested-anon-types"
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4201)
+#endif
   union {
     struct {
       T x, y, z;
@@ -25,7 +37,15 @@ struct Vector<3, T> {
       T s, t, p;
     };
   };
+  //  #include "Neat/Misc/WarningIgnorePop.hpp"
 
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
+#endif
   // Default constructor
   constexpr Vector();
 

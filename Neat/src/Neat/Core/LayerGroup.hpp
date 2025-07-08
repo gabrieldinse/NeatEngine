@@ -25,8 +25,8 @@ class LayerGroup {
   void pushOverlay(Args &&...args);
   void pushLayer(std::unique_ptr<Layer> &&layer);
   void pushOverlay(std::unique_ptr<Layer> &&layer);
-  std::unique_ptr<Layer> popLayer(Int32 position);
-  std::unique_ptr<Layer> popOverlay(Int32 position);
+  std::unique_ptr<Layer> popLayer(UInt32 position);
+  std::unique_ptr<Layer> popOverlay(UInt32 position);
 
   LayerVectorIt begin() { return m_layers.begin(); }
   LayerVectorIt end() { return m_layers.end(); }

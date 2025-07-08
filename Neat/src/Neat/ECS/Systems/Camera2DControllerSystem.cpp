@@ -25,8 +25,8 @@ void Camera2DControllerSystem::init(
 }
 
 void Camera2DControllerSystem::onUpdate(
-    const std::shared_ptr<EntityManager> &entityManager,
-    const std::shared_ptr<EventDispatcher> &eventDispatcher,
+    [[maybe_unused]] const std::shared_ptr<EntityManager> &entityManager,
+    [[maybe_unused]] const std::shared_ptr<EventDispatcher> &eventDispatcher,
     double deltaTimeSeconds) {
   auto distance = (float)(m_translationSpeed * deltaTimeSeconds);
   if (Input::isKeyPressed(Key::W)) m_camera.moveUp(distance);

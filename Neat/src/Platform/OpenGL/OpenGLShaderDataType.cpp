@@ -29,10 +29,10 @@ UInt32 OpenGLTypeConverter::getPrimitiveType(ShaderDataType type) {
       return GL_INT;
     case ShaderDataType::Bool:
       return GL_BOOL;
+    default:
+      NT_CORE_ASSERT(false, "Unknown or unsupported ShaderDataType!");
+      return 0;
   }
-
-  NT_CORE_ASSERT(false, "Unknown ShaderDataType!");
-  return 0;
 }
 
 UInt32 OpenGLTypeConverter::getType(ShaderDataType type) {
@@ -59,6 +59,9 @@ UInt32 OpenGLTypeConverter::getType(ShaderDataType type) {
       return GL_INT_VEC4;
     case ShaderDataType::Bool:
       return GL_BOOL;
+    default:
+      NT_CORE_ASSERT(false, "Unknown or unsupported ShaderDataType!");
+      return 0;
   }
 
   NT_CORE_ASSERT(false, "Unknown ShaderDataType!");
@@ -108,8 +111,10 @@ ShaderDataType OpenGLTypeConverter::getShaderDataType(UInt32 type,
       if (count > 1) return ShaderDataType::IntArray;
       break;
     }
+    default:
+      NT_CORE_ASSERT(false, "Unknown uniform type!");
+      return ShaderDataType::None;
   }
-
   NT_CORE_ASSERT(false, "Unknown uniform type!");
   return ShaderDataType::None;
 }

@@ -15,7 +15,7 @@ class SubTexture2D {
       const Vector2F &cellSize, const Vector2F &subTextureSizeInCells = {1, 1});
 
  private:
-  Vector2F m_textureCoordinates[4];
   std::shared_ptr<Texture2D> m_texture;
+  Vector2F m_textureCoordinates[4];
 };
 }  // namespace Neat
