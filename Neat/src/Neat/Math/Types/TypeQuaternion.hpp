@@ -4,13 +4,25 @@
 #include "Neat/Math/Types/TypeVectorN.hpp"
 
 namespace Neat {
+
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
+#pragma clang diagnostic ignored "-Wnested-anon-types"
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4201)
+#endif
+
 template <typename T>
 struct Quaternion {
   using Type = Quaternion<T>;
   using ValueType = T;
 
-// Class data
-#include "Neat/Misc/WarningIgnorePush.hpp"
+  // Class data
   union {
     struct {
       T w, x, y, z;
@@ -26,7 +38,6 @@ struct Quaternion {
       Vector<3, T> v;
     };
   };
-#include "Neat/Misc/WarningIgnorePop.hpp"
 
   // Default constructor
   constexpr Quaternion();
@@ -87,6 +98,14 @@ struct Quaternion {
   static constexpr UInt32 size() { return 4; }
   static constexpr UInt32 length() { return size(); }
 };
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 // Predefined types
 using QuaternionF = Quaternion<float>;

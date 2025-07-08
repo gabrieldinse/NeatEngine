@@ -16,8 +16,10 @@ file(GLOB_RECURSE NEAT_SOURCES
 message(STATUS "NEAT_SOURCES: ${NEAT_SOURCES}")
 
 add_library(Neat STATIC ${NEAT_SOURCES})
-#target_compile_options(Neat PRIVATE -Wall -Wextra -Wpedantic -Werror)
-target_compile_options(Neat PRIVATE -Wall -Wextra)
+target_compile_options(Neat PRIVATE
+    -Wall -Wextra -Wpedantic
+    $<$<CONFIG:Debug>:-Werror>
+)
 
 
 target_precompile_headers(Neat PRIVATE

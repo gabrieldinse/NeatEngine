@@ -5,13 +5,7 @@
 #include "Neat/Math/Types/TypeVectorN.hpp"
 
 namespace Neat {
-template <typename T>
-struct Vector<3, T> {
-  using Type = Vector<3, T>;
-  using ValueType = T;
 
-  // Class Data
-//  #include "Neat/Misc/WarningIgnorePush.hpp"
 #if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
@@ -23,6 +17,13 @@ struct Vector<3, T> {
 #pragma warning(push)
 #pragma warning(disable : 4201)
 #endif
+
+template <typename T>
+struct Vector<3, T> {
+  using Type = Vector<3, T>;
+  using ValueType = T;
+
+  // Class Data
   union {
     struct {
       T x, y, z;
@@ -37,15 +38,7 @@ struct Vector<3, T> {
       T s, t, p;
     };
   };
-  //  #include "Neat/Misc/WarningIgnorePop.hpp"
 
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#elif defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic pop
-#elif defined(_MSC_VER)
-#pragma warning(pop)
-#endif
   // Default constructor
   constexpr Vector();
 
@@ -111,6 +104,14 @@ struct Vector<3, T> {
   constexpr static UInt32 size() { return 3; }
   static constexpr UInt32 length() { return size(); }
 };
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 // Predefined types
 using Vector3F = Vector<3, float>;

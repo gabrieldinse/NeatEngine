@@ -5,6 +5,19 @@
 #include "Neat/Math/Types/TypeVectorN.hpp"
 
 namespace Neat {
+
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
+#pragma clang diagnostic ignored "-Wnested-anon-types"
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+#elif defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4201)
+#endif
+
 template <typename T>
 struct Vector<1, T> {
   using Type = Vector<1, T>;
@@ -72,6 +85,14 @@ struct Vector<1, T> {
   static constexpr UInt32 size() { return 1; }
   static constexpr UInt32 length() { return size(); }
 };
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic pop
+#elif defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 // Predefined types
 using Vector1F = Vector<1, float>;
