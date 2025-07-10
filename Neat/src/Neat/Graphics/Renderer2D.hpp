@@ -88,10 +88,11 @@ class Renderer2D {
     static constexpr UInt32 maxQuads = 10000;
     static constexpr UInt32 maxVertices = maxQuads * 4;
     static constexpr UInt32 maxIndexes = maxQuads * 6;
-    static constexpr Vector4F defaultPositions[4] = {{-0.5f, -0.5f, 0.0f, 1.0f},
-                                                     {0.5f, -0.5f, 0.0f, 1.0f},
-                                                     {0.5f, 0.5f, 0.0f, 1.0f},
-                                                     {-0.5f, 0.5f, 0.0f, 1.0f}};
+    static constexpr Vector4F centeredQuadPositions[4] = {
+        {-0.5f, -0.5f, 0.0f, 1.0f},
+        {0.5f, -0.5f, 0.0f, 1.0f},
+        {0.5f, 0.5f, 0.0f, 1.0f},
+        {-0.5f, 0.5f, 0.0f, 1.0f}};
 
     UInt32 indexCount = 0;
     std::unique_ptr<QuadVertexData[]> data;
@@ -105,7 +106,7 @@ class Renderer2D {
                  const Vector2F *textureCoordinates, Int32 textureIndex,
                  float tilingFactor) {
       for (std::size_t i = 0; i < 4; ++i) {
-        currentPos->position = modelMatrix * defaultPositions[i];
+        currentPos->position = modelMatrix * centeredQuadPositions[i];
         currentPos->color = color;
         currentPos->textureCoordinate = textureCoordinates[i];
         currentPos->textureIndex = textureIndex;

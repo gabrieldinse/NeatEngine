@@ -6,34 +6,11 @@
 
 #include "Neat/Core/Types.hpp"
 #include "Neat/Graphics/ShaderProgram.hpp"
+#include "Platform/OpenGL/OpenGLShaderProgramBuilder.hpp"
 #include "Neat/Math/Matrix.hpp"
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {
-// ---------------------------------------------------------------------- //
-// OpenGLShaderProgramBuilder -------------------------------------------------
-// //
-// ---------------------------------------------------------------------- //
-class OpenGLShaderProgramBuilder {
- public:
-  OpenGLShaderProgramBuilder(UInt32 programId, const std::string &filepath);
-  OpenGLShaderProgramBuilder(UInt32 programId, const std::string &vertexSource,
-                             const std::string &fragmentSource);
-  void build();
-
- private:
-  void preprocessShaderSource();
-
- private:
-  UInt32 m_id = 0;
-  std::string m_fileContent;
-  std::unordered_map<UInt32, std::string> m_shaderSources;
-};
-
-// ---------------------------------------------------------------------- //
-// OpenGLShaderProgram --------------------------------------------------------
-// //
-// ---------------------------------------------------------------------- //
 class OpenGLShaderProgram : public ShaderProgram {
  public:
   OpenGLShaderProgram(const std::string &filepath);

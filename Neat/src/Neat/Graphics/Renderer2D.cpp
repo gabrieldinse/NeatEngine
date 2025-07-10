@@ -14,7 +14,7 @@ Renderer2D::Renderer2DData *Renderer2D::s_data =
 void Renderer2D::init() {
   s_data->quadVertexArray = VertexArray::create();
   s_data->quadVertexBuffer = VertexBuffer::create(
-      QuadVextexDataBuffer::maxVertices * (UInt32)sizeof(QuadVertexData));
+     QuadVextexDataBuffer::maxVertices * (UInt32)sizeof(QuadVertexData));
 
   s_data->quadVertexBuffer->setLayout(
       {{ShaderDataType::Vector4F, "position"},
