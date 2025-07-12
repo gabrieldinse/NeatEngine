@@ -24,15 +24,15 @@ class OpenGLShaderProgram : public ShaderProgram {
 
   virtual const std::string &getName() const override { return m_name; }
   virtual void setName(const std::string &name) override { m_name = name; }
-  virtual void setUniform(const std::string &name, float value) override;
-  virtual void setUniform(const std::string &name, Vector2F values) override;
-  virtual void setUniform(const std::string &name, Vector3F values) override;
-  virtual void setUniform(const std::string &name, Vector4F values) override;
-  virtual void setUniform(const std::string &name, Int32 value) override;
-  virtual void setUniform(const std::string &name, Int32 *values,
-                          UInt32 count) override;
-  virtual void setUniform(const std::string &name, Matrix3F matrix) override;
-  virtual void setUniform(const std::string &name, Matrix4F matrix) override;
+  virtual void set(const std::string &name, float value) override;
+  virtual void set(const std::string &name, Vector2F values) override;
+  virtual void set(const std::string &name, Vector3F values) override;
+  virtual void set(const std::string &name, Vector4F values) override;
+  virtual void set(const std::string &name, Int32 value) override;
+  virtual void set(const std::string &name, Int32 *values,
+                   UInt32 count) override;
+  virtual void set(const std::string &name, Matrix3F matrix) override;
+  virtual void set(const std::string &name, Matrix4F matrix) override;
 
  private:
   Int32 getUniformLocation(const std::string &name);

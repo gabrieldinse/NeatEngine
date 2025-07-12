@@ -144,6 +144,6 @@ class Renderer2D {
   };
 
  private:
-  static Renderer2DData *s_data;
+  static std::unique_ptr<Renderer2DData> s_data;
 };
 }  // namespace Neat

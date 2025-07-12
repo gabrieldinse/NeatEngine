@@ -1,7 +1,7 @@
 #include "NeatPCH.hpp"
 
 #include "Platform/OpenGL/OpenGLShaderDataType.hpp"
-#include "Platform/OpenGL/OpenGLShaderProgram.hpp"
+#include "Platform/OpenGL/OpenGLShaderProgramBuilder.hpp"
 
 #include <glad/glad.h>
 

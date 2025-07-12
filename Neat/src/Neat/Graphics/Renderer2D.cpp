@@ -14,7 +14,7 @@ Renderer2D::Renderer2DData *Renderer2D::s_data =
 void Renderer2D::init() {
   s_data->quadVertexArray = VertexArray::create();
   s_data->quadVertexBuffer = VertexBuffer::create(
-     QuadVextexDataBuffer::maxVertices * (UInt32)sizeof(QuadVertexData));
+      QuadVextexDataBuffer::maxVertices * (UInt32)sizeof(QuadVertexData));
 
   s_data->quadVertexBuffer->setLayout(
       {{ShaderDataType::Vector4F, "position"},
@@ -55,7 +55,7 @@ void Renderer2D::init() {
   s_data->textureShader =
       ShaderProgram::create("./assets/shader_source/texture.glsl");
   s_data->textureShader->use();
-  s_data->textureShader->setUniform(
+  s_data->textureShader->set(
       "u_textures[0]", samplers,
       static_cast<Int32>(sizeof(samplers) / sizeof(Int32)));
 
@@ -66,8 +66,7 @@ void Renderer2D::shutdown() { delete s_data; }
 
 void Renderer2D::beginScene(const Camera &camera) {
   s_data->textureShader->use();
-  s_data->textureShader->setUniform("u_cameraTransform",
-                                    camera.getCameraTransform());
+  s_data->textureShader->set("u_cameraTransform", camera.getCameraTransform());
   startNewBatch();
 }
 
