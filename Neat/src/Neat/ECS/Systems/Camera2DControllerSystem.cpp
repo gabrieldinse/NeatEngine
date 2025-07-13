@@ -39,11 +39,9 @@ void Camera2DControllerSystem::onUpdate(
 
   if (m_rotationEnabled) {
     auto rotation = (float)(m_rotationSpeed * deltaTimeSeconds);
-    if (Input::isKeyPressed(Key::Q))
-      m_camera.setRotation(wrap360(m_camera.getRotation() + rotation));
+    if (Input::isKeyPressed(Key::Q)) m_camera.incrementRotation(rotation);
 
-    if (Input::isKeyPressed(Key::E))
-      m_camera.setRotation(wrap360(m_camera.getRotation() - rotation));
+    if (Input::isKeyPressed(Key::E)) m_camera.incrementRotation(-rotation);
   }
 }
 
@@ -58,19 +56,18 @@ bool Camera2DControllerSystem::onMouseScrolled(
 }
 
 bool Camera2DControllerSystem::onMouseMoved(const MouseMovedEvent &event) {
+  Vector2F current_mouse_position{event.xPos, event.yPos};
   if (m_firstMouse) {
-    m_lastMousePosition = Vector2F(event.xPos, event.yPos);
+    m_lastMousePosition = current_mouse_position;
     m_firstMouse = false;
   }
-
-  Vector2F current_mouse_position(event.xPos, event.yPos);
 
   const auto &window = Application::get().getWindow();
   const auto scale_factor = 2.0f * m_zoomLevel / (float)window.getHeight();
 
   auto mouse_possition_offset = current_mouse_position - m_lastMousePosition;
   auto screen_position_offset =
-      rotateZ(radians(m_camera.getRotation())) *
+      rotateZ(degreesToRadians(m_camera.getRotation())) *
       scale(Vector3F(-scale_factor, scale_factor, 1.0f)) *
       Vector4F(mouse_possition_offset, 0.0f, 1.0f);
 

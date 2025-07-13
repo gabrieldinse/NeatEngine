@@ -8,8 +8,8 @@
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {
-Renderer2D::Renderer2DData *Renderer2D::s_data =
-    new Renderer2D::Renderer2DData();
+std::unique_ptr<Renderer2D::Renderer2DData> Renderer2D::s_data =
+    std::make_unique<Renderer2D::Renderer2DData>();
 
 void Renderer2D::init() {
   s_data->quadVertexArray = VertexArray::create();
@@ -62,7 +62,7 @@ void Renderer2D::init() {
   s_data->textureSlots[0] = s_data->whiteTexture;
 }
 
-void Renderer2D::shutdown() { delete s_data; }
+void Renderer2D::shutdown() { s_data.reset(); }
 
 void Renderer2D::beginScene(const Camera &camera) {
   s_data->textureShader->use();
@@ -176,7 +176,7 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
       {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
 
   auto model_matrix = translate(Matrix4F(1.0f), position) *
-                      rotateZ(radians(angleDegrees)) *
+                      rotateZ(degreesToRadians(angleDegrees)) *
                       scale(Vector3F(size.x, size.y, 1.0f));
 
   s_data->quadVextexDataBuffer.addQuad(model_matrix, color, textureCoordinates,
@@ -216,7 +216,8 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
     s_data->textureSlotIndex++;
   }
 
-  auto model_matrix = translate(position) * rotateZ(radians(angleDegrees)) *
+  auto model_matrix = translate(position) *
+                      rotateZ(degreesToRadians(angleDegrees)) *
                       scale(Vector3F(size.x, size.y, 1.0f));
 
   s_data->quadVextexDataBuffer.addQuad(model_matrix, tint,

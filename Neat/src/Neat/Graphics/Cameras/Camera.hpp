@@ -53,18 +53,19 @@ class Camera {
   void setX(float x) { m_position.x = x; }
   void setY(float y) { m_position.y = y; }
   void setZ(float z) { m_position.z = z; }
-  void setRotation(float pitch, float yaw, float roll);
-  void setPitch(float pitch);
-  void setYaw(float yaw);
-  void setRoll(float roll);
+  void setEulerAngles(float pitch, float yaw, float roll, bool doWrapIn360Degrees = true);
+  void setPitch(float pitch, bool doWrapIn360Degrees = true);
+  void setYaw(float yaw, bool doWrapIn360Degrees = true);
+  void setRoll(float roll, bool doWrapIn360Degrees = true);
   void setWorldUp(const Vector3F &worldUp) { m_worldUpDirection = worldUp; }
   void setNear(float near) { m_near = near; }
   void setFar(float far) { m_far = far; }
 
-  void rotate(float pitch, float yaw, float roll);
-  void rotatePitch(float pitch);
-  void rotateYaw(float yaw);
-  void rotateRoll(float roll);
+  void incrementPitchYawRoll(float pitchIncrement, float yawIncrement,
+                             float rollIncrement, bool doWrapIn360Degrees = true);
+  void incrementPitch(float pitchIncrement, bool doWrapIn360Degrees = true);
+  void incrementYaw(float yawIncrement, bool doWrapIn360Degrees = true);
+  void incrementRoll(float rollIncrement, bool doWrapIn360Degrees = true);
 
   void move(const Vector3F &position) { m_position += position; }
   void moveX(float distance) { m_position.x += distance; }
@@ -95,6 +96,7 @@ class Camera {
   float getAspectRatio() const;
   void setFieldOfView(float fieldOfView);
   void setAspectRatio(float aspectRatio);
+  void setAspectRatio(UInt32 width, UInt32 height);
 
   // Orthographic
   float getLeft() const;

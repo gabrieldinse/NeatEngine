@@ -44,11 +44,9 @@ void Camera3DControllerSystem::onUpdate(
 
   if (m_rotationEnabled) {
     auto rotation = (float)(m_rotationSpeed * deltaTimeSeconds);
-    if (Input::isKeyPressed(Key::Q))
-      m_camera.setRoll(wrap360(m_camera.getRoll() + rotation));
+    if (Input::isKeyPressed(Key::Q)) m_camera.incrementRoll(rotation);
 
-    if (Input::isKeyPressed(Key::E))
-      m_camera.setRoll(wrap360(m_camera.getRoll() - rotation));
+    if (Input::isKeyPressed(Key::E)) m_camera.incrementRoll(-rotation);
   }
 }
 
@@ -62,25 +60,25 @@ bool Camera3DControllerSystem::onMouseScrolled(
 }
 
 bool Camera3DControllerSystem::onMouseMoved(const MouseMovedEvent &event) {
+  Vector2F current_mouse_position{event.xPos, event.yPos};
   if (m_firstMouse) {
-    m_lastMousePosition = Vector2F(event.xPos, event.yPos);
+    m_lastMousePosition = current_mouse_position;
     m_firstMouse = false;
   }
 
-  Vector2F current_mouse_position(event.xPos, event.yPos);
   auto mouse_position_offset = current_mouse_position - m_lastMousePosition;
   m_lastMousePosition = current_mouse_position;
 
   auto yaw_offset = -m_mouseSensitivity * mouse_position_offset.x;
   auto pitch_offset = -m_mouseSensitivity * mouse_position_offset.y;
-  m_camera.setYaw(wrap360(yaw_offset + m_camera.getYaw()));
-  m_camera.setPitch(wrap360(pitch_offset + m_camera.getPitch()));
+  m_camera.incrementYaw(yaw_offset);
+  m_camera.incrementPitch(pitch_offset);
 
   return false;
 }
 
 bool Camera3DControllerSystem::onWindowResize(const WindowResizeEvent &event) {
-  m_camera.setAspectRatio((float)event.width / (float)event.height);
+  m_camera.setAspectRatio(event.width, event.height);
 
   return false;
 }

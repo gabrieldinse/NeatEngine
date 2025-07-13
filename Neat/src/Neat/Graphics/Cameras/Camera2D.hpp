@@ -41,7 +41,7 @@ class Camera2D {
   void setNear(float near) { m_camera.setNear(near); }
   void setFar(float far) { m_camera.setFar(far); }
 
-  void rotate(float rotation) { m_camera.rotateRoll(rotation); }
+  void incrementRotation(float rotation) { m_camera.incrementRoll(rotation); }
 
   void move(const Vector2F &position) {
     m_camera.move(Vector3F(position, m_zPos));

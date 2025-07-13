@@ -41,48 +41,68 @@ Camera &Camera::setPerspective(float fov, float aspectRatio, float near,
   return *this;
 }
 
-void Camera::setRotation(float pitch, float yaw, float roll) {
+void Camera::setEulerAngles(float pitch, float yaw, float roll,
+                            bool doWrapIn360Degrees) {
+  if (doWrapIn360Degrees) {
+    pitch = wrapIn360Degrees(pitch);
+    yaw = wrapIn360Degrees(yaw);
+    roll = wrapIn360Degrees(roll);
+  }
   m_pitch = pitch;
   m_yaw = yaw;
   m_roll = roll;
   updateOrientationVectors();
 }
 
-void Camera::setPitch(float pitch) {
+void Camera::setPitch(float pitch, bool doWrapIn360Degrees) {
+  if (doWrapIn360Degrees) {
+    pitch = wrapIn360Degrees(pitch);
+  }
   m_pitch = pitch;
   updateOrientationVectors();
 }
 
-void Camera::setYaw(float yaw) {
+void Camera::setYaw(float yaw, bool doWrapIn360Degrees) {
+  if (doWrapIn360Degrees) {
+    yaw = wrapIn360Degrees(yaw);
+  }
   m_yaw = yaw;
   updateOrientationVectors();
 }
 
-void Camera::setRoll(float roll) {
+void Camera::setRoll(float roll, bool doWrapIn360Degrees) {
+  if (doWrapIn360Degrees) {
+    roll = wrapIn360Degrees(roll);
+  }
   m_roll = roll;
   updateOrientationVectors();
 }
 
-void Camera::rotate(float pitch, float yaw, float roll) {
-  m_pitch += pitch;
-  m_yaw += yaw;
-  m_roll += roll;
+void Camera::incrementPitchYawRoll(float pitchIncrement, float yawIncrement,
+                                   float rollIncrement, bool doWrapIn360Degrees) {
+  m_pitch += pitchIncrement;
+  m_yaw += yawIncrement;
+  m_roll += rollIncrement;
+
+  if (doWrapIn360Degrees) {
+    m_pitch = wrapIn360Degrees(m_pitch);
+    m_yaw = wrapIn360Degrees(m_yaw);
+    m_roll = wrapIn360Degrees(m_roll);
+  }
+
   updateOrientationVectors();
 }
 
-void Camera::rotatePitch(float pitch) {
-  m_pitch += pitch;
-  updateOrientationVectors();
+void Camera::incrementPitch(float pitchIncrement, bool doWrapIn360Degrees) {
+  setPitch(m_pitch + pitchIncrement, doWrapIn360Degrees);
 }
 
-void Camera::rotateYaw(float yaw) {
-  m_yaw += yaw;
-  updateOrientationVectors();
+void Camera::incrementYaw(float yawIncrement, bool doWrapIn360Degrees) {
+  setYaw(m_yaw + yawIncrement, doWrapIn360Degrees);
 }
 
-void Camera::rotateRoll(float roll) {
-  m_roll += roll;
-  updateOrientationVectors();
+void Camera::incrementRoll(float rollIncrement, bool doWrapIn360Degrees) {
+  setRoll(m_roll + rollIncrement, doWrapIn360Degrees);
 }
 
 Matrix4F Camera::getProjectionMatrix() const {
@@ -95,7 +115,7 @@ Matrix4F Camera::getProjectionMatrix() const {
 
     case CameraType::Perspective: {
       auto &camera_data = getPerspectiveData();
-      return perspective(radians(camera_data.fieldOfView),
+      return perspective(degreesToRadians(camera_data.fieldOfView),
                          camera_data.aspectRatio, m_near, m_far);
     }
 
@@ -135,6 +155,10 @@ void Camera::setAspectRatio(float aspectRatio) {
   checkIsType(CameraType::Perspective);
 
   getPerspectiveData().aspectRatio = aspectRatio;
+}
+
+void Camera::setAspectRatio(UInt32 width, UInt32 height) {
+  setAspectRatio(static_cast<float>(width) / static_cast<float>(height));
 }
 
 // Orthographic
@@ -187,11 +211,12 @@ void Camera::setTop(float top) {
 }
 
 void Camera::updateOrientationVectors() {
-  auto orientation = QuaternionF::fromEulerAngles(
-      radians(m_pitch), radians(m_yaw), radians(m_roll));
+  auto orientation = QuaternionF::fromEulerAngles(degreesToRadians(m_pitch),
+                                                  degreesToRadians(m_yaw),
+                                                  degreesToRadians(m_roll));
 
-  m_forwardDirection = Neat::rotate(orientation, Vector3F(0, 0, -1));
-  m_rightDirection = Neat::rotate(orientation, Vector3F(1, 0, 0));
-  m_upDirection = Neat::rotate(orientation, Vector3F(0, 1, 0));
+  m_forwardDirection = rotate(orientation, Vector3F(0, 0, -1));
+  m_rightDirection = rotate(orientation, Vector3F(1, 0, 0));
+  m_upDirection = rotate(orientation, Vector3F(0, 1, 0));
 }
 }  // namespace Neat

@@ -5,22 +5,22 @@
 namespace Neat {
 // Utility
 template <typename T>
-inline constexpr T radians(T angleDegrees);
+inline constexpr T degreesToRadians(T angleDegrees);
 
 template <typename T>
-inline constexpr T degrees(T angleRadians);
+inline constexpr T radiansToDegrees(T angleRadians);
 
 template <typename T>
-inline constexpr T wrapPi(T angleRadians);
+inline constexpr T wrapInPiRadians(T angleRadians);
 
 template <typename T>
-inline constexpr T wrapTwoPi(T angleRadians);
+inline constexpr T wrapInTwoPiRadians(T angleRadians);
 
 template <typename T>
-inline constexpr T wrap180(T angleDegrees);
+inline constexpr T wrapIn180Degrees(T angleDegrees);
 
 template <typename T>
-inline constexpr T wrap360(T angleDegrees);
+inline constexpr T wrapIn360Degrees(T angleDegrees);
 
 // Trigonometric functions -------------------------------------------------
 // Scalar

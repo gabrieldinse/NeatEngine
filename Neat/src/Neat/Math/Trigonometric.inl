@@ -8,17 +8,17 @@
 namespace Neat {
 // Utility
 template <typename T>
-inline constexpr T radians(T angleDegrees) {
+inline constexpr T degreesToRadians(T angleDegrees) {
   return angleDegrees * degreeInRadians<T>;
 }
 
 template <typename T>
-inline constexpr T degrees(T angleRadians) {
+inline constexpr T radiansToDegrees(T angleRadians) {
   return angleRadians * radianInDegrees<T>;
 }
 
 template <typename T>
-inline constexpr T wrapPi(T angleRadians) {
+inline constexpr T wrapInPiRadians(T angleRadians) {
   if (abs(angleRadians) > pi<T>) {
     T revolutions = floor(oneOverTwoPi<T> * (angleRadians + pi<T>));
     angleRadians -= revolutions * twoPi<T>;
@@ -28,7 +28,7 @@ inline constexpr T wrapPi(T angleRadians) {
 }
 
 template <typename T>
-inline constexpr T wrapTwoPi(T angleRadians) {
+inline constexpr T wrapInTwoPiRadians(T angleRadians) {
   if (abs(angleRadians) > twoPi<T>) {
     T revolutions = floor(oneOverTwoPi<T> * angleRadians);
     angleRadians -= revolutions * twoPi<T>;
@@ -38,7 +38,7 @@ inline constexpr T wrapTwoPi(T angleRadians) {
 }
 
 template <typename T>
-inline constexpr T wrap180(T angleDegrees) {
+inline constexpr T wrapIn180Degrees(T angleDegrees) {
   if (abs(angleDegrees) > static_cast<T>(180)) {
     T revolutions =
         floor(static_cast<T>(1.0 / 360) * (angleDegrees + static_cast<T>(180)));
@@ -49,7 +49,7 @@ inline constexpr T wrap180(T angleDegrees) {
 }
 
 template <typename T>
-inline constexpr T wrap360(T angleDegrees) {
+inline constexpr T wrapIn360Degrees(T angleDegrees) {
   if (abs(angleDegrees) > static_cast<T>(360)) {
     T revolutions = floor(static_cast<T>(1.0 / 360) * angleDegrees);
     angleDegrees -= revolutions * static_cast<T>(360);
