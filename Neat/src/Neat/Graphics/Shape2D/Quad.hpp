@@ -8,7 +8,7 @@ class Quad : public Shape {
  public:
   Quad(const Vector3F &position = {0.0f, 0.0f, 0.0f},
        const Vector2F &size = {1.0f, 1.0f},
-       const Vector4F color = {1.0f, 0.0f, 1.0f, 1.0f})
+       const Vector4F color = Color::magenta)
       : m_position(position), m_size(size), m_color(color) {}
 
   virtual void draw() const override {

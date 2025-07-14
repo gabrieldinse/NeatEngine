@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Neat/Core/Types.hpp"
+#include "Neat/Graphics/Color.hpp"
 #include "Neat/Graphics/Cameras/Camera.hpp"
 #include "Neat/Graphics/Texture2D.hpp"
 #include "Neat/Graphics/VertexArray.hpp"
