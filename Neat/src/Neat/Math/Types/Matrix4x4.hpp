@@ -51,6 +51,7 @@ struct Matrix<4, 4, T> {
   static constexpr Matrix<4, 4, T> identity() { return Matrix<4, 4, T>(); }
 
   // Assignment operators
+  constexpr Matrix<4, 4, T> &operator=(const Matrix<4, 4, T> &m);
   template <typename U>
   constexpr Matrix<4, 4, T> &operator=(const Matrix<4, 4, U> &m);
 

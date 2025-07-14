@@ -291,8 +291,8 @@ inline Matrix<4, 4, T> eulerAnglesZXY(const T &angle1, const T &angle2,
 }
 
 template <typename T>
-inline Matrix<4, 4, T> yawPitchRoll(const T &yaw, const T &pitch,
-                                    const T &roll) {
+inline Matrix<4, 4, T> eulerAnglesRotate(const T &yaw, const T &pitch,
+                                         const T &roll) {
   T cy = cos(yaw);
   T sy = sin(yaw);
   T cp = cos(pitch);

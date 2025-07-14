@@ -170,6 +170,17 @@ inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator=(
   return *this;
 }
 
+template <typename T>
+inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator=(
+    const Matrix<4, 4, T> &m) {
+  m_rows[0] = m[0];
+  m_rows[1] = m[1];
+  m_rows[2] = m[2];
+  m_rows[3] = m[3];
+
+  return *this;
+}
+
 // Compound assigment operators
 template <typename T>
 template <typename U>

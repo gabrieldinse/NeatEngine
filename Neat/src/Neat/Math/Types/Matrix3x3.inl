@@ -125,6 +125,16 @@ inline constexpr Matrix<3, 3, T> operator/(const Matrix<3, 3, T> &m,
 
 // Assignment operators
 template <typename T>
+inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator=(
+    const Matrix<3, 3, T> &m) {
+  m_rows[0] = m[0];
+  m_rows[1] = m[1];
+  m_rows[2] = m[2];
+
+  return *this;
+}
+
+template <typename T>
 template <typename U>
 inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator=(
     const Matrix<3, 3, U> &m) {

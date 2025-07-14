@@ -71,7 +71,7 @@ bool Camera2DControllerSystem::onMouseMoved(const MouseMovedEvent &event) {
       scale(Vector3F(-scale_factor, scale_factor, 1.0f)) *
       Vector4F(mouse_possition_offset, 0.0f, 1.0f);
 
-  m_camera.move(Vector2F(screen_position_offset));
+  m_camera.incrementPosition(Vector2F(screen_position_offset));
   m_lastMousePosition = current_mouse_position;
 
   return false;

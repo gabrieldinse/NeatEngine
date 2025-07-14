@@ -52,8 +52,8 @@ inline Matrix<4, 4, T> eulerAnglesZXY(const T &angle1, const T &angle2,
                                       const T &angle3);
 
 template <typename T>
-inline Matrix<4, 4, T> yawPitchRoll(const T &yaw, const T &pitch,
-                                    const T &roll);
+inline Matrix<4, 4, T> eulerAnglesRotate(const T &yaw, const T &pitch,
+                                         const T &roll);
 
 template <typename T>
 inline void extractEulerAnglesXYZ(Matrix<4, 4, T> const &m, T &angle1,

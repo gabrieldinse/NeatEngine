@@ -41,6 +41,7 @@ struct Matrix<2, 2, T> {
   static constexpr Matrix<2, 2, T> identity() { return Matrix<2, 2, T>(); }
 
   // Assignment operators
+  constexpr Matrix<2, 2, T> &operator=(const Matrix<2, 2, T> &m);
   template <typename U>
   constexpr Matrix<2, 2, T> &operator=(const Matrix<2, 2, U> &m);
 

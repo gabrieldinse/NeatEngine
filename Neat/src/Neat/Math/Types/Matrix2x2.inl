@@ -106,6 +106,15 @@ inline constexpr Matrix<2, 2, T> operator/(const Matrix<2, 2, T> &m,
 
 // Assignment operators
 template <typename T>
+inline constexpr Matrix<2, 2, T> &Matrix<2, 2, T>::operator=(
+    const Matrix<2, 2, T> &m) {
+  m_rows[0] = m[0];
+  m_rows[1] = m[1];
+
+  return *this;
+}
+
+template <typename T>
 template <typename U>
 inline constexpr Matrix<2, 2, T> &Matrix<2, 2, T>::operator=(
     const Matrix<2, 2, U> &m) {

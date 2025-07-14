@@ -2,8 +2,9 @@
 
 namespace Neat {
 template <typename T>
-Matrix<4, 4, T> orthographic(const T &left, const T &right, const T &bottom,
-                             const T &top, const T &near, const T &far) {
+Matrix<4, 4, T> orthographicProjection(const T &left, const T &right,
+                                       const T &bottom, const T &top,
+                                       const T &near, const T &far) {
   Matrix<4, 4, T> result(one<T>);
 
   result[0][0] = two<T> / (right - left);
@@ -17,8 +18,9 @@ Matrix<4, 4, T> orthographic(const T &left, const T &right, const T &bottom,
 }
 
 template <typename T>
-Matrix<4, 4, T> perspective(const T &fieldOfView, const T &aspectRatio,
-                            const T &near, const T &far) {
+Matrix<4, 4, T> perspectiveProjection(const T &fieldOfView,
+                                      const T &aspectRatio, const T &near,
+                                      const T &far) {
   Matrix<4, 4, T> result(one<T>);
 
   T tan_half_fov = std::tan(fieldOfView / two<T>);

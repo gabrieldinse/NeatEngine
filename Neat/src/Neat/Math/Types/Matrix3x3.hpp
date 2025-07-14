@@ -47,6 +47,7 @@ struct Matrix<3, 3, T> {
   static constexpr Matrix<3, 3, T> identity() { return Matrix<3, 3, T>(); }
 
   // Assignment operators
+  constexpr Matrix<3, 3, T> &operator=(const Matrix<3, 3, T> &m);
   template <typename U>
   constexpr Matrix<3, 3, T> &operator=(const Matrix<3, 3, U> &m);
 

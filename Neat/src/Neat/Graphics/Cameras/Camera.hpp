@@ -31,8 +31,7 @@ class Camera {
   };
 
  public:
-  Camera(const Vector3F &position = {0.0f, 0.0f, 1.0f},
-         const Vector3F &upDirection = {0.0f, 1.0f, 0.0f});
+  Camera(const Vector3F &position = {0.0f, 0.0f, 1.0f});
 
   Camera &setOrthographic(float left, float right, float bottom, float top,
                           float near, float far);
@@ -53,38 +52,35 @@ class Camera {
   void setX(float x) { m_position.x = x; }
   void setY(float y) { m_position.y = y; }
   void setZ(float z) { m_position.z = z; }
-  void setEulerAngles(float pitch, float yaw, float roll, bool doWrapIn360Degrees = true);
+  void setEulerAngles(float pitch, float yaw, float roll,
+                      bool doWrapIn360Degrees = true);
   void setPitch(float pitch, bool doWrapIn360Degrees = true);
   void setYaw(float yaw, bool doWrapIn360Degrees = true);
   void setRoll(float roll, bool doWrapIn360Degrees = true);
-  void setWorldUp(const Vector3F &worldUp) { m_worldUpDirection = worldUp; }
   void setNear(float near) { m_near = near; }
   void setFar(float far) { m_far = far; }
 
   void incrementPitchYawRoll(float pitchIncrement, float yawIncrement,
-                             float rollIncrement, bool doWrapIn360Degrees = true);
+                             float rollIncrement,
+                             bool doWrapIn360Degrees = true);
   void incrementPitch(float pitchIncrement, bool doWrapIn360Degrees = true);
   void incrementYaw(float yawIncrement, bool doWrapIn360Degrees = true);
   void incrementRoll(float rollIncrement, bool doWrapIn360Degrees = true);
 
-  void move(const Vector3F &position) { m_position += position; }
-  void moveX(float distance) { m_position.x += distance; }
-  void moveY(float distance) { m_position.y += distance; }
-  void moveZ(float distance) { m_position.z += distance; }
-  void moveUp(float distance) { m_position += m_upDirection * distance; }
-  void moveDown(float distance) { m_position -= m_upDirection * distance; }
-  void moveRight(float distance) { m_position += m_rightDirection * distance; }
-  void moveLeft(float distance) { m_position -= m_rightDirection * distance; }
-  void moveForward(float distance) {
-    m_position += m_forwardDirection * distance;
-  }
-  void moveBackward(float distance) {
-    m_position -= m_forwardDirection * distance;
-  }
+  void incrementPosition(const Vector3F &position);
+  void incrementX(float distance);
+  void incrementY(float distance);
+  void incrementZ(float distance);
+  void moveUp(float distance);
+  void moveDown(float distance);
+  void moveRight(float distance);
+  void moveLeft(float distance);
+  void moveForward(float distance);
+  void moveBackward(float distance);
 
-  Matrix4F getProjectionMatrix() const;
-  Matrix4F getViewMatrix() const;
-  Matrix4F getCameraTransform() const;
+  const Matrix4F &getProjectionMatrix() const { return m_projectionMatrix; }
+  const Matrix4F &getViewMatrix() const { return m_viewMatrix; }
+  const Matrix4F &getCameraTransform() const { return m_cameraTransform; }
 
   bool isOrthographic() const {
     return m_cameraType == CameraType::Orthographic;
@@ -132,14 +128,17 @@ class Camera {
     if (m_cameraType != type) throw WrongCameraTypeError();
   }
 
-  void updateOrientationVectors();
+  void updateViewMatrix();
+  void updateCameraTransform();
 
  private:
   CameraType m_cameraType = CameraType::None;
   std::variant<OrthographicProps, PerspectiveProps> m_cameraData =
       OrthographicProps{};
   Vector3F m_position;
-  Vector3F m_worldUpDirection;
+  Matrix4F m_viewMatrix{Matrix4F::identity()};
+  Matrix4F m_projectionMatrix{Matrix4F::identity()};
+  Matrix4F m_cameraTransform{Matrix4F::identity()};
   Vector3F m_forwardDirection{0.0f};
   Vector3F m_rightDirection{0.0f};
   Vector3F m_upDirection{0.0f};

@@ -43,21 +43,23 @@ class Camera2D {
 
   void incrementRotation(float rotation) { m_camera.incrementRoll(rotation); }
 
-  void move(const Vector2F &position) {
-    m_camera.move(Vector3F(position, m_zPos));
+  void incrementPosition(const Vector2F &position) {
+    m_camera.incrementPosition(Vector3F(position, m_zPos));
   }
-  void moveX(float distance) { m_camera.moveX(distance); }
-  void moveY(float distance) { m_camera.moveY(distance); }
+  void incrementX(float distance) { m_camera.incrementX(distance); }
+  void incrementY(float distance) { m_camera.incrementY(distance); }
   void moveUp(float distance) { m_camera.moveUp(distance); }
   void moveDown(float distance) { m_camera.moveDown(distance); }
   void moveRight(float distance) { m_camera.moveRight(distance); }
   void moveLeft(float distance) { m_camera.moveLeft(distance); }
 
-  Matrix4F getProjectionMatrix() const {
+  const Matrix4F &getProjectionMatrix() const {
     return m_camera.getProjectionMatrix();
   }
-  Matrix4F getViewMatrix() const { return m_camera.getViewMatrix(); }
-  Matrix4F getCameraTransform() const { return m_camera.getCameraTransform(); }
+  const Matrix4F &getViewMatrix() const { return m_camera.getViewMatrix(); }
+  const Matrix4F &getCameraTransform() const {
+    return m_camera.getCameraTransform();
+  }
 
  private:
   void updateProjection();
