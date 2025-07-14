@@ -22,7 +22,7 @@ class Input {
   static float getMouseY();
 
  private:
-  static std::unique_ptr<InputImpl> s_impl;
+  static Scope<InputImpl> s_impl;
 };
 
 }  // namespace Neat

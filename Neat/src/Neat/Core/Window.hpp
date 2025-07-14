@@ -26,6 +26,6 @@ class Window {
   virtual void setVSync(bool enabled) = 0;
   virtual bool isVSync() const = 0;
 
-  static std::unique_ptr<Window> create(const WindowProps &props);
+  static Scope<Window> create(const WindowProps &props);
 };
 }  // namespace Neat

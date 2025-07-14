@@ -8,18 +8,18 @@ LayerGroup::LayerGroup() : m_insertIndex(0) {}
 
 LayerGroup::~LayerGroup() {}
 
-void LayerGroup::pushLayer(std::unique_ptr<Layer> &&layer) {
+void LayerGroup::pushLayer(Scope<Layer> &&layer) {
   layer->onAttach();
   m_layers.emplace(begin() + m_insertIndex, std::move(layer));
   m_insertIndex++;
 }
 
-void LayerGroup::pushOverlay(std::unique_ptr<Layer> &&layer) {
+void LayerGroup::pushOverlay(Scope<Layer> &&layer) {
   layer->onAttach();
   m_layers.push_back(std::move(layer));
 }
 
-std::unique_ptr<Layer> LayerGroup::popLayer(UInt32 position) {
+Scope<Layer> LayerGroup::popLayer(UInt32 position) {
   NT_CORE_ASSERT(position < m_layers.size(), "Invalid layer position!");
   auto layer = std::move(m_layers[position]);
   layer->onDetach();
@@ -28,7 +28,7 @@ std::unique_ptr<Layer> LayerGroup::popLayer(UInt32 position) {
   return layer;
 }
 
-std::unique_ptr<Layer> LayerGroup::popOverlay(UInt32 position) {
+Scope<Layer> LayerGroup::popOverlay(UInt32 position) {
   NT_CORE_ASSERT(position < m_layers.size(), "Invalid overlay position!");
   auto layer = std::move(m_layers[position]);
   layer->onDetach();

@@ -209,8 +209,7 @@ struct ComponentRemovedEvent {
 // ---------------------------------------------------------------------- //
 class EntityManager : public NonCopyable {
  public:
-  explicit EntityManager(
-      const std::shared_ptr<EventDispatcher> &eventDispatcher);
+  explicit EntityManager(const Ref<EventDispatcher> &eventDispatcher);
   virtual ~EntityManager();
 
  public:
@@ -742,7 +741,7 @@ class EntityManager : public NonCopyable {
  private:
   UInt32 m_indexCounter = 0;
 
-  std::shared_ptr<EventDispatcher> m_eventDispatcher;
+  Ref<EventDispatcher> m_eventDispatcher;
   std::vector<BaseMemoryPool *> m_componentArrays;
   std::vector<ComponentMask> m_entityComponentMasks;
   std::vector<UInt32> m_entityIdsVersion;

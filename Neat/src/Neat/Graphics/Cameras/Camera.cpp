@@ -270,7 +270,7 @@ void Camera::updateOrientation() {
                                                degreesToRadians(m_roll));
 
   m_forwardDirection = normalize(m_orientation * Vector3F(0, 0, -1));
-  m_rightDirection   = normalize(cross(m_forwardDirection, m_worldUpDirection));
-  m_upDirection      = normalize(cross(m_rightDirection, m_forwardDirection));
+  m_rightDirection = normalize(cross(m_forwardDirection, m_worldUpDirection));
+  m_upDirection = normalize(cross(m_rightDirection, m_forwardDirection));
 }
-} // namespace Neat
+}  // namespace Neat

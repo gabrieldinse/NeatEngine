@@ -13,6 +13,6 @@ class IndexBuffer {
   virtual void unbind() const = 0;
 
   virtual UInt32 getCount() const = 0;
-  static std::shared_ptr<IndexBuffer> create(UInt32 *indices, UInt32 count);
+  static Ref<IndexBuffer> create(UInt32 *indices, UInt32 count);
 };
 }  // namespace Neat

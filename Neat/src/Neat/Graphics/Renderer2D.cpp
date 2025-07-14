@@ -8,8 +8,8 @@
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {
-std::unique_ptr<Renderer2D::Renderer2DData> Renderer2D::s_data =
-    std::make_unique<Renderer2D::Renderer2DData>();
+Scope<Renderer2D::Renderer2DData> Renderer2D::s_data =
+    makeScope<Renderer2D::Renderer2DData>();
 
 void Renderer2D::init() {
   s_data->quadVertexArray = VertexArray::create();
@@ -24,8 +24,7 @@ void Renderer2D::init() {
        {ShaderDataType::Float, "tilingFactor"}});
   s_data->quadVertexArray->addVertexBuffer(s_data->quadVertexBuffer);
 
-  auto quadIndexes =
-      std::make_unique<UInt32[]>(QuadVextexDataBuffer::maxIndexes);
+  auto quadIndexes = makeScope<UInt32[]>(QuadVextexDataBuffer::maxIndexes);
   UInt32 offset = 0;
   for (UInt32 i = 0; i < QuadVextexDataBuffer::maxIndexes;
        i += 6, offset += 4) {
@@ -120,14 +119,14 @@ void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
 }
 
 void Renderer2D::drawQuad(const Vector2F &position, const Vector2F &size,
-                          const std::shared_ptr<Texture2D> &texture,
-                          const Vector4F &tint, float tilingFactor) {
+                          const Ref<Texture2D> &texture, const Vector4F &tint,
+                          float tilingFactor) {
   drawQuad({position.x, position.y, 0.0f}, size, texture, tint, tilingFactor);
 }
 
 void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
-                          const std::shared_ptr<Texture2D> &texture,
-                          const Vector4F &tint, float tilingFactor) {
+                          const Ref<Texture2D> &texture, const Vector4F &tint,
+                          float tilingFactor) {
   if (reachedBatchDataLimit()) {
     draw();
     startNewBatch();
@@ -187,7 +186,7 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
 
 void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
                                  float angleDegrees,
-                                 const std::shared_ptr<Texture2D> &texture,
+                                 const Ref<Texture2D> &texture,
                                  const Vector4F &tint, float tilingFactor) {
   drawRotatedQuad({position.x, position.y, 0.0f}, size, angleDegrees, texture,
                   tint, tilingFactor);
@@ -195,7 +194,7 @@ void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
 
 void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
                                  float angleDegrees,
-                                 const std::shared_ptr<Texture2D> &texture,
+                                 const Ref<Texture2D> &texture,
                                  const Vector4F &tint, float tilingFactor) {
   if (reachedBatchDataLimit()) {
     draw();

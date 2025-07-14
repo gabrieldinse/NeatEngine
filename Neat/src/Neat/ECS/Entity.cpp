@@ -5,8 +5,7 @@
 
 namespace Neat {
 const Entity::Id Entity::INVALID_ID;
-EntityManager::EntityManager(
-    const std::shared_ptr<EventDispatcher> &eventDispatcher)
+EntityManager::EntityManager(const Ref<EventDispatcher> &eventDispatcher)
     : m_eventDispatcher(eventDispatcher) {}
 
 EntityManager::~EntityManager() { reset(); }

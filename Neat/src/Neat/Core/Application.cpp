@@ -9,8 +9,7 @@
 namespace Neat {
 Application *Application::s_instance = nullptr;
 
-Application::Application()
-    : m_eventDispatcher(std::make_shared<EventDispatcher>()) {
+Application::Application() : m_eventDispatcher(makeRef<EventDispatcher>()) {
   // Check of there's another application running
   NT_CORE_ASSERT(not s_instance, "Application already exists!");
   s_instance = this;
@@ -53,19 +52,19 @@ void Application::run() {
   NT_CORE_INFO("Application stopped");
 }
 
-void Application::pushLayer(std::unique_ptr<Layer> &&layer) {
+void Application::pushLayer(Scope<Layer> &&layer) {
   m_layerGroup.pushLayer(std::move(layer));
 }
 
-void Application::pushOverlay(std::unique_ptr<Layer> &&layer) {
+void Application::pushOverlay(Scope<Layer> &&layer) {
   m_layerGroup.pushOverlay(std::move(layer));
 }
 
-std::unique_ptr<Layer> Application::popLayer(Int32 position) {
+Scope<Layer> Application::popLayer(Int32 position) {
   return m_layerGroup.popLayer(position);
 }
 
-std::unique_ptr<Layer> Application::popOverlay(Int32 position) {
+Scope<Layer> Application::popOverlay(Int32 position) {
   return m_layerGroup.popOverlay(position);
 }
 

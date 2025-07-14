@@ -11,7 +11,7 @@ namespace Neat {
 
 class Texture2D : public Texture {
  public:
-  static std::shared_ptr<Texture2D> create(Int32 width, Int32 height);
-  static std::shared_ptr<Texture2D> create(const std::string &filepath);
+  static Ref<Texture2D> create(Int32 width, Int32 height);
+  static Ref<Texture2D> create(const std::string &filepath);
 };
 }  // namespace Neat

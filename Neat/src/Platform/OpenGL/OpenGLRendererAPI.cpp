@@ -26,8 +26,8 @@ void OpenGLRendererAPI::clearWithColor(const Vector4F color) {
   glClearBufferfv(GL_COLOR, 0, color.dataPointer());
 }
 
-void OpenGLRendererAPI::drawIndexed(
-    const std::shared_ptr<VertexArray> &vertexArray, UInt32 indexCount) {
+void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray> &vertexArray,
+                                    UInt32 indexCount) {
   UInt32 count = (indexCount == 0) ? vertexArray->getIndexBuffer()->getCount()
                                    : indexCount;
 

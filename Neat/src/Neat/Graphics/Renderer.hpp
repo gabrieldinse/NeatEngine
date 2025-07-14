@@ -13,8 +13,8 @@ class Renderer {
   // static void beginScene(OrthographicCamera& camera);
   // static void endScene();
 
-  // static void submit(const std::shared_ptr<ShaderProgram>& shader,
-  //    const std::shared_ptr<VertexArray>& vertexArray,
+  // static void submit(const Ref<ShaderProgram>& shader,
+  //    const Ref<VertexArray>& vertexArray,
   //    const Matrix4F& transform = Matrix4F(1.0f));
 
   static void onWindowResize(UInt32 width, UInt32 height);
@@ -27,6 +27,6 @@ class Renderer {
   };
 
  private:
-  static std::unique_ptr<SceneData> m_sceneData;
+  static Scope<SceneData> m_sceneData;
 };
 }  // namespace Neat

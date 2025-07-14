@@ -5,8 +5,6 @@
 #include "Neat/Misc/FPSCounter.hpp"
 #include "ExampleLayer.hpp"
 
-// #include "Sandbox2D.hpp"
-
 class Sandbox : public Neat::Application {
  public:
   Sandbox() { pushLayer<ExampleLayer>(getEventDispatcher()); }
@@ -14,6 +12,6 @@ class Sandbox : public Neat::Application {
   ~Sandbox() {}
 };
 
-std::unique_ptr<Neat::Application> Neat::createApplication() {
-  return std::make_unique<Sandbox>();
+Neat::Scope<Neat::Application> Neat::createApplication() {
+  return Neat::makeScope<Sandbox>();
 }

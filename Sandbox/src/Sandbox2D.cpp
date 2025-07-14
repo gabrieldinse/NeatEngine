@@ -81,9 +81,9 @@
 //
 // void Sandbox2D::attach()
 //{
-//    this->checkerboardTexture = std::make_shared<Neat::Texture2D>(
+//    this->checkerboardTexture = Neat::makeRef<Neat::Texture2D>(
 //       "assets/textures/texture1.png");
-//    this->spritesheetTexture = std::make_shared<Neat::Texture2D>(
+//    this->spritesheetTexture = Neat::makeRef<Neat::Texture2D>(
 //       "assets/textures/spritesheet1.png");
 //    this->stairsTexture = Neat::SubTexture2D::createFromIndex(
 //       *this->spritesheetTexture, { 7, 6 }, { 64, 64 });

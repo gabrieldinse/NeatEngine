@@ -6,8 +6,8 @@
 
 namespace Neat {
 struct Renderable {
-  Renderable(std::unique_ptr<Shape> &&shape) : shape(std::move(shape)) {}
+  Renderable(Scope<Shape> &&shape) : shape(std::move(shape)) {}
 
-  std::unique_ptr<Shape> shape;
+  Scope<Shape> shape;
 };
 }  // namespace Neat

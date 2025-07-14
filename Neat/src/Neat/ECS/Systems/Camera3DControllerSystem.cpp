@@ -16,7 +16,7 @@ Camera3DControllerSystem::Camera3DControllerSystem(float aspectRatio,
 Camera3DControllerSystem::~Camera3DControllerSystem() {}
 
 void Camera3DControllerSystem::init(
-    const std::shared_ptr<EventDispatcher> &eventDispatcher) {
+    const Ref<EventDispatcher> &eventDispatcher) {
   eventDispatcher->get<MouseMovedEvent>()
       .connect<&Camera3DControllerSystem::onMouseMoved>(*this);
   eventDispatcher->get<MouseScrolledEvent>()
@@ -26,8 +26,8 @@ void Camera3DControllerSystem::init(
 }
 
 void Camera3DControllerSystem::onUpdate(
-    [[maybe_unused]] const std::shared_ptr<EntityManager> &entityManager,
-    [[maybe_unused]] const std::shared_ptr<EventDispatcher> &eventDispatcher,
+    [[maybe_unused]] const Ref<EntityManager> &entityManager,
+    [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     double deltaTimeSeconds) {
   auto distance = (float)(m_translationSpeed * deltaTimeSeconds);
   if (Input::isKeyPressed(Key::W)) m_camera.moveForward(distance);

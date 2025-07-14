@@ -15,10 +15,9 @@ class Camera2DControllerSystem : public System<Camera2DControllerSystem> {
 
   ~Camera2DControllerSystem();
 
-  virtual void init(
-      const std::shared_ptr<EventDispatcher> &eventDispatcher) override;
-  virtual void onUpdate(const std::shared_ptr<EntityManager> &entityManager,
-                        const std::shared_ptr<EventDispatcher> &eventDispatcher,
+  virtual void init(const Ref<EventDispatcher> &eventDispatcher) override;
+  virtual void onUpdate(const Ref<EntityManager> &entityManager,
+                        const Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds) override;
 
   Camera &getCamera() { return m_camera.getCamera(); }

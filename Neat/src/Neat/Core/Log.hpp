@@ -18,17 +18,17 @@ class Log {
   ~Log() = default;
   static void init(const char *pattern = "%^[%T] %n: %v%$");
 
-  inline static std::shared_ptr<spdlog::logger> &getCoreLogger() {
+  inline static Ref<spdlog::logger> &getCoreLogger() {
     return Log::s_coreLogger;
   }
 
-  inline static std::shared_ptr<spdlog::logger> &getClientLogger() {
+  inline static Ref<spdlog::logger> &getClientLogger() {
     return Log::s_clientLogger;
   }
 
  private:
-  static std::shared_ptr<spdlog::logger> s_coreLogger;
-  static std::shared_ptr<spdlog::logger> s_clientLogger;
+  static Ref<spdlog::logger> s_coreLogger;
+  static Ref<spdlog::logger> s_clientLogger;
 };
 }  // namespace Neat
 

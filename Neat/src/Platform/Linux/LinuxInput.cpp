@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h>
 
 namespace Neat {
-std::unique_ptr<Input::InputImpl> Input::s_impl;
+Scope<Input::InputImpl> Input::s_impl;
 
 struct Input::InputImpl {
   InputImpl(GLFWwindow *window) : window(window) {}
@@ -15,8 +15,8 @@ struct Input::InputImpl {
 };
 
 void Input::setWindow(Window &window) {
-  s_impl = std::make_unique<InputImpl>(
-      static_cast<GLFWwindow *>(window.getNativeWindow()));
+  s_impl =
+      makeScope<InputImpl>(static_cast<GLFWwindow *>(window.getNativeWindow()));
 }
 
 bool Input::isKeyPressed(Key key) {

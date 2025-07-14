@@ -3,7 +3,7 @@
 #include "ExampleLayer.hpp"
 
 ExampleLayer::ExampleLayer(
-    const std::shared_ptr<Neat::EventDispatcher> &eventDispatcher)
+    const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
     : checkerboardTexture(
           Neat::Texture2D::create("assets/textures/texture1.png")),
       spritesheetTexture(
@@ -12,8 +12,8 @@ ExampleLayer::ExampleLayer(
                                                         {7, 6}, {64, 64})),
       stairsTexture2(Neat::SubTexture2D::createFromIndex(spritesheetTexture,
                                                          {8, 6}, {64, 64})) {
-  entities = std::make_shared<Neat::EntityManager>(eventDispatcher);
-  systems = std::make_shared<Neat::SystemManager>(entities, eventDispatcher);
+  entities = Neat::makeRef<Neat::EntityManager>(eventDispatcher);
+  systems = Neat::makeRef<Neat::SystemManager>(entities, eventDispatcher);
   eventDispatcher->get<Neat::WindowResizeEvent>()
       .connect<&ExampleLayer::onWindowResize>(*this);
   eventDispatcher->get<Neat::MouseMovedEvent>()
@@ -37,7 +37,7 @@ ExampleLayer::ExampleLayer(
   for (std::size_t i = 0; i < this->numberOfLines; ++i) {
     for (std::size_t j = 0; j < this->numberOfColumns; ++j) {
       auto entity = entities->createEntity();
-      entity.addComponent<Neat::Renderable>(std::make_unique<Neat::Quad>(
+      entity.addComponent<Neat::Renderable>(Neat::makeScope<Neat::Quad>(
           Neat::Vector3F{0.1f * j, 0.1f * i, 0.0f}, Neat::Vector2F{0.1f, 0.1f},
           Neat::Vector4F{float(i) / this->numberOfLines,
                          float(j) / this->numberOfColumns, 1.0f, 1.0f}));

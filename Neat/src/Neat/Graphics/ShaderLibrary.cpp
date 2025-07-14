@@ -5,7 +5,7 @@
 #include "Platform/OpenGL/OpenGLShaderProgram.hpp"
 
 namespace Neat {
-void ShaderLibrary::add(const std::shared_ptr<ShaderProgram> &shader) {
+void ShaderLibrary::add(const Ref<ShaderProgram> &shader) {
   auto &name = shader->getName();
   NT_CORE_ASSERT(exists(name), "ShaderProgram already exists!");
 
@@ -13,30 +13,29 @@ void ShaderLibrary::add(const std::shared_ptr<ShaderProgram> &shader) {
 }
 
 void ShaderLibrary::add(const std::string &name,
-                        const std::shared_ptr<ShaderProgram> &shader) {
+                        const Ref<ShaderProgram> &shader) {
   NT_CORE_ASSERT(exists(name), "ShaderProgram already exists!");
 
   shader->setName(name);
   m_shaders[name] = shader;
 }
 
-std::shared_ptr<ShaderProgram> ShaderLibrary::load(
-    const std::string &filepath) {
+Ref<ShaderProgram> ShaderLibrary::load(const std::string &filepath) {
   auto shader = ShaderProgram::create(filepath);
   add(shader);
 
   return shader;
 }
 
-std::shared_ptr<ShaderProgram> ShaderLibrary::load(
-    const std::string &name, const std::string &filepath) {
+Ref<ShaderProgram> ShaderLibrary::load(const std::string &name,
+                                       const std::string &filepath) {
   auto shader = ShaderProgram::create(name, filepath);
   add(shader);
 
   return shader;
 }
 
-std::shared_ptr<ShaderProgram> ShaderLibrary::get(const std::string &name) {
+Ref<ShaderProgram> ShaderLibrary::get(const std::string &name) {
   NT_CORE_ASSERT(exists(name), "ShaderProgram not found!");
 
   return m_shaders[name];

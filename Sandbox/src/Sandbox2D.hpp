@@ -14,10 +14,10 @@ class Sandbox2D : public Neat::Layer {
   void onRender() override;
 
  private:
-  std::shared_ptr<Neat::Texture2D> checkerboardTexture;
-  std::shared_ptr<Neat::Texture2D> spritesheetTexture;
-  std::shared_ptr<Neat::SubTexture2D> stairsTexture;
-  std::shared_ptr<Neat::SubTexture2D> stairsTexture2;
+  Neat::Ref<Neat::Texture2D> checkerboardTexture;
+  Neat::Ref<Neat::Texture2D> spritesheetTexture;
+  Neat::Ref<Neat::SubTexture2D> stairsTexture;
+  Neat::Ref<Neat::SubTexture2D> stairsTexture2;
 
   Neat::Vector4F tint = {0.8f, 0.3f, 0.2f, 1.0f};
 

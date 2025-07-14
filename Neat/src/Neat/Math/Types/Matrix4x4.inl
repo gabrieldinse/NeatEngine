@@ -167,7 +167,6 @@ std::ostream &operator<<(std::ostream &os, const Matrix<4, 4, T> &m) {
   }
   os << "}";
   return os;
-
 }
 
 // Assignment operators

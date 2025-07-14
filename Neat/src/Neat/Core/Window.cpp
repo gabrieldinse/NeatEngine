@@ -7,9 +7,9 @@
 #endif
 
 namespace Neat {
-std::unique_ptr<Window> Window::create(const WindowProps &props) {
+Scope<Window> Window::create(const WindowProps &props) {
 #ifdef NT_PLATFORM_LINUX
-  return std::make_unique<LinuxWindow>(props);
+  return makeScope<LinuxWindow>(props);
 #else
   NT_CORE_ASSET(false, "Unknown platform!");
   return nullptr;

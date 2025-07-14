@@ -19,14 +19,14 @@ class RendererAPI {
   virtual void clear() = 0;
   virtual void clearWithColor(const Vector4F color) = 0;
 
-  virtual void drawIndexed(const std::shared_ptr<VertexArray> &vertexArray,
+  virtual void drawIndexed(const Ref<VertexArray> &vertexArray,
                            UInt32 indexCount = 0) = 0;
 
   virtual void setViewport(UInt32 xOffset, UInt32 yOffset, UInt32 width,
                            UInt32 height) = 0;
 
   static API getAPI() { return s_api; }
-  static std::unique_ptr<RendererAPI> create();
+  static Scope<RendererAPI> create();
 
  private:
   static API s_api;

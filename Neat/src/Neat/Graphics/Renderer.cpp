@@ -4,8 +4,8 @@
 #include "Neat/Graphics/Renderer2D.hpp"
 
 namespace Neat {
-std::unique_ptr<Renderer::SceneData> Renderer::m_sceneData =
-    std::make_unique<Renderer::SceneData>();
+Scope<Renderer::SceneData> Renderer::m_sceneData =
+    makeScope<Renderer::SceneData>();
 
 void Renderer::init() {
   RenderCommand::init();

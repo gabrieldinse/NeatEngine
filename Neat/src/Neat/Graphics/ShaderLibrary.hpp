@@ -12,17 +12,15 @@
 namespace Neat {
 class ShaderLibrary {
  public:
-  void add(const std::shared_ptr<ShaderProgram> &shader);
-  void add(const std::string &name,
-           const std::shared_ptr<ShaderProgram> &shader);
-  std::shared_ptr<ShaderProgram> load(const std::string &filepath);
-  std::shared_ptr<ShaderProgram> load(const std::string &name,
-                                      const std::string &filepath);
-  std::shared_ptr<ShaderProgram> get(const std::string &name);
+  void add(const Ref<ShaderProgram> &shader);
+  void add(const std::string &name, const Ref<ShaderProgram> &shader);
+  Ref<ShaderProgram> load(const std::string &filepath);
+  Ref<ShaderProgram> load(const std::string &name, const std::string &filepath);
+  Ref<ShaderProgram> get(const std::string &name);
 
   bool exists(const std::string &name) const;
 
  private:
-  std::unordered_map<std::string, std::shared_ptr<ShaderProgram>> m_shaders;
+  std::unordered_map<std::string, Ref<ShaderProgram>> m_shaders;
 };
 }  // namespace Neat

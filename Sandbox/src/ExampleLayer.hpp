@@ -7,7 +7,7 @@
 
 class ExampleLayer : public Neat::Layer {
  public:
-  ExampleLayer(const std::shared_ptr<Neat::EventDispatcher> &eventManager);
+  ExampleLayer(const Neat::Ref<Neat::EventDispatcher> &eventManager);
   ~ExampleLayer() = default;
 
   void onImGuiRender();
@@ -16,13 +16,13 @@ class ExampleLayer : public Neat::Layer {
   bool onMouseMoved(const Neat::MouseMovedEvent &event);
 
  private:
-  std::shared_ptr<Neat::SystemManager> systems;
-  std::shared_ptr<Neat::EntityManager> entities;
+  Neat::Ref<Neat::SystemManager> systems;
+  Neat::Ref<Neat::EntityManager> entities;
 
-  std::shared_ptr<Neat::Texture2D> checkerboardTexture;
-  std::shared_ptr<Neat::Texture2D> spritesheetTexture;
-  std::shared_ptr<Neat::SubTexture2D> stairsTexture;
-  std::shared_ptr<Neat::SubTexture2D> stairsTexture2;
+  Neat::Ref<Neat::Texture2D> checkerboardTexture;
+  Neat::Ref<Neat::Texture2D> spritesheetTexture;
+  Neat::Ref<Neat::SubTexture2D> stairsTexture;
+  Neat::Ref<Neat::SubTexture2D> stairsTexture2;
 
   Neat::Vector4F tint = {0.8f, 0.3f, 0.2f, 1.0f};
 

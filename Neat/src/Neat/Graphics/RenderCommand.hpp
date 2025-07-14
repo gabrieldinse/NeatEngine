@@ -20,7 +20,7 @@ class RenderCommand {
     s_rendererAPI->clearWithColor(color);
   }
 
-  static void drawIndexed(const std::shared_ptr<VertexArray> &vertexArray,
+  static void drawIndexed(const Ref<VertexArray> &vertexArray,
                           UInt32 indexCount = 0) {
     s_rendererAPI->drawIndexed(vertexArray, indexCount);
   }
@@ -31,6 +31,6 @@ class RenderCommand {
   }
 
  private:
-  static std::unique_ptr<RendererAPI> s_rendererAPI;
+  static Scope<RendererAPI> s_rendererAPI;
 };
 }  // namespace Neat

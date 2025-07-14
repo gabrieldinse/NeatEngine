@@ -5,8 +5,8 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 
 namespace Neat {
-std::shared_ptr<spdlog::logger> Log::s_clientLogger;
-std::shared_ptr<spdlog::logger> Log::s_coreLogger;
+Ref<spdlog::logger> Log::s_clientLogger;
+Ref<spdlog::logger> Log::s_coreLogger;
 
 void Log::init(const char *pattern) {
   spdlog::set_pattern(pattern);

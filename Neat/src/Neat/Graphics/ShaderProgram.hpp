@@ -27,11 +27,11 @@ class ShaderProgram {
   virtual void set(const std::string &name, Matrix3F matrix) = 0;
   virtual void set(const std::string &name, Matrix4F matrix) = 0;
 
-  static std::shared_ptr<ShaderProgram> create(const std::string &filepath);
-  static std::shared_ptr<ShaderProgram> create(const std::string &name,
-                                               const std::string &filepath);
-  static std::shared_ptr<ShaderProgram> create(
-      const std::string &name, const std::string &vertexSource,
-      const std::string &fragmentSource);
+  static Ref<ShaderProgram> create(const std::string &filepath);
+  static Ref<ShaderProgram> create(const std::string &name,
+                                   const std::string &filepath);
+  static Ref<ShaderProgram> create(const std::string &name,
+                                   const std::string &vertexSource,
+                                   const std::string &fragmentSource);
 };
 }  // namespace Neat

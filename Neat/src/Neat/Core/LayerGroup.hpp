@@ -9,7 +9,7 @@
 namespace Neat {
 class LayerGroup {
  public:
-  using LayerVector = std::vector<std::unique_ptr<Layer>>;
+  using LayerVector = std::vector<Scope<Layer>>;
   using LayerVectorIt = LayerVector::iterator;
   using LayerVectorConstIt = LayerVector::const_iterator;
   using LayerVectorRevIt = LayerVector::reverse_iterator;
@@ -23,10 +23,10 @@ class LayerGroup {
   void pushLayer(Args &&...args);
   template <typename T, typename... Args>
   void pushOverlay(Args &&...args);
-  void pushLayer(std::unique_ptr<Layer> &&layer);
-  void pushOverlay(std::unique_ptr<Layer> &&layer);
-  std::unique_ptr<Layer> popLayer(UInt32 position);
-  std::unique_ptr<Layer> popOverlay(UInt32 position);
+  void pushLayer(Scope<Layer> &&layer);
+  void pushOverlay(Scope<Layer> &&layer);
+  Scope<Layer> popLayer(UInt32 position);
+  Scope<Layer> popOverlay(UInt32 position);
 
   LayerVectorIt begin() { return m_layers.begin(); }
   LayerVectorIt end() { return m_layers.end(); }
@@ -44,11 +44,11 @@ class LayerGroup {
 
 template <typename T, typename... Args>
 void LayerGroup::pushLayer(Args &&...args) {
-  pushLayer(std::make_unique<T>(std::forward<Args>(args)...));
+  pushLayer(makeScope<T>(std::forward<Args>(args)...));
 }
 
 template <typename T, typename... Args>
 void LayerGroup::pushOverlay(Args &&...args) {
-  pushOverlay(std::make_unique<T>(std::forward<Args>(args)...));
+  pushOverlay(makeScope<T>(std::forward<Args>(args)...));
 }
 }  // namespace Neat

@@ -5,13 +5,13 @@
 #include "Platform/OpenGL/OpenGLVertexArray.hpp"
 
 namespace Neat {
-std::shared_ptr<VertexArray> VertexArray::create() {
+Ref<VertexArray> VertexArray::create() {
   switch (RendererAPI::getAPI()) {
     case RendererAPI::API::None:
       NT_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
       return nullptr;
     case RendererAPI::API::OpenGL:
-      return std::make_shared<OpenGLVertexArray>();
+      return makeRef<OpenGLVertexArray>();
     default:
       NT_CORE_ASSERT(false, "Unknown RendererAPI!");
       return nullptr;

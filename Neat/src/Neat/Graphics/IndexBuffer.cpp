@@ -5,14 +5,13 @@
 #include "Platform/OpenGL/OpenGLIndexBuffer.hpp"
 
 namespace Neat {
-std::shared_ptr<IndexBuffer> IndexBuffer::create(UInt32 *indices,
-                                                 UInt32 count) {
+Ref<IndexBuffer> IndexBuffer::create(UInt32 *indices, UInt32 count) {
   switch (RendererAPI::getAPI()) {
     case RendererAPI::API::None:
       NT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
       return nullptr;
     case RendererAPI::API::OpenGL:
-      return std::make_shared<OpenGLIndexBuffer>(indices, count);
+      return makeRef<OpenGLIndexBuffer>(indices, count);
   }
 
   NT_CORE_ASSERT(false, "Unknown RendererAPI!");

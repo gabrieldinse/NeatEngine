@@ -22,10 +22,10 @@ class Application {
   void pushLayer(Args &&...args);
   template <typename T, typename... Args>
   void pushOverlay(Args &&...args);
-  void pushLayer(std::unique_ptr<Layer> &&layer);
-  void pushOverlay(std::unique_ptr<Layer> &&layer);
-  std::unique_ptr<Layer> popLayer(Int32 position);
-  std::unique_ptr<Layer> popOverlay(Int32 position);
+  void pushLayer(Scope<Layer> &&layer);
+  void pushOverlay(Scope<Layer> &&layer);
+  Scope<Layer> popLayer(Int32 position);
+  Scope<Layer> popOverlay(Int32 position);
 
   void setUpdateRate(double rate) { m_updatePeriod = 1.0f / rate; }
 
@@ -36,22 +36,20 @@ class Application {
   bool onWindowResize(const WindowResizeEvent &event);
 
  protected:
-  std::shared_ptr<EventDispatcher> &getEventDispatcher() {
-    return m_eventDispatcher;
-  }
+  Ref<EventDispatcher> &getEventDispatcher() { return m_eventDispatcher; }
 
  private:
   static Application *s_instance;
 
-  std::unique_ptr<Window> m_window;
-  std::shared_ptr<EventDispatcher> m_eventDispatcher;
+  Scope<Window> m_window;
+  Ref<EventDispatcher> m_eventDispatcher;
   LayerGroup m_layerGroup;
   double m_updatePeriod = 1.0f / 120.0f;
 
   bool m_running = false;
 };
 
-std::unique_ptr<Application> createApplication();
+Scope<Application> createApplication();
 
 template <typename T, typename... Args>
 void Application::pushLayer(Args &&...args) {

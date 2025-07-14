@@ -20,7 +20,7 @@ class VertexBuffer {
 
   virtual void setData(const void *data, UInt32 size) = 0;
 
-  static std::shared_ptr<VertexBuffer> create(UInt32 size);
-  static std::shared_ptr<VertexBuffer> create(float *vertices, UInt32 size);
+  static Ref<VertexBuffer> create(UInt32 size);
+  static Ref<VertexBuffer> create(float *vertices, UInt32 size);
 };
 }  // namespace Neat

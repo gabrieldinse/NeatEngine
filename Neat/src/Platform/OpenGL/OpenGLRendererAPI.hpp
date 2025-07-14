@@ -11,7 +11,7 @@ class OpenGLRendererAPI : public RendererAPI {
   virtual void clear() override;
   virtual void clearWithColor(const Vector4F color) override;
 
-  virtual void drawIndexed(const std::shared_ptr<VertexArray> &vertexArray,
+  virtual void drawIndexed(const Ref<VertexArray> &vertexArray,
                            UInt32 indexCount = 0) override;
 
   virtual void setViewport(UInt32 xOffset, UInt32 yOffset, UInt32 width,

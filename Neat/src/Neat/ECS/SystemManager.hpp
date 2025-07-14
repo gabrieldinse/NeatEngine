@@ -12,8 +12,8 @@
 namespace Neat {
 class SystemManager : public NonCopyable {
  public:
-  SystemManager(const std::shared_ptr<EntityManager> &entityManager,
-                const std::shared_ptr<EventDispatcher> &eventDispatcher)
+  SystemManager(const Ref<EntityManager> &entityManager,
+                const Ref<EventDispatcher> &eventDispatcher)
       : m_entityManager(entityManager), m_eventDispatcher(eventDispatcher) {}
 
   void init() {
@@ -23,20 +23,20 @@ class SystemManager : public NonCopyable {
   }
 
   template <typename S>
-  void addSystem(std::shared_ptr<S> system) {
+  void addSystem(Ref<S> system) {
     m_systems[S::getFamily()] = system;
   }
 
   template <typename S, typename... Args>
-  std::shared_ptr<S> addSystem(Args &&...args) {
-    auto system = std::make_shared<S>(std::forward<Args>(args)...);
+  Ref<S> addSystem(Args &&...args) {
+    auto system = makeRef<S>(std::forward<Args>(args)...);
     addSystem(system);
 
     return system;
   }
 
   template <typename S>
-  std::shared_ptr<S> getSystem() {
+  Ref<S> getSystem() {
     auto it = m_systems.find(S::getFamily());
 
     if (it == m_systems.end()) {
@@ -45,7 +45,7 @@ class SystemManager : public NonCopyable {
 
     auto &&[family, system] = *it;
 
-    return std::shared_ptr<S>(std::static_pointer_cast<S>(system));
+    return Ref<S>(std::static_pointer_cast<S>(system));
   }
 
   template <typename S>
@@ -68,8 +68,8 @@ class SystemManager : public NonCopyable {
 
  private:
   bool m_initialized = false;
-  std::shared_ptr<EntityManager> m_entityManager;
-  std::shared_ptr<EventDispatcher> m_eventDispatcher;
-  std::unordered_map<BaseSystem::Family, std::shared_ptr<BaseSystem>> m_systems;
+  Ref<EntityManager> m_entityManager;
+  Ref<EventDispatcher> m_eventDispatcher;
+  std::unordered_map<BaseSystem::Family, Ref<BaseSystem>> m_systems;
 };
 }  // namespace Neat

@@ -27,12 +27,12 @@ class Renderer2D {
                        const Vector4F color);
 
   static void drawQuad(const Vector2F &position, const Vector2F &size,
-                       const std::shared_ptr<Texture2D> &texture,
+                       const Ref<Texture2D> &texture,
                        const Vector4F &tint = Vector4F(1.0f),
                        float tilingFactor = 1.0f);
 
   static void drawQuad(const Vector3F &position, const Vector2F &size,
-                       const std::shared_ptr<Texture2D> &texture,
+                       const Ref<Texture2D> &texture,
                        const Vector4F &tint = Vector4F(1.0f),
                        float tilingFactor = 1.0f);
 
@@ -44,14 +44,12 @@ class Renderer2D {
                               float angleDegrees, const Vector4F color);
 
   static void drawRotatedQuad(const Vector2F &position, const Vector2F &size,
-                              float angleDegrees,
-                              const std::shared_ptr<Texture2D> &texture,
+                              float angleDegrees, const Ref<Texture2D> &texture,
                               const Vector4F &tint = Vector4F(1.0f),
                               float tilingFactor = 1.0f);
 
   static void drawRotatedQuad(const Vector3F &position, const Vector2F &size,
-                              float angleDegrees,
-                              const std::shared_ptr<Texture2D> &texture,
+                              float angleDegrees, const Ref<Texture2D> &texture,
                               const Vector4F &tint = Vector4F(1.0f),
                               float tilingFactor = 1.0f);
   // ----------------------------------------------------------------------
@@ -95,12 +93,12 @@ class Renderer2D {
         {-0.5f, 0.5f, 0.0f, 1.0f}};
 
     UInt32 indexCount = 0;
-    std::unique_ptr<QuadVertexData[]> data;
+    Scope<QuadVertexData[]> data;
     QuadVertexData *currentPos = nullptr;
 
     QuadVextexDataBuffer()
-        : data(std::make_unique<QuadVertexData[]>(
-              QuadVextexDataBuffer::maxVertices)) {}
+        : data(makeScope<QuadVertexData[]>(QuadVextexDataBuffer::maxVertices)) {
+    }
 
     void addQuad(const Matrix4F &modelMatrix, const Vector4F &color,
                  const Vector2F *textureCoordinates, Int32 textureIndex,
@@ -130,20 +128,20 @@ class Renderer2D {
     // TODO: RenderCapatilities
     static constexpr const UInt32 maxTextureSlots = 32;
 
-    std::shared_ptr<VertexArray> quadVertexArray;
-    std::shared_ptr<VertexBuffer> quadVertexBuffer;
-    std::shared_ptr<ShaderProgram> textureShader;
-    std::shared_ptr<Texture2D> whiteTexture;
+    Ref<VertexArray> quadVertexArray;
+    Ref<VertexBuffer> quadVertexBuffer;
+    Ref<ShaderProgram> textureShader;
+    Ref<Texture2D> whiteTexture;
 
     QuadVextexDataBuffer quadVextexDataBuffer;
 
-    std::array<std::shared_ptr<Texture2D>, maxTextureSlots> textureSlots;
+    std::array<Ref<Texture2D>, maxTextureSlots> textureSlots;
     UInt32 textureSlotIndex = 1;  // unit 0 = default white texture
 
     Statistics stats;
   };
 
  private:
-  static std::unique_ptr<Renderer2DData> s_data;
+  static Scope<Renderer2DData> s_data;
 };
 }  // namespace Neat

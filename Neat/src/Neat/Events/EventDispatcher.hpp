@@ -11,8 +11,7 @@ class EventDispatcher {
   EventConnections<EventType>& get() {
     std::size_t eventId = getTypeId<EventType>();
     if (not m_eventConnectionsMap.contains(eventId)) {
-      m_eventConnectionsMap[eventId] =
-          std::make_unique<EventConnections<EventType>>();
+      m_eventConnectionsMap[eventId] = makeScope<EventConnections<EventType>>();
     }
 
     return *static_cast<EventConnections<EventType>*>(
@@ -21,15 +20,14 @@ class EventDispatcher {
 
   template <typename EventType>
   void enqueue(const EventType& event) {
-    m_eventsQueue.push(
-        std::make_unique<QueuedEvent>(getTypeId<EventType>(), event));
+    m_eventsQueue.push(makeScope<QueuedEvent>(getTypeId<EventType>(), event));
   }
 
   template <typename EventType>
   void enqueue(EventType&& event) {
     using DecayedEventType = std::remove_reference_t<EventType>;
     m_eventsQueue.push(
-        std::make_unique<QueuedEvent>(getTypeId<DecayedEventType>(), event));
+        makeScope<QueuedEvent>(getTypeId<DecayedEventType>(), event));
   }
 
   template <typename EventType, typename... Args,
@@ -37,7 +35,7 @@ class EventDispatcher {
                                              std::tuple<EventType>>,
                              int> = 0>
   void enqueue(Args&&... args) {
-    m_eventsQueue.push(std::make_unique<QueuedEvent>(
+    m_eventsQueue.push(makeScope<QueuedEvent>(
         getTypeId<EventType>(), EventType(std::forward<Args>(args)...)));
   }
 
@@ -69,8 +67,8 @@ class EventDispatcher {
   };
 
   using EventConnectionsMap =
-      std::unordered_map<std::size_t, std::unique_ptr<IEventConnections>>;
-  using EventsQueue = SafeQueue<std::unique_ptr<QueuedEvent>>;
+      std::unordered_map<std::size_t, Scope<IEventConnections>>;
+  using EventsQueue = SafeQueue<Scope<QueuedEvent>>;
 
  private:
   EventConnectionsMap m_eventConnectionsMap;

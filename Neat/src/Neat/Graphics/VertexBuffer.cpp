@@ -6,27 +6,26 @@
 
 namespace Neat {
 
-std::shared_ptr<VertexBuffer> VertexBuffer::create(UInt32 size) {
+Ref<VertexBuffer> VertexBuffer::create(UInt32 size) {
   switch (RendererAPI::getAPI()) {
     case RendererAPI::API::None:
       NT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
       return nullptr;
     case RendererAPI::API::OpenGL:
-      return std::make_shared<OpenGLVertexBuffer>(size);
+      return makeRef<OpenGLVertexBuffer>(size);
   }
 
   NT_CORE_ASSERT(false, "Unknown RendererAPI!");
   return nullptr;
 }
 
-std::shared_ptr<VertexBuffer> VertexBuffer::create(float *vertices,
-                                                   UInt32 size) {
+Ref<VertexBuffer> VertexBuffer::create(float *vertices, UInt32 size) {
   switch (RendererAPI::getAPI()) {
     case RendererAPI::API::None:
       NT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
       return nullptr;
     case RendererAPI::API::OpenGL:
-      return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+      return makeRef<OpenGLVertexBuffer>(vertices, size);
   }
 
   NT_CORE_ASSERT(false, "Unknown RendererAPI!");

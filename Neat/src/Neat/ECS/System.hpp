@@ -11,11 +11,11 @@ class System : public BaseSystem {
  public:
   virtual ~System() = default;
 
-  virtual void init([[maybe_unused]] const std::shared_ptr<EventDispatcher>
-                        &eventDispatcher) override {}
+  virtual void init(
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher) override {}
   virtual void onUpdate(
-      [[maybe_unused]] const std::shared_ptr<EntityManager> &entityManager,
-      [[maybe_unused]] const std::shared_ptr<EventDispatcher> &eventDispatcher,
+      [[maybe_unused]] const Ref<EntityManager> &entityManager,
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds) override {}
 
  private:
