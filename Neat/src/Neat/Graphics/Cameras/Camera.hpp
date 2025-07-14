@@ -5,6 +5,7 @@
 #include "Neat/Math/Matrix.hpp"
 #include "Neat/Math/Projection.hpp"
 #include "Neat/Math/Vector.hpp"
+#include "Neat/Math/Quaternion.hpp"
 
 namespace Neat {
 class Camera {
@@ -130,18 +131,22 @@ class Camera {
 
   void updateViewMatrix();
   void updateCameraTransform();
+  void updateOrientation();
 
  private:
   CameraType m_cameraType = CameraType::None;
   std::variant<OrthographicProps, PerspectiveProps> m_cameraData =
       OrthographicProps{};
   Vector3F m_position;
+
+  QuaternionF m_orientation{1.0f, 0.0f, 0.0f, 0.0f};
   Matrix4F m_viewMatrix{Matrix4F::identity()};
   Matrix4F m_projectionMatrix{Matrix4F::identity()};
   Matrix4F m_cameraTransform{Matrix4F::identity()};
   Vector3F m_forwardDirection{0.0f};
   Vector3F m_rightDirection{0.0f};
   Vector3F m_upDirection{0.0f};
+  Vector3F m_worldUpDirection{0.0f, 1.0f, 0.0f};
   float m_yaw = 0.0f;
   float m_pitch = 0.0f;
   float m_roll = 0.0f;

@@ -1,6 +1,5 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Core/Log.hpp"
 #include "Neat/Graphics/Cameras/Camera.hpp"
 #include "Neat/Math/EulerAngles.hpp"
 #include "Neat/Math/Projection.hpp"
@@ -176,13 +175,9 @@ void Camera::moveBackward(float distance) {
 }
 
 void Camera::updateViewMatrix() {
-  Matrix4F transform =
-      translate(Matrix4F::identity(), m_position) *
-      eulerAnglesRotate(degreesToRadians(m_yaw), degreesToRadians(m_pitch),
-                        degreesToRadians(m_roll));
-  m_rightDirection = Vector3F(transform[0]);
-  m_upDirection = Vector3F(transform[1]);
-  m_forwardDirection = -Vector3F(transform[2]);
+  updateOrientation();
+  Matrix4F rotation = m_orientation.toMatrix4();
+  Matrix4F transform = translate(Matrix4F::identity(), m_position) * rotation;
   m_viewMatrix = inverse(transform);
 }
 
@@ -268,4 +263,14 @@ void Camera::setTop(float top) {
 
   getOrthographicData().top = top;
 }
-}  // namespace Neat
+
+void Camera::updateOrientation() {
+  m_orientation = QuaternionF::fromEulerAngles(degreesToRadians(m_pitch),
+                                               degreesToRadians(m_yaw),
+                                               degreesToRadians(m_roll));
+
+  m_forwardDirection = normalize(m_orientation * Vector3F(0, 0, -1));
+  m_rightDirection   = normalize(cross(m_forwardDirection, m_worldUpDirection));
+  m_upDirection      = normalize(cross(m_rightDirection, m_forwardDirection));
+}
+} // namespace Neat

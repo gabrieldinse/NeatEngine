@@ -37,7 +37,6 @@ class Camera2D {
   }
   void setX(float x) { m_camera.setX(x); }
   void setY(float y) { m_camera.setY(y); }
-  void setRotation(float rotation) { m_camera.setRoll(rotation); }
   void setNear(float near) { m_camera.setNear(near); }
   void setFar(float far) { m_camera.setFar(far); }
 

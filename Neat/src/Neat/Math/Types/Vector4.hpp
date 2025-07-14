@@ -167,6 +167,11 @@ template <typename T>
 inline constexpr bool operator!=(const Vector<4, T> &va,
                                  const Vector<4, T> &vb);
 
+// Output stream operator
+template <typename T>
+inline constexpr std::ostream &operator<<(std::ostream &os,
+                                          const Vector<4, T> &v);
+
 // Vector operations
 template <typename T>
 inline T dot(const Vector<4, T> &va, const Vector<4, T> &vb);

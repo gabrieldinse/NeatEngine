@@ -219,6 +219,13 @@ inline constexpr bool operator!=(const Vector<3, T> &va,
   return not(va == vb);
 }
 
+// Output stream operator
+template <typename T>
+inline constexpr std::ostream &operator<<(std::ostream &os,
+                                          const Vector<3, T> &v) {
+  return os << "Vector3{" << v.x << ", " << v.y << ", " << v.z << "}";
+}
+
 // Vector operations
 template <typename T>
 T dot(const Vector<3, T> &va, const Vector<3, T> &vb) {
