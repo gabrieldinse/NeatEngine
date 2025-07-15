@@ -203,7 +203,8 @@ inline constexpr bool operator!=(const Vector<2, T> &va,
 template <typename T>
 inline constexpr std::ostream &operator<<(std::ostream &os,
                                           const Vector<2, T> &v) {
-  return os << "Vector2<" << typeid(T).name() << ">{" << v.x << ", " << v.y << "}";
+  return os << "Vector2<" << typeid(T).name() << ">{" << v.x << ", " << v.y
+            << "}";
 }
 
 // Vector operations

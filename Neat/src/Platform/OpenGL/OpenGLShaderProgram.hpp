@@ -6,7 +6,6 @@
 
 #include "Neat/Core/Types.hpp"
 #include "Neat/Graphics/ShaderProgram.hpp"
-#include "Platform/OpenGL/OpenGLShaderProgramBuilder.hpp"
 #include "Neat/Math/Matrix.hpp"
 #include "Neat/Math/Vector.hpp"
 
@@ -35,11 +34,17 @@ class OpenGLShaderProgram : public ShaderProgram {
   virtual void set(const std::string &name, Matrix4F matrix) override;
 
  private:
+  void build(const std::string &filepath);
+  void build(const std::string &vertexSource,
+             const std::string &fragmentSource);
+  UInt32 compileShader(UInt32 type, const std::string &source);
+  std::pair<std::string, std::string> splitShaderSources(
+      const std::string &shaderSources);
   Int32 getUniformLocation(const std::string &name);
 
  private:
   UInt32 m_id = 0;
-  std::unordered_map<std::string, Int32> m_uniformLocationCache;
   std::string m_name;
+  std::unordered_map<std::string, Int32> m_uniformLocationCache;
 };
 }  // namespace Neat

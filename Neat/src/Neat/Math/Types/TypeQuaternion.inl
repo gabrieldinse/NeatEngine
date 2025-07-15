@@ -350,8 +350,8 @@ inline constexpr bool operator!=(const Quaternion<T> &qa,
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Quaternion<T> &q) {
   os << "Quaternion<" << typeid(T).name() << "> {";
-  os << "w: " << q.w << ", x: " << q.x
-     << ", y: " << q.y << ", z: " << q.z << "}";
+  os << "w: " << q.w << ", x: " << q.x << ", y: " << q.y << ", z: " << q.z
+     << "}";
   return os;
 }
 
@@ -398,21 +398,5 @@ template <typename T>
 inline constexpr Vector<4, T> rotate(const Quaternion<T> &q,
                                      const Vector<4, T> &v) {
   return q * v;
-}
-
-// Ostream operator
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const Quaternion<T> &q) {
-  os << "Neat::Quaternion<" << typeid(T).name() << "> (";
-  for (UInt32 i = 0; i < q.size(); ++i) {
-    if (i < q.size() - 1) {
-      os << std::setw(10) << std::setprecision(6) << q[i] << ", ";
-      if (i == 0) os << "[";
-    } else
-      os << std::setw(10) << std::setprecision(6) << q[i];
-  }
-  os << "])";
-
-  return os;
 }
 }  // namespace Neat

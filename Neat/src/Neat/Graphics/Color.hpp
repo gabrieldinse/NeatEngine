@@ -174,5 +174,5 @@ constexpr Vector4F neonCyan{0.0f, 1.0f, 1.0f, 1.0f};
 constexpr Vector4F neonBlue{0.0f, 0.537f, 1.0f, 1.0f};
 constexpr Vector4F neonPurple{0.6f, 0.0f, 1.0f, 1.0f};
 constexpr Vector4F neonPink{1.0f, 0.078f, 0.576f, 1.0f};
-} // namespace Color
-} // namespace Neat
+}  // namespace Color
+}  // namespace Neat
