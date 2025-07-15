@@ -98,39 +98,19 @@ void OpenGLShaderProgram::build(const std::string &vertexSource,
                                 const std::string &fragmentSource) {
   UInt32 vertex_shader_id = compileShader(GL_VERTEX_SHADER, vertexSource);
   UInt32 fragment_shader_id = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
-  glLinkProgram(m_id);
-
-  Int32 linked = 0;
-  glGetProgramiv(m_id, GL_LINK_STATUS, (Int32 *)&linked);
-  if (linked == GL_FALSE) {
-    Int32 max_length = 0;
-    glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &max_length);
-
-    std::vector<char> info_log(max_length);
-    glGetProgramInfoLog(m_id, max_length, &max_length, &info_log[0]);
-
-    glDeleteProgram(m_id);
-    glDeleteShader(vertex_shader_id);
-    glDeleteShader(fragment_shader_id);
-
-    NT_CORE_ERROR("OpenGLShaderProgram link failure\n{0}", info_log.data());
-    NT_CORE_ASSERT(false, "");
-  }
-
-  glDetachShader(m_id, vertex_shader_id);
-  glDetachShader(m_id, fragment_shader_id);
+  linkShaders(vertex_shader_id, fragment_shader_id);
 }
 
 std::pair<std::string, std::string> OpenGLShaderProgram::splitShaderSources(
     const std::string &shaderSources) {
-  const char *type_token = "#type";
-  auto type_token_lenght = strlen(type_token);
+  constexpr const char *type_token = "#type";
+  auto type_token_length = strlen(type_token);
   auto pos = shaderSources.find(type_token, 0);
   std::string vertex_source, fragment_source;
 
   while (pos != std::string::npos) {
     auto shader_type_begin =
-        shaderSources.find_first_not_of(" \t", pos + type_token_lenght);
+        shaderSources.find_first_not_of(" \t", pos + type_token_length);
     auto shader_type_end =
         shaderSources.find_first_of(" \t\r\n", shader_type_begin);
     auto eol_pos = shaderSources.find_first_of("\r\n", shader_type_end);
@@ -188,5 +168,30 @@ UInt32 OpenGLShaderProgram::compileShader(UInt32 type,
 
   glAttachShader(m_id, shader_id);
   return shader_id;
+}
+
+void OpenGLShaderProgram::linkShaders(UInt32 vertexShaderId,
+                                      UInt32 fragmentShaderId) {
+  glLinkProgram(m_id);
+
+  Int32 linked = 0;
+  glGetProgramiv(m_id, GL_LINK_STATUS, static_cast<Int32 *>(&linked));
+  if (linked == GL_FALSE) {
+    Int32 max_length = 0;
+    glGetProgramiv(m_id, GL_INFO_LOG_LENGTH, &max_length);
+
+    std::vector<char> info_log(max_length);
+    glGetProgramInfoLog(m_id, max_length, &max_length, &info_log[0]);
+
+    glDeleteProgram(m_id);
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+
+    NT_CORE_ERROR("OpenGLShaderProgram link failure\n{0}", info_log.data());
+    NT_CORE_ASSERT(false, "");
+  }
+
+  glDetachShader(m_id, vertexShaderId);
+  glDetachShader(m_id, fragmentShaderId);
 }
 }  // namespace Neat
