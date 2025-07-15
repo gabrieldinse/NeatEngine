@@ -176,6 +176,9 @@ inline constexpr bool operator==(const Quaternion<T> &qa,
 template <typename T>
 inline constexpr bool operator!=(const Quaternion<T> &qa,
                                  const Quaternion<T> &qb);
+// Output stream operator
+template <typename T>
+inline std::ostream &operator<<(std::ostream &os, const Quaternion<T> &q);
 
 // Quaternion operations
 template <typename T>

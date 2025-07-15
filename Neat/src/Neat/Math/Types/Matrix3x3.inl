@@ -208,7 +208,7 @@ inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator/=(const U &scalar) {
 // Output stream operator
 template <typename U>
 std::ostream &operator<<(std::ostream &os, const Matrix<3, 3, U> &m) {
-  os << "Matrix<3, 3, " << typeid(U).name() << ">{\n";
+  os << "Matrix3<" << typeid(U).name() << ">{\n";
   for (int i = 0; i < 3; ++i) {
     os << "  " << m[i] << "\n";
   }

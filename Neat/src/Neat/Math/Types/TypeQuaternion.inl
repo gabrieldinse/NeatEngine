@@ -346,6 +346,14 @@ inline constexpr bool operator!=(const Quaternion<T> &qa,
                                  const Quaternion<T> &qb) {
   return not(qa == qb);
 }
+// Output stream operator
+template <typename T>
+inline std::ostream &operator<<(std::ostream &os, const Quaternion<T> &q) {
+  os << "Quaternion<" << typeid(T).name() << "> {";
+  os << "w: " << q.w << ", x: " << q.x
+     << ", y: " << q.y << ", z: " << q.z << "}";
+  return os;
+}
 
 // Quaternion operations
 template <typename T>
