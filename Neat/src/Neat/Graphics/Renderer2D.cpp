@@ -53,7 +53,7 @@ void Renderer2D::init() {
     samplers[i] = (Int32)i;
   s_data->textureShader =
       ShaderProgram::create("./assets/shader_source/texture.glsl");
-  s_data->textureShader->use();
+  s_data->textureShader->bind();
   s_data->textureShader->set(
       "u_textures[0]", samplers,
       static_cast<Int32>(sizeof(samplers) / sizeof(Int32)));
@@ -64,7 +64,7 @@ void Renderer2D::init() {
 void Renderer2D::shutdown() { s_data.reset(); }
 
 void Renderer2D::beginScene(const Camera &camera) {
-  s_data->textureShader->use();
+  s_data->textureShader->bind();
   s_data->textureShader->set("u_cameraTransform", camera.getCameraTransform());
   startNewBatch();
 }
@@ -77,7 +77,7 @@ void Renderer2D::startNewBatch() {
 }
 
 void Renderer2D::draw() {
-  s_data->textureShader->use();
+  s_data->textureShader->bind();
 
   s_data->quadVertexBuffer->setData(s_data->quadVextexDataBuffer.data.get(),
                                     s_data->quadVextexDataBuffer.getDataSize());

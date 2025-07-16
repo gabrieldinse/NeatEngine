@@ -16,9 +16,9 @@ class BaseMemoryPool {
 
   virtual ~BaseMemoryPool();
 
-  UInt32 size() const { return (UInt32)m_size; }
-  UInt32 capacity() const { return (UInt32)m_capacity; }
-  UInt32 chunks() const { return (UInt32)m_memoryBlocks.size(); }
+  UInt32 size() const { return static_cast<UInt32>(m_size); }
+  UInt32 capacity() const { return static_cast<UInt32>(m_capacity); }
+  UInt32 chunks() const { return static_cast<UInt32>(m_memoryBlocks.size()); }
 
   void resize(std::size_t count);
   void reserve(std::size_t count);

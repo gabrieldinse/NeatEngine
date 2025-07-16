@@ -27,9 +27,9 @@ OpenGLShaderProgram::OpenGLShaderProgram(const std::string &name,
 
 OpenGLShaderProgram::~OpenGLShaderProgram() { glDeleteProgram(m_id); }
 
-void OpenGLShaderProgram::use() const { glUseProgram(m_id); }
+void OpenGLShaderProgram::bind() const { glUseProgram(m_id); }
 
-void OpenGLShaderProgram::unuse() const { glUseProgram(0); }
+void OpenGLShaderProgram::unbind() const { glUseProgram(0); }
 
 void OpenGLShaderProgram::set(const std::string &name, float value) {
   glUniform1f(getUniformLocation(name), value);

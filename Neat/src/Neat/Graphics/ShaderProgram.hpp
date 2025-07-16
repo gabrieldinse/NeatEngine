@@ -12,8 +12,8 @@ class ShaderProgram {
  public:
   virtual ~ShaderProgram() = default;
 
-  virtual void use() const = 0;
-  virtual void unuse() const = 0;
+  virtual void bind() const = 0;
+  virtual void unbind() const = 0;
 
   virtual const std::string &getName() const = 0;
   virtual void setName(const std::string &name) = 0;

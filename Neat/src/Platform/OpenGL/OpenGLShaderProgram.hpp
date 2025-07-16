@@ -18,8 +18,8 @@ class OpenGLShaderProgram : public ShaderProgram {
                       const std::string &fragmentSource);
   virtual ~OpenGLShaderProgram();
 
-  virtual void use() const override;
-  virtual void unuse() const override;
+  virtual void bind() const override;
+  virtual void unbind() const override;
 
   virtual const std::string &getName() const override { return m_name; }
   virtual void setName(const std::string &name) override { m_name = name; }
