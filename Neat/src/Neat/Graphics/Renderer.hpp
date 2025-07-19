@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Neat/Graphics/Cameras/Camera.hpp"
 #include "Neat/Graphics/RenderCommand.hpp"
 #include "Neat/Graphics/ShaderProgram.hpp"
 

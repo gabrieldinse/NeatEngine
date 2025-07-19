@@ -5,7 +5,7 @@
 #include "Neat/Events/Events/MouseMovedEvent.hpp"
 #include "Neat/Events/Events/WindowResizeEvent.hpp"
 #include "Neat/Events/EventDispatcher.hpp"
-#include "Neat/Graphics/Cameras/Camera2D.hpp"
+#include "Neat/Graphics/Cameras/OrthographicCamera.hpp"
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {
@@ -20,17 +20,15 @@ class Camera2DControllerSystem : public System<Camera2DControllerSystem> {
                         const Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds) override;
 
-  Camera &getCamera() { return m_camera.getCamera(); }
-  const Camera &getCamera() const { return m_camera.getCamera(); }
-  Camera2D &getCamera2D() { return m_camera; }
-  const Camera2D &getCamera2D() const { return m_camera; }
+  Ref<OrthographicCamera> &getCamera() { return m_camera; }
+  const Ref<OrthographicCamera> &getCamera() const { return m_camera; }
 
   bool onMouseScrolled(const MouseScrolledEvent &event);
   bool onMouseMoved(const MouseMovedEvent &event);
   bool onWindowResize(const WindowResizeEvent &event);
 
  private:
-  Camera2D m_camera;
+  Ref<OrthographicCamera> m_camera;
   float m_zoomLevel = 1.0f;
   float m_translationSpeed = 1.0f;
   float m_rotationSpeed = 90.0f;

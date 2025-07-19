@@ -63,9 +63,9 @@ void Renderer2D::init() {
 
 void Renderer2D::shutdown() { s_data.reset(); }
 
-void Renderer2D::beginScene(const Camera &camera) {
+void Renderer2D::beginScene(const Ref<ICamera> &camera) {
   s_data->textureShader->bind();
-  s_data->textureShader->set("u_cameraTransform", camera.getCameraTransform());
+  s_data->textureShader->set("u_cameraTransform", camera->getCameraTransform());
   startNewBatch();
 }
 

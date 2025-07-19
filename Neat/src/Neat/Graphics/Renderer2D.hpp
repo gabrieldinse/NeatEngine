@@ -5,7 +5,7 @@
 
 #include "Neat/Core/Types.hpp"
 #include "Neat/Graphics/Color.hpp"
-#include "Neat/Graphics/Cameras/Camera.hpp"
+#include "Neat/Graphics/Cameras/ICamera.hpp"
 #include "Neat/Graphics/Texture2D.hpp"
 #include "Neat/Graphics/VertexArray.hpp"
 #include "Neat/Graphics/ShaderProgram.hpp"
@@ -16,7 +16,7 @@ class Renderer2D {
   static void init();
   static void shutdown();
 
-  static void beginScene(const Camera &camera);
+  static void beginScene(const Ref<ICamera> &camera);
   static void endScene();
 
   // Primitives -----------------------------------------------------------
