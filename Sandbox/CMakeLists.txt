@@ -22,7 +22,7 @@ target_compile_definitions(Sandbox PRIVATE
     $<$<CONFIG:Dist>:NT_DIST>
 )
 
-add_custom_command(TARGET Sandbox POST_BUILD
+add_custom_command(TARGET Sandbox PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/Sandbox/assets
     $<TARGET_FILE_DIR:Sandbox>/assets

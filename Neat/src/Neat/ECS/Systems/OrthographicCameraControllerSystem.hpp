@@ -9,11 +9,13 @@
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {
-class Camera2DControllerSystem : public System<Camera2DControllerSystem> {
+class OrthographicCameraControllerSystem
+    : public System<OrthographicCameraControllerSystem> {
  public:
-  Camera2DControllerSystem(float aspectRatio, bool rotationEnabled = true);
+  OrthographicCameraControllerSystem(float aspectRatio,
+                                     bool rotationEnabled = true);
 
-  ~Camera2DControllerSystem();
+  ~OrthographicCameraControllerSystem();
 
   virtual void init(const Ref<EventDispatcher> &eventDispatcher) override;
   virtual void onUpdate(const Ref<EntityManager> &entityManager,

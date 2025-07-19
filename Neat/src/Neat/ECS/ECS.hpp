@@ -7,5 +7,5 @@
 #include "Neat/ECS/System.hpp"
 #include "Neat/ECS/SystemManager.hpp"
 
-#include "Neat/ECS/Systems/Camera2DControllerSystem.hpp"
+#include "Neat/ECS/Systems/OrthographicCameraControllerSystem.hpp"
 #include "Neat/ECS/Systems/Render2DSystem.hpp"

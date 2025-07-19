@@ -1,28 +1,28 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/ECS/Systems/Camera2DControllerSystem.hpp"
+#include "Neat/ECS/Systems/OrthographicCameraControllerSystem.hpp"
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Input.hpp"
 #include "Neat/Math/Transform.hpp"
 
 namespace Neat {
-Camera2DControllerSystem::Camera2DControllerSystem(float aspectRatio,
-                                                   bool rotationEnabled)
+OrthographicCameraControllerSystem::OrthographicCameraControllerSystem(
+    float aspectRatio, bool rotationEnabled)
     : m_camera(makeRef<OrthographicCamera>(Vector2F(0.0f), aspectRatio)),
       m_aspectRatio(aspectRatio),
       m_rotationEnabled(rotationEnabled) {}
 
-Camera2DControllerSystem::~Camera2DControllerSystem() {}
+OrthographicCameraControllerSystem::~OrthographicCameraControllerSystem() {}
 
-void Camera2DControllerSystem::init(
+void OrthographicCameraControllerSystem::init(
     const Ref<EventDispatcher> &eventDispatcher) {
   eventDispatcher->get<MouseScrolledEvent>()
-      .connect<&Camera2DControllerSystem::onMouseScrolled>(*this);
+      .connect<&OrthographicCameraControllerSystem::onMouseScrolled>(*this);
   eventDispatcher->get<WindowResizeEvent>()
-      .connect<&Camera2DControllerSystem::onWindowResize>(*this);
+      .connect<&OrthographicCameraControllerSystem::onWindowResize>(*this);
 }
 
-void Camera2DControllerSystem::onUpdate(
+void OrthographicCameraControllerSystem::onUpdate(
     [[maybe_unused]] const Ref<EntityManager> &entityManager,
     [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     double deltaTimeSeconds) {
@@ -43,7 +43,7 @@ void Camera2DControllerSystem::onUpdate(
   }
 }
 
-bool Camera2DControllerSystem::onMouseScrolled(
+bool OrthographicCameraControllerSystem::onMouseScrolled(
     const MouseScrolledEvent &event) {
   m_zoomLevel -= event.yOffset * 0.2f;
   m_zoomLevel = std::max(m_zoomLevel, 0.25f);
@@ -53,7 +53,8 @@ bool Camera2DControllerSystem::onMouseScrolled(
   return false;
 }
 
-bool Camera2DControllerSystem::onWindowResize(const WindowResizeEvent &event) {
+bool OrthographicCameraControllerSystem::onWindowResize(
+    const WindowResizeEvent &event) {
   m_aspectRatio = (float)event.width / (float)event.height;
   m_camera->setAspectRatio(m_aspectRatio);
 

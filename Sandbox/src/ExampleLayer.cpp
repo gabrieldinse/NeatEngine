@@ -29,7 +29,8 @@ ExampleLayer::ExampleLayer(
   // NT_ASSERT(false, "");
 
   auto camera_controller_system =
-      systems->addSystem<Neat::Camera2DControllerSystem>(1280.0f / 720.0f);
+      systems->addSystem<Neat::OrthographicCameraControllerSystem>(1280.0f /
+                                                                   720.0f);
   systems->addSystem<Neat::Render2DSystem>(
       camera_controller_system->getCamera());
   systems->init();
@@ -60,7 +61,7 @@ void ExampleLayer::onImGuiRender() {
 }
 
 void ExampleLayer::onUpdate(double deltaTimeSeconds) {
-  systems->onUpdate<Neat::Camera2DControllerSystem>(deltaTimeSeconds);
+  systems->onUpdate<Neat::OrthographicCameraControllerSystem>(deltaTimeSeconds);
   systems->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);
   onImGuiRender();
 }
