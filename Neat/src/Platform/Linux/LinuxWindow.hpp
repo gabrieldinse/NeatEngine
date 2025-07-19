@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Neat/Core/Window.hpp"
+#include "Neat/Graphics/GraphicsContext.hpp"
 
 struct GLFWwindow;
 
@@ -25,8 +26,9 @@ class LinuxWindow : public Window {
   virtual bool isVSync() const override;
 
  private:
-  GLFWwindow *m_glfwWindow;
   WindowProps m_windowProps;
+  Scope<GraphicsContext> m_graphicsContext;
+  GLFWwindow *m_glfwWindow = nullptr;
   static Int32 s_windowCount;
 };
 }  // namespace Neat

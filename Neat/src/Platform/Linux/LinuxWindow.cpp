@@ -52,16 +52,9 @@ LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
   NT_CORE_ASSERT(m_glfwWindow, "Window is null!");
   s_windowCount++;
 
-  glfwMakeContextCurrent(m_glfwWindow);
+  m_graphicsContext = GraphicsContext::create(m_glfwWindow);
+  m_graphicsContext->init();
 
-  // Glad initialization (need to be after window creation)
-  int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-  NT_CORE_ASSERT(status, "Failed to initialize Glad!");
-
-  NT_CORE_INFO("OpenGL info:");
-  NT_CORE_INFO("Vendor: {0}", glGetString(GL_VENDOR));
-  NT_CORE_INFO("Renderer: {0}", glGetString(GL_RENDERER));
-  NT_CORE_INFO("Version: {0}", glGetString(GL_VERSION));
   NT_CORE_INFO("Created window {0} ({1}, {2})", m_windowProps.title,
                m_windowProps.width, m_windowProps.height);
 
@@ -96,7 +89,7 @@ float LinuxWindow::getAspectRatio() const {
 void *LinuxWindow::getNativeWindow() const { return m_glfwWindow; }
 
 void LinuxWindow::onUpdate() {
-  glfwSwapBuffers(m_glfwWindow);
+  m_graphicsContext->onUpdate();
   glfwPollEvents();
 }
 
