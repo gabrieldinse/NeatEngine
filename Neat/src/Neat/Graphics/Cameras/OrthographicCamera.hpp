@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Graphics/Cameras/ICamera.hpp"
+#include "Neat/Graphics/Cameras/Camera.hpp"
 #include "Neat/Math/Matrix.hpp"
 #include "Neat/Math/Projection.hpp"
 #include "Neat/Math/Vector.hpp"
@@ -9,7 +9,7 @@
 namespace Neat {
 enum class KeepAspect { Height, Width };
 
-class OrthographicCamera : public ICamera {
+class OrthographicCamera : public Camera {
  public:
   OrthographicCamera(const Vector2F &position, float size,
                      KeepAspect keepAspect = KeepAspect::Height);
