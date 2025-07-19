@@ -2,7 +2,7 @@ add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DGLFW_INCLUDE_NONE)
 
 file(GLOB_RECURSE NEAT_SOURCES
     src/**.cpp
-    vendor/stb_image/**.cpp
+    vendor/stb_image/stb_image.cpp
     vendor/ImGui/imgui_demo.cpp
     vendor/ImGui/imgui_draw.cpp
     vendor/ImGui/imgui_widgets.cpp
