@@ -9,6 +9,7 @@
 #include "Neat/Graphics/Texture2D.hpp"
 #include "Neat/Graphics/VertexArray.hpp"
 #include "Neat/Graphics/ShaderProgram.hpp"
+#include "Neat/ECS/Components/RenderableSpriteComponent.hpp"
 
 namespace Neat {
 class Renderer2D {
@@ -19,8 +20,11 @@ class Renderer2D {
   static void beginScene(const Ref<Camera> &camera);
   static void endScene();
 
-  // Primitives -----------------------------------------------------------
-  // Quads
+  static void drawSprite(const Matrix4F &transform,
+                         const RenderableSpriteComponent &renderableSprite);
+  static void drawQuad(const Matrix4F &transform, const Ref<Texture2D> &texture,
+                       const Vector4F &tint, float tilingFactor);
+  static void drawQuad(const Matrix4F &transform, const Vector4F &color);
   static void drawQuad(const Vector2F &position, const Vector2F &size,
                        const Vector4F color);
 
@@ -37,7 +41,6 @@ class Renderer2D {
                        const Vector4F &tint = Vector4F(1.0f),
                        float tilingFactor = 1.0f);
 
-  // Rotated Quads
   static void drawRotatedQuad(const Vector2F &position, const Vector2F &size,
                               float angleDegrees, const Vector4F color);
 

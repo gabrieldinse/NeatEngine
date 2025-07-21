@@ -91,40 +91,17 @@ void Renderer2D::draw() {
   s_data->stats.drawCalls++;
 }
 
-void Renderer2D::drawQuad(const Vector2F &position, const Vector2F &size,
-                          const Vector4F color) {
-  drawQuad({position.x, position.y, 0.0f}, size, color);
-}
-
-// Quads
-void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
-                          const Vector4F color) {
-  if (reachedBatchDataLimit()) {
-    draw();
-    startNewBatch();
+void Renderer2D::drawSprite(const Matrix4F &transform,
+                            const RenderableSpriteComponent &renderableSprite) {
+  if (renderableSprite.texture) {
+    drawQuad(transform, renderableSprite.texture, renderableSprite.color,
+             renderableSprite.tilingFactor);
+  } else {
+    drawQuad(transform, renderableSprite.color);
   }
-
-  constexpr Int32 textureIndex = 0;  // white texture;
-  constexpr float tilingFactor = 1.0f;
-  constexpr Vector2F textureCoordinates[] = {
-      {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
-
-  auto model_matrix =
-      translate(position) * scale(Vector3F(size.x, size.y, 1.0f));
-
-  s_data->quadVextexDataBuffer.addQuad(model_matrix, color, textureCoordinates,
-                                       textureIndex, tilingFactor);
-
-  s_data->stats.quadCount++;
 }
 
-void Renderer2D::drawQuad(const Vector2F &position, const Vector2F &size,
-                          const Ref<Texture2D> &texture, const Vector4F &tint,
-                          float tilingFactor) {
-  drawQuad({position.x, position.y, 0.0f}, size, texture, tint, tilingFactor);
-}
-
-void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
+void Renderer2D::drawQuad(const Matrix4F &transform,
                           const Ref<Texture2D> &texture, const Vector4F &tint,
                           float tilingFactor) {
   if (reachedBatchDataLimit()) {
@@ -146,24 +123,13 @@ void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
     s_data->textureSlotIndex++;
   }
 
-  auto model_matrix =
-      translate(position) * scale(Vector3F(size.x, size.y, 1.0f));
-
-  s_data->quadVextexDataBuffer.addQuad(model_matrix, tint,
-                                       texture->getCoordinates(), textureIndex,
-                                       tilingFactor);
+  s_data->quadVextexDataBuffer.addQuad(
+      transform, tint, texture->getCoordinates(), textureIndex, tilingFactor);
 
   s_data->stats.quadCount++;
 }
 
-// Rotated Quads
-void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
-                                 float angleDegrees, const Vector4F color) {
-  drawRotatedQuad({position.x, position.y, 0.0f}, size, angleDegrees, color);
-}
-
-void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
-                                 float angleDegrees, const Vector4F color) {
+void Renderer2D::drawQuad(const Matrix4F &transform, const Vector4F &color) {
   if (reachedBatchDataLimit()) {
     draw();
     startNewBatch();
@@ -174,14 +140,50 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
   constexpr Vector2F textureCoordinates[] = {
       {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
 
-  auto model_matrix = translate(Matrix4F(1.0f), position) *
-                      rotateZ(degreesToRadians(angleDegrees)) *
-                      scale(Vector3F(size.x, size.y, 1.0f));
-
-  s_data->quadVextexDataBuffer.addQuad(model_matrix, color, textureCoordinates,
+  s_data->quadVextexDataBuffer.addQuad(transform, color, textureCoordinates,
                                        textureIndex, tilingFactor);
 
   s_data->stats.quadCount++;
+}
+
+void Renderer2D::drawQuad(const Vector2F &position, const Vector2F &size,
+                          const Vector4F color) {
+  drawQuad({position.x, position.y, 0.0f}, size, color);
+}
+
+void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
+                          const Vector4F color) {
+  Matrix4F model_matrix =
+      translate(position) * scale(Vector3F(size.x, size.y, 1.0f));
+  drawQuad(model_matrix, color);
+}
+
+void Renderer2D::drawQuad(const Vector2F &position, const Vector2F &size,
+                          const Ref<Texture2D> &texture, const Vector4F &tint,
+                          float tilingFactor) {
+  drawQuad({position.x, position.y, 0.0f}, size, texture, tint, tilingFactor);
+}
+
+void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
+                          const Ref<Texture2D> &texture, const Vector4F &tint,
+                          float tilingFactor) {
+  Matrix4F model_matrix =
+      translate(position) * scale(Vector3F(size.x, size.y, 1.0f));
+  drawQuad(model_matrix, texture, tint, tilingFactor);
+}
+
+// Rotated Quads
+void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
+                                 float angleDegrees, const Vector4F color) {
+  drawRotatedQuad({position.x, position.y, 0.0f}, size, angleDegrees, color);
+}
+
+void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
+                                 float angleDegrees, const Vector4F color) {
+  Matrix4F model_matrix = translate(Matrix4F(1.0f), position) *
+                          rotateZ(degreesToRadians(angleDegrees)) *
+                          scale(Vector3F(size.x, size.y, 1.0f));
+  drawQuad(model_matrix, color);
 }
 
 void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
@@ -196,34 +198,10 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
                                  float angleDegrees,
                                  const Ref<Texture2D> &texture,
                                  const Vector4F &tint, float tilingFactor) {
-  if (reachedBatchDataLimit()) {
-    draw();
-    startNewBatch();
-  }
-
-  UInt32 textureIndex = 0;
-  for (UInt32 i = 1; i < s_data->textureSlotIndex; ++i) {
-    if (*s_data->textureSlots[i] == *texture) {
-      textureIndex = i;
-      break;
-    }
-  }
-
-  if (textureIndex == 0) {
-    textureIndex = s_data->textureSlotIndex;
-    s_data->textureSlots[s_data->textureSlotIndex] = texture;
-    s_data->textureSlotIndex++;
-  }
-
-  auto model_matrix = translate(position) *
-                      rotateZ(degreesToRadians(angleDegrees)) *
-                      scale(Vector3F(size.x, size.y, 1.0f));
-
-  s_data->quadVextexDataBuffer.addQuad(model_matrix, tint,
-                                       texture->getCoordinates(), textureIndex,
-                                       tilingFactor);
-
-  s_data->stats.quadCount++;
+  Matrix4F model_matrix = translate(position) *
+                          rotateZ(degreesToRadians(angleDegrees)) *
+                          scale(Vector3F(size.x, size.y, 1.0f));
+  drawQuad(model_matrix, texture, tint, tilingFactor);
 }
 
 // Statistics
