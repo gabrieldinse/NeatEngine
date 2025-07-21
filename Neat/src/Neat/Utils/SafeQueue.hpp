@@ -25,4 +25,4 @@ class SafeQueue {
 };
 }  // namespace Neat
 
-#include "Neat/Misc/SafeQueue.inl"
+#include "Neat/Utils/SafeQueue.inl"

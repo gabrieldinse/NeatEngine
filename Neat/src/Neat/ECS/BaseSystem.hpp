@@ -2,7 +2,7 @@
 
 #include "Neat/Core/Types.hpp"
 #include "Neat/Events/EventDispatcher.hpp"
-#include "Neat/Misc/NonCopyable.hpp"
+#include "Neat/Utils/NonCopyable.hpp"
 
 namespace Neat {
 class EntityManager;

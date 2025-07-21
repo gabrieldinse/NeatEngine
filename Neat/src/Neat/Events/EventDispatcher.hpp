@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Neat/Events/EventConnections.hpp"
-#include "Neat/Misc/SafeQueue.hpp"
+#include "Neat/Utils/SafeQueue.hpp"
 #include <iostream>
 
 namespace Neat {

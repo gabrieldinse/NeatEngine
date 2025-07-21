@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "Neat/Core/Types.hpp"
-#include "Neat/Misc/TypeConversions.hpp"
+#include "Neat/Utils/TypeConversions.hpp"
 
 namespace Neat {
 enum class Key : UInt16 {

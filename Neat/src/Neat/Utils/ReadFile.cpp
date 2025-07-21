@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Misc/ReadFile.hpp"
+#include "Neat/Utils/ReadFile.hpp"
 
 namespace Neat {
 std::ostream& operator<<(std::ostream& os, const FileError& err) {

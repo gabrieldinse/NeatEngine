@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <string>
 
-#include <Neat/Misc/SafeQueue.hpp>
+#include <Neat/Utils/SafeQueue.hpp>
 
 class SafeQueueTest : public testing::Test {
  protected:

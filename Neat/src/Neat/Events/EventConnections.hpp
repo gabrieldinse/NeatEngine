@@ -5,7 +5,7 @@
 #include <list>
 #include <any>
 
-#include "Neat/Misc/TypeId.hpp"
+#include "Neat/Utils/TypeId.hpp"
 #include "Neat/Core/Limits.hpp"
 
 namespace Neat {

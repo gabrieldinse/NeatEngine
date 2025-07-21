@@ -2,7 +2,7 @@
 
 #include "Platform/OpenGL/OpenGLShaderDataType.hpp"
 #include "Platform/OpenGL/OpenGLShaderProgram.hpp"
-#include "Neat/Misc/ReadFile.hpp"
+#include "Neat/Utils/ReadFile.hpp"
 
 #include <glad/glad.h>
 

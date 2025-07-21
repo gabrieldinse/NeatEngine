@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Neat/Misc/TypeId.hpp"
+#include "Neat/Utils/TypeId.hpp"
 
 struct MyStruct {
   void foo() {}
