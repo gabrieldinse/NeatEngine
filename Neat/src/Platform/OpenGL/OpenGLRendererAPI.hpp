@@ -7,9 +7,9 @@ class OpenGLRendererAPI : public RendererAPI {
  public:
   virtual void init() override;
 
-  virtual void setClearColor(const Vector4F color) override;
+  virtual void setClearColor(const Vector4F &color) override;
   virtual void clear() override;
-  virtual void clearWithColor(const Vector4F color) override;
+  virtual void clearWithColor(const Vector4F &color) override;
 
   virtual void drawIndexed(const Ref<VertexArray> &vertexArray,
                            UInt32 indexCount = 0) override;

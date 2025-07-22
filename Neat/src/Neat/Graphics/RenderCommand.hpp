@@ -12,11 +12,11 @@ class RenderCommand {
  public:
   static void init() { s_rendererAPI->init(); }
 
-  static void setClearColor(const Vector4F color) {
+  static void setClearColor(const Vector4F &color) {
     s_rendererAPI->setClearColor(color);
   }
   static void clear() { s_rendererAPI->clear(); }
-  static void clearWithColor(const Vector4F color) {
+  static void clearWithColor(const Vector4F &color) {
     s_rendererAPI->clearWithColor(color);
   }
 

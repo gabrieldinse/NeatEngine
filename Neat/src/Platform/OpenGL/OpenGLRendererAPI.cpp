@@ -12,7 +12,7 @@ void OpenGLRendererAPI::init() {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void OpenGLRendererAPI::setClearColor(const Vector4F color) {
+void OpenGLRendererAPI::setClearColor(const Vector4F &color) {
   glClearColor(color.r, color.g, color.b, color.a);
 }
 
@@ -20,7 +20,7 @@ void OpenGLRendererAPI::clear() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void OpenGLRendererAPI::clearWithColor(const Vector4F color) {
+void OpenGLRendererAPI::clearWithColor(const Vector4F &color) {
   static constexpr float one = 1.0f;
   glClearBufferfv(GL_DEPTH, 0, &one);
   glClearBufferfv(GL_COLOR, 0, color.dataPointer());

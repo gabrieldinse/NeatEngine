@@ -15,9 +15,9 @@ class RendererAPI {
  public:
   virtual void init() = 0;
 
-  virtual void setClearColor(const Vector4F color) = 0;
+  virtual void setClearColor(const Vector4F &color) = 0;
   virtual void clear() = 0;
-  virtual void clearWithColor(const Vector4F color) = 0;
+  virtual void clearWithColor(const Vector4F &color) = 0;
 
   virtual void drawIndexed(const Ref<VertexArray> &vertexArray,
                            UInt32 indexCount = 0) = 0;

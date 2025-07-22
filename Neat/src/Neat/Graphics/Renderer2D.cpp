@@ -147,12 +147,12 @@ void Renderer2D::drawQuad(const Matrix4F &transform, const Vector4F &color) {
 }
 
 void Renderer2D::drawQuad(const Vector2F &position, const Vector2F &size,
-                          const Vector4F color) {
+                          const Vector4F &color) {
   drawQuad({position.x, position.y, 0.0f}, size, color);
 }
 
 void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
-                          const Vector4F color) {
+                          const Vector4F &color) {
   Matrix4F model_matrix =
       translate(position) * scale(Vector3F(size.x, size.y, 1.0f));
   drawQuad(model_matrix, color);
@@ -174,12 +174,12 @@ void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
 
 // Rotated Quads
 void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
-                                 float angleDegrees, const Vector4F color) {
+                                 float angleDegrees, const Vector4F &color) {
   drawRotatedQuad({position.x, position.y, 0.0f}, size, angleDegrees, color);
 }
 
 void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
-                                 float angleDegrees, const Vector4F color) {
+                                 float angleDegrees, const Vector4F &color) {
   Matrix4F model_matrix = translate(Matrix4F(1.0f), position) *
                           rotateZ(degreesToRadians(angleDegrees)) *
                           scale(Vector3F(size.x, size.y, 1.0f));

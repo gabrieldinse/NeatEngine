@@ -26,10 +26,10 @@ class Renderer2D {
                        const Vector4F &tint, float tilingFactor);
   static void drawQuad(const Matrix4F &transform, const Vector4F &color);
   static void drawQuad(const Vector2F &position, const Vector2F &size,
-                       const Vector4F color);
+                       const Vector4F &color);
 
   static void drawQuad(const Vector3F &position, const Vector2F &size,
-                       const Vector4F color);
+                       const Vector4F &color);
 
   static void drawQuad(const Vector2F &position, const Vector2F &size,
                        const Ref<Texture2D> &texture,
@@ -42,10 +42,10 @@ class Renderer2D {
                        float tilingFactor = 1.0f);
 
   static void drawRotatedQuad(const Vector2F &position, const Vector2F &size,
-                              float angleDegrees, const Vector4F color);
+                              float angleDegrees, const Vector4F &color);
 
   static void drawRotatedQuad(const Vector3F &position, const Vector2F &size,
-                              float angleDegrees, const Vector4F color);
+                              float angleDegrees, const Vector4F &color);
 
   static void drawRotatedQuad(const Vector2F &position, const Vector2F &size,
                               float angleDegrees, const Ref<Texture2D> &texture,
