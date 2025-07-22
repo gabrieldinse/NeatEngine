@@ -1,5 +1,6 @@
 #include "NeatPCH.hpp"
 
+#include "Neat/Core/Assert.hpp"
 #include "Neat/Graphics/VertexBuffer.hpp"
 #include "Neat/Graphics/RendererAPI.hpp"
 #include "Platform/OpenGL/OpenGLVertexBuffer.hpp"

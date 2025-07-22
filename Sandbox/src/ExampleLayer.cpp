@@ -79,7 +79,8 @@ bool ExampleLayer::onWindowResize(const Neat::WindowResizeEvent &event) {
   return false;
 }
 
-bool ExampleLayer::onMouseMoved(const Neat::MouseMovedEvent &event) {
-  NT_CORE_TRACE("Mouse moved to ({0}, {1})", event.xPos, event.yPos);
+bool ExampleLayer::onMouseMoved(
+    [[maybe_unused]] const Neat::MouseMovedEvent &event) {
+  // NT_CORE_TRACE("Mouse moved to ({0}, {1})", event.xPos, event.yPos);
   return false;
 }

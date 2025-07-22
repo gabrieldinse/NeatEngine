@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Neat/Core/Log.hpp"
+#include "Neat/Core/Assert.hpp"
 #include "Neat/Core/Types.hpp"
 
 namespace Neat {

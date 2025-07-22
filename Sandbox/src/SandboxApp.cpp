@@ -2,7 +2,6 @@
 
 #include <Neat.hpp>
 #include <Neat/Core/Main.hpp>
-#include "Neat/Misc/FPSCounter.hpp"
 #include "ExampleLayer.hpp"
 
 class Sandbox : public Neat::Application {

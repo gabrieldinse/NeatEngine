@@ -50,8 +50,3 @@
 #error "Unknown platform!"
 
 #endif  // End of platform detection
-
-// Debugging
-#ifdef NT_DEBUG
-#define NT_ENABLE_ASSERTS
-#endif

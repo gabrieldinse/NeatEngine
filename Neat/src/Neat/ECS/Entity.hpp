@@ -144,6 +144,8 @@ class ComponentHandle {
   const C *operator->() const;
   C *get();
   const C *get() const;
+  C &operator*() { return *get(); }
+  const C &operator*() const { return *get(); }
 
   void remove();
 

@@ -21,7 +21,7 @@ void Render2DSystem::onUpdate(
   ComponentHandle<TransformComponent> transform;
   for ([[maybe_unused]] auto &&entity :
        entityManager->entitiesWithComponents(renderableSprite, transform)) {
-    Renderer2D::drawSprite(transform->getTransform(), *renderableSprite.get());
+    Renderer2D::drawSprite(transform->getTransform(), *renderableSprite);
   }
 
   Renderer2D::endScene();
