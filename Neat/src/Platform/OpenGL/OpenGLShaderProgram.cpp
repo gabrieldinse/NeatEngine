@@ -23,7 +23,11 @@ OpenGLShaderProgram::OpenGLShaderProgram(const std::string &name,
                                          const std::string &vertexSource,
                                          const std::string &fragmentSource)
     : m_id(glCreateProgram()), m_name(name) {
-  build(vertexSource, fragmentSource);
+  std::unordered_map<UInt32, std::string> shader_sources = {
+      {GL_VERTEX_SHADER, vertexSource},
+      {GL_FRAGMENT_SHADER, fragmentSource},
+  };
+  build(shader_sources);
 }
 
 OpenGLShaderProgram::~OpenGLShaderProgram() { glDeleteProgram(m_id); }
@@ -86,59 +90,61 @@ void OpenGLShaderProgram::build(const std::string &filepath) {
     return;
   }
 
-  const auto &shader_sources = result.value();
-  NT_CORE_TRACE("shader_sources:\n{0}", shader_sources);
-  const auto &[vertex_source, fragment_source] =
-      splitShaderSources(shader_sources);
-  build(vertex_source, fragment_source);
+  const auto &shader_sources_pack = result.value();
+  NT_CORE_TRACE("shader_sources_pack:\n{0}", shader_sources_pack);
+  auto shader_sources = splitShaderSources(shader_sources_pack);
+  build(shader_sources);
 }
 
-void OpenGLShaderProgram::build(const std::string &vertexSource,
-                                const std::string &fragmentSource) {
-  UInt32 vertex_shader_id = compileShader(GL_VERTEX_SHADER, vertexSource);
-  UInt32 fragment_shader_id = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
-  linkShaders(vertex_shader_id, fragment_shader_id);
+void OpenGLShaderProgram::build(
+    std::unordered_map<UInt32, std::string> &shader_sources) {
+  std::vector<UInt32> shader_ids;
+  for (const auto &[type, source] : shader_sources) {
+    UInt32 shader_id = compileShader(type, source);
+    shader_ids.push_back(shader_id);
+  }
+  linkProgram(shader_ids);
 }
 
-std::pair<std::string, std::string> OpenGLShaderProgram::splitShaderSources(
-    const std::string &shaderSources) {
+std::unordered_map<UInt32, std::string> OpenGLShaderProgram::splitShaderSources(
+    const std::string &shaderSourcesPack) {
   constexpr const char *type_token = "#type";
   auto type_token_length = strlen(type_token);
-  auto pos = shaderSources.find(type_token, 0);
-  std::string vertex_source, fragment_source;
+  auto pos = shaderSourcesPack.find(type_token, 0);
+  std::unordered_map<UInt32, std::string> shader_sources;
 
   while (pos != std::string::npos) {
     auto shader_type_begin =
-        shaderSources.find_first_not_of(" \t", pos + type_token_length);
+        shaderSourcesPack.find_first_not_of(" \t", pos + type_token_length);
     auto shader_type_end =
-        shaderSources.find_first_of(" \t\r\n", shader_type_begin);
-    auto eol_pos = shaderSources.find_first_of("\r\n", shader_type_end);
+        shaderSourcesPack.find_first_of(" \t\r\n", shader_type_begin);
+    auto eol_pos = shaderSourcesPack.find_first_of("\r\n", shader_type_end);
 
     NT_CORE_ASSERT(eol_pos != std::string::npos,
                    "OpenGLShaderProgram source syntax error.");
 
-    auto shader_type_name = shaderSources.substr(
+    auto shader_type_name = shaderSourcesPack.substr(
         shader_type_begin, shader_type_end - shader_type_begin);
     auto shader_type = OpenGLTypeConverter::getShaderDataType(shader_type_name);
 
-    auto next_line_pos = shaderSources.find_first_not_of("\r\n", eol_pos);
-    pos = shaderSources.find(type_token, next_line_pos);
-    std::string shader_source = shaderSources.substr(
+    auto next_line_pos = shaderSourcesPack.find_first_not_of("\r\n", eol_pos);
+    pos = shaderSourcesPack.find(type_token, next_line_pos);
+    std::string shader_source = shaderSourcesPack.substr(
         next_line_pos, (pos == std::string::npos ? pos : pos - next_line_pos));
 
     switch (shader_type) {
       case GL_VERTEX_SHADER:
-        vertex_source = shader_source;
+        shader_sources[GL_VERTEX_SHADER] = shader_source;
         break;
       case GL_FRAGMENT_SHADER:
-        fragment_source = shader_source;
+        shader_sources[GL_FRAGMENT_SHADER] = shader_source;
         break;
       default:
         NT_CORE_ASSERT(false, "Unknown shader type.");
     }
   }
 
-  return {vertex_source, fragment_source};
+  return shader_sources;
 }
 
 UInt32 OpenGLShaderProgram::compileShader(UInt32 type,
@@ -169,8 +175,7 @@ UInt32 OpenGLShaderProgram::compileShader(UInt32 type,
   return shader_id;
 }
 
-void OpenGLShaderProgram::linkShaders(UInt32 vertexShaderId,
-                                      UInt32 fragmentShaderId) {
+void OpenGLShaderProgram::linkProgram(std::vector<UInt32> shaderIDs) {
   glLinkProgram(m_id);
 
   Int32 linked = 0;
@@ -183,14 +188,17 @@ void OpenGLShaderProgram::linkShaders(UInt32 vertexShaderId,
     glGetProgramInfoLog(m_id, max_length, &max_length, &info_log[0]);
 
     glDeleteProgram(m_id);
-    glDeleteShader(vertexShaderId);
-    glDeleteShader(fragmentShaderId);
+    for (UInt32 shaderId : shaderIDs) {
+      glDetachShader(m_id, shaderId);
+    }
 
     NT_CORE_ERROR("OpenGLShaderProgram link failure\n{0}", info_log.data());
     NT_CORE_ASSERT(false, "");
   }
 
-  glDetachShader(m_id, vertexShaderId);
-  glDetachShader(m_id, fragmentShaderId);
+  for (UInt32 shaderId : shaderIDs) {
+    glDeleteShader(shaderId);
+  }
+  NT_CORE_TRACE("OpenGLShaderProgram linked successfully.");
 }
 }  // namespace Neat

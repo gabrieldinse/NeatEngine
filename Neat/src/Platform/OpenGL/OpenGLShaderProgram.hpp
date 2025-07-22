@@ -35,12 +35,11 @@ class OpenGLShaderProgram : public ShaderProgram {
 
  private:
   void build(const std::string &filepath);
-  void build(const std::string &vertexSource,
-             const std::string &fragmentSource);
+  void build(std::unordered_map<UInt32, std::string> &shader_sources);
   UInt32 compileShader(UInt32 type, const std::string &source);
-  std::pair<std::string, std::string> splitShaderSources(
+  std::unordered_map<UInt32, std::string> splitShaderSources(
       const std::string &shaderSources);
-  void linkShaders(UInt32 vertexShaderId, UInt32 fragmentShaderId);
+  void linkProgram(std::vector<UInt32> shaderIDs);
   Int32 getUniformLocation(const std::string &name);
 
  private:

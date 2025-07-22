@@ -33,6 +33,8 @@
 #include <optional>
 #include <unistd.h>
 #include <limits.h>
+#include <expected>
+#include <optional>
 
 #include <cstddef>
 #include <cstdint>

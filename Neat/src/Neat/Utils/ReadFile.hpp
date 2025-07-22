@@ -1,14 +1,13 @@
 #pragma once
 
+#include <expected>
+#include <string>
 #include <fstream>
 #include <filesystem>
-#include <expected>
-#include <vector>
-#include <string>
 #include <iostream>
 
 namespace Neat {
-constexpr std::uintmax_t kMaxAssetFileSize = 100 * 1024 * 1024;  // 100 MB
+constexpr std::uintmax_t maxFileSize = 100 * 1024 * 1024;  // 100 MB
 
 enum class FileErrorCode {
   FileNotFound,

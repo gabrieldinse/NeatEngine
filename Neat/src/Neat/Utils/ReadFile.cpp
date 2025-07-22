@@ -51,7 +51,7 @@ std::expected<std::string, FileError> readFile(
         FileError{FileErrorCode::ReadFailure, path, error_code.message()}};
   }
 
-  if (size > kMaxAssetFileSize) {
+  if (size > maxFileSize) {
     return std::unexpected{FileError{FileErrorCode::FileTooLarge, path,
                                      "Too big for asset loader."}};
   }
@@ -62,12 +62,13 @@ std::expected<std::string, FileError> readFile(
                                      "Failed to open file."}};
   }
 
-  std::vector<char> buffer(size);
-  if (not file.read(buffer.data(), buffer.size())) {
+  std::string fileContent{};
+  fileContent.resize(size);
+  if (not file.read(fileContent.data(), fileContent.size())) {
     return std::unexpected{
         FileError{FileErrorCode::ReadFailure, path, "Stream read failed."}};
   }
 
-  return std::string{buffer.begin(), buffer.end()};
+  return fileContent;
 }
 }  // namespace Neat
