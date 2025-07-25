@@ -97,12 +97,8 @@ class Renderer2D {
         {-0.5f, 0.5f, 0.0f, 1.0f}};
 
     UInt32 indexCount = 0;
-    Scope<QuadVertexData[]> data;
+    std::array<QuadVertexData, QuadVextexDataBuffer::maxVertices> data;
     QuadVertexData *currentPos = nullptr;
-
-    QuadVextexDataBuffer()
-        : data(makeScope<QuadVertexData[]>(QuadVextexDataBuffer::maxVertices)) {
-    }
 
     void addQuad(const Matrix4F &modelMatrix, const Vector4F &color,
                  const Vector2F *textureCoordinates, Int32 textureIndex,
@@ -119,12 +115,12 @@ class Renderer2D {
     }
 
     UInt32 getDataSize() const {
-      return (UInt32)((Byte *)(currentPos) - (Byte *)(data.get()));
+      return (UInt32)((Byte *)(currentPos) - (Byte *)(data.data()));
     }
 
     void reset() {
       indexCount = 0;
-      currentPos = data.get();
+      currentPos = data.data();
     }
   };
 

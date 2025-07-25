@@ -24,7 +24,7 @@ void Renderer2D::init() {
        {ShaderDataType::Float, "tilingFactor"}});
   s_data->quadVertexArray->addVertexBuffer(s_data->quadVertexBuffer);
 
-  auto quadIndexes = makeScope<UInt32[]>(QuadVextexDataBuffer::maxIndexes);
+  std::array<UInt32, QuadVextexDataBuffer::maxIndexes> quadIndexes;
   UInt32 offset = 0;
   for (UInt32 i = 0; i < QuadVextexDataBuffer::maxIndexes;
        i += 6, offset += 4) {
@@ -37,8 +37,7 @@ void Renderer2D::init() {
     quadIndexes[(std::size_t)i + 5] = offset + 0;
   }
 
-  auto squareIB =
-      IndexBuffer::create(quadIndexes.get(), QuadVextexDataBuffer::maxIndexes);
+  auto squareIB = IndexBuffer::create(quadIndexes.data(), quadIndexes.size());
 
   s_data->quadVertexArray->setIndexBuffer(squareIB);
 
@@ -79,11 +78,12 @@ void Renderer2D::startNewBatch() {
 void Renderer2D::draw() {
   s_data->textureShader->bind();
 
-  s_data->quadVertexBuffer->setData(s_data->quadVextexDataBuffer.data.get(),
+  s_data->quadVertexBuffer->setData(s_data->quadVextexDataBuffer.data.data(),
                                     s_data->quadVextexDataBuffer.getDataSize());
 
-  for (UInt32 i = 0; i < s_data->textureSlotIndex; ++i)
+  for (UInt32 i = 0; i < s_data->textureSlotIndex; ++i) {
     s_data->textureSlots[i]->bind(i);
+  }
 
   RenderCommand::drawIndexed(s_data->quadVertexArray,
                              s_data->quadVextexDataBuffer.indexCount);
