@@ -3,6 +3,7 @@
 #include <Neat/Events/EventConnections.hpp>
 #include <TestUtils.hpp>
 
+namespace Neat {
 class EventConnectionsTest : public testing::Test {
  protected:
   EventConnectionsTest() {
@@ -12,10 +13,10 @@ class EventConnectionsTest : public testing::Test {
     connC.connect<&ListenerC::handle>(listenerC);
     connA.connect<&ListenerD::handleA>(listenerD);
   }
-  Neat::EventConnections<EventA> connA{};
-  Neat::EventConnections<EventB> connB{};
-  Neat::EventConnections<EventC> connC{};
-  Neat::EventConnections<EventC> connC2{};
+  EventConnections<EventA> connA{};
+  EventConnections<EventB> connB{};
+  EventConnections<EventC> connC{};
+  EventConnections<EventC> connC2{};
   ListenerA listenerA{};
   ListenerB listenerB{};
   ListenerC listenerC{};
@@ -157,3 +158,4 @@ TEST_F(EventConnectionsTest, ConnectWithPriority) {
   EXPECT_EQ(listenerD.val, 100);
   EXPECT_EQ(listenerD.count, 1);
 }
+}  // namespace Neat

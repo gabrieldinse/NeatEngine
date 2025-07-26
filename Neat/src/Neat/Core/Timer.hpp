@@ -5,6 +5,7 @@
 
 #include "Neat/Core/Exceptions.hpp"
 #include "Neat/Core/Types.hpp"
+#include "Neat/Utils/TimeConversions.hpp"
 
 namespace Neat {
 enum class TimeUnit {
@@ -50,71 +51,63 @@ class Timer {
 
       switch (timeUnit) {
         case TimeUnit::Nanoseconds:
-          return nanosecondsElapsed<T>();
+          return nanosecondsCast<T>((m_currentTicks - m_startTicks));
         case TimeUnit::Microseconds:
-          return microsecondsElapsed<T>();
+          return microsecondsCast<T>((m_currentTicks - m_startTicks));
         case TimeUnit::Milliseconds:
-          return millisecondsElapsed<T>();
+          return millisecondsCast<T>((m_currentTicks - m_startTicks));
         case TimeUnit::Seconds:
-          return secondsElapsed<T>();
+          return secondsCast<T>((m_currentTicks - m_startTicks));
         case TimeUnit::Minutes:
-          return minutesElapsed<T>();
+          return minutesCast<T>((m_currentTicks - m_startTicks));
         case TimeUnit::Hours:
-          return hoursElapsed<T>();
+          return hoursCast<T>((m_currentTicks - m_startTicks));
         case TimeUnit::Days:
-          return daysElapsed<T>();
+          return daysCast<T>((m_currentTicks - m_startTicks));
       }
     }
 
     throw TimerNotStartedError();
   }
 
- private:
-  template <typename T>
-  T nanosecondsElapsed() const {
-    return std::chrono::duration<T, std::ratio<1, 1000000000>>(
-               (m_currentTicks - m_startTicks))
-        .count();
+  template <typename T = double>
+  T currentTimeSinceEpoch(TimeUnit timeUnit = TimeUnit::Seconds) const {
+    switch (timeUnit) {
+      case TimeUnit::Nanoseconds:
+        return nanosecondsCast<T>(m_currentTicks.time_since_epoch());
+      case TimeUnit::Microseconds:
+        return microsecondsCast<T>(m_currentTicks.time_since_epoch());
+      case TimeUnit::Milliseconds:
+        return millisecondsCast<T>(m_currentTicks.time_since_epoch());
+      case TimeUnit::Seconds:
+        return secondsCast<T>(m_currentTicks.time_since_epoch());
+      case TimeUnit::Minutes:
+        return minutesCast<T>(m_currentTicks.time_since_epoch());
+      case TimeUnit::Hours:
+        return hoursCast<T>(m_currentTicks.time_since_epoch());
+      case TimeUnit::Days:
+        return daysCast<T>(m_currentTicks.time_since_epoch());
+    }
   }
 
-  template <typename T>
-  T microsecondsElapsed() const {
-    return std::chrono::duration<T, std::ratio<1, 1000000>>(
-               (m_currentTicks - m_startTicks))
-        .count();
-  }
-
-  template <typename T>
-  T millisecondsElapsed() const {
-    return std::chrono::duration<T, std::ratio<1, 1000>>(
-               (m_currentTicks - m_startTicks))
-        .count();
-  }
-
-  template <typename T>
-  T secondsElapsed() const {
-    return std::chrono::duration<T>((m_currentTicks - m_startTicks)).count();
-  }
-
-  template <typename T>
-  T minutesElapsed() const {
-    return std::chrono::duration<T, std::ratio<60, 1>>(
-               (m_currentTicks - m_startTicks))
-        .count();
-  }
-
-  template <typename T>
-  T hoursElapsed() const {
-    return std::chrono::duration<T, std::ratio<3600, 1>>(
-               (m_currentTicks - m_startTicks))
-        .count();
-  }
-
-  template <typename T>
-  T daysElapsed() const {
-    return std::chrono::duration<T, std::ratio<86400, 1>>(
-               (m_currentTicks - m_startTicks))
-        .count();
+  template <typename T = double>
+  T startTimeSinceEpoch(TimeUnit timeUnit = TimeUnit::Seconds) const {
+    switch (timeUnit) {
+      case TimeUnit::Nanoseconds:
+        return nanosecondsCast<T>(m_startTicks.time_since_epoch());
+      case TimeUnit::Microseconds:
+        return microsecondsCast<T>(m_startTicks.time_since_epoch());
+      case TimeUnit::Milliseconds:
+        return millisecondsCast<T>(m_startTicks.time_since_epoch());
+      case TimeUnit::Seconds:
+        return secondsCast<T>(m_startTicks.time_since_epoch());
+      case TimeUnit::Minutes:
+        return minutesCast<T>(m_startTicks.time_since_epoch());
+      case TimeUnit::Hours:
+        return hoursCast<T>(m_startTicks.time_since_epoch());
+      case TimeUnit::Days:
+        return daysCast<T>(m_startTicks.time_since_epoch());
+    }
   }
 
  private:

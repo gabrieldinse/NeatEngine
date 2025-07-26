@@ -3,6 +3,7 @@
 #include <Neat/Events/EventDispatcher.hpp>
 #include <TestUtils.hpp>
 
+namespace Neat {
 class EventDispatcherTest : public testing::Test {
  protected:
   EventDispatcherTest() {
@@ -29,8 +30,8 @@ class EventDispatcherTest : public testing::Test {
     listenerC = ListenerC{};
   }
 
-  Neat::EventDispatcher dispatcher1{};
-  Neat::EventDispatcher dispatcher2{};
+  EventDispatcher dispatcher1{};
+  EventDispatcher dispatcher2{};
   ListenerA listenerA{};
   ListenerB listenerB{};
   ListenerC listenerC{};
@@ -209,3 +210,4 @@ TEST_F(EventDispatcherTest, DisconnectAndEnqueueAndUpdate) {
   EXPECT_EQ(listenerC.posY, 0.5f);
   EXPECT_EQ(listenerC.count, 1);
 }
+}  // namespace Neat

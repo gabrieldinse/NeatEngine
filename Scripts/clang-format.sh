@@ -1,4 +1,6 @@
 #!/bin/bash
+set -x
+
 declare -r -a dirs=("Sandbox" "Neat/src" "Tests")
 
 for dir in "${dirs[@]}"; do

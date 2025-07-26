@@ -3,6 +3,7 @@
 
 #include <Neat/Utils/SafeQueue.hpp>
 
+namespace Neat {
 class SafeQueueTest : public testing::Test {
  protected:
   SafeQueueTest() {
@@ -11,10 +12,10 @@ class SafeQueueTest : public testing::Test {
     q2.push(3);
     // q3 should be left empty
   }
-  Neat::SafeQueue<int> q1;
-  Neat::SafeQueue<int> q2;
-  Neat::SafeQueue<int> q3;
-  Neat::SafeQueue<std::string> q4;
+  SafeQueue<int> q1;
+  SafeQueue<int> q2;
+  SafeQueue<int> q3;
+  SafeQueue<std::string> q4;
 };
 
 TEST_F(SafeQueueTest, PopElements) {
@@ -96,3 +97,4 @@ TEST_F(SafeQueueTest, PushLvalueAndRvalueReferences) {
   EXPECT_TRUE(elem2.has_value());
   EXPECT_NE(elem2.value(), test_string);
 }
+}  // namespace Neat
