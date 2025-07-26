@@ -24,6 +24,6 @@ target_compile_definitions(Sandbox PRIVATE
 
 add_custom_command(TARGET Sandbox PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/Sandbox/assets
-    $<TARGET_FILE_DIR:Sandbox>/assets
+    ${CMAKE_SOURCE_DIR}/Assets
+    $<TARGET_FILE_DIR:Neat>/Assets
 )
