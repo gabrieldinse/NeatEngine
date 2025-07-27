@@ -37,6 +37,7 @@ void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos);
 Int32 LinuxWindow::s_windowCount = 0;
 
 LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
+  NT_PROFILE_FUNCTION();
   if (s_windowCount == 0) {
     Int32 status = glfwInit();
     glfwSetErrorCallback(GLFWErrorCallback);
@@ -71,6 +72,7 @@ LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
 }
 
 LinuxWindow::~LinuxWindow() {
+  NT_PROFILE_FUNCTION();
   s_windowCount--;
   glfwDestroyWindow(m_glfwWindow);
   if (s_windowCount == 0) {
@@ -89,6 +91,7 @@ float LinuxWindow::getAspectRatio() const {
 void *LinuxWindow::getNativeWindow() const { return m_glfwWindow; }
 
 void LinuxWindow::onUpdate() {
+  NT_PROFILE_FUNCTION();
   m_graphicsContext->onUpdate();
   glfwPollEvents();
 }

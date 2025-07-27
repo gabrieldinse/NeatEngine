@@ -6,6 +6,7 @@
 
 namespace Neat {
 void OpenGLRendererAPI::init() {
+  NT_PROFILE_FUNCTION();
   glEnable(GL_DEPTH_TEST);
   // glEnable(GL_CULL_FACE);
   glEnable(GL_BLEND);
@@ -13,14 +14,17 @@ void OpenGLRendererAPI::init() {
 }
 
 void OpenGLRendererAPI::setClearColor(const Vector4F &color) {
+  NT_PROFILE_FUNCTION();
   glClearColor(color.r, color.g, color.b, color.a);
 }
 
 void OpenGLRendererAPI::clear() {
+  NT_PROFILE_FUNCTION();
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void OpenGLRendererAPI::clearWithColor(const Vector4F &color) {
+  NT_PROFILE_FUNCTION();
   static constexpr float one = 1.0f;
   glClearBufferfv(GL_DEPTH, 0, &one);
   glClearBufferfv(GL_COLOR, 0, color.dataPointer());
@@ -28,6 +32,7 @@ void OpenGLRendererAPI::clearWithColor(const Vector4F &color) {
 
 void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray> &vertexArray,
                                     UInt32 indexCount) {
+  NT_PROFILE_FUNCTION();
   UInt32 count = (indexCount == 0) ? vertexArray->getIndexBuffer()->getCount()
                                    : indexCount;
 
@@ -37,6 +42,7 @@ void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray> &vertexArray,
 
 void OpenGLRendererAPI::setViewport(UInt32 xOffset, UInt32 yOffset,
                                     UInt32 width, UInt32 height) {
+  NT_PROFILE_FUNCTION();
   glViewport(xOffset, yOffset, width, height);
 }
 }  // namespace Neat

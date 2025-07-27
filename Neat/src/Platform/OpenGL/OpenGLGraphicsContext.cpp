@@ -10,6 +10,7 @@ OpenGLGraphicsContext::OpenGLGraphicsContext(GLFWwindow *window)
     : m_glfwWindow(window) {}
 
 void OpenGLGraphicsContext::init() {
+  NT_PROFILE_FUNCTION();
   glfwMakeContextCurrent(m_glfwWindow);
 
   // Glad initialization (need to be after window creation)
@@ -25,5 +26,8 @@ void OpenGLGraphicsContext::init() {
                reinterpret_cast<const char *>(glGetString(GL_VERSION)));
 }
 
-void OpenGLGraphicsContext::onUpdate() { glfwSwapBuffers(m_glfwWindow); }
+void OpenGLGraphicsContext::onUpdate() {
+  NT_PROFILE_FUNCTION();
+  glfwSwapBuffers(m_glfwWindow);
+}
 }  // namespace Neat

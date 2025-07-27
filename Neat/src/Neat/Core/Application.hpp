@@ -27,7 +27,7 @@ class Application {
   Scope<Layer> popLayer(Int32 position);
   Scope<Layer> popOverlay(Int32 position);
 
-  void setUpdateRate(double rate) { m_updatePeriod = 1.0f / rate; }
+  void layersOnUpdate(double deltaTimeSeconds);
 
   static Application &get() { return *s_instance; }
   Window &getWindow() { return *m_window; }
@@ -44,7 +44,6 @@ class Application {
   Scope<Window> m_window;
   Ref<EventDispatcher> m_eventDispatcher;
   LayerGroup m_layerGroup;
-  double m_updatePeriod = 1.0f / 120.0f;
 
   bool m_running = false;
 };

@@ -12,6 +12,7 @@ Scope<Renderer2D::Renderer2DData> Renderer2D::s_data =
     makeScope<Renderer2D::Renderer2DData>();
 
 void Renderer2D::init() {
+  NT_PROFILE_FUNCTION();
   s_data->quadVertexArray = VertexArray::create();
   s_data->quadVertexBuffer = VertexBuffer::create(
       QuadVextexDataBuffer::maxVertices * (UInt32)sizeof(QuadVertexData));
@@ -60,22 +61,31 @@ void Renderer2D::init() {
   s_data->textureSlots[0] = s_data->whiteTexture;
 }
 
-void Renderer2D::shutdown() { s_data.reset(); }
+void Renderer2D::shutdown() {
+  NT_PROFILE_FUNCTION();
+  s_data.reset();
+}
 
 void Renderer2D::beginScene(const Ref<Camera> &camera) {
+  NT_PROFILE_FUNCTION();
   s_data->textureShader->bind();
   s_data->textureShader->set("u_cameraTransform", camera->getCameraTransform());
   startNewBatch();
 }
 
-void Renderer2D::endScene() { draw(); }
+void Renderer2D::endScene() {
+  NT_PROFILE_FUNCTION();
+  draw();
+}
 
 void Renderer2D::startNewBatch() {
+  NT_PROFILE_FUNCTION();
   s_data->quadVextexDataBuffer.reset();
   s_data->textureSlotIndex = 1;
 }
 
 void Renderer2D::draw() {
+  NT_PROFILE_FUNCTION();
   s_data->textureShader->bind();
 
   s_data->quadVertexBuffer->setData(s_data->quadVextexDataBuffer.data.data(),
@@ -93,6 +103,7 @@ void Renderer2D::draw() {
 
 void Renderer2D::drawSprite(const Matrix4F &transform,
                             const RenderableSpriteComponent &renderableSprite) {
+  NT_PROFILE_FUNCTION();
   if (renderableSprite.texture) {
     drawQuad(transform, renderableSprite.texture, renderableSprite.color,
              renderableSprite.tilingFactor);
@@ -130,6 +141,7 @@ void Renderer2D::drawQuad(const Matrix4F &transform,
 }
 
 void Renderer2D::drawQuad(const Matrix4F &transform, const Vector4F &color) {
+  NT_PROFILE_FUNCTION();
   if (reachedBatchDataLimit()) {
     draw();
     startNewBatch();
@@ -148,11 +160,13 @@ void Renderer2D::drawQuad(const Matrix4F &transform, const Vector4F &color) {
 
 void Renderer2D::drawQuad(const Vector2F &position, const Vector2F &size,
                           const Vector4F &color) {
+  NT_PROFILE_FUNCTION();
   drawQuad({position.x, position.y, 0.0f}, size, color);
 }
 
 void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
                           const Vector4F &color) {
+  NT_PROFILE_FUNCTION();
   Matrix4F model_matrix =
       translate(position) * scale(Vector3F(size.x, size.y, 1.0f));
   drawQuad(model_matrix, color);
@@ -161,12 +175,14 @@ void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
 void Renderer2D::drawQuad(const Vector2F &position, const Vector2F &size,
                           const Ref<Texture2D> &texture, const Vector4F &tint,
                           float tilingFactor) {
+  NT_PROFILE_FUNCTION();
   drawQuad({position.x, position.y, 0.0f}, size, texture, tint, tilingFactor);
 }
 
 void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
                           const Ref<Texture2D> &texture, const Vector4F &tint,
                           float tilingFactor) {
+  NT_PROFILE_FUNCTION();
   Matrix4F model_matrix =
       translate(position) * scale(Vector3F(size.x, size.y, 1.0f));
   drawQuad(model_matrix, texture, tint, tilingFactor);
@@ -175,11 +191,13 @@ void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
 // Rotated Quads
 void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
                                  float angleDegrees, const Vector4F &color) {
+  NT_PROFILE_FUNCTION();
   drawRotatedQuad({position.x, position.y, 0.0f}, size, angleDegrees, color);
 }
 
 void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
                                  float angleDegrees, const Vector4F &color) {
+  NT_PROFILE_FUNCTION();
   Matrix4F model_matrix = translate(Matrix4F(1.0f), position) *
                           rotateZ(degreesToRadians(angleDegrees)) *
                           scale(Vector3F(size.x, size.y, 1.0f));
@@ -190,6 +208,7 @@ void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
                                  float angleDegrees,
                                  const Ref<Texture2D> &texture,
                                  const Vector4F &tint, float tilingFactor) {
+  NT_PROFILE_FUNCTION();
   drawRotatedQuad({position.x, position.y, 0.0f}, size, angleDegrees, texture,
                   tint, tilingFactor);
 }
@@ -198,6 +217,7 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
                                  float angleDegrees,
                                  const Ref<Texture2D> &texture,
                                  const Vector4F &tint, float tilingFactor) {
+  NT_PROFILE_FUNCTION();
   Matrix4F model_matrix = translate(position) *
                           rotateZ(degreesToRadians(angleDegrees)) *
                           scale(Vector3F(size.x, size.y, 1.0f));

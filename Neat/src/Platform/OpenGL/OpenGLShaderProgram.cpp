@@ -10,12 +10,14 @@ namespace Neat {
 OpenGLShaderProgram::OpenGLShaderProgram(const std::string &filepath)
     : m_id(glCreateProgram()),
       m_name(std::filesystem::path(filepath).stem().string()) {
+  NT_PROFILE_FUNCTION();
   build(filepath);
 }
 
 OpenGLShaderProgram::OpenGLShaderProgram(const std::string &name,
                                          const std::string &filepath)
     : m_id(glCreateProgram()), m_name(name) {
+  NT_PROFILE_FUNCTION();
   build(filepath);
 }
 
@@ -23,6 +25,7 @@ OpenGLShaderProgram::OpenGLShaderProgram(const std::string &name,
                                          const std::string &vertexSource,
                                          const std::string &fragmentSource)
     : m_id(glCreateProgram()), m_name(name) {
+  NT_PROFILE_FUNCTION();
   std::unordered_map<UInt32, std::string> shader_sources = {
       {GL_VERTEX_SHADER, vertexSource},
       {GL_FRAGMENT_SHADER, fragmentSource},
@@ -30,48 +33,66 @@ OpenGLShaderProgram::OpenGLShaderProgram(const std::string &name,
   build(shader_sources);
 }
 
-OpenGLShaderProgram::~OpenGLShaderProgram() { glDeleteProgram(m_id); }
+OpenGLShaderProgram::~OpenGLShaderProgram() {
+  NT_PROFILE_FUNCTION();
+  glDeleteProgram(m_id);
+}
 
-void OpenGLShaderProgram::bind() const { glUseProgram(m_id); }
+void OpenGLShaderProgram::bind() const {
+  NT_PROFILE_FUNCTION();
+  glUseProgram(m_id);
+}
 
-void OpenGLShaderProgram::unbind() const { glUseProgram(0); }
+void OpenGLShaderProgram::unbind() const {
+  NT_PROFILE_FUNCTION();
+  glUseProgram(0);
+}
 
 void OpenGLShaderProgram::set(const std::string &name, float value) {
+  NT_PROFILE_FUNCTION();
   glUniform1f(getUniformLocation(name), value);
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Vector2F values) {
+  NT_PROFILE_FUNCTION();
   glUniform2f(getUniformLocation(name), values.x, values.y);
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Vector3F values) {
+  NT_PROFILE_FUNCTION();
   glUniform3f(getUniformLocation(name), values.x, values.y, values.z);
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Vector4F values) {
+  NT_PROFILE_FUNCTION();
   glUniform4f(getUniformLocation(name), values.x, values.y, values.z, values.w);
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Int32 value) {
+  NT_PROFILE_FUNCTION();
   glUniform1i(getUniformLocation(name), value);
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Int32 *values,
                               UInt32 count) {
+  NT_PROFILE_FUNCTION();
   glUniform1iv(getUniformLocation(name), count, values);
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Matrix3F matrix) {
+  NT_PROFILE_FUNCTION();
   glUniformMatrix3fv(getUniformLocation(name), 1, GL_TRUE,
                      matrix.dataPointer());
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Matrix4F matrix) {
+  NT_PROFILE_FUNCTION();
   glUniformMatrix4fv(getUniformLocation(name), 1, GL_TRUE,
                      matrix.dataPointer());
 }
 
 Int32 OpenGLShaderProgram::getUniformLocation(const std::string &name) {
+  NT_PROFILE_FUNCTION();
   if (m_uniformLocationCache.find(name) != m_uniformLocationCache.end()) {
     return m_uniformLocationCache[name];
   }
@@ -84,6 +105,7 @@ Int32 OpenGLShaderProgram::getUniformLocation(const std::string &name) {
 }
 
 void OpenGLShaderProgram::build(const std::string &filepath) {
+  NT_PROFILE_FUNCTION();
   auto result = readFile(filepath);
   if (not result) {
     NT_CORE_ERROR("Failed to read shader file: {0}", result.error().message);
@@ -98,6 +120,7 @@ void OpenGLShaderProgram::build(const std::string &filepath) {
 
 void OpenGLShaderProgram::build(
     std::unordered_map<UInt32, std::string> &shader_sources) {
+  NT_PROFILE_FUNCTION();
   std::vector<UInt32> shader_ids;
   for (const auto &[type, source] : shader_sources) {
     UInt32 shader_id = compileShader(type, source);
@@ -108,6 +131,7 @@ void OpenGLShaderProgram::build(
 
 std::unordered_map<UInt32, std::string> OpenGLShaderProgram::splitShaderSources(
     const std::string &shaderSourcesPack) {
+  NT_PROFILE_FUNCTION();
   constexpr const char *type_token = "#type";
   auto type_token_length = strlen(type_token);
   auto pos = shaderSourcesPack.find(type_token, 0);
@@ -149,6 +173,7 @@ std::unordered_map<UInt32, std::string> OpenGLShaderProgram::splitShaderSources(
 
 UInt32 OpenGLShaderProgram::compileShader(UInt32 type,
                                           const std::string &shaderSource) {
+  NT_PROFILE_FUNCTION();
   UInt32 shader_id = glCreateShader(type);
 
   const char *c_str_source = shaderSource.c_str();
@@ -176,6 +201,7 @@ UInt32 OpenGLShaderProgram::compileShader(UInt32 type,
 }
 
 void OpenGLShaderProgram::linkProgram(std::vector<UInt32> shaderIDs) {
+  NT_PROFILE_FUNCTION();
   glLinkProgram(m_id);
 
   Int32 linked = 0;

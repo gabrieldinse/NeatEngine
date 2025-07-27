@@ -33,6 +33,7 @@ std::ostream& operator<<(std::ostream& os, const FileError& err) {
 
 std::expected<std::string, FileError> readFile(
     const std::filesystem::path& path) {
+  NT_PROFILE_FUNCTION();
   std::error_code error_code;
 
   if (not std::filesystem::exists(path, error_code)) {

@@ -7,15 +7,27 @@
 #include <glad/glad.h>
 
 namespace Neat {
-OpenGLVertexArray::OpenGLVertexArray() { glCreateVertexArrays(1, &m_id); }
+OpenGLVertexArray::OpenGLVertexArray() {
+  NT_PROFILE_FUNCTION();
+  glCreateVertexArrays(1, &m_id);
+}
 
-OpenGLVertexArray::~OpenGLVertexArray() { glDeleteVertexArrays(1, &m_id); }
+OpenGLVertexArray::~OpenGLVertexArray() {
+  NT_PROFILE_FUNCTION();
+  glDeleteVertexArrays(1, &m_id);
+}
 
-void OpenGLVertexArray::bind() const { glBindVertexArray(m_id); }
+void OpenGLVertexArray::bind() const {
+  NT_PROFILE_FUNCTION();
+  glBindVertexArray(m_id);
+}
 
-void OpenGLVertexArray::unbind() const { glBindVertexArray(0); }
+void OpenGLVertexArray::unbind() const {
+  glBindVertexArray(0);
+}
 
 void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
+  NT_PROFILE_FUNCTION();
   NT_CORE_ASSERT(vertexBuffer->getLayout().getElements().size(),
                  "VertexBuffer has no layout.");
 
@@ -36,6 +48,7 @@ void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
 }
 
 void OpenGLVertexArray::setIndexBuffer(const Ref<IndexBuffer> &indexBuffer) {
+  NT_PROFILE_FUNCTION();
   bind();
   indexBuffer->bind();
   m_indexBuffer = indexBuffer;

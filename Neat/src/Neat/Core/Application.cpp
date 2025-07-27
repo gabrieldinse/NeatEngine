@@ -10,7 +10,7 @@ namespace Neat {
 Application *Application::s_instance = nullptr;
 
 Application::Application() : m_eventDispatcher(makeRef<EventDispatcher>()) {
-  // Check of there's another application running
+  NT_PROFILE_FUNCTION();
   NT_CORE_ASSERT(not s_instance, "Application already exists!");
   s_instance = this;
 
@@ -26,6 +26,7 @@ Application::Application() : m_eventDispatcher(makeRef<EventDispatcher>()) {
 }
 
 Application::~Application() {
+  NT_PROFILE_FUNCTION();
   ImGuiRender::shutdown();
   Renderer::shutdown();
 }
@@ -42,12 +43,12 @@ void Application::run() {
   while (m_running) {
     NT_PROFILE_SCOPE("RunLoop");
     double deltaTimeSeconds = timer.restart();
+
     ImGuiRender::begin();
     onUpdate(deltaTimeSeconds);
-    for (auto &layer : m_layerGroup) {
-      layer->onUpdate(deltaTimeSeconds);
-    }
+    layersOnUpdate(deltaTimeSeconds);
     ImGuiRender::end();
+
     m_window->onUpdate();
     m_eventDispatcher->onUpdate();
   }
@@ -68,6 +69,13 @@ Scope<Layer> Application::popLayer(Int32 position) {
 
 Scope<Layer> Application::popOverlay(Int32 position) {
   return m_layerGroup.popOverlay(position);
+}
+
+void Application::layersOnUpdate(double deltaTimeSeconds) {
+  NT_PROFILE_FUNCTION();
+  for (auto &layer : m_layerGroup) {
+    layer->onUpdate(deltaTimeSeconds);
+  }
 }
 
 bool Application::onWindowClose(

@@ -12,6 +12,7 @@ OpenGLTexture2D::OpenGLTexture2D(Int32 width, Int32 height)
       m_height(height),
       m_internalFormat(GL_RGBA8),
       m_dataFormat(GL_RGBA) {
+  NT_PROFILE_FUNCTION();
   NT_CORE_ASSERT(m_internalFormat & m_dataFormat,
                  "Color channel format not supported!");
 
@@ -31,7 +32,9 @@ OpenGLTexture2D::OpenGLTexture2D(Int32 width, Int32 height)
 
 OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
     : m_internalFormat(0), m_dataFormat(0) {
-  // stbi_load uses signed Int32
+  NT_PROFILE_FUNCTION();
+  // TODO: have a sepparate utilitiy function (Utils) to load the image and
+  // add profiling to it
   Int32 width, height, channels;
   stbi_set_flip_vertically_on_load(1);  // flip the image loaded vertically
   auto data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
@@ -73,9 +76,13 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
   stbi_image_free(data);
 }
 
-OpenGLTexture2D::~OpenGLTexture2D() { glDeleteTextures(1, &m_id); }
+OpenGLTexture2D::~OpenGLTexture2D() {
+  NT_PROFILE_FUNCTION();
+  glDeleteTextures(1, &m_id);
+}
 
 void OpenGLTexture2D::setData(void *data, UInt32 size) {
+  NT_PROFILE_FUNCTION();
   uint32_t bytesPerPixel = m_dataFormat == GL_RGBA ? 4 : 3;
   NT_CORE_ASSERT(size == m_width * m_height * bytesPerPixel,
                  "Data must be entire texture!");
@@ -84,5 +91,8 @@ void OpenGLTexture2D::setData(void *data, UInt32 size) {
   glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void OpenGLTexture2D::bind(UInt32 unit) const { glBindTextureUnit(unit, m_id); }
+void OpenGLTexture2D::bind(UInt32 unit) const {
+  NT_PROFILE_FUNCTION();
+  glBindTextureUnit(unit, m_id);
+}
 }  // namespace Neat
