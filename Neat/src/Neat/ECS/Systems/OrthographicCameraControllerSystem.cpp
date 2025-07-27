@@ -26,6 +26,7 @@ void OrthographicCameraControllerSystem::onUpdate(
     [[maybe_unused]] const Ref<EntityManager> &entityManager,
     [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     double deltaTimeSeconds) {
+  NT_PROFILE_FUNCTION();
   auto distance = (float)(m_translationSpeed * deltaTimeSeconds);
   if (Input::isKeyPressed(Key::W)) m_camera->moveUp(distance);
 
@@ -45,6 +46,7 @@ void OrthographicCameraControllerSystem::onUpdate(
 
 bool OrthographicCameraControllerSystem::onMouseScrolled(
     const MouseScrolledEvent &event) {
+  NT_PROFILE_FUNCTION();
   m_zoomLevel -= event.yOffset * 0.2f;
   m_zoomLevel = std::max(m_zoomLevel, 0.25f);
   m_translationSpeed = 2.0f * m_zoomLevel;
@@ -55,6 +57,7 @@ bool OrthographicCameraControllerSystem::onMouseScrolled(
 
 bool OrthographicCameraControllerSystem::onWindowResize(
     const WindowResizeEvent &event) {
+  NT_PROFILE_FUNCTION();
   m_aspectRatio = (float)event.width / (float)event.height;
   m_camera->setAspectRatio(m_aspectRatio);
 

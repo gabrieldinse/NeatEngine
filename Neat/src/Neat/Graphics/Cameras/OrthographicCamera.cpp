@@ -12,68 +12,80 @@ OrthographicCamera::OrthographicCamera(const Vector2F &position, float size,
     : m_position(Vector3F(position, m_zPos)),
       m_aspectRatio(size),
       m_keepAspect(keepAspect) {
+  NT_PROFILE_FUNCTION();
   setAspectRatio(m_aspectRatio);
 }
 
 void OrthographicCamera::setPosition(const Vector2F &position) {
+  NT_PROFILE_FUNCTION();
   m_position.x = position.x;
   m_position.y = position.y;
   updateCameraTransform();
 }
 
 void OrthographicCamera::setRotation(float rotation) {
+  NT_PROFILE_FUNCTION();
   m_rotation = rotation;
   updateCameraTransform();
 }
 
 void OrthographicCamera::incrementPosition(const Vector2F &position) {
+  NT_PROFILE_FUNCTION();
   m_position.x += position.x;
   m_position.y += position.y;
   updateCameraTransform();
 }
 
 void OrthographicCamera::incrementRotation(float rotation) {
+  NT_PROFILE_FUNCTION();
   m_rotation += rotation;
   updateCameraTransform();
 }
 
 void OrthographicCamera::moveUp(float distance) {
+  NT_PROFILE_FUNCTION();
   m_position.x += -sin(degreesToRadians(m_rotation)) * distance;
   m_position.y += cos(degreesToRadians(m_rotation)) * distance;
   updateCameraTransform();
 }
 
 void OrthographicCamera::moveDown(float distance) {
+  NT_PROFILE_FUNCTION();
   m_position.x -= -sin(degreesToRadians(m_rotation)) * distance;
   m_position.y -= cos(degreesToRadians(m_rotation)) * distance;
   updateCameraTransform();
 }
 
 void OrthographicCamera::moveRight(float distance) {
+  NT_PROFILE_FUNCTION();
   m_position.x += cos(degreesToRadians(m_rotation)) * distance;
   m_position.y += sin(degreesToRadians(m_rotation)) * distance;
   updateCameraTransform();
 }
 
 void OrthographicCamera::moveLeft(float distance) {
+  NT_PROFILE_FUNCTION();
   m_position.x -= cos(degreesToRadians(m_rotation)) * distance;
   m_position.y -= sin(degreesToRadians(m_rotation)) * distance;
   updateCameraTransform();
 }
 
 void OrthographicCamera::updateViewMatrix() {
+  NT_PROFILE_FUNCTION();
   Matrix4F rotation{rotateZ(degreesToRadians(m_rotation))};
   Matrix4F translation{translate(m_position)};
   m_viewMatrix = inverse(translation * rotation);
 }
 
 void OrthographicCamera::updateCameraTransform() {
+  NT_PROFILE_FUNCTION();
   updateViewMatrix();
   m_cameraTransform = m_projectionMatrix * m_viewMatrix;
 }
 
 void OrthographicCamera::setAspectRatio(float aspectRatio,
                                         KeepAspect keepAspect) {
+  NT_PROFILE_FUNCTION();
   m_keepAspect = keepAspect;
   m_aspectRatio = aspectRatio;
   updateProjection();
@@ -81,18 +93,21 @@ void OrthographicCamera::setAspectRatio(float aspectRatio,
 }
 
 void OrthographicCamera::setAspectRatio(float aspectRatio) {
+  NT_PROFILE_FUNCTION();
   m_aspectRatio = aspectRatio;
   updateProjection();
   updateCameraTransform();
 }
 
 void OrthographicCamera::setZoomLevel(float zoomLevel) {
+  NT_PROFILE_FUNCTION();
   m_zoomLevel = zoomLevel;
   updateProjection();
   updateCameraTransform();
 }
 
 void OrthographicCamera::updateProjection() {
+  NT_PROFILE_FUNCTION();
   switch (m_keepAspect) {
     case KeepAspect::Height:
       m_projectionMatrix = orthographicProjection(

@@ -6,6 +6,7 @@
 #include "Neat/Graphics/VertexArray.hpp"
 #include "Neat/Graphics/RendererAPI.hpp"
 #include "Neat/Math/Vector.hpp"
+#include "Neat/Debug/Debug.hpp"
 
 namespace Neat {
 class RenderCommand {

@@ -56,18 +56,22 @@ void Application::run() {
 }
 
 void Application::pushLayer(Scope<Layer> &&layer) {
+  NT_PROFILE_FUNCTION();
   m_layerGroup.pushLayer(std::move(layer));
 }
 
 void Application::pushOverlay(Scope<Layer> &&layer) {
+  NT_PROFILE_FUNCTION();
   m_layerGroup.pushOverlay(std::move(layer));
 }
 
 Scope<Layer> Application::popLayer(Int32 position) {
+  NT_PROFILE_FUNCTION();
   return m_layerGroup.popLayer(position);
 }
 
 Scope<Layer> Application::popOverlay(Int32 position) {
+  NT_PROFILE_FUNCTION();
   return m_layerGroup.popOverlay(position);
 }
 
@@ -80,11 +84,13 @@ void Application::layersOnUpdate(double deltaTimeSeconds) {
 
 bool Application::onWindowClose(
     [[maybe_unused]] const WindowCloseEvent &event) {
+  NT_PROFILE_FUNCTION();
   stop();
   return true;
 }
 
 bool Application::onWindowResize(const WindowResizeEvent &event) {
+  NT_PROFILE_FUNCTION();
   if (not m_window->isMinimized())
     Renderer::onWindowResize(event.width, event.height);
 

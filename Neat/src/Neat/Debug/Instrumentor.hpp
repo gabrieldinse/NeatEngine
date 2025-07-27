@@ -17,6 +17,7 @@ class Instrumentor {
   void beginSession(const std::string &name, const std::string outputFilepath =
                                                  "instrumentor_results.json") {
     std::lock_guard lock{m_mutex};
+    NT_CORE_INFO("Instrumentor::beginSession('{0}').", name);
     if (m_currentSession) {
       // In case the logger is not initialized yet
       if (Log::getCoreLogger()) {
@@ -86,6 +87,7 @@ class Instrumentor {
 
   void endCurrentSession() {
     if (m_currentSession) {
+      NT_CORE_INFO("Instrumentor::endSession('{0}').", m_currentSession->name);
       writeFooter();
       m_outputStream.close();
       m_currentSession.reset();
