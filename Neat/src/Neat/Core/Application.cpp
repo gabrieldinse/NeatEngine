@@ -33,12 +33,14 @@ Application::~Application() {
 void Application::stop() { m_running = false; }
 
 void Application::run() {
+  NT_PROFILE_FUNCTION();
   NT_CORE_INFO("Application started");
   Timer timer;
   m_running = true;
   timer.start();
 
   while (m_running) {
+    NT_PROFILE_SCOPE("RunLoop");
     double deltaTimeSeconds = timer.restart();
     ImGuiRender::begin();
     onUpdate(deltaTimeSeconds);

@@ -28,6 +28,9 @@ class Timer {
     if (not m_started) m_started = true;
   }
 
+  bool started() { return m_started; }
+  bool stopped() { return not started(); }
+
   template <typename T = double>
   T stop(TimeUnit timeUnit = TimeUnit::Seconds) {
     auto elapsed_time = elapsed<T>(timeUnit);
@@ -64,6 +67,9 @@ class Timer {
           return hoursCast<T>((m_currentTicks - m_startTicks));
         case TimeUnit::Days:
           return daysCast<T>((m_currentTicks - m_startTicks));
+        default:
+          NT_CORE_ASSERT(false, "Unknown TimeUnit.");
+          return {};
       }
     }
 
@@ -71,7 +77,7 @@ class Timer {
   }
 
   template <typename T = double>
-  T currentTimeSinceEpoch(TimeUnit timeUnit = TimeUnit::Seconds) const {
+  T elapsedSinceEpoch(TimeUnit timeUnit = TimeUnit::Seconds) const {
     switch (timeUnit) {
       case TimeUnit::Nanoseconds:
         return nanosecondsCast<T>(m_currentTicks.time_since_epoch());
@@ -87,6 +93,9 @@ class Timer {
         return hoursCast<T>(m_currentTicks.time_since_epoch());
       case TimeUnit::Days:
         return daysCast<T>(m_currentTicks.time_since_epoch());
+      default:
+        NT_CORE_ASSERT(false, "Unknown TimeUnit.");
+        return {};
     }
   }
 
@@ -107,6 +116,9 @@ class Timer {
         return hoursCast<T>(m_startTicks.time_since_epoch());
       case TimeUnit::Days:
         return daysCast<T>(m_startTicks.time_since_epoch());
+      default:
+        NT_CORE_ASSERT(false, "Unknown TimeUnit.");
+        return {};
     }
   }
 
