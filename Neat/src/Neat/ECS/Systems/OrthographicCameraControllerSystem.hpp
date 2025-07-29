@@ -30,9 +30,15 @@ class OrthographicCameraControllerSystem
   bool onWindowResize(const WindowResizeEvent &event);
 
  private:
+  void setZoomLevel(float offset, float translationSpeed = 0.2f);
+
+ private:
   Ref<OrthographicCamera> m_camera;
+  float m_maxZoomLevel = 0.25f;
   float m_zoomLevel = 1.0f;
-  float m_translationSpeed = 1.0f;
+  float m_zoomSpeed = 0.1f;
+  float m_initialTranslationSpeed = 2.0f;
+  float m_translationSpeed = m_initialTranslationSpeed;
   float m_rotationSpeed = 90.0f;
   float m_aspectRatio;
   Vector2F m_lastMousePosition{0.0f};

@@ -28,30 +28,54 @@ void OrthographicCameraControllerSystem::onUpdate(
     double deltaTimeSeconds) {
   NT_PROFILE_FUNCTION();
   auto distance = (float)(m_translationSpeed * deltaTimeSeconds);
-  if (Input::isKeyPressed(Key::W)) m_camera->moveUp(distance);
+  if (Input::isKeyPressed(Key::W)) {
+    m_camera->moveUp(distance);
+  }
 
-  if (Input::isKeyPressed(Key::S)) m_camera->moveDown(distance);
+  if (Input::isKeyPressed(Key::S)) {
+    m_camera->moveDown(distance);
+  }
 
-  if (Input::isKeyPressed(Key::D)) m_camera->moveRight(distance);
+  if (Input::isKeyPressed(Key::D)) {
+    m_camera->moveRight(distance);
+  }
 
-  if (Input::isKeyPressed(Key::A)) m_camera->moveLeft(distance);
+  if (Input::isKeyPressed(Key::A)) {
+    m_camera->moveLeft(distance);
+  }
+
+  if (Input::isKeyPressed(Key::Up)) {
+    setZoomLevel(-m_zoomSpeed);
+  }
+
+  if (Input::isKeyPressed(Key::Down)) {
+    setZoomLevel(m_zoomSpeed);
+  }
 
   if (m_rotationEnabled) {
     auto rotation = (float)(m_rotationSpeed * deltaTimeSeconds);
-    if (Input::isKeyPressed(Key::Q)) m_camera->incrementRotation(rotation);
+    if (Input::isKeyPressed(Key::Q)) {
+      m_camera->incrementRotation(rotation);
+    }
 
-    if (Input::isKeyPressed(Key::E)) m_camera->incrementRotation(-rotation);
+    if (Input::isKeyPressed(Key::E)) {
+      m_camera->incrementRotation(-rotation);
+    }
   }
+}
+
+void OrthographicCameraControllerSystem::setZoomLevel(
+    float offset, float zoomTranslationSpeed) {
+  m_zoomLevel -= offset * zoomTranslationSpeed;
+  m_zoomLevel = std::max(m_zoomLevel, m_maxZoomLevel);
+  m_translationSpeed = m_initialTranslationSpeed * m_zoomLevel;
+  m_camera->setZoomLevel(m_zoomLevel);
 }
 
 bool OrthographicCameraControllerSystem::onMouseScrolled(
     const MouseScrolledEvent &event) {
   NT_PROFILE_FUNCTION();
-  m_zoomLevel -= event.yOffset * 0.2f;
-  m_zoomLevel = std::max(m_zoomLevel, 0.25f);
-  m_translationSpeed = 2.0f * m_zoomLevel;
-  m_camera->setZoomLevel(m_zoomLevel);
-
+  setZoomLevel(-event.yOffset);
   return false;
 }
 
