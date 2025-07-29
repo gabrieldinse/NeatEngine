@@ -22,9 +22,7 @@ void OpenGLVertexArray::bind() const {
   glBindVertexArray(m_id);
 }
 
-void OpenGLVertexArray::unbind() const {
-  glBindVertexArray(0);
-}
+void OpenGLVertexArray::unbind() const { glBindVertexArray(0); }
 
 void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
   NT_PROFILE_FUNCTION();

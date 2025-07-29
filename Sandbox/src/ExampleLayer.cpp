@@ -37,15 +37,23 @@ ExampleLayer::ExampleLayer(
 
   for (std::size_t i = 0; i < this->numberOfLines; ++i) {
     for (std::size_t j = 0; j < this->numberOfColumns; ++j) {
-      auto entity = entities->createEntity();
-      entity.addComponent<Neat::RenderableSpriteComponent>(
+      auto flatColorQuad = entities->createEntity();
+      flatColorQuad.addComponent<Neat::RenderableSpriteComponent>(
           Neat::Vector4F{float(i) / this->numberOfLines,
                          float(j) / this->numberOfColumns, 1.0f, 1.0f});
-      entity.addComponent<Neat::TransformComponent>(
+      flatColorQuad.addComponent<Neat::TransformComponent>(
+
           Neat::Vector3F{0.1f * j, 0.1f * i, 0.0f},
           Neat::Vector3F{0.0f, 0.0f, 0.0f}, Neat::Vector3F{0.1f, 0.1f, 1.0f});
     }
   }
+
+  auto checkerboardQuad = entities->createEntity();
+  checkerboardQuad.addComponent<Neat::RenderableSpriteComponent>(
+      this->checkerboardTexture, Neat::Vector4F{0.8f, 0.4f, 0.3f, 0.75f}, 5.0f);
+  checkerboardQuad.addComponent<Neat::TransformComponent>(
+      Neat::Vector3F{0.0f, 0.0f, 0.5f}, Neat::Vector3F{0.0f, 0.0f, 45.0f},
+      Neat::Vector3F{1.0f, 1.0f, 1.0f});
 }
 
 void ExampleLayer::onImGuiRender() {
@@ -66,12 +74,6 @@ void ExampleLayer::onUpdate(double deltaTimeSeconds) {
   systems->onUpdate<Neat::OrthographicCameraControllerSystem>(deltaTimeSeconds);
   systems->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);
   onImGuiRender();
-  // Neat::Renderer2D::beginScene(
-  //     systems->getSystem<Neat::OrthographicCameraControllerSystem>()
-  //         ->getCamera());
-  // Neat::Renderer2D::drawQuad(
-  //     {0.0f, 0.0f, 0.1f}, {1.0f, 1.0f}, this->checkerboardTexture);
-  // Neat::Renderer2D::endScene();
 }
 
 bool ExampleLayer::onWindowResize(const Neat::WindowResizeEvent &event) {

@@ -109,10 +109,11 @@ void OpenGLShaderProgram::build(const std::string &filepath) {
   auto result = readFile(filepath);
   if (not result) {
     NT_CORE_ERROR("Failed to read shader file: {0}", result.error().message);
+    NT_CORE_ASSERT(false, "");
     return;
   }
 
-  const auto &shader_sources_pack = result.value();
+  const auto &shader_sources_pack = *result;
   NT_CORE_TRACE("shader_sources_pack:\n{0}", shader_sources_pack);
   auto shader_sources = splitShaderSources(shader_sources_pack);
   build(shader_sources);

@@ -2,9 +2,9 @@
 
 #include "Platform/OpenGL/OpenGLTexture2D.hpp"
 #include "Neat/Graphics/Renderer.hpp"
+#include "Neat/Utils/LoadImage.hpp"
 
 #include <glad/glad.h>
-#include <stb_image.h>
 
 namespace Neat {
 OpenGLTexture2D::OpenGLTexture2D(Int32 width, Int32 height)
@@ -33,21 +33,20 @@ OpenGLTexture2D::OpenGLTexture2D(Int32 width, Int32 height)
 OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
     : m_internalFormat(0), m_dataFormat(0) {
   NT_PROFILE_FUNCTION();
-  // TODO: have a sepparate utilitiy function (Utils) to load the image and
-  // add profiling to it
-  Int32 width, height, channels;
-  stbi_set_flip_vertically_on_load(1);  // flip the image loaded vertically
-  auto data = stbi_load(filepath.c_str(), &width, &height, &channels, 0);
-  NT_CORE_ASSERT(data, "Failed to load texture image!");
+  auto result = loadImage(filepath);
+  if (not result) {
+    NT_CORE_ERROR("Failed to load texture image: {0}", result.error().filepath);
+    NT_CORE_ASSERT(false, "");
+  }
 
-  // Converts to unsigned because OpenGL uses UInt32
-  m_width = width;
-  m_height = height;
+  const Image &image = *result;
+  m_width = image.getWidth();
+  m_height = image.getHeight();
 
-  if (channels == 4) {
+  if (image.getChannels() == 4) {
     m_internalFormat = GL_RGBA8;
     m_dataFormat = GL_RGBA;
-  } else if (channels == 3) {
+  } else if (image.getChannels() == 3) {
     m_internalFormat = GL_RGB8;
     m_dataFormat = GL_RGB;
   }
@@ -69,11 +68,8 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
   glTextureParameteri(m_id, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
   glTextureSubImage2D(m_id, 0, 0, 0, m_width, m_height, m_dataFormat,
-                      GL_UNSIGNED_BYTE, data);
+                      GL_UNSIGNED_BYTE, image.getData());
   glGenerateMipmap(GL_TEXTURE_2D);
-
-  // Deallocates the memory
-  stbi_image_free(data);
 }
 
 OpenGLTexture2D::~OpenGLTexture2D() {
