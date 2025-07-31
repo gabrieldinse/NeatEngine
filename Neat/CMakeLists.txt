@@ -35,19 +35,18 @@ target_include_directories(Neat PUBLIC
     vendor/stb_image
 )
 
-target_link_libraries(Neat PUBLIC glfw Glad)
+set(LIBS glfw Glad)
 
-find_package(OpenGL REQUIRED)
 if(WIN32)
-    target_link_libraries(Neat PUBLIC opengl32.lib)
-else()
-    target_link_libraries(Neat PUBLIC OpenGL::GL pthread dl)
-    if(UNIX AND NOT APPLE)
-        find_package(X11 REQUIRED)
-        find_package(Threads REQUIRED)
-        target_link_libraries(Neat PUBLIC X11::X11 ${CMAKE_THREAD_LIBS_INIT})
-    endif()
+    set(LIBS ${LIBS} opengl32.lib)
+elseif(UNIX AND NOT APPLE)
+    find_package(OpenGL REQUIRED)
+    find_package(X11 REQUIRED)
+    find_package(Threads REQUIRED)
+    set(LIBS ${LIBS} OpenGL::GL pthread dl X11::X11 ${CMAKE_THREAD_LIBS_INIT})
 endif()
+
+target_link_libraries(Neat PUBLIC ${LIBS})
 
 target_compile_definitions(Neat PRIVATE
     $<$<CONFIG:Debug>:NT_DEBUG;NT_IMGUI>
