@@ -45,11 +45,11 @@ void OrthographicCameraControllerSystem::onUpdate(
   }
 
   if (Input::isKeyPressed(Key::Up)) {
-    setZoomLevel(-m_zoomSpeed);
+    setZoomLevel(m_zoomSpeed);
   }
 
   if (Input::isKeyPressed(Key::Down)) {
-    setZoomLevel(m_zoomSpeed);
+    setZoomLevel(-m_zoomSpeed);
   }
 
   if (m_rotationEnabled) {

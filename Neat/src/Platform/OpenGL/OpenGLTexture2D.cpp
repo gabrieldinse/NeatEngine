@@ -1,6 +1,7 @@
 #include "NeatPCH.hpp"
 
 #include "Platform/OpenGL/OpenGLTexture2D.hpp"
+#include "Platform/OpenGL/OpenGLUtils.hpp"
 #include "Neat/Graphics/Renderer.hpp"
 #include "Neat/Utils/LoadImage.hpp"
 
@@ -21,13 +22,10 @@ OpenGLTexture2D::OpenGLTexture2D(Int32 width, Int32 height)
   // Alocates storage on the gpu for the texture
   glTextureStorage2D(m_id, 1, m_internalFormat, width, m_height);
 
-  // Set linear interpolation (integer parameter) for resizing
-  // (expansion or contraction) the texture in the geometry
-  glTextureParameteri(m_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTextureParameteri(m_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-  glTextureParameteri(m_id, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTextureParameteri(m_id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  setMinification(Texture2DFilter::Linear);
+  setMagnification(Texture2DFilter::Nearest);
+  setWrapS(Texture2DWrapping::Repeat);
+  setWrapT(Texture2DWrapping::Repeat);
 }
 
 OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
@@ -59,13 +57,10 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
   // Alocates storage on the gpu for the texture
   glTextureStorage2D(m_id, 1, m_internalFormat, m_width, m_height);
 
-  // Set linear interpolation (integer parameter) for resizing
-  // (expansion or contraction) the texture in the geometry
-  glTextureParameteri(m_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTextureParameteri(m_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-  glTextureParameteri(m_id, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTextureParameteri(m_id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  setMinification(Texture2DFilter::LinearMipmapLinear);
+  setMagnification(Texture2DFilter::Linear);
+  setWrapS(Texture2DWrapping::Repeat);
+  setWrapT(Texture2DWrapping::Repeat);
 
   glTextureSubImage2D(m_id, 0, 0, 0, m_width, m_height, m_dataFormat,
                       GL_UNSIGNED_BYTE, image.getData());
@@ -84,11 +79,30 @@ void OpenGLTexture2D::setData(void *data, UInt32 size) {
                  "Data must be entire texture!");
   glTextureSubImage2D(m_id, 0, 0, 0, m_width, m_height, m_dataFormat,
                       GL_UNSIGNED_BYTE, data);
-  glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 void OpenGLTexture2D::bind(UInt32 unit) const {
   NT_PROFILE_FUNCTION();
   glBindTextureUnit(unit, m_id);
+}
+
+void OpenGLTexture2D::setMinification(Texture2DFilter minificationFilter) {
+  glTextureParameteri(m_id, GL_TEXTURE_MIN_FILTER,
+                      OpenGL::getTexture2DFilter(minificationFilter));
+}
+
+void OpenGLTexture2D::setMagnification(Texture2DFilter magnificationFilter) {
+  glTextureParameteri(m_id, GL_TEXTURE_MAG_FILTER,
+                      OpenGL::getTexture2DFilter(magnificationFilter));
+}
+
+void OpenGLTexture2D::setWrapS(Texture2DWrapping wrapS) {
+  glTextureParameteri(m_id, GL_TEXTURE_WRAP_S,
+                      OpenGL::getTexture2DWrapping(wrapS));
+}
+
+void OpenGLTexture2D::setWrapT(Texture2DWrapping wrapT) {
+  glTextureParameteri(m_id, GL_TEXTURE_WRAP_T,
+                      OpenGL::getTexture2DWrapping(wrapT));
 }
 }  // namespace Neat

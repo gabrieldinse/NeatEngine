@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLShaderDataType.hpp"
+#include "Platform/OpenGL/OpenGLUtils.hpp"
 #include "Platform/OpenGL/OpenGLShaderProgram.hpp"
 #include "Neat/Utils/ReadFile.hpp"
 
@@ -150,7 +150,7 @@ std::unordered_map<UInt32, std::string> OpenGLShaderProgram::splitShaderSources(
 
     auto shader_type_name = shaderSourcesPack.substr(
         shader_type_begin, shader_type_end - shader_type_begin);
-    auto shader_type = OpenGLTypeConverter::getShaderDataType(shader_type_name);
+    auto shader_type = OpenGL::getShaderDataType(shader_type_name);
 
     auto next_line_pos = shaderSourcesPack.find_first_not_of("\r\n", eol_pos);
     pos = shaderSourcesPack.find(type_token, next_line_pos);

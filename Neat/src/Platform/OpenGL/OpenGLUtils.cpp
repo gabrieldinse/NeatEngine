@@ -1,11 +1,12 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLShaderDataType.hpp"
+#include "Platform/OpenGL/OpenGLUtils.hpp"
 
 #include <glad/glad.h>
 
 namespace Neat {
-UInt32 OpenGLTypeConverter::getPrimitiveType(ShaderDataType type) {
+namespace OpenGL {
+UInt32 getPrimitiveType(ShaderDataType type) {
   switch (type) {
     case ShaderDataType::Float:
       return GL_FLOAT;
@@ -35,7 +36,7 @@ UInt32 OpenGLTypeConverter::getPrimitiveType(ShaderDataType type) {
   }
 }
 
-UInt32 OpenGLTypeConverter::getType(ShaderDataType type) {
+UInt32 getType(ShaderDataType type) {
   switch (type) {
     case ShaderDataType::Float:
       return GL_FLOAT;
@@ -68,8 +69,7 @@ UInt32 OpenGLTypeConverter::getType(ShaderDataType type) {
   return 0;
 }
 
-ShaderDataType OpenGLTypeConverter::getShaderDataType(UInt32 type,
-                                                      UInt32 count) {
+ShaderDataType getShaderDataType(UInt32 type, UInt32 count) {
   switch (type) {
     case GL_FLOAT: {
       if (count == 1) return ShaderDataType::Float;
@@ -119,7 +119,7 @@ ShaderDataType OpenGLTypeConverter::getShaderDataType(UInt32 type,
   return ShaderDataType::None;
 }
 
-UInt32 OpenGLTypeConverter::getShaderDataType(const std::string &type) {
+UInt32 getShaderDataType(const std::string &type) {
   if (type == "vertex") return GL_VERTEX_SHADER;
 
   if (type == "fragment" or type == "pixel") return GL_FRAGMENT_SHADER;
@@ -127,4 +127,39 @@ UInt32 OpenGLTypeConverter::getShaderDataType(const std::string &type) {
   NT_CORE_ASSERT(false, "Unkown shader type.");
   return 0;
 }
+
+Int getTexture2DWrapping(Texture2DWrapping wrapping) {
+  switch (wrapping) {
+    case Texture2DWrapping::Repeat:
+      return GL_REPEAT;
+    case Texture2DWrapping::MirroredRepeat:
+      return GL_MIRRORED_REPEAT;
+    case Texture2DWrapping::ClampToEdge:
+      return GL_CLAMP_TO_EDGE;
+    case Texture2DWrapping::ClampToBorder:
+      return GL_CLAMP_TO_BORDER;
+    default:
+      NT_CORE_ASSERT(false, "Unknown Texture2DWrapping.");
+  }
+}
+
+Int getTexture2DFilter(Texture2DFilter filter) {
+  switch (filter) {
+    case Texture2DFilter::Nearest:
+      return GL_NEAREST;
+    case Texture2DFilter::Linear:
+      return GL_LINEAR;
+    case Texture2DFilter::NearestMipmapNearest:
+      return GL_NEAREST_MIPMAP_NEAREST;
+    case Texture2DFilter::NearestMipmapLinear:
+      return GL_NEAREST_MIPMAP_LINEAR;
+    case Texture2DFilter::LinearMipmapLinear:
+      return GL_LINEAR_MIPMAP_LINEAR;
+    case Texture2DFilter::LinearMipmapNearest:
+      return GL_LINEAR_MIPMAP_NEAREST;
+    default:
+      NT_CORE_ASSERT(false, "Unknown Texture2DFilter.");
+  }
+}
+}  // namespace OpenGL
 }  // namespace Neat

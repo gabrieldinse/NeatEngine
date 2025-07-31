@@ -1,7 +1,7 @@
 #include "NeatPCH.hpp"
 
 #include "Platform/OpenGL/OpenGLVertexArray.hpp"
-#include "Platform/OpenGL/OpenGLShaderDataType.hpp"
+#include "Platform/OpenGL/OpenGLUtils.hpp"
 #include "Neat/Graphics/Renderer.hpp"
 
 #include <glad/glad.h>
@@ -36,7 +36,7 @@ void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
   for (const auto &element : layout) {
     glVertexAttribPointer(
         element.index, element.componentCount,
-        OpenGLTypeConverter::getPrimitiveType(element.type),
+        OpenGL::getPrimitiveType(element.type),
         static_cast<GLboolean>(element.normalized), layout.getOffset(),
         static_cast<void *>(static_cast<char *>(0) + element.offset));
     glEnableVertexAttribArray(element.index);

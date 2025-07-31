@@ -31,6 +31,11 @@ class OpenGLTexture2D : public Texture2D {
     return (m_id == other.getRendererID());
   }
 
+  virtual void setMinification(Texture2DFilter minificationFilter) override;
+  virtual void setMagnification(Texture2DFilter magnificationFilter) override;
+  virtual void setWrapS(Texture2DWrapping wrapS) override;
+  virtual void setWrapT(Texture2DWrapping wrapT) override;
+
  private:
   UInt32 m_id;
   Int32 m_width;
@@ -40,4 +45,5 @@ class OpenGLTexture2D : public Texture2D {
   const Vector2F m_coordinates[4] = {
       {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
 };
+
 }  // namespace Neat
