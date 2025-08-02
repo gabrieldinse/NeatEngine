@@ -4,16 +4,16 @@
 
 ExampleLayer::ExampleLayer(
     const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
-    : checkerboardTexture(
+    : m_checkerboardTexture(
           Neat::Texture2D::create("assets/textures/texture1.png")),
-      spritesheetTexture(
+      m_spritesheetTexture(
           Neat::Texture2D::create("assets/textures/spritesheet1.png")),
-      stairsTexture(Neat::SubTexture2D::createFromIndex(spritesheetTexture,
-                                                        {7, 6}, {64, 64})),
-      stairsTexture2(Neat::SubTexture2D::createFromIndex(spritesheetTexture,
+      m_stairsTexture(Neat::SubTexture2D::createFromIndex(m_spritesheetTexture,
+                                                          {7, 6}, {64, 64})),
+      stairsTexture2(Neat::SubTexture2D::createFromIndex(m_spritesheetTexture,
                                                          {8, 6}, {64, 64})) {
-  entities = Neat::makeRef<Neat::EntityManager>(eventDispatcher);
-  systems = Neat::makeRef<Neat::SystemManager>(entities, eventDispatcher);
+  m_entities = Neat::makeRef<Neat::EntityManager>(eventDispatcher);
+  m_systems = Neat::makeRef<Neat::SystemManager>(m_entities, eventDispatcher);
   eventDispatcher->get<Neat::WindowResizeEvent>()
       .connect<&ExampleLayer::onWindowResize>(*this);
   eventDispatcher->get<Neat::MouseMovedEvent>()
@@ -29,15 +29,15 @@ ExampleLayer::ExampleLayer(
   // NT_ASSERT(false, "");
 
   auto camera_controller_system =
-      systems->addSystem<Neat::OrthographicCameraControllerSystem>(1280.0f /
-                                                                   720.0f);
-  systems->addSystem<Neat::Render2DSystem>(
+      m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(1280.0f /
+                                                                     720.0f);
+  m_systems->addSystem<Neat::Render2DSystem>(
       camera_controller_system->getCamera());
-  systems->init();
+  m_systems->init();
 
   for (std::size_t i = 0; i < this->numberOfLines; ++i) {
     for (std::size_t j = 0; j < this->numberOfColumns; ++j) {
-      auto flatColorQuad = entities->createEntity();
+      auto flatColorQuad = m_entities->createEntity();
       flatColorQuad.addComponent<Neat::RenderableSpriteComponent>(
           Neat::Vector4F{float(i) / this->numberOfLines,
                          float(j) / this->numberOfColumns, 1.0f, 1.0f});
@@ -48,9 +48,15 @@ ExampleLayer::ExampleLayer(
     }
   }
 
-  auto checkerboardQuad = entities->createEntity();
+  // Set values different from the default
+  m_checkerboardTexture->setMinification(Neat::Texture2DFilter::Nearest);
+  m_checkerboardTexture->setMagnification(Neat::Texture2DFilter::Nearest);
+  m_checkerboardTexture->setWrapS(Neat::Texture2DWrapping::ClampToEdge);
+
+  auto checkerboardQuad = m_entities->createEntity();
   checkerboardQuad.addComponent<Neat::RenderableSpriteComponent>(
-      this->checkerboardTexture, Neat::Vector4F{0.8f, 0.4f, 0.3f, 0.75f}, 5.0f);
+      this->m_checkerboardTexture, Neat::Vector4F{0.8f, 0.4f, 0.3f, 0.75f},
+      5.0f);
   checkerboardQuad.addComponent<Neat::TransformComponent>(
       Neat::Vector3F{0.0f, 0.0f, 0.5f}, Neat::Vector3F{0.0f, 0.0f, 45.0f},
       Neat::Vector3F{1.0f, 1.0f, 1.0f});
@@ -71,8 +77,9 @@ void ExampleLayer::onImGuiRender() {
 }
 
 void ExampleLayer::onUpdate(double deltaTimeSeconds) {
-  systems->onUpdate<Neat::OrthographicCameraControllerSystem>(deltaTimeSeconds);
-  systems->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);
+  m_systems->onUpdate<Neat::OrthographicCameraControllerSystem>(
+      deltaTimeSeconds);
+  m_systems->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);
   onImGuiRender();
 }
 
