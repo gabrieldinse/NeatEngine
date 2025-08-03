@@ -5,3 +5,4 @@
 #include "Neat/Events/Events.hpp"
 #include "Neat/Graphics/Graphics.hpp"
 #include "Neat/Math/Math.hpp"
+#include "Neat/Utils/Utils.hpp"

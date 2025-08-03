@@ -8,7 +8,8 @@
 namespace Neat {
 OrthographicCameraControllerSystem::OrthographicCameraControllerSystem(
     float aspectRatio, float zoomLevel, bool rotationEnabled)
-    : m_camera(makeRef<OrthographicCamera>(Vector2F(0.0f), aspectRatio, zoomLevel)),
+    : m_camera(
+          makeRef<OrthographicCamera>(Vector2F(0.0f), aspectRatio, zoomLevel)),
       m_zoomLevel(zoomLevel),
       m_aspectRatio(aspectRatio),
       m_rotationEnabled(rotationEnabled) {}
