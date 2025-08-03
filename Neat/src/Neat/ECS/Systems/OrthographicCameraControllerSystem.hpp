@@ -12,7 +12,7 @@ namespace Neat {
 class OrthographicCameraControllerSystem
     : public System<OrthographicCameraControllerSystem> {
  public:
-  OrthographicCameraControllerSystem(float aspectRatio,
+  OrthographicCameraControllerSystem(float aspectRatio, float zoomLevel = 1.0f,
                                      bool rotationEnabled = true);
 
   ~OrthographicCameraControllerSystem();

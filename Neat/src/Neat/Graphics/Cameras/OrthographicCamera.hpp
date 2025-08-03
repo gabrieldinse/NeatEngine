@@ -11,12 +11,14 @@ enum class KeepAspect { Height, Width };
 
 class OrthographicCamera : public Camera {
  public:
-  OrthographicCamera(const Vector2F &position, float size,
+  OrthographicCamera(const Vector2F &position, float aspectRatio, float zoomLevel = 1.0f,
                      KeepAspect keepAspect = KeepAspect::Height);
 
+  void setProperties(float aspectRatio, KeepAspect keepAspect = KeepAspect::Height, float zoomLevel = 1.0f);
   void setAspectRatio(float aspectRatio, KeepAspect keepAspect);
   void setAspectRatio(float aspectRatio);
   void setZoomLevel(float zoomLevel);
+  void setSize(float size) { setZoomLevel(size); }
   void setPosition(const Vector2F &position);
 
   const Vector3F &getPosition() const { return m_position; }

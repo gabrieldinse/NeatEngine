@@ -7,13 +7,23 @@
 #include "Neat/Math/Transform.hpp"
 
 namespace Neat {
-OrthographicCamera::OrthographicCamera(const Vector2F &position, float size,
+OrthographicCamera::OrthographicCamera(const Vector2F &position, float aspectRatio, float zoomLevel,
                                        KeepAspect keepAspect)
     : m_position(Vector3F(position, m_zPos)),
-      m_aspectRatio(size),
-      m_keepAspect(keepAspect) {
+      m_aspectRatio(aspectRatio),
+      m_keepAspect(keepAspect),
+      m_zoomLevel(zoomLevel) {
   NT_PROFILE_FUNCTION();
-  setAspectRatio(m_aspectRatio);
+  setProperties(aspectRatio, keepAspect, zoomLevel);
+}
+
+void OrthographicCamera::setProperties(float aspectRatio, KeepAspect keepAspect, float zoomLevel) {
+  NT_PROFILE_FUNCTION();
+  m_aspectRatio = aspectRatio;
+  m_keepAspect = keepAspect;
+  m_zoomLevel = zoomLevel;
+  updateProjection();
+  updateCameraTransform();
 }
 
 void OrthographicCamera::setPosition(const Vector2F &position) {

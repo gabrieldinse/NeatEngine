@@ -12,7 +12,7 @@ struct RenderableSpriteComponent {
   RenderableSpriteComponent() = default;
   RenderableSpriteComponent(const RenderableSpriteComponent &other) = default;
   RenderableSpriteComponent(const Ref<Texture2D> &texture,
-                            const Vector4F &color = Color::magenta,
+                            const Vector4F &color = Color::white,
                             float tilingFactor = 1.0f)
       : texture(texture), color(color), tilingFactor(tilingFactor) {}
   RenderableSpriteComponent(const Vector4F &color) : color(color) {}
