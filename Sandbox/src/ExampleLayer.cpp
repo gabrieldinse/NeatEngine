@@ -42,9 +42,8 @@ ExampleLayer::ExampleLayer(
           Neat::Vector4F{float(i) / this->numberOfLines,
                          float(j) / this->numberOfColumns, 1.0f, 1.0f});
       flatColorQuad.addComponent<Neat::TransformComponent>(
-
           Neat::Vector3F{0.1f * j, 0.1f * i, 0.0f},
-          Neat::Vector3F{0.0f, 0.0f, 0.0f}, Neat::Vector3F{0.1f, 0.1f, 1.0f});
+          Neat::Vector3F{0.1f, 0.1f, 1.0f});
     }
   }
 
@@ -58,8 +57,8 @@ ExampleLayer::ExampleLayer(
       this->m_checkerboardTexture, Neat::Vector4F{0.8f, 0.4f, 0.3f, 0.75f},
       5.0f);
   checkerboardQuad.addComponent<Neat::TransformComponent>(
-      Neat::Vector3F{0.0f, 0.0f, 0.5f}, Neat::Vector3F{0.0f, 0.0f, 45.0f},
-      Neat::Vector3F{1.0f, 1.0f, 1.0f});
+      Neat::Vector3F{0.0f, 0.0f, 0.5f}, Neat::Vector3F{1.0f, 1.0f, 1.0f},
+      Neat::Vector3F{0.0f, 0.0f, 45.0f});
 }
 
 void ExampleLayer::onImGuiRender() {

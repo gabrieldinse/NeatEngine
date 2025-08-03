@@ -19,4 +19,4 @@ target_compile_definitions(FlappySpaceship PRIVATE
     $<$<CONFIG:Release>:NT_RELEASE>
     $<$<CONFIG:Dist>:NT_DIST>
 )
-file(COPY assets DESTINATION ${OUTPUT_DIR})
+file(COPY Resources DESTINATION ${OUTPUT_DIR})
