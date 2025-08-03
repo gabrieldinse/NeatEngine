@@ -9,7 +9,6 @@ target_include_directories(Sandbox PRIVATE
     ../Neat/vendor
 )
 target_link_libraries(Sandbox PRIVATE Neat)
-
 set_target_properties(Sandbox PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
     LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}
@@ -22,8 +21,4 @@ target_compile_definitions(Sandbox PRIVATE
     $<$<CONFIG:Dist>:NT_DIST>
 )
 
-add_custom_command(TARGET Sandbox PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/Assets
-    $<TARGET_FILE_DIR:Neat>/Assets
-)
+file(COPY assets DESTINATION ${OUTPUT_DIR})

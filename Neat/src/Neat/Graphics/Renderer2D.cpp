@@ -52,7 +52,7 @@ void Renderer2D::init() {
   for (std::size_t i = 0; i < Renderer2DData::maxTextureSlots; ++i)
     samplers[i] = (Int32)i;
   s_data->textureShader =
-      ShaderProgram::create("./Assets/shader_source/texture.glsl");
+      ShaderProgram::create("./Resources/Shaders/Texture.glsl");
   s_data->textureShader->bind();
   s_data->textureShader->set(
       "u_textures[0]", samplers,
