@@ -26,6 +26,9 @@ class OrthographicCamera : public Camera {
 
   const Vector3F &getPosition() const { return m_position; }
   float getRotation() const { return m_rotation; }
+  float getZoomLevel() const { return m_zoomLevel; }
+  float getSize() const { return getZoomLevel(); }
+  float getAspectRatio() const { return m_aspectRatio; }
 
   void incrementRotation(float rotation);
   void setRotation(float rotation);

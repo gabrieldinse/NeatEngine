@@ -61,4 +61,14 @@ template <typename T, typename... Args>
 Ref<T> makeRef(Args&&... args) {
   return std::make_shared<T>(std::forward<Args>(args)...);
 }
+
+template <typename T, typename... Args>
+Scope<T> createScope(Args&&... args) {
+  return makeScope<T>(std::forward<Args>(args)...);
+}
+
+template <typename T, typename... Args>
+Ref<T> createRef(Args&&... args) {
+  return makeRef<T>(std::forward<Args>(args)...);
+}
 }  // namespace Neat

@@ -12,9 +12,8 @@ namespace Neat {
 class OrthographicCameraControllerSystem
     : public System<OrthographicCameraControllerSystem> {
  public:
-  OrthographicCameraControllerSystem(float aspectRatio, float zoomLevel = 1.0f,
+  OrthographicCameraControllerSystem(const Ref<OrthographicCamera> &camera,
                                      bool rotationEnabled = true);
-
   ~OrthographicCameraControllerSystem();
 
   virtual void init(const Ref<EventDispatcher> &eventDispatcher) override;
