@@ -5,7 +5,9 @@
 #include <ImGui/imgui.h>
 
 GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
-    : m_spaceshipTexture(
+    : m_camera(Neat::makeRef<Neat::OrthographicCamera>(
+          Neat::Vector2F{-10.f, 0.0f}, 1280.0f / 720.0f, 8.0f)),
+      m_spaceshipTexture(
           Neat::Texture2D::create("Resources/Textures/Ship.png")),
       m_pillarTexture(
           Neat::Texture2D::create("Resources/Textures/Triangle.png")) {
@@ -17,10 +19,8 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
   m_systems = Neat::makeRef<Neat::SystemManager>(m_entities, eventDispatcher);
 
   auto camera_controller_system =
-      m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(
-          1280.0f / 720.0f, 8.0f);
-  m_systems->addSystem<Neat::Render2DSystem>(
-      camera_controller_system->getCamera());
+      m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(m_camera);
+  m_systems->addSystem<Neat::Render2DSystem>(m_camera);
 
   m_systems->init();
 
@@ -29,6 +29,7 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
       Neat::Color::forestBrown);
   background.addComponent<Neat::TransformComponent>(
       Neat::Vector3F{0.0f, 0.0f, -0.5f}, Neat::Vector2F{50.0f, 50.0f});
+  background.addComponent<BrackgroundTag>();
 
   auto floor = m_entities->createEntity();
   floor.addComponent<Neat::RenderableSpriteComponent>(Neat::Color::white);
@@ -40,6 +41,32 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
   ceiling.addComponent<Neat::TransformComponent>(
       Neat::Vector3F{0.0f, 34.0f, 0.0f}, Neat::Vector2F{50.0f, 50.0f});
 
+  auto &random = Neat::Random::getInstance();
+  for (int i = 0; i < m_numPillars; ++i) {
+    float pillarsCenter = random.getFloat(-17.5f, 17.5f);
+    float pillarsGapSize = 2.0f + random.getFloat(0.0f, 5.0f);
+    float topPillarYPos =
+        10.0f - ((10.0f - pillarsCenter) * 0.2f) + pillarsGapSize * 0.5f;
+    float bottomPillarYPos =
+        -10.0f - ((-10.0f - pillarsCenter) * 0.2f) - pillarsGapSize * 0.5f;
+    float topPillarZPos = 0.01f * i;
+    float bottomPillarZPos = 0.01f * i + 0.005f;
+
+    auto topPillar = m_entities->createEntity();
+    topPillar.addComponent<Neat::RenderableSpriteComponent>(m_pillarTexture);
+    topPillar.addComponent<Neat::TransformComponent>(
+        Neat::Vector3F{10.f * i, topPillarYPos, topPillarZPos},
+        Neat::Vector2F{15.0f, 20.0f}, 180.0f);
+    topPillar.addComponent<PillarTag>();
+
+    auto bottomPillar = m_entities->createEntity();
+    bottomPillar.addComponent<Neat::RenderableSpriteComponent>(m_pillarTexture);
+    bottomPillar.addComponent<Neat::TransformComponent>(
+        Neat::Vector3F{10.0f * i, bottomPillarYPos, bottomPillarZPos},
+        Neat::Vector2F{15.0f, 20.0f});
+    bottomPillar.addComponent<PillarTag>();
+  }
+
   auto topPillar = m_entities->createEntity();
   topPillar.addComponent<Neat::RenderableSpriteComponent>(m_pillarTexture);
   topPillar.addComponent<Neat::TransformComponent>(
@@ -48,10 +75,30 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
   auto spaceship = m_entities->createEntity();
   spaceship.addComponent<Neat::RenderableSpriteComponent>(m_spaceshipTexture);
   spaceship.addComponent<Neat::TransformComponent>(
-      Neat::Vector3F{0.0f, 0.0f, 0.5f}, Neat::Vector2F{1.0f, 1.3f}, -90.0f);
+      Neat::Vector3F{-10.0f, 0.0f, 0.5f}, Neat::Vector2F{1.0f, 1.3f}, -90.0f);
+  spaceship.addComponent<PlayerTag>();
 }
 
 void GameLayer::onUpdate(double deltaTimeSeconds) {
+  Neat::ComponentHandle<PlayerTag> playerTag;
+  Neat::ComponentHandle<Neat::TransformComponent> playerTransform;
+  float spaceshipX;
+  for ([[maybe_unused]] auto &&entity :
+       m_entities->entitiesWithComponents<PlayerTag, Neat::TransformComponent>(
+           playerTag, playerTransform)) {
+    playerTransform->incrementX(5.0f * deltaTimeSeconds);
+    spaceshipX = playerTransform->position.x;
+  }
+
+  Neat::ComponentHandle<BrackgroundTag> backgroundTag;
+  Neat::ComponentHandle<Neat::TransformComponent> backgroundTransform;
+  for ([[maybe_unused]] auto &&entity :
+       m_entities
+           ->entitiesWithComponents<BrackgroundTag, Neat::TransformComponent>(
+               backgroundTag, backgroundTransform)) {
+    backgroundTransform->setX(spaceshipX);
+  }
+
   m_systems->onUpdate<Neat::OrthographicCameraControllerSystem>(
       deltaTimeSeconds);
   m_systems->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);

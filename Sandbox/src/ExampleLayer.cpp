@@ -28,11 +28,11 @@ ExampleLayer::ExampleLayer(
   // NT_TRACE(glm::to_string(glm::pow(q2, 0.5f)));
   // NT_ASSERT(false, "");
 
+  auto camera = Neat::makeRef<Neat::OrthographicCamera>(
+      Neat::Vector2F{0.0f, 0.0f}, 1280.0f / 720.0f);
   auto camera_controller_system =
-      m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(1280.0f /
-                                                                     720.0f);
-  m_systems->addSystem<Neat::Render2DSystem>(
-      camera_controller_system->getCamera());
+      m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(camera);
+  m_systems->addSystem<Neat::Render2DSystem>(camera);
   m_systems->init();
 
   for (std::size_t i = 0; i < this->numberOfLines; ++i) {
