@@ -22,4 +22,5 @@ private:
   Neat::Ref<Neat::Texture2D> m_spaceshipTexture;
   Neat::Ref<Neat::Texture2D> m_pillarTexture;
   int m_numPillars = 5;
+  float m_movePillarThresholdPosX = 30.0f;
 };
