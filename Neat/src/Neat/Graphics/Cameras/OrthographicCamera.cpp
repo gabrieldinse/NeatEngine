@@ -118,6 +118,30 @@ void OrthographicCamera::setZoomLevel(float zoomLevel) {
   updateCameraTransform();
 }
 
+void OrthographicCamera::setX(float x) {
+  NT_PROFILE_FUNCTION();
+  m_position.x = x;
+  updateCameraTransform();
+}
+
+void OrthographicCamera::setY(float y) {
+  NT_PROFILE_FUNCTION();
+  m_position.y = y;
+  updateCameraTransform();
+}
+
+void OrthographicCamera::incrementX(float x) {
+  NT_PROFILE_FUNCTION();
+  m_position.x += x;
+  updateCameraTransform();
+}
+
+void OrthographicCamera::incrementY(float y) {
+  NT_PROFILE_FUNCTION();
+  m_position.y += y;
+  updateCameraTransform();
+}
+
 void OrthographicCamera::updateProjection() {
   NT_PROFILE_FUNCTION();
   switch (m_keepAspect) {

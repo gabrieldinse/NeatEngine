@@ -39,6 +39,11 @@ class OrthographicCamera : public Camera {
   void moveRight(float distance);
   void moveLeft(float distance);
 
+  void setX(float x);
+  void setY(float y);
+  void incrementX(float x);
+  void incrementY(float y);
+
   virtual const Matrix4F &getProjectionMatrix() const override {
     return m_projectionMatrix;
   }
