@@ -12,3 +12,6 @@ build
 *.vcxproj
 *.vcxproj.filters
 *.ini
+
+# Pixelorama
+*.pxo
