@@ -5,8 +5,7 @@
 #include <ImGui/imgui.h>
 
 GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
-    : m_camera(Neat::makeRef<Neat::OrthographicCamera>(
-          Neat::Vector2F{-10.f, 0.0f}, 1280.0f / 720.0f, 8.0f)),
+    : m_eventDispatcher(eventDispatcher),
       m_spaceshipTexture(
           Neat::Texture2D::create("Resources/Textures/Ship.png")),
       m_pillarTexture(
@@ -14,9 +13,16 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
   m_spaceshipTexture->setMinification(
       Neat::Texture2DFilter::LinearMipmapNearest);
   m_spaceshipTexture->setMagnification(Neat::Texture2DFilter::Nearest);
+  init();
+}
 
-  m_entities = Neat::makeRef<Neat::EntityManager>(eventDispatcher);
-  m_systems = Neat::makeRef<Neat::SystemManager>(m_entities, eventDispatcher);
+void GameLayer::init() {
+  m_movePillarThresholdPosX = 30.0f;
+
+  m_camera = Neat::makeRef<Neat::OrthographicCamera>(
+      Neat::Vector2F{-10.f, 0.0f}, 1280.0f / 720.0f, 8.0f);
+  m_entities = Neat::makeRef<Neat::EntityManager>(m_eventDispatcher);
+  m_systems = Neat::makeRef<Neat::SystemManager>(m_entities, m_eventDispatcher);
 
   auto camera_controller_system =
       m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(m_camera);
@@ -51,8 +57,8 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
         10.0f - ((10.0f - pillarsCenter) * 0.2f) + pillarsGapSize * 0.5f;
     float bottomPillarYPos =
         -10.0f - ((-10.0f - pillarsCenter) * 0.2f) - pillarsGapSize * 0.5f;
-    float topPillarZPos = 0.01f * i;
-    float bottomPillarZPos = 0.01f * i + 0.005f;
+    float topPillarZPos = 0.1f * i;
+    float bottomPillarZPos = 0.1f * i + 0.05f;
 
     auto topPillar = m_entities->createEntity();
     topPillar.addComponent<Neat::RenderableSpriteComponent>(m_pillarTexture);
@@ -79,17 +85,33 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
   spaceship.addComponent<Neat::TransformComponent>(
       Neat::Vector3F{-10.0f, 0.0f, 0.5f}, Neat::Vector2F{1.0f, 1.3f}, -90.0f);
   spaceship.addComponent<PlayerTag>();
+  spaceship.addComponent<PlayerVelocity>();
 }
 
 void GameLayer::onUpdate(double deltaTimeSeconds) {
+  onImGui();
+
   Neat::ComponentHandle<PlayerTag> playerTag;
+  Neat::ComponentHandle<PlayerVelocity> playerVelocity;
   Neat::ComponentHandle<Neat::TransformComponent> playerTransform;
-  float playerXPosition;
+  Neat::Vector2F playerPosition;
   for ([[maybe_unused]] auto &&entity :
-       m_entities->entitiesWithComponents<PlayerTag, Neat::TransformComponent>(
-           playerTag, playerTransform)) {
-    playerTransform->incrementX(5.0f * deltaTimeSeconds);
-    playerXPosition = playerTransform->position.x;
+       m_entities->entitiesWithComponents<PlayerTag, PlayerVelocity,
+                                          Neat::TransformComponent>(
+           playerTag, playerVelocity, playerTransform)) {
+    playerTransform->incrementX(playerVelocity->value.x * deltaTimeSeconds);
+    if (Neat::Input::isKeyPressed(Neat::Key::Space)) {
+      playerVelocity->value.y += m_engineForce * deltaTimeSeconds;
+      playerTransform->incrementY(playerVelocity->value.y * deltaTimeSeconds);
+    } else {
+      playerVelocity->value.y -= m_gravity * deltaTimeSeconds;
+      playerTransform->incrementY(playerVelocity->value.y * deltaTimeSeconds);
+    }
+    playerTransform->setRotation(
+        atan2(playerVelocity->value.y, playerVelocity->value.x) * 180.0f /
+            Neat::pi<float> -
+        90.0f);
+    playerPosition = playerTransform->getPosition2D();
   }
 
   Neat::ComponentHandle<BrackgroundTag> backgroundTag;
@@ -98,10 +120,10 @@ void GameLayer::onUpdate(double deltaTimeSeconds) {
        m_entities
            ->entitiesWithComponents<BrackgroundTag, Neat::TransformComponent>(
                backgroundTag, backgroundTransform)) {
-    backgroundTransform->setX(playerXPosition);
+    backgroundTransform->setX(playerPosition.x);
   }
 
-  if (playerXPosition > m_movePillarThresholdPosX) {
+  if (playerPosition.x > m_movePillarThresholdPosX) {
     Neat::ComponentHandle<PillarTag> pillarTag;
     Neat::ComponentHandle<Neat::TransformComponent> pillarTransform;
     auto &random = Neat::Random::getInstance();
@@ -131,9 +153,19 @@ void GameLayer::onUpdate(double deltaTimeSeconds) {
     m_movePillarThresholdPosX += 10.0f;
   }
 
-  m_camera->setX(playerXPosition);
+  m_camera->setPosition(playerPosition);
 
   m_systems->onUpdate<Neat::OrthographicCameraControllerSystem>(
       deltaTimeSeconds);
   m_systems->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);
+}
+
+void GameLayer::onImGui() {
+  ImGui::Begin("MyWindow");
+  if (ImGui::Button("Reset Game")) {
+    init();
+  }
+  ImGui::SliderFloat("Gravity", &m_gravity, 0.0f, 100.0f);
+  ImGui::SliderFloat("Engine Force", &m_engineForce, 0.0f, 200.0f);
+  ImGui::End();
 }
