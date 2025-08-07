@@ -4,9 +4,11 @@
 #include "Neat/ImGui/ImGuiRender.hpp"
 #include <Neat.hpp>
 
+#include <ImGui/imgui.h>
+
 struct PillarTag {};
-struct PlayerTag {};
-struct BrackgroundTag {};
+struct BackgroundTag {};
+struct PillarBackgroundTag {};
 struct PlayerVelocity {
   Neat::Vector2F value{5.0f, 0.0f};
 };
@@ -26,14 +28,19 @@ public:
 private:
   void onImGui();
   void play(float deltaTimeSeconds);
-  Neat::Vector2F onPlayerUpdate(float deltaTimeSeconds);
-  void onBackgroundUpdate(Neat::Vector2F playerPosition);
-  void onPillarUpdate(Neat::Vector2F playerPosition);
+  void onPlayerUpdate(float deltaTimeSeconds);
+  void onBackgroundUpdate();
+  void onPillarUpdate();
   std::pair<float, float> genPillarsYPositions();
   void collisionTest();
   bool onCollisionEvent(const CollisionEvent &event) {
     m_gameState = GameState::GameOver;
     return true;
+  }
+  unsigned getScore() {
+    return static_cast<unsigned>(
+        (m_player.getComponent<Neat::TransformComponent>()->position.x + 10.f) /
+        10.0f);
   }
 
 private:
@@ -49,4 +56,9 @@ private:
   float m_engineForce = 80.0f;
   float m_movePillarThresholdPosX;
   GameState m_gameState{GameState::MainMenu};
+  Neat::Entity m_player;
+  ImFont *m_fontSmall;
+  ImFont *m_font;
+  Neat::Vector3F m_pillarHSV{0.0f, 0.8f, 0.8f};
+  Neat::Vector4F m_pilllarRGB;
 };
