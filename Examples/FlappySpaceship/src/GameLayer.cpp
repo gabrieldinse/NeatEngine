@@ -13,10 +13,13 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
   m_spaceshipTexture->setMinification(
       Neat::Texture2DFilter::LinearMipmapNearest);
   m_spaceshipTexture->setMagnification(Neat::Texture2DFilter::Nearest);
+  m_eventDispatcher->get<CollisionEvent>()
+      .connect<&GameLayer::onCollisionEvent>(*this);
   init();
 }
 
 void GameLayer::init() {
+  m_gameState = GameState::Playing; // TODO remove
   m_movePillarThresholdPosX = 30.0f;
 
   m_camera = Neat::makeRef<Neat::OrthographicCamera>(
@@ -49,14 +52,8 @@ void GameLayer::init() {
       Neat::Vector3F{0.0f, 34.0f, 0.0f}, Neat::Vector2F{50.0f, 50.0f});
   ceiling.addComponent<BrackgroundTag>();
 
-  auto &random = Neat::Random::getInstance();
   for (int i = 0; i < m_numPillars; ++i) {
-    float pillarsCenter = random.getFloat(-17.5f, 17.5f);
-    float pillarsGapSize = 2.0f + random.getFloat(0.0f, 5.0f);
-    float topPillarYPos =
-        10.0f - ((10.0f - pillarsCenter) * 0.2f) + pillarsGapSize * 0.5f;
-    float bottomPillarYPos =
-        -10.0f - ((-10.0f - pillarsCenter) * 0.2f) - pillarsGapSize * 0.5f;
+    auto [topPillarYPos, bottomPillarYPos] = genPillarsYPositions();
     float topPillarZPos = 0.1f * i;
     float bottomPillarZPos = 0.1f * i + 0.05f;
 
@@ -89,8 +86,30 @@ void GameLayer::init() {
 }
 
 void GameLayer::onUpdate(double deltaTimeSeconds) {
-  onImGui();
+  switch (m_gameState) {
+  case GameState::Playing:
+    play(deltaTimeSeconds);
+    break;
+  case GameState::MainMenu:
+    break;
+  case GameState::GameOver:
+    break;
+  }
+}
 
+void GameLayer::play(float deltaTimeSeconds) {
+  Neat::Vector2F playerPosition = onPlayerUpdate(deltaTimeSeconds);
+  onBackgroundUpdate(playerPosition);
+  onPillarUpdate(playerPosition);
+  collisionTest();
+  m_camera->setPosition(playerPosition);
+  m_systems->onUpdate<Neat::OrthographicCameraControllerSystem>(
+      deltaTimeSeconds);
+  m_systems->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);
+  onImGui();
+}
+
+Neat::Vector2F GameLayer::onPlayerUpdate(float deltaTimeSeconds) {
   Neat::ComponentHandle<PlayerTag> playerTag;
   Neat::ComponentHandle<PlayerVelocity> playerVelocity;
   Neat::ComponentHandle<Neat::TransformComponent> playerTransform;
@@ -113,7 +132,10 @@ void GameLayer::onUpdate(double deltaTimeSeconds) {
         90.0f);
     playerPosition = playerTransform->getPosition2D();
   }
+  return playerPosition;
+}
 
+void GameLayer::onBackgroundUpdate(Neat::Vector2F playerPosition) {
   Neat::ComponentHandle<BrackgroundTag> backgroundTag;
   Neat::ComponentHandle<Neat::TransformComponent> backgroundTransform;
   for ([[maybe_unused]] auto &&entity :
@@ -122,25 +144,21 @@ void GameLayer::onUpdate(double deltaTimeSeconds) {
                backgroundTag, backgroundTransform)) {
     backgroundTransform->setX(playerPosition.x);
   }
+}
 
+void GameLayer::onPillarUpdate(Neat::Vector2F playerPosition) {
   if (playerPosition.x > m_movePillarThresholdPosX) {
     Neat::ComponentHandle<PillarTag> pillarTag;
     Neat::ComponentHandle<Neat::TransformComponent> pillarTransform;
-    auto &random = Neat::Random::getInstance();
-    float pillarsCenter = random.getFloat(-17.5f, 17.5f);
-    float pillarsGapSize = 2.0f + random.getFloat(0.0f, 5.0f);
-    float topPillarYPos =
-        10.0f - ((10.0f - pillarsCenter) * 0.2f) + pillarsGapSize * 0.5f;
-    float bottomPillarYPos =
-        -10.0f - ((-10.0f - pillarsCenter) * 0.2f) - pillarsGapSize * 0.5f;
+    auto [topPillarYPos, bottomPillarYPos] = genPillarsYPositions();
     for ([[maybe_unused]] auto &&entity :
          m_entities
              ->entitiesWithComponents<PillarTag, Neat::TransformComponent>(
                  pillarTag, pillarTransform)) {
       if (pillarTransform->position.x <= m_movePillarThresholdPosX - 25.0f) {
-        NT_CORE_TRACE("Moving pillar to new position. Current {0}, New {1}",
-                      pillarTransform->position.x,
-                      m_movePillarThresholdPosX + 20.0f);
+        NT_TRACE("Moving pillar to new position. Current {0}, New {1}",
+                 pillarTransform->position.x,
+                 m_movePillarThresholdPosX + 20.0f);
         if (pillarTransform->position.y > 0.0f) {
           pillarTransform->position.x = m_movePillarThresholdPosX + 20.0f;
           pillarTransform->position.y = topPillarYPos;
@@ -152,12 +170,6 @@ void GameLayer::onUpdate(double deltaTimeSeconds) {
     }
     m_movePillarThresholdPosX += 10.0f;
   }
-
-  m_camera->setPosition(playerPosition);
-
-  m_systems->onUpdate<Neat::OrthographicCameraControllerSystem>(
-      deltaTimeSeconds);
-  m_systems->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);
 }
 
 void GameLayer::onImGui() {
@@ -168,4 +180,27 @@ void GameLayer::onImGui() {
   ImGui::SliderFloat("Gravity", &m_gravity, 0.0f, 100.0f);
   ImGui::SliderFloat("Engine Force", &m_engineForce, 0.0f, 200.0f);
   ImGui::End();
+}
+
+std::pair<float, float> GameLayer::genPillarsYPositions() {
+  auto &random = Neat::Random::getInstance();
+  float pillarsCenter = random.getFloat(-17.5f, 17.5f);
+  float pillarsGapSize = 2.0f + random.getFloat(0.0f, 5.0f);
+  float topPillarYPos =
+      10.0f - ((10.0f - pillarsCenter) * 0.2f) + pillarsGapSize * 0.5f;
+  float bottomPillarYPos =
+      -10.0f - ((-10.0f - pillarsCenter) * 0.2f) - pillarsGapSize * 0.5f;
+  return {topPillarYPos, bottomPillarYPos};
+}
+
+void GameLayer::collisionTest() {
+  Neat::ComponentHandle<PlayerTag> playerTag;
+  Neat::ComponentHandle<Neat::TransformComponent> playerTransform;
+  for ([[maybe_unused]] auto &&entity :
+       m_entities->entitiesWithComponents<PlayerTag, Neat::TransformComponent>(
+           playerTag, playerTransform)) {
+    if (Neat::abs(playerTransform->position.y) > 8.5f) {
+      m_eventDispatcher->enqueue<CollisionEvent>();
+    }
+  }
 }
