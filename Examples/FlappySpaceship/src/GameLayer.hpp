@@ -27,8 +27,10 @@ public:
   virtual void onUpdate(double deltaTimeSeconds) override;
 
 private:
-  void onImGui();
   void play(float deltaTimeSeconds);
+  void mainMenu();
+  void gameOver();
+  void onImGui();
   void onPlayerUpdate(float deltaTimeSeconds);
   void onBackgroundUpdate();
   void onPillarUpdate();
@@ -38,6 +40,8 @@ private:
     m_gameState = GameState::GameOver;
     return true;
   }
+  bool onMouseButtonPressedEvent(const Neat::MouseButtonPressedEvent &event);
+  bool onWindowResizeEvent(const Neat::WindowResizeEvent &event);
   unsigned getScore() {
     return static_cast<unsigned>(
         (m_player.getComponent<Neat::TransformComponent>()->position.x + 10.f) /

@@ -18,16 +18,19 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
   m_spaceshipTexture->setMagnification(Neat::Texture2DFilter::Nearest);
   m_eventDispatcher->get<CollisionEvent>()
       .connect<&GameLayer::onCollisionEvent>(*this);
+  m_eventDispatcher->get<Neat::MouseButtonPressedEvent>()
+      .connect<&GameLayer::onMouseButtonPressedEvent>(*this);
+  m_eventDispatcher->get<Neat::WindowResizeEvent>()
+      .connect<&GameLayer::onWindowResizeEvent>(*this);
   init();
 }
 
 void GameLayer::init() {
-  m_gameState = GameState::Playing; // TODO remove
   m_movePillarThresholdPosX = 30.0f;
   m_pillarHSV = Neat::Vector3F{0.0f, 0.8f, 0.8f};
 
   m_camera = Neat::makeRef<Neat::OrthographicCamera>(
-      Neat::Vector2F{-10.f, 0.0f}, 1280.0f / 720.0f, 8.0f);
+      Neat::Vector2F{-10.f, 0.0f}, 1280, 720, 8.0f);
   m_entities = Neat::makeRef<Neat::EntityManager>(m_eventDispatcher);
   m_systems = Neat::makeRef<Neat::SystemManager>(m_entities, m_eventDispatcher);
 
@@ -91,11 +94,13 @@ void GameLayer::onUpdate(double deltaTimeSeconds) {
     play(deltaTimeSeconds);
     break;
   case GameState::MainMenu:
+    mainMenu();
     break;
   case GameState::GameOver:
+    gameOver();
     break;
   }
-  onImGui();
+  // onImGui();
 }
 
 void GameLayer::play(float deltaTimeSeconds) {
@@ -118,6 +123,29 @@ void GameLayer::play(float deltaTimeSeconds) {
   ImGui::GetForegroundDrawList()->AddText(m_font, 48.0f, ImGui::GetWindowPos(),
                                           0xffffffff, scoreString.c_str());
   ImGui::PopFont();
+}
+
+void GameLayer::mainMenu() {
+  auto pos = ImGui::GetWindowPos();
+  auto width = Neat::Application::get().getWindow().getWidth();
+  auto height = Neat::Application::get().getWindow().getHeight();
+  pos.x += width * 0.5f - 300.0f;
+  pos.y += 50.0f;
+  ImGui::GetForegroundDrawList()->AddText(m_font, 120.0f, pos, 0xffffffff,
+                                          "Click to Play!");
+}
+
+void GameLayer::gameOver() {
+  auto pos = ImGui::GetWindowPos();
+  auto width = Neat::Application::get().getWindow().getWidth();
+  auto height = Neat::Application::get().getWindow().getHeight();
+  pos.x += width * 0.5f - 300.0f;
+  pos.y += 50.0f;
+  ImGui::GetForegroundDrawList()->AddText(m_font, 120.0f, pos, 0xffffffff,
+                                          "Game Over!");
+  std::string scoreString = std::string{"Score: "} + std::to_string(getScore());
+  ImGui::GetForegroundDrawList()->AddText(m_font, 48.0f, ImGui::GetWindowPos(),
+                                          0xffffffff, scoreString.c_str());
 }
 
 void GameLayer::onPlayerUpdate(float deltaTimeSeconds) {
@@ -274,4 +302,23 @@ bool GameLayer::pointInTriangle(const Neat::Vector2F &p,
       -p1.y * p2.x + p0.y * (p2.x - p1.x) + p0.x * (p1.y - p2.y) + p1.x * p2.y;
 
   return A < 0 ? (s <= 0 && s + t >= A) : (s >= 0 && s + t <= A);
+}
+
+bool GameLayer::onMouseButtonPressedEvent(
+    const Neat::MouseButtonPressedEvent &event) {
+  if (event.button == Neat::MouseButton::ButtonLeft) {
+    if (m_gameState == GameState::GameOver) {
+      init();
+    }
+    m_gameState = GameState::Playing;
+  }
+  return true;
+}
+
+bool GameLayer::onWindowResizeEvent(const Neat::WindowResizeEvent &event) {
+  m_camera = Neat::makeRef<Neat::OrthographicCamera>(
+      Neat::Vector2F{-10.f, 0.0f}, event.width, event.height, 8.0f);
+  m_systems->getSystem<Neat::OrthographicCameraControllerSystem>()->setCamera(
+      m_camera);
+  return true;
 }

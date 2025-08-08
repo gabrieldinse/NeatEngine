@@ -23,6 +23,7 @@ class OrthographicCameraControllerSystem
 
   Ref<OrthographicCamera> &getCamera() { return m_camera; }
   const Ref<OrthographicCamera> &getCamera() const { return m_camera; }
+  void setCamera(const Ref<OrthographicCamera> &camera) { m_camera = camera; }
 
   bool onMouseScrolled(const MouseScrolledEvent &event);
   bool onMouseMoved(const MouseMovedEvent &event);

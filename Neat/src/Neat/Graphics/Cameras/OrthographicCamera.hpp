@@ -14,6 +14,9 @@ class OrthographicCamera : public Camera {
   OrthographicCamera(const Vector2F &position, float aspectRatio,
                      float zoomLevel = 1.0f,
                      KeepAspect keepAspect = KeepAspect::Height);
+  OrthographicCamera(const Vector2F &position, UInt32 width, UInt32 height,
+                     float zoomLevel = 1.0f,
+                     KeepAspect keepAspect = KeepAspect::Height);
 
   void setProperties(float aspectRatio,
                      KeepAspect keepAspect = KeepAspect::Height,

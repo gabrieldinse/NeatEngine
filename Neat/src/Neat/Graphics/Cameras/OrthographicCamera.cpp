@@ -18,6 +18,17 @@ OrthographicCamera::OrthographicCamera(const Vector2F &position,
   setProperties(aspectRatio, keepAspect, zoomLevel);
 }
 
+OrthographicCamera::OrthographicCamera(const Vector2F &position, UInt32 width,
+                                       UInt32 height, float zoomLevel,
+                                       KeepAspect keepAspect)
+    : m_position(Vector3F(position, m_zPos)),
+      m_aspectRatio(static_cast<float>(width) / static_cast<float>(height)),
+      m_keepAspect(keepAspect),
+      m_zoomLevel(zoomLevel) {
+  NT_PROFILE_FUNCTION();
+  setProperties(m_aspectRatio, keepAspect, zoomLevel);
+}
+
 void OrthographicCamera::setProperties(float aspectRatio, KeepAspect keepAspect,
                                        float zoomLevel) {
   NT_PROFILE_FUNCTION();

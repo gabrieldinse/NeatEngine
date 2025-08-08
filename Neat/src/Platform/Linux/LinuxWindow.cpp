@@ -85,7 +85,8 @@ Int32 LinuxWindow::getWidth() const { return m_windowProps.width; }
 Int32 LinuxWindow::getHeight() const { return m_windowProps.height; }
 
 float LinuxWindow::getAspectRatio() const {
-  return (float)m_windowProps.width / (float)m_windowProps.height;
+  return static_cast<float>(m_windowProps.width) /
+         static_cast<float>(m_windowProps.height);
 }
 
 void *LinuxWindow::getNativeWindow() const { return m_glfwWindow; }
