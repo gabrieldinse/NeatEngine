@@ -24,6 +24,7 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
 void GameLayer::init() {
   m_gameState = GameState::Playing; // TODO remove
   m_movePillarThresholdPosX = 30.0f;
+  m_pillarHSV = Neat::Vector3F{0.0f, 0.8f, 0.8f};
 
   m_camera = Neat::makeRef<Neat::OrthographicCamera>(
       Neat::Vector2F{-10.f, 0.0f}, 1280.0f / 720.0f, 8.0f);
@@ -76,11 +77,6 @@ void GameLayer::init() {
         Neat::Vector2F{15.0f, 20.0f});
     bottomPillar.addComponent<PillarTag>();
   }
-
-  auto topPillar = m_entities->createEntity();
-  topPillar.addComponent<Neat::RenderableSpriteComponent>(m_pillarTexture);
-  topPillar.addComponent<Neat::TransformComponent>(
-      Neat::Vector3F{0.0f, 10.0f, 0.0f}, Neat::Vector2F{15.0f, 20.0f}, 180.0f);
 
   m_player = m_entities->createEntity();
   m_player.addComponent<Neat::RenderableSpriteComponent>(m_spaceshipTexture);
@@ -222,4 +218,60 @@ void GameLayer::collisionTest() {
   if (Neat::abs(playerTransform->position.y) > 8.5f) {
     m_eventDispatcher->enqueue<CollisionEvent>();
   }
+
+  Neat::Vector4F playerVertices[4] = {{-0.5f, -0.5f, 0.0f, 1.0f},
+                                      {0.5f, -0.5f, 0.0f, 1.0f},
+                                      {0.5f, 0.5f, 0.0f, 1.0f},
+                                      {-0.5f, 0.5f, 0.0f, 1.0f}};
+
+  for (int i = 0; i < 4; ++i) {
+    playerVertices[i] = playerTransform->getTransform() * playerVertices[i];
+  }
+
+  Neat::ComponentHandle<PillarTag> pillarTag;
+  Neat::ComponentHandle<Neat::TransformComponent> pillarTransform;
+  Neat::ComponentHandle<Neat::RenderableSpriteComponent> sprite;
+  auto [topPillarYPos, bottomPillarYPos] = genPillarsYPositions();
+  bool moved_pillar = false;
+  for ([[maybe_unused]] auto &&entity :
+       m_entities->entitiesWithComponents<PillarTag, Neat::TransformComponent,
+                                          Neat::RenderableSpriteComponent>(
+           pillarTag, pillarTransform, sprite)) {
+    Neat::Vector4F pillarVertices[3] = {
+        {-0.5f + 0.1f, -0.5f + 0.1f, 0.0f, 1.0f},
+        {0.5f - 0.1f, -0.5f + 0.1f, 0.0f, 1.0f},
+        {0.0f + 0.0f, 0.5f - 0.1f, 0.0f, 1.0f},
+    };
+    for (int i = 0; i < 3; ++i) {
+      pillarVertices[i] = pillarTransform->getTransform() * pillarVertices[i];
+    }
+
+    for (const auto &vert : playerVertices) {
+      if (pointInTriangle({vert.x, vert.y},
+                          {pillarVertices[0].x, pillarVertices[0].y},
+                          {pillarVertices[1].x, pillarVertices[1].y},
+                          {pillarVertices[2].x, pillarVertices[2].y})) {
+        m_eventDispatcher->enqueue<CollisionEvent>();
+        return;
+      }
+    }
+  }
+}
+
+bool GameLayer::pointInTriangle(const Neat::Vector2F &p,
+                                const Neat::Vector2F &p0,
+                                const Neat::Vector2F &p1,
+                                const Neat::Vector2F &p2) {
+  float s =
+      p0.y * p2.x - p0.x * p2.y + (p2.y - p0.y) * p.x + (p0.x - p2.x) * p.y;
+  float t =
+      p0.x * p1.y - p0.y * p1.x + (p0.y - p1.y) * p.x + (p1.x - p0.x) * p.y;
+
+  if ((s < 0) != (t < 0))
+    return false;
+
+  float A =
+      -p1.y * p2.x + p0.y * (p2.x - p1.x) + p0.x * (p1.y - p2.y) + p1.x * p2.y;
+
+  return A < 0 ? (s <= 0 && s + t >= A) : (s >= 0 && s + t <= A);
 }

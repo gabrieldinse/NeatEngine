@@ -9,6 +9,7 @@
 struct PillarTag {};
 struct BackgroundTag {};
 struct PillarBackgroundTag {};
+
 struct PlayerVelocity {
   Neat::Vector2F value{5.0f, 0.0f};
 };
@@ -42,6 +43,9 @@ private:
         (m_player.getComponent<Neat::TransformComponent>()->position.x + 10.f) /
         10.0f);
   }
+  static bool pointInTriangle(const Neat::Vector2F &p, const Neat::Vector2F &p0,
+                              const Neat::Vector2F &p1,
+                              const Neat::Vector2F &p2);
 
 private:
   Neat::Ref<Neat::EventDispatcher> m_eventDispatcher;
@@ -59,6 +63,6 @@ private:
   Neat::Entity m_player;
   ImFont *m_fontSmall;
   ImFont *m_font;
-  Neat::Vector3F m_pillarHSV{0.0f, 0.8f, 0.8f};
+  Neat::Vector3F m_pillarHSV;
   Neat::Vector4F m_pilllarRGB;
 };
