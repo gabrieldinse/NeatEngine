@@ -14,6 +14,7 @@ file(
 
 # Build the test executable
 add_executable(NeatTests ${TEST_SOURCES})
+add_dependencies(NeatTests Neat)
 
 # Include headers
 target_include_directories(NeatTests PUBLIC
