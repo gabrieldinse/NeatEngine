@@ -70,7 +70,7 @@ class Renderer2D {
   static void resetStats();
 
  private:
-  static void draw();
+  static void flush();
   static void startNewBatch();
   static bool reachedBatchDataLimit() {
     return s_data->quadVextexDataBuffer.indexCount >=

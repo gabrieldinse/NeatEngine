@@ -75,7 +75,7 @@ void Renderer2D::beginScene(const Ref<Camera> &camera) {
 
 void Renderer2D::endScene() {
   NT_PROFILE_FUNCTION();
-  draw();
+  flush();
 }
 
 void Renderer2D::startNewBatch() {
@@ -84,7 +84,7 @@ void Renderer2D::startNewBatch() {
   s_data->textureSlotIndex = 1;
 }
 
-void Renderer2D::draw() {
+void Renderer2D::flush() {
   NT_PROFILE_FUNCTION();
   s_data->textureShader->bind();
 
@@ -116,7 +116,7 @@ void Renderer2D::drawQuad(const Matrix4F &transform,
                           const Ref<Texture2D> &texture, const Vector4F &tint,
                           float tilingFactor) {
   if (reachedBatchDataLimit()) {
-    draw();
+    flush();
     startNewBatch();
   }
 
@@ -143,7 +143,7 @@ void Renderer2D::drawQuad(const Matrix4F &transform,
 void Renderer2D::drawQuad(const Matrix4F &transform, const Vector4F &color) {
   NT_PROFILE_FUNCTION();
   if (reachedBatchDataLimit()) {
-    draw();
+    flush();
     startNewBatch();
   }
 

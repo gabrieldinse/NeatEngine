@@ -57,8 +57,8 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
   // Alocates storage on the gpu for the texture
   glTextureStorage2D(m_id, 1, m_internalFormat, m_width, m_height);
 
-  setMinification(Texture2DFilter::LinearMipmapLinear);
-  setMagnification(Texture2DFilter::Linear);
+  setMinification(Texture2DFilter::LinearMipmapNearest);
+  setMagnification(Texture2DFilter::Nearest);
   setWrapS(Texture2DWrapping::Repeat);
   setWrapT(Texture2DWrapping::Repeat);
 
