@@ -3,6 +3,7 @@
 #include <memory>
 #include <unordered_map>
 #include <utility>
+#include <optional>
 
 #include "Neat/Core/Exceptions.hpp"
 #include "Neat/Core/Log.hpp"
@@ -17,8 +18,9 @@ class SystemManager : public NonCopyable {
       : m_entityManager(entityManager), m_eventDispatcher(eventDispatcher) {}
 
   void init() {
-    for (auto &&[family, system] : m_systems) system->init(m_eventDispatcher);
-
+    for (auto &&[family, system] : m_systems) {
+      system->init(m_eventDispatcher);
+    }
     m_initialized = true;
   }
 
@@ -36,11 +38,11 @@ class SystemManager : public NonCopyable {
   }
 
   template <typename S>
-  Ref<S> getSystem() {
+  std::optional<Ref<S>> getSystem() {
     auto it = m_systems.find(S::getFamily());
 
     if (it == m_systems.end()) {
-      throw InvalidSystemError();
+      return std::nullopt;
     }
 
     auto &&[family, system] = *it;
@@ -51,15 +53,18 @@ class SystemManager : public NonCopyable {
   template <typename S>
   void onUpdate(double deltaTimeSeconds) {
     if (not m_initialized) {
-      throw SystemManagerNotInitializedError();
+      init();
     }
 
-    auto system = getSystem<S>();
-    system->onUpdate(m_entityManager, m_eventDispatcher, deltaTimeSeconds);
+    if (auto system = getSystem<S>()) {
+      (*system)->onUpdate(m_entityManager, m_eventDispatcher, deltaTimeSeconds);
+    }
   }
 
   void updateAll(double deltaTimeSeconds) {
-    if (not m_initialized) throw SystemManagerNotInitializedError();
+    if (not m_initialized) {
+      init();
+    }
 
     for (auto &&[family, system] : m_systems) {
       system->onUpdate(m_entityManager, m_eventDispatcher, deltaTimeSeconds);

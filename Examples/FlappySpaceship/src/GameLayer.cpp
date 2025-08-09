@@ -318,7 +318,8 @@ bool GameLayer::onMouseButtonPressedEvent(
 bool GameLayer::onWindowResizeEvent(const Neat::WindowResizeEvent &event) {
   m_camera = Neat::makeRef<Neat::OrthographicCamera>(
       Neat::Vector2F{-10.f, 0.0f}, event.width, event.height, 8.0f);
-  m_systems->getSystem<Neat::OrthographicCameraControllerSystem>()->setCamera(
-      m_camera);
+  if (auto cameraController = m_systems->getSystem<Neat::OrthographicCameraControllerSystem>()) {
+    (*cameraController)->setCamera(m_camera);
+  }
   return true;
 }
