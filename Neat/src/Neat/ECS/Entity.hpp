@@ -500,8 +500,9 @@ class EntityManager : public NonCopyable {
 
     for (std::size_t i = 0; i < m_componentArrays.size(); ++i) {
       BaseMemoryPool *component_array = m_componentArrays[i];
-      if ((component_array != nullptr) and component_mask.test(i))
+      if ((component_array != nullptr) and component_mask.test(i)) {
         component_array->destroy(index);
+      }
     }
 
     m_entityComponentMasks[index].reset();
@@ -516,8 +517,7 @@ class EntityManager : public NonCopyable {
   }
 
   Entity::Id createId(UInt32 index) const {
-    return Entity::Id(index, m_entityIdsVersion[index]);
-  }
+    return Entity::Id(index, m_entityIdsVersion[index]); }
 
   template <typename C, typename... Args>
   ComponentHandle<C> addComponent(const Entity::Id &id, Args &&...args) {
@@ -526,8 +526,9 @@ class EntityManager : public NonCopyable {
     const BaseComponent::Family family = getComponentFamily<C>();
     UInt32 index = id.index();
 
-    if (m_entityComponentMasks[index].test(family))
+    if (m_entityComponentMasks[index].test(family)) {
       throw ComponentAlreadyAddedError();
+    }
 
     MemoryPool<C> *component_array = accomodateComponent<C>();
     new (component_array->at(index)) C(std::forward<Args>(args)...);
@@ -563,13 +564,16 @@ class EntityManager : public NonCopyable {
 
     std::size_t family = getComponentFamily<C>();
 
-    if (family >= m_componentArrays.size()) return false;
+    if (family >= m_componentArrays.size()) {
+      return false;
+    }
 
     BaseMemoryPool *component_array = m_componentArrays[family];
 
     if (component_array == nullptr or
-        !m_entityComponentMasks[id.index()][family])
+        !m_entityComponentMasks[id.index()][family]) {
       return false;
+    }
 
     return true;
   }
@@ -579,7 +583,9 @@ class EntityManager : public NonCopyable {
   ComponentHandle<C> getComponent(const Entity::Id &id) {
     checkIsValid(id);
 
-    if (not hasComponent<C>(id)) return ComponentHandle<C>();
+    if (not hasComponent<C>(id)) {
+      return ComponentHandle<C>();
+    }
 
     return ComponentHandle<C>(this, id);
   }
@@ -590,7 +596,9 @@ class EntityManager : public NonCopyable {
       const Entity::Id &id) const {
     checkIsValid(id);
 
-    if (not hasComponent<C>()) return ComponentHandle<C, const EntityManager>();
+    if (not hasComponent<C>()) {
+     return ComponentHandle<C, const EntityManager>();
+    }
 
     return ComponentHandle<C, const EntityManager>(this, id);
   }
@@ -651,11 +659,13 @@ class EntityManager : public NonCopyable {
   friend class ComponentHandle;
 
   void checkIsValid(const Entity::Id &id) const {
-    if (id.index() >= m_entityIdsVersion.size())
+    if (id.index() >= m_entityIdsVersion.size()) {
       throw InvalidEntityIdIndexError();
+    }
 
-    if (m_entityIdsVersion[id.index()] != id.version())
+    if (m_entityIdsVersion[id.index()] != id.version()) {
       throw InvalidEntityIdVersionError();
+    }
   }
 
   template <typename C>
@@ -716,11 +726,14 @@ class EntityManager : public NonCopyable {
 
   void accomodateEntity(UInt32 index) {
     if (m_entityComponentMasks.size() <= index) {
-      m_entityComponentMasks.resize((std::size_t)index + 1);
-      m_entityIdsVersion.resize((std::size_t)index + 1);
+      m_entityComponentMasks.resize(static_cast<std::size_t>(index) + 1);
+      m_entityIdsVersion.resize(static_cast<std::size_t>(index) + 1);
 
-      for (BaseMemoryPool *component_array : m_componentArrays)
-        if (component_array) component_array->resize((std::size_t)index + 1);
+      for (BaseMemoryPool *component_array : m_componentArrays) {
+        if (component_array) {
+          component_array->resize(static_cast<std::size_t>(index) + 1);
+        }
+      }
     }
   }
 
@@ -728,8 +741,9 @@ class EntityManager : public NonCopyable {
   MemoryPool<C> *accomodateComponent() {
     BaseComponent::Family family = getComponentFamily<C>();
 
-    if (m_componentArrays.size() <= family)
-      m_componentArrays.resize((std::size_t)family + 1, nullptr);
+    if (m_componentArrays.size() <= family) {
+      m_componentArrays.resize(static_cast<std::size_t>(family) + 1, nullptr);
+    }
 
     if (m_componentArrays[family] == nullptr) {
       MemoryPool<C> *component_array = new MemoryPool<C>();
@@ -762,8 +776,9 @@ inline bool Entity::isValid() const {
 }
 
 inline void Entity::checkIsValid() const {
-  if (m_entityManager == nullptr)
+  if (m_entityManager == nullptr) {
     throw InvalidEntityError("Assigned EntityManager is null.");
+  }
 
   m_entityManager->checkIsValid(m_id);
 }
@@ -793,11 +808,12 @@ inline ComponentHandle<C> Entity::replaceComponent(Args &&...args) {
   checkIsValid();
 
   auto component_handle = getComponent<C>();
-  if (component_handle)
+  if (component_handle) {
     *(component_handle.get()) = C(std::forward<Args>(args)...);
-  else
+  } else {
     component_handle =
         m_entityManager->addComponent<C>(m_id, std::forward<Args>(args)...);
+  }
 
   return component_handle;
 }
@@ -806,7 +822,9 @@ template <typename C>
 inline void Entity::removeComponent() {
   checkIsValid();
 
-  if (not hasComponent<C>()) throw ComponentNotPresentError();
+  if (not hasComponent<C>()) {
+    throw ComponentNotPresentError();
+  }
 
   m_entityManager->removeComponent<C>(m_id);
 }
@@ -884,8 +902,9 @@ inline bool ComponentHandle<C, EM>::isValid() const {
 
 template <typename C, typename EM>
 inline void ComponentHandle<C, EM>::checkIsValid() const {
-  if (m_entityManager == nullptr)
+  if (m_entityManager == nullptr) {
     throw InvalidComponentError("Assigned EntityManager is null.");
+  }
 
   try {
     m_entityManager->checkIsValid(m_id);

@@ -50,8 +50,9 @@ inline constexpr Matrix<2, 2, T>::Matrix(const Vector<2, V1> &row1,
 
 template <typename T>
 inline constexpr Matrix<2, 2, T>::Matrix(const T *data, UInt32 count) {
-  if (count > size())
-    throw MatrixDimensionError("Data size is bigger than Matrix size");
+  if (count > size()) {
+    count = size();
+  }
 
   std::copy(data, data + count, m_flattened);
   std::fill(m_flattened + count, m_flattened + size(), zero<T>);

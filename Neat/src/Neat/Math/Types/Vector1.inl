@@ -98,15 +98,11 @@ inline constexpr Vector<1, T> &Vector<1, T>::operator/=(const U &scalar) {
 
 template <typename T>
 inline constexpr T &Vector<1, T>::operator[](UInt32 pos) {
-  if (pos >= size()) throw VectorDimensionError();
-
   return (&x)[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<1, T>::operator[](UInt32 pos) const {
-  if (pos >= size()) throw VectorDimensionError();
-
   return (&x)[pos];
 }
 

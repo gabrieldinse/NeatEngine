@@ -176,5 +176,7 @@ constexpr Vector4F neonPurple{0.6f, 0.0f, 1.0f, 1.0f};
 constexpr Vector4F neonPink{1.0f, 0.078f, 0.576f, 1.0f};
 
 Vector4F HSVToRGB(const Vector3F& hsv);
+Vector4F hexToRGBA(Int32 hex);
+Vector3F hexToRGB(Int32 hex);
 }  // namespace Color
 }  // namespace Neat

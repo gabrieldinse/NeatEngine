@@ -49,8 +49,9 @@ inline constexpr Vector<2, T>::Vector(const X &x, const Y &y)
 
 template <typename T>
 inline constexpr Vector<2, T>::Vector(const T *data, UInt32 count) {
-  if (count > size())
-    throw VectorDimensionError("Data size is bigger than Vector size");
+  if (count > size()) {
+    count = size();
+  }
 
   std::copy(data, data + count, dataPointer());
   std::fill(dataPointer() + count, dataPointer() + size(), zero<T>);
@@ -120,15 +121,11 @@ inline constexpr Vector<2, T>::operator bool() const {
 
 template <typename T>
 inline constexpr T &Vector<2, T>::operator[](UInt32 pos) {
-  if (pos >= size()) throw VectorDimensionError();
-
   return (&x)[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<2, T>::operator[](UInt32 pos) const {
-  if (pos >= size()) throw VectorDimensionError();
-
   return (&x)[pos];
 }
 

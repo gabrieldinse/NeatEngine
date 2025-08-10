@@ -250,15 +250,11 @@ inline Quaternion<T>::operator Matrix<4, 4, T>() const {
 // Elements accessing
 template <typename T>
 inline constexpr T &Quaternion<T>::operator[](UInt32 pos) {
-  if (pos >= 4) throw QuaternionDimensionError();
-
   return (&w)[pos];
 }
 
 template <typename T>
 inline constexpr const T &Quaternion<T>::operator[](UInt32 pos) const {
-  if (pos >= 4) throw QuaternionDimensionError();
-
   return (&w)[pos];
 }
 

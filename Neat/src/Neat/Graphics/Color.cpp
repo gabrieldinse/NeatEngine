@@ -42,5 +42,18 @@ Vector4F HSVToRGB(const Vector3F& hsv) {
 
   return {rs + m, gs + m, bs + m, 1.0f};
 }
+
+Vector4F hexToRGBA(Int32 hex) {
+  return {static_cast<float>(hex >> 24) / 255.0f,
+          static_cast<float>(hex >> 16) / 255.0f,
+          static_cast<float>(hex >> 8) / 255.0f,
+          static_cast<float>(hex >> 0) / 255.0f};
+}
+
+Vector3F hexToRGB(Int32 hex) {
+  return {static_cast<float>(hex >> 16) / 255.0f,
+          static_cast<float>(hex >> 8) / 255.0f,
+          static_cast<float>(hex >> 0) / 255.0f};
+}
 }  // namespace Color
 }  // namespace Neat

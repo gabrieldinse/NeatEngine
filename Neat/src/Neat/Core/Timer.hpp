@@ -73,7 +73,7 @@ class Timer {
       }
     }
 
-    throw TimerNotStartedError();
+    return static_cast<T>(0);
   }
 
   template <typename T = double>
