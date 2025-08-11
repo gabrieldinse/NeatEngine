@@ -9,7 +9,7 @@ class EventDispatcher {
  public:
   template <typename EventType>
   EventConnections<EventType>& get() {
-    std::size_t eventId = getTypeId<EventType>();
+    TypeId eventId = getTypeId<EventType>();
     if (not m_eventConnectionsMap.contains(eventId)) {
       m_eventConnectionsMap[eventId] = makeScope<EventConnections<EventType>>();
     }
@@ -62,12 +62,12 @@ class EventDispatcher {
 
  private:
   struct QueuedEvent {
-    std::size_t eventId;
+    TypeId eventId;
     std::any event;
   };
 
   using EventConnectionsMap =
-      std::unordered_map<std::size_t, Scope<IEventConnections>>;
+      std::unordered_map<TypeId, Scope<IEventConnections>>;
   using EventsQueue = SafeQueue<Scope<QueuedEvent>>;
 
  private:

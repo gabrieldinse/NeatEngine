@@ -1,6 +1,8 @@
 #include <string>
 #include <iostream>
+#include <Neat/ECS/ECS.hpp>
 
+namespace Neat {
 struct EventA {
   int val;
 };
@@ -15,7 +17,7 @@ struct EventC {
 };
 
 struct ListenerA {
-  bool handle(const EventA& event) {
+  bool handle(const EventA &event) {
     std::cout << "ListenerA EventA: val=" << event.val << std::endl;
     count++;
     val = event.val;
@@ -26,13 +28,13 @@ struct ListenerA {
 };
 
 struct ListenerB {
-  bool process(const EventB& event) {
+  bool process(const EventB &event) {
     std::cout << "ListenerB EventB: msg=" << event.msg << std::endl;
     count++;
     msg = event.msg;
     return false;
   }
-  bool handleEventC(const EventC& event) {
+  bool handleEventC(const EventC &event) {
     std::cout << "ListenerB EventC: posX=" << event.posX
               << ", posY=" << event.posY << std::endl;
     count++;
@@ -47,7 +49,7 @@ struct ListenerB {
 };
 
 struct ListenerC {
-  bool handle(const EventC& event) {
+  bool handle(const EventC &event) {
     std::cout << "ListenerC EventC: posX=" << event.posX
               << ", posY=" << event.posY << std::endl;
     count++;
@@ -61,7 +63,7 @@ struct ListenerC {
 };
 
 struct ListenerD {
-  bool handleA(const EventA& event) {
+  bool handleA(const EventA &event) {
     std::cout << "ListenerD EventA: val=" << event.val << std::endl;
     count++;
     val = event.val;
@@ -70,3 +72,39 @@ struct ListenerD {
   int val = 0;
   int count = 0;
 };
+
+struct TestingSystem : public System<TestingSystem> {
+  TestingSystem() = default;
+
+  virtual void onUpdate(const Ref<EntityManager> &entityManager,
+                        const Ref<EventDispatcher> &eventDispatcher,
+                        double deltaTimeSeconds) override {
+    onUpdateCounter++;
+  }
+  virtual void init(const Ref<EventDispatcher> &eventDispatcher) override {
+    initCounter++;
+  }
+
+  int initCounter = 0;
+  int onUpdateCounter = 0;
+};
+
+struct TestingSystem2 : public System<TestingSystem2> {
+  TestingSystem2() = default;
+
+  virtual void onUpdate(const Ref<EntityManager> &entityManager,
+                        const Ref<EventDispatcher> &eventDispatcher,
+                        double deltaTimeSeconds) override {
+    onUpdateCounter++;
+  }
+  virtual void init(const Ref<EventDispatcher> &eventDispatcher) override {
+    initCounter++;
+  }
+
+  int initCounter = 0;
+  int onUpdateCounter = 0;
+};
+
+struct TestingSystem3 : public System<TestingSystem3> {};
+struct TestingSystem4 : public System<TestingSystem4> {};
+}  // namespace Neat

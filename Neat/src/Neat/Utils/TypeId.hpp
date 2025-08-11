@@ -3,20 +3,22 @@
 #include "Neat/Core/Types.hpp"
 
 namespace Neat {
+using TypeId = SizeType;
+
 template <typename T>
-constexpr std::size_t getTypeIDImpl() {
+constexpr TypeId getTypeIDImpl() {
   static Byte type_id;
-  return reinterpret_cast<std::size_t>(&type_id);
+  return reinterpret_cast<TypeId>(&type_id);
 }
 
 template <typename T>
-constexpr std::size_t getTypeId() {
+constexpr TypeId getTypeId() {
   using DecayedType = typename std::decay_t<T>;
   return getTypeIDImpl<DecayedType>();
 }
 
 template <auto method>
-constexpr std::size_t getMethodId() {
-  return reinterpret_cast<std::size_t>(&getMethodId<method>);
+constexpr TypeId getMethodId() {
+  return reinterpret_cast<TypeId>(&getMethodId<method>);
 }
 }  // namespace Neat

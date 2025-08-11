@@ -26,7 +26,7 @@ class EventConnections : public IEventConnections {
   struct Handler {
     HandlerFunction function;
     void *instancePointer;
-    std::size_t instanceMethodId;
+    TypeId instanceMethodId;
     bool ignoreIfHandled;
     UInt16 priority;
   };
@@ -49,7 +49,7 @@ class EventConnections : public IEventConnections {
 
   template <auto method, typename Instance>
   void disconnect(Instance &instance) {
-    std::size_t methodId = getMethodId<method>();
+    TypeId methodId = getMethodId<method>();
     m_handlers.remove_if([&](const Handler &handler) {
       return handler.instancePointer == static_cast<void *>(&instance) and
              handler.instanceMethodId == methodId;

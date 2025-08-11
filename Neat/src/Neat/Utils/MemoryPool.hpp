@@ -59,10 +59,13 @@ class MemoryPool : public BaseMemoryPool {
   virtual ~MemoryPool() = default;
 
   virtual void destroy(std::size_t n) override {
-    NT_CORE_ASSERT(n < m_size, "Memory pool index out of range!");
-
     T *ptr = static_cast<T *>(this->at(n));
     ptr->~T();
+  }
+
+  template <typename... Args>
+  void construct(std::size_t n, Args &&...args) {
+    new (this->at(n)) T(std::forward<Args>(args)...);
   }
 };
 }  // namespace Neat

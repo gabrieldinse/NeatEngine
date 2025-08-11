@@ -93,7 +93,7 @@ class Entity {
   void removeComponent();
 
   template <typename C,
-            typename = typename std::enable_if_t<!std::is_const<C>::value>>
+            typename = typename std::enable_if_t<not std::is_const<C>::value>>
   ComponentHandle<C> getComponent();
 
   template <typename C,
@@ -427,7 +427,8 @@ class EntityManager : public NonCopyable {
 
     Iterator end() {
       return Iterator(m_entityManager, m_componentGroupMask,
-                      (UInt32)m_entityManager->capacity(), m_unpacker);
+                      static_cast<UInt32>(m_entityManager->capacity()),
+                      m_unpacker);
     }
 
     const Iterator begin() const {
@@ -436,7 +437,8 @@ class EntityManager : public NonCopyable {
 
     const Iterator end() const {
       return Iterator(m_entityManager, m_componentGroupMask,
-                      (UInt32)m_entityManager->capacity(), m_unpacker);
+                      static_cast<UInt32>(m_entityManager->capacity()),
+                      m_unpacker);
     }
 
    private:
@@ -517,7 +519,8 @@ class EntityManager : public NonCopyable {
   }
 
   Entity::Id createId(UInt32 index) const {
-    return Entity::Id(index, m_entityIdsVersion[index]); }
+    return Entity::Id(index, m_entityIdsVersion[index]);
+  }
 
   template <typename C, typename... Args>
   ComponentHandle<C> addComponent(const Entity::Id &id, Args &&...args) {
@@ -531,7 +534,7 @@ class EntityManager : public NonCopyable {
     }
 
     MemoryPool<C> *component_array = accomodateComponent<C>();
-    new (component_array->at(index)) C(std::forward<Args>(args)...);
+    component_array->construct(index, std::forward<Args>(args)...);
 
     m_entityComponentMasks[index].set(family);
 
@@ -597,7 +600,7 @@ class EntityManager : public NonCopyable {
     checkIsValid(id);
 
     if (not hasComponent<C>()) {
-     return ComponentHandle<C, const EntityManager>();
+      return ComponentHandle<C, const EntityManager>();
     }
 
     return ComponentHandle<C, const EntityManager>(this, id);
