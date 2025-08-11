@@ -30,9 +30,9 @@ git submodule update --init --recursive
 do_log "Removing build cache."
 rm -f "${build_dir}/CMakeCache.txt"
 
-do_log "Configuring build."
+do_log "Configuring build: ${build_configuration}."
 cmake -S "${root_dir}" -B "${build_dir}" -DCMAKE_BUILD_TYPE="${build_configuration}"
 
-do_log "Building target '${build_target}'."
-cmake --build "${build_dir}" --config "${build_configuration}" --target "${build_target}" -j 6 --
+do_log "Building target: ${build_target}."
+cmake --build "${build_dir}" --config "${build_configuration}" --target "${build_target}" -j "$(nproc)" --
 

@@ -1,3 +1,8 @@
+
+# Dependencies
+add_subdirectory(vendor/GLFW)
+add_subdirectory(vendor/Glad)
+
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DGLFW_INCLUDE_NONE)
 
 file(GLOB_RECURSE NEAT_SOURCES
