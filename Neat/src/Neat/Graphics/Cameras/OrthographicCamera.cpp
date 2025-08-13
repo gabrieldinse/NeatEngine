@@ -8,33 +8,39 @@
 
 namespace Neat {
 OrthographicCamera::OrthographicCamera(const Vector2F &position,
-                                       float aspectRatio, float zoomLevel,
-                                       KeepAspect keepAspect)
-    : m_position(Vector3F(position, m_zPos)),
-      m_aspectRatio(aspectRatio),
-      m_keepAspect(keepAspect),
-      m_zoomLevel(zoomLevel) {
+                                       float aspectRatio, float zoomLevel)
+    : m_position(Vector3F{position, 0.0f}) {
   NT_PROFILE_FUNCTION();
-  setProperties(aspectRatio, keepAspect, zoomLevel);
+  setProperties(aspectRatio, zoomLevel);
 }
 
 OrthographicCamera::OrthographicCamera(const Vector2F &position, UInt32 width,
-                                       UInt32 height, float zoomLevel,
-                                       KeepAspect keepAspect)
-    : m_position(Vector3F(position, m_zPos)),
-      m_aspectRatio(static_cast<float>(width) / static_cast<float>(height)),
-      m_keepAspect(keepAspect),
-      m_zoomLevel(zoomLevel) {
+                                       UInt32 height, float zoomLevel)
+    : m_position(Vector3F{position, 0.0f}) {
   NT_PROFILE_FUNCTION();
-  setProperties(m_aspectRatio, keepAspect, zoomLevel);
+  setProperties(static_cast<float>(width) / static_cast<float>(height),
+                zoomLevel);
 }
 
-void OrthographicCamera::setProperties(float aspectRatio, KeepAspect keepAspect,
-                                       float zoomLevel) {
+void OrthographicCamera::setProperties(float aspectRatio, float zoomLevel) {
   NT_PROFILE_FUNCTION();
-  m_aspectRatio = aspectRatio;
-  m_keepAspect = keepAspect;
-  m_zoomLevel = zoomLevel;
+  m_left = -aspectRatio * zoomLevel;
+  m_right = aspectRatio * zoomLevel;
+  m_bottom = -zoomLevel;
+  m_top = zoomLevel;
+  updateProjection();
+  updateCameraTransform();
+}
+
+void OrthographicCamera::setProperties(float left, float right, float bottom,
+                                       float top, float near, float far) {
+  NT_PROFILE_FUNCTION();
+  m_left = left;
+  m_right = right;
+  m_bottom = bottom;
+  m_top = top;
+  m_near = near;
+  m_far = far;
   updateProjection();
   updateCameraTransform();
 }
@@ -106,25 +112,22 @@ void OrthographicCamera::updateCameraTransform() {
   m_cameraTransform = m_projectionMatrix * m_viewMatrix;
 }
 
-void OrthographicCamera::setAspectRatio(float aspectRatio,
-                                        KeepAspect keepAspect) {
-  NT_PROFILE_FUNCTION();
-  m_keepAspect = keepAspect;
-  m_aspectRatio = aspectRatio;
-  updateProjection();
-  updateCameraTransform();
-}
-
 void OrthographicCamera::setAspectRatio(float aspectRatio) {
   NT_PROFILE_FUNCTION();
-  m_aspectRatio = aspectRatio;
+  float zoomLevel = m_top;
+  m_left = -aspectRatio * zoomLevel;
+  m_right = aspectRatio * zoomLevel;
   updateProjection();
   updateCameraTransform();
 }
 
 void OrthographicCamera::setZoomLevel(float zoomLevel) {
   NT_PROFILE_FUNCTION();
-  m_zoomLevel = zoomLevel;
+  float aspectRatio = m_right / m_top;
+  m_bottom = -zoomLevel;
+  m_top = zoomLevel;
+  m_left = -aspectRatio * zoomLevel;
+  m_right = aspectRatio * zoomLevel;
   updateProjection();
   updateCameraTransform();
 }
@@ -155,18 +158,7 @@ void OrthographicCamera::incrementY(float y) {
 
 void OrthographicCamera::updateProjection() {
   NT_PROFILE_FUNCTION();
-  switch (m_keepAspect) {
-    case KeepAspect::Height:
-      m_projectionMatrix = orthographicProjection(
-          -m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel,
-          -m_zoomLevel, m_zoomLevel, -1.0f, 1.0f);
-      break;
-
-    case KeepAspect::Width:
-      m_projectionMatrix = orthographicProjection(
-          -m_zoomLevel, m_zoomLevel, -m_aspectRatio * m_zoomLevel,
-          m_aspectRatio * m_zoomLevel, -1.0f, 1.0f);
-      break;
-  }
+  m_projectionMatrix =
+      orthographicProjection(m_left, m_right, m_bottom, m_top, m_near, m_far);
 }
 }  // namespace Neat

@@ -16,5 +16,7 @@ struct RenderableSpriteComponent {
                             float tilingFactor = 1.0f)
       : texture(texture), color(color), tilingFactor(tilingFactor) {}
   RenderableSpriteComponent(const Vector4F &color) : color(color) {}
+
+  bool hasTexture() const { return texture != nullptr; }
 };
 }  // namespace Neat

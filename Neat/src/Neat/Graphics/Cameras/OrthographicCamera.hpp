@@ -7,21 +7,17 @@
 #include "Neat/Math/Quaternion.hpp"
 
 namespace Neat {
-enum class KeepAspect { Height, Width };
 
 class OrthographicCamera : public Camera {
  public:
   OrthographicCamera(const Vector2F &position, float aspectRatio,
-                     float zoomLevel = 1.0f,
-                     KeepAspect keepAspect = KeepAspect::Height);
-  OrthographicCamera(const Vector2F &position, UInt32 width, UInt32 height,
-                     float zoomLevel = 1.0f,
-                     KeepAspect keepAspect = KeepAspect::Height);
-
-  void setProperties(float aspectRatio,
-                     KeepAspect keepAspect = KeepAspect::Height,
                      float zoomLevel = 1.0f);
-  void setAspectRatio(float aspectRatio, KeepAspect keepAspect);
+  OrthographicCamera(const Vector2F &position, UInt32 width, UInt32 height,
+                     float zoomLevel = 1.0f);
+
+  void setProperties(float left, float right, float bottom, float top,
+                     float near = -1.0f, float far = 1.0f);
+  void setProperties(float aspectRatio, float zoomLevel = 1.0f);
   void setAspectRatio(float aspectRatio);
   void setZoomLevel(float zoomLevel);
   void setSize(float size) { setZoomLevel(size); }
@@ -29,9 +25,9 @@ class OrthographicCamera : public Camera {
 
   const Vector3F &getPosition() const { return m_position; }
   float getRotation() const { return m_rotation; }
-  float getZoomLevel() const { return m_zoomLevel; }
+  float getZoomLevel() const { return m_top; }
   float getSize() const { return getZoomLevel(); }
-  float getAspectRatio() const { return m_aspectRatio; }
+  float getAspectRatio() const { return m_right / m_top; }
 
   void incrementRotation(float rotation);
   void setRotation(float rotation);
@@ -64,13 +60,15 @@ class OrthographicCamera : public Camera {
 
  private:
   Vector3F m_position;
-  float m_aspectRatio;
-  KeepAspect m_keepAspect = KeepAspect::Height;
   Matrix4F m_viewMatrix{Matrix4F::identity()};
   Matrix4F m_projectionMatrix{Matrix4F::identity()};
   Matrix4F m_cameraTransform{Matrix4F::identity()};
-  float m_zPos = 0.0f;  // TODO: check this value
-  float m_zoomLevel = 1.0f;
+  float m_left = -1.0f;
+  float m_right = 1.0f;
+  float m_bottom = -1.0f;
+  float m_top = 1.0f;
+  float m_near = -1.0f;
+  float m_far = 1.0f;
   float m_rotation = 0.0f;
 };
 }  // namespace Neat

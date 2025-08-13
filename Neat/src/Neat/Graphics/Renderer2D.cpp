@@ -104,7 +104,7 @@ void Renderer2D::flush() {
 void Renderer2D::drawSprite(const Matrix4F &transform,
                             const RenderableSpriteComponent &renderableSprite) {
   NT_PROFILE_FUNCTION();
-  if (renderableSprite.texture) {
+  if (renderableSprite.hasTexture()) {
     drawQuad(transform, renderableSprite.texture, renderableSprite.color,
              renderableSprite.tilingFactor);
   } else {

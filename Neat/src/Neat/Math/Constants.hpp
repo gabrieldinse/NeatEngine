@@ -13,6 +13,9 @@ inline constexpr T oneSixth =
     static_cast<T>(0.16666666666666666666666666666667);
 
 template <typename T>
+inline constexpr T oneEighth = static_cast<T>(0.125);
+
+template <typename T>
 inline constexpr T oneTenth = static_cast<T>(0.1);
 
 template <typename T>
@@ -43,6 +46,9 @@ inline constexpr T two = static_cast<T>(2);
 
 template <typename T>
 inline constexpr T twoAndOneHalf = static_cast<T>(2.5);
+
+template <typename T>
+inline constexpr T three = static_cast<T>(3);
 
 template <typename T>
 inline constexpr T e = static_cast<T>(2.7182818284590452353602874713527);

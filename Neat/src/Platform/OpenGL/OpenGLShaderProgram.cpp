@@ -108,13 +108,13 @@ void OpenGLShaderProgram::build(const std::string &filepath) {
   NT_PROFILE_FUNCTION();
   auto result = readFile(filepath);
   if (not result) {
-    NT_CORE_ERROR("Failed to read shader file: {0}", result.error().message);
+    NT_CORE_ERROR("Failed to read shader file: {0}.", result.error().message);
     NT_CORE_ASSERT(false, "");
     return;
   }
 
   const auto &shader_sources_pack = *result;
-  NT_CORE_TRACE("shader_sources_pack:\n{0}", shader_sources_pack);
+  NT_CORE_TRACE("Shader sources:\n{0}", shader_sources_pack);
   auto shader_sources = splitShaderSources(shader_sources_pack);
   build(shader_sources);
 }
@@ -192,7 +192,7 @@ UInt32 OpenGLShaderProgram::compileShader(UInt32 type,
 
     glDeleteShader(shader_id);
 
-    NT_CORE_ERROR("OpenGLShaderProgram compilation failure\n{0}",
+    NT_CORE_ERROR("OpenGLShaderProgram compilation failure:\n{0}",
                   info_log.data());
     NT_CORE_ASSERT(false, "");
   }
@@ -219,7 +219,7 @@ void OpenGLShaderProgram::linkProgram(std::vector<UInt32> shaderIDs) {
       glDetachShader(m_id, shaderId);
     }
 
-    NT_CORE_ERROR("OpenGLShaderProgram link failure\n{0}", info_log.data());
+    NT_CORE_ERROR("OpenGLShaderProgram link failure:\n{0}.", info_log.data());
     NT_CORE_ASSERT(false, "");
   }
 
