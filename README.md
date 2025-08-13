@@ -7,4 +7,4 @@ Currently, it only supports Linux and OpenGL. Other platforms should be added on
 ## Examples
 ### Flappy Spaceship
 This is the simplest possible implementation of a Flappy Bird-like game, meant to test the 2D rendering and check the ECS/events usage experience.
-![Flappy Spaceship](FlappySpaceship.png)
+![Flappy Spaceship](Resources/Images/FlappySpaceship.png)
