@@ -133,7 +133,7 @@ void OpenGLShaderProgram::build(
 std::unordered_map<UInt32, std::string> OpenGLShaderProgram::splitShaderSources(
     const std::string &shaderSourcesPack) {
   NT_PROFILE_FUNCTION();
-  constexpr const char *type_token = "#type";
+  constexpr const char *type_token = "// #Type:";
   auto type_token_length = strlen(type_token);
   auto pos = shaderSourcesPack.find(type_token, 0);
   std::unordered_map<UInt32, std::string> shader_sources;

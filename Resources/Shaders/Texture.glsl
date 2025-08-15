@@ -1,4 +1,4 @@
-#type vertex
+// #Type: vertex
 #version 450 core
             
 layout(location = 0) in vec4 position;
@@ -27,7 +27,7 @@ void main()
     gl_Position = u_cameraTransform * position;
 }
 
-#type fragment
+// #Type: fragment
 #version 450 core
 
 layout(location = 0) out vec4 color;

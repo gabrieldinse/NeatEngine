@@ -35,9 +35,9 @@ Matrix<4, 4, T> perspectiveProjection(const T &fieldOfView,
 }
 
 template <typename T>
-Matrix<4, 4, T> lookAtRHProjection(const Vector<3, T> &eye,
-                                   const Vector<3, T> &target,
-                                   const Vector<3, T> &upDirection) {
+Matrix<4, 4, T> lookAtRightHandView(const Vector<3, T> &eye,
+                                    const Vector<3, T> &target,
+                                    const Vector<3, T> &upDirection) {
   Vector<3, T> front(normalize(target - eye));
   Vector<3, T> right(normalize(cross(front, upDirection)));
   Vector<3, T> up(cross(right, front));
@@ -48,7 +48,7 @@ Matrix<4, 4, T> lookAtRHProjection(const Vector<3, T> &eye,
 }
 
 template <typename T>
-Matrix<4, 4, T> lookAtLHProjection(const Vector<3, T> &eye,
+Matrix<4, 4, T> lookAtLeftHandView(const Vector<3, T> &eye,
                                    const Vector<3, T> &target,
                                    const Vector<3, T> &upDirection) {
   Vector<3, T> front(normalize(target - eye));
