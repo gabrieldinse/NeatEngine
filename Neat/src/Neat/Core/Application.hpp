@@ -15,7 +15,7 @@ class Application {
   virtual ~Application();
 
   void run();
-  void stop();
+  void close() { stop(); }
   virtual void onUpdate([[maybe_unused]] double deltaTimeSeconds) {}
 
   template <typename T, typename... Args>
@@ -27,16 +27,17 @@ class Application {
   Scope<Layer> popLayer(Int32 position);
   Scope<Layer> popOverlay(Int32 position);
 
-  void layersOnUpdate(double deltaTimeSeconds);
-
   static Application &get() { return *s_instance; }
   Window &getWindow() { return *m_window; }
 
-  bool onWindowClose(const WindowCloseEvent &event);
-  bool onWindowResize(const WindowResizeEvent &event);
-
  protected:
   Ref<EventDispatcher> &getEventDispatcher() { return m_eventDispatcher; }
+
+ private:
+  void stop();
+  void layersOnUpdate(double deltaTimeSeconds);
+  bool onWindowClose(const WindowCloseEvent &event);
+  bool onWindowResize(const WindowResizeEvent &event);
 
  private:
   static Application *s_instance;
