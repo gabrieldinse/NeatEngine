@@ -24,8 +24,6 @@ class ExampleLayer : public Neat::Layer {
   Neat::Ref<Neat::SubTexture2D> m_stairsTexture;
   Neat::Ref<Neat::SubTexture2D> stairsTexture2;
 
-  Neat::Ref<Neat::FrameBuffer> m_frameBuffer;
-
   Neat::Vector4F tint = {0.8f, 0.3f, 0.2f, 1.0f};
 
   int numberOfColumns = 20;

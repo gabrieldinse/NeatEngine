@@ -17,15 +17,6 @@ EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
       .connect<&EditorLayer::onWindowResize>(*this);
   eventDispatcher->get<MouseMovedEvent>().connect<&EditorLayer::onMouseMoved>(
       *this);
-  // auto q = Quaternion::fromAngleAxis(radians(45.0f),
-  // Vector3F(1, 0, 0)); auto q2 = glm::angleAxis(glm::radians(45.0f),
-  // glm::vec3(1.0f, 0.0f, 0.0f)); NT_TRACE(q); NT_TRACE(log(q));
-  // NT_TRACE(pow(q, 0.5f));
-  // NT_TRACE("");
-  // NT_TRACE(glm::to_string(q2));
-  // NT_TRACE(glm::to_string(glm::log(q2)));
-  // NT_TRACE(glm::to_string(glm::pow(q2, 0.5f)));
-  // NT_ASSERT(false, "");
 
   auto camera =
       makeRef<OrthographicCamera>(Vector2F{0.0f, 0.0f}, 1280.0f / 720.0f);
@@ -196,7 +187,8 @@ void EditorLayer::onImGuiRender() {
   ImGui::Text("Indexes: %d", stats.getTotalIndexCount());
   ImGui::Text("Vertexes: %d\n", stats.getTotalVertexCount());
   UInt32 textureID = m_frameBuffer->getColorAttachmentID();
-  ImGui::Image(static_cast<ImTextureID>(textureID), ImVec2{1280, 720});
+  ImGui::Image(static_cast<ImTextureID>(textureID), ImVec2{1280, 720},
+               ImVec2{0, 1}, ImVec2{1, 0});
   // ImGui::SliderInt("Number of columns", &this->numberOfColumns, 0, 500);
   // ImGui::SliderInt("Number of lines", &this->numberOfLines, 0, 500);
   // ImGui::ColorEdit4("Square Color", this->tint.dataPointer());
