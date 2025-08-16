@@ -9,8 +9,8 @@ set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}
 set(OUTPUT_INT_DIR "${CMAKE_BINARY_DIR}/bin-int/${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;Dist")
 
-# Projects
 add_subdirectory(Neat)
-add_subdirectory(Sandbox)
+add_subdirectory(NeatEditor)
 add_subdirectory(Tests)
 add_subdirectory(Examples)
+add_subdirectory(Sandbox)
