@@ -90,15 +90,15 @@ void GameLayer::init() {
 
 void GameLayer::onUpdate(double deltaTimeSeconds) {
   switch (m_gameState) {
-  case GameState::Playing:
-    play(deltaTimeSeconds);
-    break;
-  case GameState::MainMenu:
-    mainMenu();
-    break;
-  case GameState::GameOver:
-    gameOver();
-    break;
+    case GameState::Playing:
+      play(deltaTimeSeconds);
+      break;
+    case GameState::MainMenu:
+      mainMenu();
+      break;
+    case GameState::GameOver:
+      gameOver();
+      break;
   }
   // onImGui();
 }
@@ -295,8 +295,7 @@ bool GameLayer::pointInTriangle(const Neat::Vector2F &p,
   float t =
       p0.x * p1.y - p0.y * p1.x + (p0.y - p1.y) * p.x + (p1.x - p0.x) * p.y;
 
-  if ((s < 0) != (t < 0))
-    return false;
+  if ((s < 0) != (t < 0)) return false;
 
   float A =
       -p1.y * p2.x + p0.y * (p2.x - p1.x) + p0.x * (p1.y - p2.y) + p1.x * p2.y;

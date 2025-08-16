@@ -3,6 +3,7 @@
 #include "Neat/Core/PlatformDetection.hpp"
 #include "Neat/Core/LayerGroup.hpp"
 #include "Neat/Core/Window.hpp"
+#include "Neat/Core/ApplicationProperties.hpp"
 #include "Neat/Events/Events/WindowCloseEvent.hpp"
 #include "Neat/Events/Events/WindowResizeEvent.hpp"
 #include "Neat/Events/EventDispatcher.hpp"
@@ -14,6 +15,8 @@ class Application {
   Application();
   virtual ~Application();
 
+  void init(
+      const ApplicationProperties &appProperties = ApplicationProperties{});
   void run();
   void close() { stop(); }
   virtual void onUpdate([[maybe_unused]] double deltaTimeSeconds) {}
@@ -47,6 +50,7 @@ class Application {
   LayerGroup m_layerGroup;
 
   bool m_running = false;
+  bool m_initialized = false;
 };
 
 Scope<Application> createApplication();

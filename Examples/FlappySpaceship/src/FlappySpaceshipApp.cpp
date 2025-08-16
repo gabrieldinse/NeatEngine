@@ -5,7 +5,7 @@
 #include <Neat/Core/Main.hpp>
 
 class FlappySpaceshipApp : public Neat::Application {
-public:
+ public:
   FlappySpaceshipApp() { pushLayer<GameLayer>(getEventDispatcher()); }
 
   ~FlappySpaceshipApp() {}

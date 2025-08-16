@@ -5,7 +5,8 @@
 
 #include "Neat/Core/PlatformDetection.hpp"
 #include "Neat/Core/Types.hpp"
-#include "Neat/Core/WindowProps.hpp"
+#include "Neat/Core/WindowProperties.hpp"
+#include "Neat/Events/EventDispatcher.hpp"
 
 namespace Neat {
 class EventDispatcher;
@@ -26,6 +27,7 @@ class Window {
   virtual void setVSync(bool enabled) = 0;
   virtual bool isVSync() const = 0;
 
-  static Scope<Window> create(const WindowProps &props);
+  static Scope<Window> create(const Ref<EventDispatcher> &eventDispatcher,
+                              const WindowProperties &windowProperties);
 };
 }  // namespace Neat

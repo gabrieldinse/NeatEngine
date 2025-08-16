@@ -36,7 +36,9 @@ void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos);
 
 Int32 LinuxWindow::s_windowCount = 0;
 
-LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
+LinuxWindow::LinuxWindow(const Ref<EventDispatcher> &eventDispatcher,
+                         const WindowProperties &windowProperties)
+    : m_windowData{windowProperties, eventDispatcher} {
   NT_PROFILE_FUNCTION();
   if (s_windowCount == 0) {
     Int32 status = glfwInit();
@@ -45,8 +47,9 @@ LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
   }
 
   m_glfwWindow =
-      glfwCreateWindow((Int32)m_windowProps.width, (Int32)m_windowProps.height,
-                       m_windowProps.title.c_str(), NULL, NULL);
+      glfwCreateWindow(static_cast<Int32>(m_windowData.windowProperties.width),
+                       static_cast<Int32>(m_windowData.windowProperties.height),
+                       m_windowData.windowProperties.title.c_str(), NULL, NULL);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -56,11 +59,13 @@ LinuxWindow::LinuxWindow(const WindowProps &props) : m_windowProps(props) {
   m_graphicsContext = GraphicsContext::create(m_glfwWindow);
   m_graphicsContext->init();
 
-  NT_CORE_INFO("Created window {0} ({1}, {2})", m_windowProps.title,
-               m_windowProps.width, m_windowProps.height);
+  NT_CORE_INFO("Created window {0} ({1}, {2})",
+               m_windowData.windowProperties.title,
+               m_windowData.windowProperties.width,
+               m_windowData.windowProperties.height);
 
-  glfwSetWindowUserPointer(m_glfwWindow, &m_windowProps);
-  setVSync(m_windowProps.vSync);
+  glfwSetWindowUserPointer(m_glfwWindow, &m_windowData);
+  setVSync(m_windowData.windowProperties.vSync);
 
   glfwSetWindowSizeCallback(m_glfwWindow, windowResizeCallback);
   glfwSetWindowCloseCallback(m_glfwWindow, windowCloseCallback);
@@ -80,13 +85,17 @@ LinuxWindow::~LinuxWindow() {
   }
 }
 
-Int32 LinuxWindow::getWidth() const { return m_windowProps.width; }
+Int32 LinuxWindow::getWidth() const {
+  return m_windowData.windowProperties.width;
+}
 
-Int32 LinuxWindow::getHeight() const { return m_windowProps.height; }
+Int32 LinuxWindow::getHeight() const {
+  return m_windowData.windowProperties.height;
+}
 
 float LinuxWindow::getAspectRatio() const {
-  return static_cast<float>(m_windowProps.width) /
-         static_cast<float>(m_windowProps.height);
+  return static_cast<float>(m_windowData.windowProperties.width) /
+         static_cast<float>(m_windowData.windowProperties.height);
 }
 
 void *LinuxWindow::getNativeWindow() const { return m_glfwWindow; }
@@ -97,7 +106,9 @@ void LinuxWindow::onUpdate() {
   glfwPollEvents();
 }
 
-bool LinuxWindow::isMinimized() const { return m_windowProps.minimized; }
+bool LinuxWindow::isMinimized() const {
+  return m_windowData.windowProperties.minimized;
+}
 
 void LinuxWindow::setVSync(bool enabled) {
   if (enabled) {
@@ -105,54 +116,57 @@ void LinuxWindow::setVSync(bool enabled) {
   } else {
     glfwSwapInterval(0);
   }
-  m_windowProps.vSync = enabled;
+  m_windowData.windowProperties.vSync = enabled;
 }
 
-bool LinuxWindow::isVSync() const { return m_windowProps.vSync; }
+bool LinuxWindow::isVSync() const {
+  return m_windowData.windowProperties.vSync;
+}
 
 // ---------------------------------------------------------------------- //
 // GLFW callbacks ------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 void windowResizeCallback(GLFWwindow *window, Int32 width, Int32 height) {
-  auto &windowProps =
-      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
+  auto &windowData =
+      *static_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
-  windowProps.width = width;
-  windowProps.height = height;
+  windowData.windowProperties.width = width;
+  windowData.windowProperties.height = height;
 
-  if (windowProps.width == 0 or windowProps.height == 0)
-    windowProps.minimized = true;
+  if (windowData.windowProperties.width == 0 or
+      windowData.windowProperties.height == 0)
+    windowData.windowProperties.minimized = true;
   else
-    windowProps.minimized = false;
+    windowData.windowProperties.minimized = false;
 
-  windowProps.eventDispatcher->enqueue<WindowResizeEvent>(width, height);
+  windowData.eventDispatcher->enqueue<WindowResizeEvent>(width, height);
 }
 
 void windowCloseCallback(GLFWwindow *window) {
-  auto &windowProps =
-      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
-  windowProps.eventDispatcher->enqueue<WindowCloseEvent>();
+  auto &windowData =
+      *static_cast<WindowData *>(glfwGetWindowUserPointer(window));
+  windowData.eventDispatcher->enqueue<WindowCloseEvent>();
 }
 
 void keyActionCallback(GLFWwindow *window, Int32 key,
                        [[maybe_unused]] Int32 scancode, Int32 action,
                        [[maybe_unused]] Int32 mods) {
-  auto &windowProps =
-      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
+  auto &windowData =
+      *static_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
   switch (action) {
     case GLFW_PRESS: {
-      windowProps.eventDispatcher->enqueue<KeyPressedEvent>(
+      windowData.eventDispatcher->enqueue<KeyPressedEvent>(
           static_cast<Key>(key), 0);
       break;
     }
     case GLFW_RELEASE: {
-      windowProps.eventDispatcher->enqueue<KeyReleasedEvent>(
+      windowData.eventDispatcher->enqueue<KeyReleasedEvent>(
           static_cast<Key>(key));
       break;
     }
     case GLFW_REPEAT: {
-      windowProps.eventDispatcher->enqueue<KeyPressedEvent>(
+      windowData.eventDispatcher->enqueue<KeyPressedEvent>(
           static_cast<Key>(key), 1);
       break;
     }
@@ -160,26 +174,26 @@ void keyActionCallback(GLFWwindow *window, Int32 key,
 }
 
 void keyTypeCallback(GLFWwindow *window, UInt32 key) {
-  auto &windowProps =
-      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
-  windowProps.eventDispatcher->enqueue<KeyTypedEvent>(static_cast<Key>(key));
+  auto &windowData =
+      *static_cast<WindowData *>(glfwGetWindowUserPointer(window));
+  windowData.eventDispatcher->enqueue<KeyTypedEvent>(static_cast<Key>(key));
 }
 
 void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
                                [[maybe_unused]] Int32 mods) {
-  auto &windowProps =
-      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
+  auto &windowData =
+      *static_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
   switch (action) {
     case GLFW_PRESS: {
       MouseButtonPressedEvent event(static_cast<MouseButton>(button));
-      windowProps.eventDispatcher->enqueue<MouseButtonPressedEvent>(
+      windowData.eventDispatcher->enqueue<MouseButtonPressedEvent>(
           static_cast<MouseButton>(button));
       break;
     }
     case GLFW_RELEASE: {
       MouseButtonReleasedEvent event(static_cast<MouseButton>(button));
-      windowProps.eventDispatcher->enqueue<MouseButtonReleasedEvent>(
+      windowData.eventDispatcher->enqueue<MouseButtonReleasedEvent>(
           static_cast<MouseButton>(button));
       break;
     }
@@ -187,20 +201,20 @@ void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
 }
 
 void mouseScrollCallback(GLFWwindow *window, double xOffset, double yOffset) {
-  auto &windowProps =
-      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
+  auto &windowData =
+      *static_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
   MouseScrolledEvent event((float)xOffset, (float)yOffset);
-  windowProps.eventDispatcher->enqueue<MouseScrolledEvent>((float)xOffset,
-                                                           (float)yOffset);
+  windowData.eventDispatcher->enqueue<MouseScrolledEvent>((float)xOffset,
+                                                          (float)yOffset);
 }
 
 void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos) {
-  auto &windowProps =
-      *static_cast<WindowProps *>(glfwGetWindowUserPointer(window));
+  auto &windowData =
+      *static_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
   MouseMovedEvent event((float)xPos, (float)yPos);
-  windowProps.eventDispatcher->enqueue<MouseMovedEvent>((float)xPos,
-                                                        (float)yPos);
+  windowData.eventDispatcher->enqueue<MouseMovedEvent>((float)xPos,
+                                                       (float)yPos);
 }
 }  // namespace Neat

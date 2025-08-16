@@ -19,14 +19,14 @@ enum class GameState { MainMenu, Playing, GameOver };
 struct CollisionEvent {};
 
 class GameLayer : public Neat::Layer {
-public:
+ public:
   GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventManager);
   ~GameLayer() = default;
 
   void init();
   virtual void onUpdate(double deltaTimeSeconds) override;
 
-private:
+ private:
   void play(float deltaTimeSeconds);
   void mainMenu();
   void gameOver();
@@ -51,7 +51,7 @@ private:
                               const Neat::Vector2F &p1,
                               const Neat::Vector2F &p2);
 
-private:
+ private:
   Neat::Ref<Neat::EventDispatcher> m_eventDispatcher;
   Neat::Ref<Neat::OrthographicCamera> m_camera;
   Neat::Ref<Neat::SystemManager> m_systems;

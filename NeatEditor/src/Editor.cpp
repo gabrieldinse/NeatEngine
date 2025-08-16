@@ -7,12 +7,13 @@
 namespace Neat {
 class Editor : public Application {
  public:
-  Editor() { pushLayer<EditorLayer>(getEventDispatcher()); }
+  Editor() {
+    init(ApplicationProperties{WindowProperties{"Neat Editor"}});
+    pushLayer<EditorLayer>(getEventDispatcher());
+  }
 
   ~Editor() {}
 };
 
-Scope<Application> createApplication() {
-  return makeScope<Editor>();
-}
-} // namespace Neat
+Scope<Application> createApplication() { return makeScope<Editor>(); }
+}  // namespace Neat

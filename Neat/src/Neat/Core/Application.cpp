@@ -13,8 +13,18 @@ Application::Application() : m_eventDispatcher(makeRef<EventDispatcher>()) {
   NT_PROFILE_FUNCTION();
   NT_CORE_ASSERT(not s_instance, "Application already exists!");
   s_instance = this;
+}
 
-  m_window = Window::create(WindowProps(m_eventDispatcher));
+Application::~Application() {
+  NT_PROFILE_FUNCTION();
+  if (m_initialized) {
+    ImGuiRender::shutdown();
+    Renderer::shutdown();
+  }
+}
+
+void Application::init(const ApplicationProperties &appProperties) {
+  m_window = Window::create(m_eventDispatcher, appProperties.windowProperties);
   m_eventDispatcher->get<WindowCloseEvent>()
       .connect<&Application::onWindowClose>(*this, EventPriorityHighest);
   m_eventDispatcher->get<WindowResizeEvent>()
@@ -23,18 +33,18 @@ Application::Application() : m_eventDispatcher(makeRef<EventDispatcher>()) {
   Renderer::init();
   Input::setWindow(*m_window);
   ImGuiRender::init();
-}
-
-Application::~Application() {
-  NT_PROFILE_FUNCTION();
-  ImGuiRender::shutdown();
-  Renderer::shutdown();
+  m_initialized = true;
 }
 
 void Application::stop() { m_running = false; }
 
 void Application::run() {
   NT_PROFILE_FUNCTION();
+
+  if (not m_initialized) {
+    init();
+  }
+
   NT_CORE_INFO("Application started");
   Timer timer;
   m_running = true;

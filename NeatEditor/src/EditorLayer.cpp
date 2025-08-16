@@ -3,22 +3,20 @@
 #include "EditorLayer.hpp"
 
 namespace Neat {
-EditorLayer::EditorLayer(
-    const Ref<EventDispatcher> &eventDispatcher)
-    : m_checkerboardTexture(
-          Texture2D::create("assets/textures/texture1.png")),
+EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
+    : m_checkerboardTexture(Texture2D::create("assets/textures/texture1.png")),
       m_spritesheetTexture(
           Texture2D::create("assets/textures/spritesheet1.png")),
       m_stairsTexture(SubTexture2D::createFromIndex(m_spritesheetTexture,
-                                                          {7, 6}, {64, 64})),
-      stairsTexture2(SubTexture2D::createFromIndex(m_spritesheetTexture,
-                                                         {8, 6}, {64, 64})) {
+                                                    {7, 6}, {64, 64})),
+      stairsTexture2(SubTexture2D::createFromIndex(m_spritesheetTexture, {8, 6},
+                                                   {64, 64})) {
   m_entities = makeRef<EntityManager>(eventDispatcher);
   m_systems = makeRef<SystemManager>(m_entities, eventDispatcher);
   eventDispatcher->get<WindowResizeEvent>()
       .connect<&EditorLayer::onWindowResize>(*this);
-  eventDispatcher->get<MouseMovedEvent>()
-      .connect<&EditorLayer::onMouseMoved>(*this);
+  eventDispatcher->get<MouseMovedEvent>().connect<&EditorLayer::onMouseMoved>(
+      *this);
   // auto q = Quaternion::fromAngleAxis(radians(45.0f),
   // Vector3F(1, 0, 0)); auto q2 = glm::angleAxis(glm::radians(45.0f),
   // glm::vec3(1.0f, 0.0f, 0.0f)); NT_TRACE(q); NT_TRACE(log(q));
@@ -29,8 +27,8 @@ EditorLayer::EditorLayer(
   // NT_TRACE(glm::to_string(glm::pow(q2, 0.5f)));
   // NT_ASSERT(false, "");
 
-  auto camera = makeRef<OrthographicCamera>(
-      Vector2F{0.0f, 0.0f}, 1280.0f / 720.0f);
+  auto camera =
+      makeRef<OrthographicCamera>(Vector2F{0.0f, 0.0f}, 1280.0f / 720.0f);
   auto camera_controller_system =
       m_systems->addSystem<OrthographicCameraControllerSystem>(camera);
   m_systems->addSystem<Render2DSystem>(camera);
@@ -41,10 +39,9 @@ EditorLayer::EditorLayer(
       auto flatColorQuad = m_entities->createEntity();
       flatColorQuad.addComponent<RenderableSpriteComponent>(
           Vector4F{float(i) / this->numberOfLines,
-                         float(j) / this->numberOfColumns, 1.0f, 1.0f});
+                   float(j) / this->numberOfColumns, 1.0f, 1.0f});
       flatColorQuad.addComponent<TransformComponent>(
-          Vector3F{0.1f * j, 0.1f * i, 0.0f},
-          Vector3F{0.1f, 0.1f, 1.0f});
+          Vector3F{0.1f * j, 0.1f * i, 0.0f}, Vector3F{0.1f, 0.1f, 1.0f});
     }
   }
 
@@ -55,8 +52,7 @@ EditorLayer::EditorLayer(
 
   auto checkerboardQuad = m_entities->createEntity();
   checkerboardQuad.addComponent<RenderableSpriteComponent>(
-      this->m_checkerboardTexture, Vector4F{0.8f, 0.4f, 0.3f, 0.75f},
-      5.0f);
+      this->m_checkerboardTexture, Vector4F{0.8f, 0.4f, 0.3f, 0.75f}, 5.0f);
   checkerboardQuad.addComponent<TransformComponent>(
       Vector3F{0.0f, 0.0f, 0.5f}, Vector3F{1.0f, 1.0f, 1.0f},
       Vector3F{0.0f, 0.0f, 45.0f});
@@ -212,8 +208,7 @@ void EditorLayer::onImGuiRender() {
 }
 
 void EditorLayer::onUpdate(double deltaTimeSeconds) {
-  m_systems->onUpdate<OrthographicCameraControllerSystem>(
-      deltaTimeSeconds);
+  m_systems->onUpdate<OrthographicCameraControllerSystem>(deltaTimeSeconds);
   m_frameBuffer->bind();
   m_systems->onUpdate<Render2DSystem>(deltaTimeSeconds);
   onImGuiRender();
@@ -225,9 +220,8 @@ bool EditorLayer::onWindowResize(const WindowResizeEvent &event) {
   return false;
 }
 
-bool EditorLayer::onMouseMoved(
-    [[maybe_unused]] const MouseMovedEvent &event) {
+bool EditorLayer::onMouseMoved([[maybe_unused]] const MouseMovedEvent &event) {
   // NT_CORE_TRACE("Mouse moved to ({0}, {1})", event.xPos, event.yPos);
   return false;
 }
-} // namespace Neat
+}  // namespace Neat

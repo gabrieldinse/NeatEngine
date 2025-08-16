@@ -11,8 +11,12 @@ extern Neat::Scope<Neat::Application> Neat::createApplication();
 int main(int argc, char *argv[]) {
   Neat::Log::init();
 
+  NT_PROFILE_BEGIN_SESSION("CreateApp", "Neat-Profile.json");
+  Neat::Scope<Neat::Application> app = Neat::createApplication();
+  NT_PROFILE_END_SESSION();
+
   NT_PROFILE_BEGIN_SESSION("Runtime", "Neat-Profile.json");
-  Neat::createApplication()->run();
+  app->run();
   NT_PROFILE_END_SESSION();
 }
 

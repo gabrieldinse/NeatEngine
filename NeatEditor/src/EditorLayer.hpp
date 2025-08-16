@@ -32,4 +32,4 @@ class EditorLayer : public Layer {
   int numberOfColumns = 20;
   int numberOfLines = 20;
 };
-} // namespace Neat
+}  // namespace Neat
