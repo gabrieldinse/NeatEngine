@@ -9,7 +9,7 @@ OpenGLIndexBuffer::OpenGLIndexBuffer(UInt32 *indices, UInt32 count)
     : m_count(count) {
   NT_PROFILE_FUNCTION();
   glCreateBuffers(1, &m_id);
-  bind();
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_count * sizeof(m_count), indices,
                GL_STATIC_DRAW);
 }

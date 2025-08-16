@@ -6,7 +6,8 @@ add_subdirectory(vendor/Glad)
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DGLFW_INCLUDE_NONE)
 
 file(GLOB_RECURSE NEAT_SOURCES
-    src/**.cpp
+    src/Neat/**.cpp
+    src/Platform/OpenGL/**.cpp
     vendor/stb_image/stb_image.cpp
     vendor/ImGui/imgui_demo.cpp
     vendor/ImGui/imgui_draw.cpp
@@ -17,15 +18,24 @@ file(GLOB_RECURSE NEAT_SOURCES
     vendor/ImGui/backends/imgui_impl_opengl3.cpp
 )
 
+file(GLOB_RECURSE LINUX_SOURCES
+    src/Platform/Linux/**.cpp
+)
+
+if(WIN32)
+
+elseif(UNIX AND NOT APPLE)
+    set(NEAT_SOURCES ${NEAT_SOURCES} ${LINUX_SOURCES})
+endif()
 
 message(STATUS "NEAT_SOURCES: ${NEAT_SOURCES}")
 
 add_library(Neat STATIC ${NEAT_SOURCES})
+
 target_compile_options(Neat PRIVATE
     -Wall -Wextra -Wpedantic
     $<$<CONFIG:Debug>:-Werror>
 )
-
 
 target_precompile_headers(Neat PRIVATE
     src/NeatPCH.hpp

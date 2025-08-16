@@ -26,6 +26,9 @@ class OpenGLVertexArray : public VertexArray {
   }
 
  private:
+  void setLayouts(const Ref<VertexBuffer> &vertexBuffer);
+
+ private:
   UInt32 m_id = 0;
   std::vector<Ref<VertexBuffer>> m_vertexBuffers;
   Ref<IndexBuffer> m_indexBuffer;

@@ -8,14 +8,14 @@ namespace Neat {
 OpenGLVertexBuffer::OpenGLVertexBuffer(UInt32 size) {
   NT_PROFILE_FUNCTION();
   glCreateBuffers(1, &m_id);
-  bind();
+  glBindBuffer(GL_ARRAY_BUFFER, m_id);
   glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_DYNAMIC_DRAW);
 }
 
 OpenGLVertexBuffer::OpenGLVertexBuffer(float *vertices, UInt32 size) {
   NT_PROFILE_FUNCTION();
   glCreateBuffers(1, &m_id);
-  bind();
+  glBindBuffer(GL_ARRAY_BUFFER, m_id);
   glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 }
 
@@ -36,7 +36,7 @@ void OpenGLVertexBuffer::unbind() const {
 
 void OpenGLVertexBuffer::setData(const void *data, UInt32 size) {
   NT_PROFILE_FUNCTION();
-  bind();
+  glBindBuffer(GL_ARRAY_BUFFER, m_id);
   glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 }
 

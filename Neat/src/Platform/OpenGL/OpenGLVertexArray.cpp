@@ -31,7 +31,11 @@ void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
 
   bind();
   vertexBuffer->bind();
+  setLayouts(vertexBuffer);
+  m_vertexBuffers.push_back(vertexBuffer);
+}
 
+void OpenGLVertexArray::setLayouts(const Ref<VertexBuffer> &vertexBuffer) {
   const auto &layout = vertexBuffer->getLayout();
   for (const auto &element : layout) {
     glVertexAttribPointer(
@@ -41,8 +45,6 @@ void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer> &vertexBuffer) {
         static_cast<void *>(static_cast<char *>(0) + element.offset));
     glEnableVertexAttribArray(element.index);
   }
-
-  m_vertexBuffers.push_back(vertexBuffer);
 }
 
 void OpenGLVertexArray::setIndexBuffer(const Ref<IndexBuffer> &indexBuffer) {
