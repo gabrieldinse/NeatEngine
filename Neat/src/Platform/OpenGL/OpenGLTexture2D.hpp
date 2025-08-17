@@ -37,7 +37,7 @@ class OpenGLTexture2D : public Texture2D {
   virtual void setWrapT(Texture2DWrapping wrapT) override;
 
  private:
-  UInt32 m_id;
+  UInt32 m_id = 0;
   Int32 m_width;
   Int32 m_height;
   UInt32 m_internalFormat;

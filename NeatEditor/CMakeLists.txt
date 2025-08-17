@@ -14,6 +14,11 @@ set_target_properties(NeatEditor PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
 )
 
+target_compile_options(NeatEditor PRIVATE
+    -Wall -Wextra -Wpedantic
+    $<$<CONFIG:Debug>:-Werror>
+)
+
 target_compile_definitions(NeatEditor PRIVATE
     $<$<CONFIG:Debug>:NT_DEBUG;NT_IMGUI>
     $<$<CONFIG:Release>:NT_RELEASE>

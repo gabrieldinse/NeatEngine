@@ -35,9 +35,8 @@ void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray> &vertexArray,
   NT_PROFILE_FUNCTION();
   UInt32 count = (indexCount == 0) ? vertexArray->getIndexBuffer()->getCount()
                                    : indexCount;
-
-  glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, NULL);
-  glBindTexture(GL_TEXTURE_2D, 0);
+  vertexArray->bind();
+  glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 }
 
 void OpenGLRendererAPI::setViewport(UInt32 xOffset, UInt32 yOffset,

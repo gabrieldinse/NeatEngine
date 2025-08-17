@@ -12,11 +12,10 @@
 namespace Neat {
 class Application {
  public:
-  Application();
+  Application(
+      const ApplicationProperties &appProperties = ApplicationProperties{});
   virtual ~Application();
 
-  void init(
-      const ApplicationProperties &appProperties = ApplicationProperties{});
   void run();
   void close() { stop(); }
   virtual void onUpdate([[maybe_unused]] double deltaTimeSeconds) {}
@@ -38,7 +37,7 @@ class Application {
 
  private:
   void stop();
-  void layersOnUpdate(double deltaTimeSeconds);
+  void onUpdateLayers(double deltaTimeSeconds);
   bool onWindowClose(const WindowCloseEvent &event);
   bool onWindowResize(const WindowResizeEvent &event);
 

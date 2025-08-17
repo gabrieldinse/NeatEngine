@@ -14,8 +14,9 @@ Scope<Renderer2D::Renderer2DData> Renderer2D::s_data =
 void Renderer2D::init() {
   NT_PROFILE_FUNCTION();
   s_data->quadVertexArray = VertexArray::create();
-  s_data->quadVertexBuffer = VertexBuffer::create(
-      QuadVextexDataBuffer::maxVertices * (UInt32)sizeof(QuadVertexData));
+  s_data->quadVertexBuffer =
+      VertexBuffer::create(QuadVextexDataBuffer::maxVertices *
+                           static_cast<UInt32>(sizeof(QuadVertexData)));
 
   s_data->quadVertexBuffer->setLayout(
       {{ShaderDataType::Vector4F, "position"},
@@ -44,7 +45,8 @@ void Renderer2D::init() {
 
   s_data->whiteTexture = Texture2D::create(1, 1);
   UInt32 white_texture_data = 0xffffffff;
-  s_data->whiteTexture->setData(&white_texture_data, (UInt32)sizeof(UInt32));
+  s_data->whiteTexture->setData(&white_texture_data,
+                                static_cast<UInt32>(sizeof(UInt32)));
 
   // Assign each sampler to a texture unit (sampler2d's 0-31 to texture
   // units 0-31)

@@ -8,7 +8,7 @@
 
 extern Neat::Scope<Neat::Application> Neat::createApplication();
 
-int main(int argc, char *argv[]) {
+int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
   Neat::Log::init();
 
   NT_PROFILE_BEGIN_SESSION("CreateApp", "Neat-Profile.json");

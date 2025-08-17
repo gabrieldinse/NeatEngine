@@ -17,14 +17,12 @@ void Render2DSystem::onUpdate(
   Neat::RenderCommand::clearWithColor({0.35f, 0.35f, 0.55f, 1.0f});
 
   Renderer2D::beginScene(m_camera);
-
   ComponentHandle<RenderableSpriteComponent> renderableSprite;
   ComponentHandle<TransformComponent> transform;
   for ([[maybe_unused]] auto &&entity :
        entityManager->entitiesWithComponents(renderableSprite, transform)) {
     Renderer2D::drawSprite(transform->getTransform(), *renderableSprite);
   }
-
   Renderer2D::endScene();
 }
 }  // namespace Neat

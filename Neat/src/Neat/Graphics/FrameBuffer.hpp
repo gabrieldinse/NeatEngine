@@ -16,6 +16,7 @@ class FrameBuffer {
   virtual UInt32 getColorAttachmentID() const = 0;
   virtual void bind() = 0;
   virtual void unbind() = 0;
+  virtual void resize(UInt32 width, UInt32 height) = 0;
   virtual const FrameBufferSpecification& getSpecification() const = 0;
 };
 }  // namespace Neat

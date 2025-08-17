@@ -18,15 +18,6 @@ ExampleLayer::ExampleLayer(
       .connect<&ExampleLayer::onWindowResize>(*this);
   eventDispatcher->get<Neat::MouseMovedEvent>()
       .connect<&ExampleLayer::onMouseMoved>(*this);
-  // auto q = Neat::Quaternion::fromAngleAxis(Neat::radians(45.0f),
-  // Neat::Vector3F(1, 0, 0)); auto q2 = glm::angleAxis(glm::radians(45.0f),
-  // glm::vec3(1.0f, 0.0f, 0.0f)); NT_TRACE(q); NT_TRACE(Neat::log(q));
-  // NT_TRACE(Neat::pow(q, 0.5f));
-  // NT_TRACE("");
-  // NT_TRACE(glm::to_string(q2));
-  // NT_TRACE(glm::to_string(glm::log(q2)));
-  // NT_TRACE(glm::to_string(glm::pow(q2, 0.5f)));
-  // NT_ASSERT(false, "");
 
   auto camera = Neat::makeRef<Neat::OrthographicCamera>(
       Neat::Vector2F{0.0f, 0.0f}, 1280.0f / 720.0f);
@@ -59,6 +50,11 @@ ExampleLayer::ExampleLayer(
   checkerboardQuad.addComponent<Neat::TransformComponent>(
       Neat::Vector3F{0.0f, 0.0f, 0.5f}, Neat::Vector3F{1.0f, 1.0f, 1.0f},
       Neat::Vector3F{0.0f, 0.0f, 45.0f});
+
+  Neat::Vector4B test{false, true, false, true};
+  for (int i = 0; i < test.size(); ++i) {
+    NT_TRACE("val: {}", test[i]);
+  }
 }
 
 void ExampleLayer::onImGuiRender() {

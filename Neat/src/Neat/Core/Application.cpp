@@ -9,21 +9,12 @@
 namespace Neat {
 Application *Application::s_instance = nullptr;
 
-Application::Application() : m_eventDispatcher(makeRef<EventDispatcher>()) {
+Application::Application(const ApplicationProperties &appProperties)
+    : m_eventDispatcher(makeRef<EventDispatcher>()) {
   NT_PROFILE_FUNCTION();
   NT_CORE_ASSERT(not s_instance, "Application already exists!");
   s_instance = this;
-}
 
-Application::~Application() {
-  NT_PROFILE_FUNCTION();
-  if (m_initialized) {
-    ImGuiRender::shutdown();
-    Renderer::shutdown();
-  }
-}
-
-void Application::init(const ApplicationProperties &appProperties) {
   m_window = Window::create(m_eventDispatcher, appProperties.windowProperties);
   m_eventDispatcher->get<WindowCloseEvent>()
       .connect<&Application::onWindowClose>(*this, EventPriorityHighest);
@@ -33,18 +24,18 @@ void Application::init(const ApplicationProperties &appProperties) {
   Renderer::init();
   Input::setWindow(*m_window);
   ImGuiRender::init();
-  m_initialized = true;
+}
+
+Application::~Application() {
+  NT_PROFILE_FUNCTION();
+  ImGuiRender::shutdown();
+  Renderer::shutdown();
 }
 
 void Application::stop() { m_running = false; }
 
 void Application::run() {
   NT_PROFILE_FUNCTION();
-
-  if (not m_initialized) {
-    init();
-  }
-
   NT_CORE_INFO("Application started");
   Timer timer;
   m_running = true;
@@ -56,7 +47,7 @@ void Application::run() {
 
     ImGuiRender::begin();
     onUpdate(deltaTimeSeconds);
-    layersOnUpdate(deltaTimeSeconds);
+    onUpdateLayers(deltaTimeSeconds);
     ImGuiRender::end();
 
     m_window->onUpdate();
@@ -85,7 +76,7 @@ Scope<Layer> Application::popOverlay(Int32 position) {
   return m_layerGroup.popOverlay(position);
 }
 
-void Application::layersOnUpdate(double deltaTimeSeconds) {
+void Application::onUpdateLayers(double deltaTimeSeconds) {
   NT_PROFILE_FUNCTION();
   for (auto &layer : m_layerGroup) {
     layer->onUpdate(deltaTimeSeconds);

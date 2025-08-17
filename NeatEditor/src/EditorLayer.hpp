@@ -13,8 +13,6 @@ class EditorLayer : public Layer {
 
   void onImGuiRender();
   virtual void onUpdate(double deltaTimeSeconds) override;
-  bool onWindowResize(const WindowResizeEvent &event);
-  bool onMouseMoved(const MouseMovedEvent &event);
 
  private:
   Ref<SystemManager> m_systems;
@@ -27,9 +25,9 @@ class EditorLayer : public Layer {
 
   Ref<FrameBuffer> m_frameBuffer;
 
-  Vector4F tint = {0.8f, 0.3f, 0.2f, 1.0f};
-
-  int numberOfColumns = 20;
-  int numberOfLines = 20;
+  Vector2U m_viewportSize{0, 0};
+  Vector2U m_newViewportSize{0, 0};
+  SizeType m_numberOfColumns = 20;
+  SizeType m_numberOfLines = 20;
 };
 }  // namespace Neat

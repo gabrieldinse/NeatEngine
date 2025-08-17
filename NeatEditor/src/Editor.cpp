@@ -7,8 +7,8 @@
 namespace Neat {
 class Editor : public Application {
  public:
-  Editor() {
-    init(ApplicationProperties{WindowProperties{"Neat Editor"}});
+  Editor()
+      : Application{ApplicationProperties{WindowProperties{"Neat Editor"}}} {
     pushLayer<EditorLayer>(getEventDispatcher());
   }
 

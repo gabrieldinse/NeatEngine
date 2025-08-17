@@ -6,7 +6,11 @@
 
 class Sandbox : public Neat::Application {
  public:
-  Sandbox() { pushLayer<ExampleLayer>(getEventDispatcher()); }
+  Sandbox()
+      : Neat::Application{Neat::ApplicationProperties{
+            Neat::WindowProperties{"Sandbox App"}}} {
+    pushLayer<ExampleLayer>(getEventDispatcher());
+  }
 
   ~Sandbox() {}
 };
