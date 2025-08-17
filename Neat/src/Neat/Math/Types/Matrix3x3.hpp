@@ -88,6 +88,7 @@ struct Matrix<3, 3, T> {
 // Predefined types
 using Matrix3F = Matrix<3, 3, float>;
 using Matrix3I = Matrix<3, 3, Int32>;
+using Matrix3U = Matrix<3, 3, UInt32>;
 using Matrix3UI = Matrix<3, 3, UInt32>;
 using Matrix3D = Matrix<3, 3, double>;
 using Matrix3B = Matrix<3, 3, bool>;

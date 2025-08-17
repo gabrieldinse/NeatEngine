@@ -164,7 +164,11 @@ inline constexpr Vector<4, T> &Vector<4, T>::operator/=(const U &scalar) {
 
 template <typename T>
 inline constexpr Vector<4, T>::operator bool() const {
-  return (norm(*this) > zero<T>);
+  if constexpr (std::is_same_v<T, bool>) {
+    return x and y and z and w;
+  } else {
+    return (norm(*this) > zero<T>);
+  }
 }
 
 template <typename T>

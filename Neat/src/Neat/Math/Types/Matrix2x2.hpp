@@ -82,6 +82,7 @@ struct Matrix<2, 2, T> {
 // Predefined types
 using Matrix2F = Matrix<2, 2, float>;
 using Matrix2I = Matrix<2, 2, Int32>;
+using Matrix2U = Matrix<2, 2, UInt32>;
 using Matrix2UI = Matrix<2, 2, UInt32>;
 using Matrix2D = Matrix<2, 2, double>;
 using Matrix2B = Matrix<2, 2, bool>;

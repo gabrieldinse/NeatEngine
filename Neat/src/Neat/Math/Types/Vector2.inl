@@ -116,7 +116,11 @@ inline constexpr Vector<2, T> &Vector<2, T>::operator/=(const U &scalar) {
 
 template <typename T>
 inline constexpr Vector<2, T>::operator bool() const {
-  return (norm(*this) > zero<T>);
+  if constexpr (std::is_same_v<T, bool>) {
+    return x and y;
+  } else {
+    return (norm(*this) > zero<T>);
+  }
 }
 
 template <typename T>
@@ -190,7 +194,7 @@ inline constexpr bool operator==(const Vector<2, T> &va,
   return va.x == vb.x and va.y == vb.y;
 }
 
-template <typename T, UInt32 N>
+template <typename T>
 inline constexpr bool operator!=(const Vector<2, T> &va,
                                  const Vector<2, T> &vb) {
   return not(va == vb);

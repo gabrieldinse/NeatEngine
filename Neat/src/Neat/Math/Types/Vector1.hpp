@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <type_traits>
 
 #include "Neat/Math/Types/TypeVectorN.hpp"
 
@@ -68,10 +69,7 @@ struct Vector<1, T> {
   constexpr Vector<1, T> &operator/=(const U &scalar);
 
   // Explicit conversion operators
-  constexpr explicit operator T() const { return x; }
-  inline constexpr explicit operator bool() const {
-    return (std::fabs(x) > zero<T>);
-  }
+  inline constexpr explicit operator bool() const;
 
   // Element acessing
   constexpr T &operator[](UInt32 pos);
@@ -100,6 +98,7 @@ using Vector1I = Vector<1, Int32>;
 using Vector1UI = Vector<1, UInt32>;
 using Vector1B = Vector<1, bool>;
 using Vector1D = Vector<1, double>;
+using Vector1U = Vector1UI;
 
 // Nom member operators
 template <typename T>

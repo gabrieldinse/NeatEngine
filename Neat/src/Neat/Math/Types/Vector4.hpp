@@ -124,6 +124,7 @@ using Vector4I = Vector<4, Int32>;
 using Vector4UI = Vector<4, UInt32>;
 using Vector4B = Vector<4, bool>;
 using Vector4D = Vector<4, double>;
+using Vector4U = Vector4UI;
 
 // Nom member operators
 template <typename T>

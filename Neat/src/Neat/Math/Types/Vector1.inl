@@ -97,6 +97,15 @@ inline constexpr Vector<1, T> &Vector<1, T>::operator/=(const U &scalar) {
 }
 
 template <typename T>
+inline constexpr Vector<1, T>::operator bool() const {
+  if constexpr (std::is_same_v<T, bool>) {
+    return x;
+  } else {
+    return (std::fabs(x) > zero<T>);
+  }
+}
+
+template <typename T>
 inline constexpr T &Vector<1, T>::operator[](UInt32 pos) {
   return (&x)[pos];
 }

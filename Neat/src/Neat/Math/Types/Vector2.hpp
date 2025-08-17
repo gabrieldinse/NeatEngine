@@ -114,6 +114,7 @@ using Vector2I = Vector<2, Int32>;
 using Vector2UI = Vector<2, UInt32>;
 using Vector2B = Vector<2, bool>;
 using Vector2D = Vector<2, double>;
+using Vector2U = Vector2UI;
 
 // Nom member operators
 template <typename T>

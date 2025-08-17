@@ -136,7 +136,11 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator/=(const U &scalar) {
 
 template <typename T>
 inline constexpr Vector<3, T>::operator bool() const {
-  return (norm(*this) > zero<T>);
+  if constexpr (std::is_same_v<T, bool>) {
+    return x and y and z;
+  } else {
+    return (norm(*this) > zero<T>);
+  }
 }
 
 template <typename T>

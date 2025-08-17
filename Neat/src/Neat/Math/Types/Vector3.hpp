@@ -119,6 +119,7 @@ using Vector3I = Vector<3, Int32>;
 using Vector3UI = Vector<3, UInt32>;
 using Vector3B = Vector<3, bool>;
 using Vector3D = Vector<3, double>;
+using Vector3U = Vector3UI;
 
 // Nom member operators
 template <typename T>
