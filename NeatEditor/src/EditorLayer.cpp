@@ -4,8 +4,7 @@
 
 namespace Neat {
 EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
-    : m_camera{makeRef<OrthographicCamera>(Vector2F{0.0f, 0.0f},
-                                           1280.0f / 720.0f)},
+    : m_camera{makeRef<OrthographicCamera>(Vector2F{0.0f, 0.0f}, 1280u, 720u)},
       m_checkerboardTexture{Texture2D::create("assets/textures/texture1.png")},
       m_spritesheetTexture{
           Texture2D::create("assets/textures/spritesheet1.png")},
@@ -15,6 +14,8 @@ EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
                                                    {64, 64})} {
   m_entities = makeRef<EntityManager>(eventDispatcher);
   m_systems = makeRef<SystemManager>(m_entities, eventDispatcher);
+  eventDispatcher->get<MouseScrolledEvent>()
+      .connect<&EditorLayer::onMouseScrolled>(*this, EventPriorityHighest);
 
   auto camera_controller_system =
       m_systems->addSystem<OrthographicCameraControllerSystem>(m_camera);
@@ -181,6 +182,8 @@ void EditorLayer::onImGuiRender() {
 
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
   ImGui::Begin("Viewport");
+  m_viewportFocused = ImGui::IsWindowFocused();
+  m_viewportHovered = ImGui::IsWindowHovered();
   ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
   m_newViewportSize = Vector2U{static_cast<UInt32>(viewportPanelSize.x),
                                static_cast<UInt32>(viewportPanelSize.y)};
@@ -202,7 +205,9 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
     m_frameBuffer->resize(m_viewportSize.x, m_viewportSize.y);
   }
 
-  m_systems->onUpdate<OrthographicCameraControllerSystem>(deltaTimeSeconds);
+  if (m_viewportFocused) {
+    m_systems->onUpdate<OrthographicCameraControllerSystem>(deltaTimeSeconds);
+  }
 
   m_frameBuffer->bind();
   m_systems->onUpdate<Render2DSystem>(deltaTimeSeconds);

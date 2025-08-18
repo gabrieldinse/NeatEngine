@@ -13,6 +13,9 @@ class EditorLayer : public Layer {
 
   void onImGuiRender();
   virtual void onUpdate(double deltaTimeSeconds) override;
+  bool onMouseScrolled([[maybe_unused]] const MouseScrolledEvent &event) {
+    return !m_viewportFocused || !m_viewportHovered;
+  }
 
  private:
   Ref<SystemManager> m_systems;
@@ -26,6 +29,8 @@ class EditorLayer : public Layer {
   Ref<SubTexture2D> stairsTexture2;
 
   Ref<FrameBuffer> m_frameBuffer;
+  bool m_viewportFocused = false;
+  bool m_viewportHovered = false;
 
   Vector2U m_viewportSize{0, 0};
   Vector2U m_newViewportSize{0, 0};

@@ -13,6 +13,8 @@ class RendererAPI {
   };
 
  public:
+  virtual ~RendererAPI() = default;
+
   virtual void init() = 0;
 
   virtual void setClearColor(const Vector4F &color) = 0;
