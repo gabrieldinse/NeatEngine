@@ -10,7 +10,6 @@ OrthographicCameraControllerSystem::OrthographicCameraControllerSystem(
     const Ref<OrthographicCamera> &camera, bool rotationEnabled)
     : m_camera(camera),
       m_zoomLevel(camera->getZoomLevel()),
-      m_aspectRatio(camera->getAspectRatio()),
       m_rotationEnabled(rotationEnabled) {}
 
 OrthographicCameraControllerSystem::~OrthographicCameraControllerSystem() {}
@@ -77,14 +76,14 @@ bool OrthographicCameraControllerSystem::onMouseScrolled(
     const MouseScrolledEvent &event) {
   NT_PROFILE_FUNCTION();
   setZoomLevel(-event.yOffset);
+
   return false;
 }
 
 bool OrthographicCameraControllerSystem::onWindowResize(
     const WindowResizeEvent &event) {
   NT_PROFILE_FUNCTION();
-  m_aspectRatio = (float)event.width / (float)event.height;
-  m_camera->setAspectRatio(m_aspectRatio);
+  m_camera->setAspectRatio(event.width, event.height);
 
   return false;
 }

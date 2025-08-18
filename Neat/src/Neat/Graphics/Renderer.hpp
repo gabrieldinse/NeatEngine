@@ -9,13 +9,6 @@ class Renderer {
   static void init();
   static void shutdown();
 
-  // static void beginScene(OrthographicCamera& camera);
-  // static void endScene();
-
-  // static void submit(const Ref<ShaderProgram>& shader,
-  //    const Ref<VertexArray>& vertexArray,
-  //    const Matrix4F& transform = Matrix4F(1.0f));
-
   static void onWindowResize(UInt32 width, UInt32 height);
 
   static RendererAPI::API getAPI() { return RendererAPI::getAPI(); }

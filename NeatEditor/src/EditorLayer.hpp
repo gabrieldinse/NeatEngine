@@ -18,6 +18,8 @@ class EditorLayer : public Layer {
   Ref<SystemManager> m_systems;
   Ref<EntityManager> m_entities;
 
+  Ref<OrthographicCamera> m_camera;
+
   Ref<Texture2D> m_checkerboardTexture;
   Ref<Texture2D> m_spritesheetTexture;
   Ref<SubTexture2D> m_stairsTexture;

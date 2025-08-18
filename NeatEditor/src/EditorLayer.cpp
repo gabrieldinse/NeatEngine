@@ -4,21 +4,21 @@
 
 namespace Neat {
 EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
-    : m_checkerboardTexture(Texture2D::create("assets/textures/texture1.png")),
-      m_spritesheetTexture(
-          Texture2D::create("assets/textures/spritesheet1.png")),
-      m_stairsTexture(SubTexture2D::createFromIndex(m_spritesheetTexture,
-                                                    {7, 6}, {64, 64})),
-      stairsTexture2(SubTexture2D::createFromIndex(m_spritesheetTexture, {8, 6},
-                                                   {64, 64})) {
+    : m_camera{makeRef<OrthographicCamera>(Vector2F{0.0f, 0.0f},
+                                           1280.0f / 720.0f)},
+      m_checkerboardTexture{Texture2D::create("assets/textures/texture1.png")},
+      m_spritesheetTexture{
+          Texture2D::create("assets/textures/spritesheet1.png")},
+      m_stairsTexture{SubTexture2D::createFromIndex(m_spritesheetTexture,
+                                                    {7, 6}, {64, 64})},
+      stairsTexture2{SubTexture2D::createFromIndex(m_spritesheetTexture, {8, 6},
+                                                   {64, 64})} {
   m_entities = makeRef<EntityManager>(eventDispatcher);
   m_systems = makeRef<SystemManager>(m_entities, eventDispatcher);
 
-  auto camera =
-      makeRef<OrthographicCamera>(Vector2F{0.0f, 0.0f}, 1280.0f / 720.0f);
   auto camera_controller_system =
-      m_systems->addSystem<OrthographicCameraControllerSystem>(camera);
-  m_systems->addSystem<Render2DSystem>(camera);
+      m_systems->addSystem<OrthographicCameraControllerSystem>(m_camera);
+  m_systems->addSystem<Render2DSystem>(m_camera);
   m_systems->init();
 
   for (std::size_t i = 0; i < this->m_numberOfLines; ++i) {
@@ -198,6 +198,7 @@ void EditorLayer::onImGuiRender() {
 void EditorLayer::onUpdate(double deltaTimeSeconds) {
   if (m_viewportSize != m_newViewportSize) {
     m_viewportSize = m_newViewportSize;
+    m_camera->setAspectRatio(m_viewportSize.x, m_viewportSize.y);
     m_frameBuffer->resize(m_viewportSize.x, m_viewportSize.y);
   }
 

@@ -26,7 +26,6 @@ class OrthographicCameraControllerSystem
   void setCamera(const Ref<OrthographicCamera> &camera) { m_camera = camera; }
 
   bool onMouseScrolled(const MouseScrolledEvent &event);
-  bool onMouseMoved(const MouseMovedEvent &event);
   bool onWindowResize(const WindowResizeEvent &event);
 
  private:
@@ -40,9 +39,7 @@ class OrthographicCameraControllerSystem
   float m_initialTranslationSpeed = 2.0f;
   float m_translationSpeed = m_initialTranslationSpeed;
   float m_rotationSpeed = 90.0f;
-  float m_aspectRatio;
   Vector2F m_lastMousePosition{0.0f};
-  bool m_firstMouse = true;
   bool m_rotationEnabled;
 };
 }  // namespace Neat

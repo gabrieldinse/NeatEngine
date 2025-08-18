@@ -19,6 +19,9 @@ class OrthographicCamera : public Camera {
                      float near = -1.0f, float far = 1.0f);
   void setProperties(float aspectRatio, float zoomLevel = 1.0f);
   void setAspectRatio(float aspectRatio);
+  void setAspectRatio(UInt32 width, UInt32 height) {
+    setAspectRatio(static_cast<float>(width) / static_cast<float>(height));
+  }
   void setZoomLevel(float zoomLevel);
   void setSize(float size) { setZoomLevel(size); }
   void setPosition(const Vector2F &position);

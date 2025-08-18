@@ -11,6 +11,7 @@ struct FrameBufferSpecification {
 
 class FrameBuffer {
  public:
+  virtual ~FrameBuffer() = default;
   static Ref<FrameBuffer> create(const FrameBufferSpecification& spec);
 
   virtual UInt32 getColorAttachmentID() const = 0;

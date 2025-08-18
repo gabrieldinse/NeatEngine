@@ -14,9 +14,9 @@ curr_dir_full="$(pwd)"
 curr_dir="$(basename "${curr_dir_full}")"
 
 if [[ "${curr_dir}" == "Scripts" ]]; then
-	root_dir="$(realpath "..")"
+    root_dir="$(realpath "..")"
 else
-	root_dir="$(realpath ".")"
+    root_dir="$(realpath ".")"
 fi
 
 build_dir="${root_dir}/build"
