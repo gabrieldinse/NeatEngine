@@ -5,6 +5,7 @@ bin-int/
 VSConfigs/
 build
 .vscode/
+.cache/
 
 # Files
 *.user

@@ -681,7 +681,7 @@ class EntityManager : public NonCopyable {
     NT_CORE_ASSERT(component_array != nullptr,
                    "Entity does not have this component.");
 
-    return static_cast<C *>(component_array->at(id.index()));
+    return static_cast<C *>(component_array->get(id.index()));
   }
 
   template <typename C>
@@ -694,7 +694,7 @@ class EntityManager : public NonCopyable {
     NT_CORE_ASSERT(component_array != nullptr,
                    "Entity does not have this component.");
 
-    return static_cast<const C *>(component_array->at(id.index()));
+    return static_cast<const C *>(component_array->get(id.index()));
   }
 
   ComponentMask getComponentMask(const Entity::Id &id) {

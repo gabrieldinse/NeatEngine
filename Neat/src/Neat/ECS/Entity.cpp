@@ -11,10 +11,15 @@ EntityManager::EntityManager(const Ref<EventDispatcher> &eventDispatcher)
 EntityManager::~EntityManager() { reset(); }
 
 void EntityManager::reset() {
-  for (Entity entity : entitiesForDebugging()) entity.destroy();
+  for (Entity entity : entitiesForDebugging()) {
+    entity.destroy();
+  }
 
-  for (BaseMemoryPool *pool : m_componentArrays)
-    if (pool != nullptr) delete pool;
+  for (BaseMemoryPool *pool : m_componentArrays) {
+    if (pool != nullptr) {
+      delete pool;
+    }
+  }
 
   m_componentArrays.clear();
   m_entityComponentMasks.clear();

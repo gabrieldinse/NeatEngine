@@ -23,27 +23,29 @@ class BaseMemoryPool {
   void resize(std::size_t count);
   void reserve(std::size_t count);
 
-  void *at(std::size_t n) {
-    NT_CORE_ASSERT(n < m_size, "Memory pool index out of range!");
-
-    return &m_memoryBlocks[n / m_blockSize][(n % m_blockSize) * m_elementSize];
+  void *get(std::size_t n) {
+    if (m_size <= n) {
+      resize(n + 1);
+    }
+    std::size_t block_index = n / m_blockSize;
+    std::size_t element_index = (n % m_blockSize) * m_elementSize;
+    return &m_memoryBlocks[block_index][element_index];
   }
 
-  const void *at(std::size_t n) const {
+  const void *get(std::size_t n) const {
     NT_CORE_ASSERT(n < m_size, "Memory pool index out of range!");
 
-    return &m_memoryBlocks[n / m_blockSize][(n % m_blockSize) * m_elementSize];
+    std::size_t block_index = n / m_blockSize;
+    std::size_t element_index = (n % m_blockSize) * m_elementSize;
+    return &m_memoryBlocks[block_index][element_index];
   }
-
-  void *operator[](std::size_t n) { return at(n); }
-  const void *operator[](std::size_t n) const { return at(n); }
 
   virtual void destroy(std::size_t n) = 0;
 
  protected:
+  std::vector<Byte *> m_memoryBlocks;
   std::size_t m_elementSize;
   std::size_t m_blockSize;
-  std::vector<Byte *> m_memoryBlocks;
   std::size_t m_size = 0;
   std::size_t m_capacity = 0;
 };
@@ -51,7 +53,7 @@ class BaseMemoryPool {
 // ---------------------------------------------------------------------- //
 // MemoryPool ----------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
-template <typename T, std::size_t BlockSize = 8192>
+template <typename T, std::size_t BlockSize = 4096>
 class MemoryPool : public BaseMemoryPool {
  public:
   MemoryPool() : BaseMemoryPool(sizeof(T), BlockSize) {}
@@ -59,13 +61,20 @@ class MemoryPool : public BaseMemoryPool {
   virtual ~MemoryPool() = default;
 
   virtual void destroy(std::size_t n) override {
-    T *ptr = static_cast<T *>(this->at(n));
+    T *ptr = static_cast<T *>(this->get(n));
     ptr->~T();
   }
 
   template <typename... Args>
   void construct(std::size_t n, Args &&...args) {
-    new (this->at(n)) T(std::forward<Args>(args)...);
+    new (this->get(n)) T(std::forward<Args>(args)...);
   }
+
+  const T &at(std::size_t n) const { return *static_cast<T *>(this->get(n)); }
+
+  T &at(std::size_t n) { return *static_cast<T *>(this->get(n)); }
+
+  T &operator[](std::size_t n) { return at(n); }
+  const T &operator[](std::size_t n) const { return at(n); }
 };
 }  // namespace Neat
