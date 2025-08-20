@@ -24,9 +24,8 @@ class BaseMemoryPool {
   void reserve(std::size_t count);
 
   void *get(std::size_t n) {
-    if (m_size <= n) {
-      resize(n + 1);
-    }
+    resize(n + 1);
+
     std::size_t block_index = n / m_blockSize;
     std::size_t element_index = (n % m_blockSize) * m_elementSize;
     return &m_memoryBlocks[block_index][element_index];
