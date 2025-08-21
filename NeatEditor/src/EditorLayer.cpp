@@ -4,41 +4,19 @@
 
 namespace Neat {
 EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
-    : m_camera{makeRef<OrthographicCamera>(Vector2F{0.0f, 0.0f}, 1280u, 720u)},
+    : m_scene(makeRef<Scene>(eventDispatcher)),
       m_checkerboardTexture{Texture2D::create("assets/textures/texture1.png")},
       m_spritesheetTexture{
-          Texture2D::create("assets/textures/spritesheet1.png")},
-      m_stairsTexture{SubTexture2D::createFromIndex(m_spritesheetTexture,
-                                                    {7, 6}, {64, 64})},
-      stairsTexture2{SubTexture2D::createFromIndex(m_spritesheetTexture, {8, 6},
-                                                   {64, 64})} {
-  m_entities = makeRef<EntityManager>(eventDispatcher);
-  m_systems = makeRef<SystemManager>(m_entities, eventDispatcher);
+          Texture2D::create("assets/textures/spritesheet1.png")} {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&EditorLayer::onMouseScrolled>(*this, EventPriorityHighest);
-
-  auto camera_controller_system =
-      m_systems->addSystem<OrthographicCameraControllerSystem>(m_camera);
-  m_systems->addSystem<Render2DSystem>(m_camera);
-  m_systems->init();
-
-  for (std::size_t i = 0; i < this->m_numberOfLines; ++i) {
-    for (std::size_t j = 0; j < this->m_numberOfColumns; ++j) {
-      auto flatColorQuad = m_entities->createEntity();
-      flatColorQuad.addComponent<RenderableSpriteComponent>(
-          Vector4F{float(i) / this->m_numberOfLines,
-                   float(j) / this->m_numberOfColumns, 1.0f, 1.0f});
-      flatColorQuad.addComponent<TransformComponent>(
-          Vector3F{0.1f * j, 0.1f * i, 0.0f}, Vector3F{0.1f, 0.1f, 1.0f});
-    }
-  }
 
   // Set values different from the default
   m_checkerboardTexture->setMinification(Texture2DFilter::Nearest);
   m_checkerboardTexture->setMagnification(Texture2DFilter::Nearest);
   m_checkerboardTexture->setWrapS(Texture2DWrapping::ClampToEdge);
 
-  auto checkerboardQuad = m_entities->createEntity();
+  auto checkerboardQuad = m_scene->createEntity();
   checkerboardQuad.addComponent<RenderableSpriteComponent>(
       this->m_checkerboardTexture, Vector4F{0.8f, 0.4f, 0.3f, 0.75f}, 5.0f);
   checkerboardQuad.addComponent<TransformComponent>(
@@ -201,16 +179,18 @@ void EditorLayer::onImGuiRender() {
 void EditorLayer::onUpdate(double deltaTimeSeconds) {
   if (m_viewportSize != m_newViewportSize) {
     m_viewportSize = m_newViewportSize;
-    m_camera->setAspectRatio(m_viewportSize.x, m_viewportSize.y);
+    m_scene->setViewport(m_viewportSize.x, m_viewportSize.y);
     m_frameBuffer->resize(m_viewportSize.x, m_viewportSize.y);
   }
 
   if (m_viewportFocused) {
-    m_systems->onUpdate<OrthographicCameraControllerSystem>(deltaTimeSeconds);
+    // TODO review
+    m_scene->getSystems()->onUpdate<OrthographicCameraControllerSystem>(
+        deltaTimeSeconds);
   }
 
   m_frameBuffer->bind();
-  m_systems->onUpdate<Render2DSystem>(deltaTimeSeconds);
+  m_scene->onUpdate(deltaTimeSeconds);
   m_frameBuffer->unbind();
 
   onImGuiRender();
