@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Neat/Core/Types.hpp"
-#include "Neat/Events/EventDispatcher.hpp"
+#include "Neat/EventDispatching/EventDispatcher.hpp"
 #include "Neat/Utils/NonCopyable.hpp"
 
 namespace Neat {

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Neat/ECS/System.hpp"
-#include "Neat/Events/Events/MouseScrolledEvent.hpp"
-#include "Neat/Events/Events/MouseMovedEvent.hpp"
-#include "Neat/Events/Events/WindowResizeEvent.hpp"
-#include "Neat/Events/EventDispatcher.hpp"
+#include "Neat/Events/MouseScrolledEvent.hpp"
+#include "Neat/Events/MouseMovedEvent.hpp"
+#include "Neat/Events/WindowResizeEvent.hpp"
+#include "Neat/EventDispatching/EventDispatcher.hpp"
 #include "Neat/Graphics/Cameras/OrthographicCamera.hpp"
 #include "Neat/Math/Vector.hpp"
 

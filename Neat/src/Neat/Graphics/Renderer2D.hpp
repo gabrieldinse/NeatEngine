@@ -9,7 +9,7 @@
 #include "Neat/Graphics/Texture2D.hpp"
 #include "Neat/Graphics/VertexArray.hpp"
 #include "Neat/Graphics/ShaderProgram.hpp"
-#include "Neat/ECS/Components/RenderableSpriteComponent.hpp"
+#include "Neat/Components/RenderableSpriteComponent.hpp"
 
 namespace Neat {
 class Renderer2D {

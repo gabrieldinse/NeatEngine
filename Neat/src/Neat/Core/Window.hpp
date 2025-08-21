@@ -6,7 +6,7 @@
 #include "Neat/Core/PlatformDetection.hpp"
 #include "Neat/Core/Types.hpp"
 #include "Neat/Core/WindowProperties.hpp"
-#include "Neat/Events/EventDispatcher.hpp"
+#include "Neat/EventDispatching/EventDispatcher.hpp"
 
 namespace Neat {
 class EventDispatcher;

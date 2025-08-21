@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/ECS/Systems/OrthographicCameraControllerSystem.hpp"
+#include "Neat/Systems/OrthographicCameraControllerSystem.hpp"
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Input.hpp"
 #include "Neat/Math/Transform.hpp"

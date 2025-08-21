@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Events/EventDispatcher.hpp"
+#include "Neat/EventDispatching/EventDispatcher.hpp"
 
 namespace Neat {
 void EventDispatcher::onUpdate() {

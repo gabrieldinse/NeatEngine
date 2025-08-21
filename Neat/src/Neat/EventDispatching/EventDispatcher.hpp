@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Events/EventConnections.hpp"
+#include "Neat/EventDispatching/EventConnections.hpp"
 #include "Neat/Utils/SafeQueue.hpp"
 #include <iostream>
 
