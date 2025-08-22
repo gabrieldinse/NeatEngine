@@ -22,9 +22,10 @@ class BaseMemoryPool {
 
   void resize(std::size_t count);
   void reserve(std::size_t count);
+  void push() { resize(m_size + 1); }
 
   void *get(std::size_t n) {
-    resize(n + 1);
+    NT_CORE_ASSERT(n < m_size, "Memory pool index out of range!");
 
     std::size_t block_index = n / m_blockSize;
     std::size_t element_index = (n % m_blockSize) * m_elementSize;

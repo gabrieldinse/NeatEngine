@@ -23,9 +23,34 @@ TEST_F(MemoryPoolTest, Default) {
   EXPECT_EQ(pool.capacity(), 0);
 }
 
+TEST_F(MemoryPoolTest, Push) {
+  EXPECT_EQ(pool.size(), 0);
+  EXPECT_EQ(pool.capacity(), 0);
+
+  pool.push();
+  EXPECT_EQ(pool.size(), 1);
+  EXPECT_EQ(pool.capacity(), 24);
+
+  pool.push();
+  pool.push();
+  EXPECT_EQ(pool.size(), 3);
+  EXPECT_EQ(pool.capacity(), 24);
+}
+
 TEST_F(MemoryPoolTest, Construct) {
+  pool.push();
+  EXPECT_EQ(pool.size(), 1);
+  EXPECT_EQ(pool.capacity(), 24);
   pool.construct(0, "test");
+
+  pool.push();
+  EXPECT_EQ(pool.size(), 2);
+  EXPECT_EQ(pool.capacity(), 24);
   pool.construct(1, "test1");
+
+  pool.push();
+  EXPECT_EQ(pool.size(), 3);
+  EXPECT_EQ(pool.capacity(), 24);
   pool.construct(2, "test2");
 
   EXPECT_EQ(pool.size(), 3);
@@ -69,6 +94,7 @@ TEST_F(MemoryPoolTest, Reserve) {
 }
 
 TEST_F(MemoryPoolTest, Get) {
+  pool.resize(3);
   pool.construct(0, "test");
   pool.construct(1, "test1");
   pool.construct(2, "test2");
@@ -81,6 +107,7 @@ TEST_F(MemoryPoolTest, Get) {
 }
 
 TEST_F(MemoryPoolTest, OperatorAt) {
+  pool.resize(3);
   pool.construct(0, "test");
   pool.construct(1, "test1");
   pool.construct(2, "test2");
@@ -93,6 +120,7 @@ TEST_F(MemoryPoolTest, OperatorAt) {
 }
 
 TEST_F(MemoryPoolTest, At) {
+  pool.resize(3);
   pool.construct(0, "test");
   pool.construct(1, "test1");
   pool.construct(2, "test2");
@@ -104,7 +132,8 @@ TEST_F(MemoryPoolTest, At) {
   destroy();
 }
 
-TEST_F(MemoryPoolTest, DestructAndConstructAgain) {
+TEST_F(MemoryPoolTest, DestroyAndConstructAgain) {
+  pool.resize(3);
   pool.construct(0, "test");
   pool.construct(1, "test1");
   pool.construct(2, "test2");
