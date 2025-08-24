@@ -29,15 +29,17 @@ void GameLayer::init() {
   m_movePillarThresholdPosX = 30.0f;
   m_pillarHSV = Neat::Vector3F{0.0f, 0.8f, 0.8f};
 
-  m_camera = Neat::makeRef<Neat::OrthographicCamera>(
-      Neat::Vector2F{-10.f, 0.0f}, 1280, 720, 8.0f);
   m_entities = Neat::makeRef<Neat::EntityManager>(m_eventDispatcher);
   m_systems = Neat::makeRef<Neat::SystemManager>(m_entities, m_eventDispatcher);
 
-  auto camera_controller_system =
-      m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(m_camera);
-  m_systems->addSystem<Neat::Render2DSystem>(m_camera);
+  m_camera = m_entities->createEntity();
+  m_camera.addComponentFromCopy(
+      Neat::CameraComponent::createOrthographic(1280, 720, 8.0f));
+  m_camera.addComponent<Neat::TransformComponent>(Neat::Vector2F{-10.0f, 0.0f});
+  m_camera.addComponent<Neat::MainCameraTagComponent>();
 
+  m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(m_camera);
+  m_systems->addSystem<Neat::Render2DSystem>();
   m_systems->init();
 
   auto background = m_entities->createEntity();
@@ -113,7 +115,7 @@ void GameLayer::play(float deltaTimeSeconds) {
   onBackgroundUpdate();
   onPillarUpdate();
   collisionTest();
-  m_camera->setPosition(
+  m_camera.getComponent<Neat::TransformComponent>()->setPosition(
       m_player.getComponent<Neat::TransformComponent>()->getPosition2D());
   m_systems->onUpdate<Neat::OrthographicCameraControllerSystem>(
       deltaTimeSeconds);
@@ -169,7 +171,7 @@ void GameLayer::onBackgroundUpdate() {
   auto playerTransform{m_player.getComponent<Neat::TransformComponent>()};
   Neat::ComponentHandle<BackgroundTag> backgroundTag;
   Neat::ComponentHandle<Neat::TransformComponent> backgroundTransform;
-  for ([[maybe_unused]] auto &&entity :
+  for ([[maybe_unused]] auto entity :
        m_entities
            ->entitiesWithComponents<BackgroundTag, Neat::TransformComponent>(
                backgroundTag, backgroundTransform)) {
@@ -178,7 +180,7 @@ void GameLayer::onBackgroundUpdate() {
 
   Neat::ComponentHandle<PillarBackgroundTag> pillarBackgroundTag;
   Neat::ComponentHandle<Neat::RenderableSpriteComponent> sprite;
-  for ([[maybe_unused]] auto &&entity :
+  for ([[maybe_unused]] auto entity :
        m_entities->entitiesWithComponents<PillarBackgroundTag,
                                           Neat::RenderableSpriteComponent>(
            pillarBackgroundTag, sprite)) {
@@ -193,7 +195,7 @@ void GameLayer::onPillarUpdate() {
   Neat::ComponentHandle<Neat::RenderableSpriteComponent> sprite;
   auto [topPillarYPos, bottomPillarYPos] = genPillarsYPositions();
   bool moved_pillar = false;
-  for ([[maybe_unused]] auto &&entity :
+  for ([[maybe_unused]] auto entity :
        m_entities->entitiesWithComponents<PillarTag, Neat::TransformComponent,
                                           Neat::RenderableSpriteComponent>(
            pillarTag, pillarTransform, sprite)) {
@@ -261,7 +263,7 @@ void GameLayer::collisionTest() {
   Neat::ComponentHandle<Neat::RenderableSpriteComponent> sprite;
   auto [topPillarYPos, bottomPillarYPos] = genPillarsYPositions();
   bool moved_pillar = false;
-  for ([[maybe_unused]] auto &&entity :
+  for ([[maybe_unused]] auto entity :
        m_entities->entitiesWithComponents<PillarTag, Neat::TransformComponent,
                                           Neat::RenderableSpriteComponent>(
            pillarTag, pillarTransform, sprite)) {
@@ -315,11 +317,9 @@ bool GameLayer::onMouseButtonPressedEvent(
 }
 
 bool GameLayer::onWindowResizeEvent(const Neat::WindowResizeEvent &event) {
-  m_camera = Neat::makeRef<Neat::OrthographicCamera>(
-      Neat::Vector2F{-10.f, 0.0f}, event.width, event.height, 8.0f);
-  if (auto cameraController =
-          m_systems->getSystem<Neat::OrthographicCameraControllerSystem>()) {
-    (*cameraController)->setCamera(m_camera);
-  }
+  m_camera.removeComponent<Neat::CameraComponent>();
+  m_camera.addComponentFromCopy(Neat::CameraComponent::createOrthographic(
+      event.width, event.height, 8.0f));
+
   return true;
 }

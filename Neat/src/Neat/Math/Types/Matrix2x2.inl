@@ -4,17 +4,17 @@ namespace Neat {
 // Default constructor
 template <typename T>
 inline constexpr Matrix<2, 2, T>::Matrix()
-    : m_rows{RowType(1, 0), RowType(0, 1)} {}
+    : m_rows{RowType{1, 0}, RowType{0, 1}} {}
 
 // Basic constructors
 template <typename T>
 inline constexpr Matrix<2, 2, T>::Matrix(const T &m00, const T &m01,
                                          const T &m10, const T &m11)
-    : m_rows{RowType(m00, m01), RowType(m10, m11)} {}
+    : m_rows{RowType{m00, m01}, RowType{m10, m11}} {}
 
 template <typename T>
 inline constexpr Matrix<2, 2, T>::Matrix(const T &scalar)
-    : m_rows{RowType(scalar, 0), RowType(0, scalar)} {}
+    : m_rows{RowType{scalar, 0}, RowType{0, scalar}} {}
 
 template <typename T>
 inline constexpr Matrix<2, 2, T>::Matrix(const Matrix<2, 2, T> &m)

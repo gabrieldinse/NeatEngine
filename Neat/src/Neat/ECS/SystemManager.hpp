@@ -19,7 +19,7 @@ class SystemManager : public NonCopyable {
 
   void init() {
     for (auto &&[family, system] : m_systems) {
-      system->init(m_eventDispatcher);
+      system->init(m_entityManager, m_eventDispatcher);
     }
     m_initialized = true;
   }

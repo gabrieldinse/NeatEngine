@@ -4,8 +4,8 @@ namespace Neat {
 // Default constructor
 template <typename T>
 inline constexpr Matrix<4, 4, T>::Matrix()
-    : m_rows{RowType(1, 0, 0, 0), RowType(0, 1, 0, 0), RowType(0, 0, 1, 0),
-             RowType(0, 0, 0, 1)} {}
+    : m_rows{RowType{1, 0, 0, 0}, RowType{0, 1, 0, 0}, RowType{0, 0, 1, 0},
+             RowType{0, 0, 0, 1}} {}
 
 // Basic constructors
 template <typename T>
@@ -14,13 +14,13 @@ inline constexpr Matrix<4, 4, T>::Matrix(
     const T &m11, const T &m12, const T &m13, const T &m20, const T &m21,
     const T &m22, const T &m23, const T &m30, const T &m31, const T &m32,
     const T &m33)
-    : m_rows{RowType(m00, m01, m02, m03), RowType(m10, m11, m12, m13),
-             RowType(m20, m21, m22, m23), RowType(m30, m31, m32, m33)} {}
+    : m_rows{RowType{m00, m01, m02, m03}, RowType{m10, m11, m12, m13},
+             RowType{m20, m21, m22, m23}, RowType{m30, m31, m32, m33}} {}
 
 template <typename T>
 inline constexpr Matrix<4, 4, T>::Matrix(const T &scalar)
-    : m_rows{RowType(scalar, 0, 0, 0), RowType(0, scalar, 0, 0),
-             RowType(0, 0, scalar, 0), RowType(0, 0, 0, scalar)} {}
+    : m_rows{RowType{scalar, 0, 0, 0}, RowType{0, scalar, 0, 0},
+             RowType{0, 0, scalar, 0}, RowType{0, 0, 0, scalar}} {}
 
 // Copy constructor
 template <typename T>

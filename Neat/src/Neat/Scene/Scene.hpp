@@ -18,6 +18,6 @@ class Scene {
  private:
   Ref<SystemManager> m_systems;
   Ref<EntityManager> m_entities;
-  Ref<OrthographicCamera> m_camera;
+  Entity m_camera;
 };
 }  // namespace Neat

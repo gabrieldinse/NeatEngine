@@ -13,9 +13,10 @@ class BaseSystem : public NonCopyable {
 
   virtual ~BaseSystem() = default;
 
-  virtual void init(const Ref<EventDispatcher> &eventDispatcher) = 0;
-  virtual void onUpdate(const Ref<EntityManager> &entityManager,
-                        const Ref<EventDispatcher> &eventDispatcher,
+  virtual void init(Ref<EntityManager> &entityManager,
+                    Ref<EventDispatcher> &eventDispatcher) = 0;
+  virtual void onUpdate(Ref<EntityManager> &entityManager,
+                        Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds) = 0;
 
  protected:

@@ -4,87 +4,158 @@
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Input.hpp"
 #include "Neat/Math/Transform.hpp"
+#include "Neat/ECS/Entity.hpp"
 
 namespace Neat {
 OrthographicCameraControllerSystem::OrthographicCameraControllerSystem(
-    const Ref<OrthographicCamera> &camera, bool rotationEnabled)
-    : m_camera(camera),
-      m_zoomLevel(camera->getZoomLevel()),
-      m_rotationEnabled(rotationEnabled) {}
+    const Entity &camera, bool rotationEnabled)
+    : m_camera(camera), m_rotationEnabled(rotationEnabled) {}
 
 OrthographicCameraControllerSystem::~OrthographicCameraControllerSystem() {}
 
 void OrthographicCameraControllerSystem::init(
-    const Ref<EventDispatcher> &eventDispatcher) {
+    Ref<EntityManager> &entityManager, Ref<EventDispatcher> &eventDispatcher) {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&OrthographicCameraControllerSystem::onMouseScrolled>(*this);
   eventDispatcher->get<WindowResizeEvent>()
       .connect<&OrthographicCameraControllerSystem::onWindowResize>(*this);
+  m_entityManager = entityManager;
 }
 
 void OrthographicCameraControllerSystem::onUpdate(
-    [[maybe_unused]] const Ref<EntityManager> &entityManager,
-    [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
+    [[maybe_unused]] Ref<EntityManager> &entityManager,
+    [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher,
     double deltaTimeSeconds) {
   NT_PROFILE_FUNCTION();
-  auto distance = (float)(m_translationSpeed * deltaTimeSeconds);
+
+  auto distance = static_cast<float>(m_translationSpeed * deltaTimeSeconds);
+  auto camera = m_camera.getComponent<CameraComponent>();
+  auto transform = m_camera.getComponent<TransformComponent>();
+
   if (Input::isKeyPressed(Key::W)) {
-    m_camera->moveUp(distance);
+    moveUp(*transform, distance);
   }
 
   if (Input::isKeyPressed(Key::S)) {
-    m_camera->moveDown(distance);
+    moveDown(*transform, distance);
   }
 
   if (Input::isKeyPressed(Key::D)) {
-    m_camera->moveRight(distance);
+    moveRight(*transform, distance);
   }
 
   if (Input::isKeyPressed(Key::A)) {
-    m_camera->moveLeft(distance);
+    moveLeft(*transform, distance);
   }
 
   if (Input::isKeyPressed(Key::Up)) {
-    setZoomLevel(m_zoomSpeed);
+    incrementZoomLevel(*camera, m_zoomSpeed);
   }
 
   if (Input::isKeyPressed(Key::Down)) {
-    setZoomLevel(-m_zoomSpeed);
+    incrementZoomLevel(*camera, -m_zoomSpeed);
   }
 
   if (m_rotationEnabled) {
     auto rotation = (float)(m_rotationSpeed * deltaTimeSeconds);
     if (Input::isKeyPressed(Key::Q)) {
-      m_camera->incrementRotation(rotation);
+      transform->incrementRotation(rotation);
     }
 
     if (Input::isKeyPressed(Key::E)) {
-      m_camera->incrementRotation(-rotation);
+      transform->incrementRotation(-rotation);
     }
   }
 }
 
-void OrthographicCameraControllerSystem::setZoomLevel(
-    float offset, float zoomTranslationSpeed) {
+void OrthographicCameraControllerSystem::updateCameraProjection(
+    CameraComponent &camera) {
+  float aspectRatio = m_right / m_top;
+  m_bottom = -m_zoomLevel;
+  m_top = m_zoomLevel;
+  m_left = -aspectRatio * m_zoomLevel;
+  m_right = aspectRatio * m_zoomLevel;
+  camera.setOrthographic(m_left, m_right, m_bottom, m_top, m_near, m_far);
+}
+
+void OrthographicCameraControllerSystem::incrementZoomLevel(
+    CameraComponent &camera, float offset, float zoomTranslationSpeed) {
+  NT_PROFILE_FUNCTION();
   m_zoomLevel -= offset * zoomTranslationSpeed;
   m_zoomLevel = std::max(m_zoomLevel, m_maxZoomLevel);
   m_translationSpeed = m_initialTranslationSpeed * m_zoomLevel;
-  m_camera->setZoomLevel(m_zoomLevel);
+  updateCameraProjection(camera);
 }
 
-bool OrthographicCameraControllerSystem::onMouseScrolled(
-    const MouseScrolledEvent &event) {
+void OrthographicCameraControllerSystem::moveUp(TransformComponent &transform,
+                                                float distance) {
   NT_PROFILE_FUNCTION();
-  setZoomLevel(-event.yOffset);
+  transform.incrementPosition(
+      -sin(degreesToRadians(transform.getRotationZ())) * distance,
+      cos(degreesToRadians(transform.getRotationZ())) * distance);
+}
 
-  return false;
+void OrthographicCameraControllerSystem::moveDown(TransformComponent &transform,
+                                                  float distance) {
+  NT_PROFILE_FUNCTION();
+  transform.incrementPosition(
+      sin(degreesToRadians(transform.getRotationZ())) * distance,
+      -cos(degreesToRadians(transform.getRotationZ())) * distance);
+}
+
+void OrthographicCameraControllerSystem::moveRight(
+    TransformComponent &transform, float distance) {
+  NT_PROFILE_FUNCTION();
+  transform.incrementPosition(cos(degreesToRadians(m_rotation)) * distance,
+                              sin(degreesToRadians(m_rotation)) * distance);
+}
+
+void OrthographicCameraControllerSystem::moveLeft(TransformComponent &transform,
+                                                  float distance) {
+  NT_PROFILE_FUNCTION();
+  transform.incrementPosition(-cos(degreesToRadians(m_rotation)) * distance,
+                              -sin(degreesToRadians(m_rotation)) * distance);
+}
+
+void OrthographicCameraControllerSystem::setAspectRatio(CameraComponent &camera,
+                                                        float aspectRatio) {
+  NT_PROFILE_FUNCTION();
+  m_zoomLevel = m_top;
+  m_left = -aspectRatio * m_zoomLevel;
+  m_right = aspectRatio * m_zoomLevel;
+  camera.setOrthographic(m_left, m_right, m_bottom, m_top, m_near, m_far);
+}
+
+void OrthographicCameraControllerSystem::setAspectRatio(float aspectRatio) {
+  NT_PROFILE_FUNCTION();
+  auto camera = m_camera.getComponent<CameraComponent>();
+  setAspectRatio(*camera, aspectRatio);
+}
+
+void OrthographicCameraControllerSystem::setAspectRatio(UInt32 width,
+                                                        UInt32 height) {
+  NT_PROFILE_FUNCTION();
+  auto camera = m_camera.getComponent<CameraComponent>();
+  setAspectRatio(*camera,
+                 static_cast<float>(width) / static_cast<float>(height));
 }
 
 bool OrthographicCameraControllerSystem::onWindowResize(
     const WindowResizeEvent &event) {
   NT_PROFILE_FUNCTION();
-  m_camera->setAspectRatio(event.width, event.height);
+  setAspectRatio(static_cast<float>(event.width) /
+                 static_cast<float>(event.height));
 
   return false;
 }
+
+bool OrthographicCameraControllerSystem::onMouseScrolled(
+    const MouseScrolledEvent &event) {
+  NT_PROFILE_FUNCTION();
+  auto camera = m_camera.getComponent<CameraComponent>();
+  incrementZoomLevel(*camera, -event.yOffset);
+
+  return false;
+}
+
 }  // namespace Neat

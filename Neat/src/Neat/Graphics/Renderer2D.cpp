@@ -68,10 +68,18 @@ void Renderer2D::shutdown() {
   s_data.reset();
 }
 
-void Renderer2D::beginScene(const Ref<Camera> &camera) {
+void Renderer2D::beginScene(const CameraComponent &camera,
+                            const TransformComponent &cameraTransform) {
   NT_PROFILE_FUNCTION();
+  beginScene(camera.getProjection(), inverse(cameraTransform.getTransform()));
+}
+
+void Renderer2D::beginScene(const Matrix4F &cameraProjection,
+                            const Matrix4F &cameraView) {
+  NT_PROFILE_FUNCTION();
+  Matrix4F cameraTransform = cameraProjection * cameraView;
   s_data->textureShader->bind();
-  s_data->textureShader->set("u_cameraTransform", camera->getCameraTransform());
+  s_data->textureShader->set("u_cameraTransform", cameraTransform);
   startNewBatch();
 }
 
@@ -101,6 +109,12 @@ void Renderer2D::flush() {
                              s_data->quadVextexDataBuffer.indexCount);
 
   s_data->stats.drawCalls++;
+}
+
+void Renderer2D::drawSprite(const TransformComponent &transform,
+                            const RenderableSpriteComponent &renderableSprite) {
+  NT_PROFILE_FUNCTION();
+  drawSprite(transform.getTransform(), renderableSprite);
 }
 
 void Renderer2D::drawSprite(const Matrix4F &transform,

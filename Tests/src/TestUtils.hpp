@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <iostream>
 #include <Neat/ECS/ECS.hpp>
@@ -76,12 +78,13 @@ struct ListenerD {
 struct TestingSystem : public System<TestingSystem> {
   TestingSystem() = default;
 
-  virtual void onUpdate(const Ref<EntityManager> &entityManager,
-                        const Ref<EventDispatcher> &eventDispatcher,
+  virtual void onUpdate(Ref<EntityManager> &entityManager,
+                        Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds) override {
     onUpdateCounter++;
   }
-  virtual void init(const Ref<EventDispatcher> &eventDispatcher) override {
+  virtual void init(Ref<EntityManager> &entityManager,
+                    Ref<EventDispatcher> &eventDispatcher) override {
     initCounter++;
   }
 
@@ -92,12 +95,13 @@ struct TestingSystem : public System<TestingSystem> {
 struct TestingSystem2 : public System<TestingSystem2> {
   TestingSystem2() = default;
 
-  virtual void onUpdate(const Ref<EntityManager> &entityManager,
-                        const Ref<EventDispatcher> &eventDispatcher,
+  virtual void onUpdate(Ref<EntityManager> &entityManager,
+                        Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds) override {
     onUpdateCounter++;
   }
-  virtual void init(const Ref<EventDispatcher> &eventDispatcher) override {
+  virtual void init(Ref<EntityManager> &entityManager,
+                    Ref<EventDispatcher> &eventDispatcher) override {
     initCounter++;
   }
 

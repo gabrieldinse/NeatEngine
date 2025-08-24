@@ -19,11 +19,14 @@ ExampleLayer::ExampleLayer(
   eventDispatcher->get<Neat::MouseMovedEvent>()
       .connect<&ExampleLayer::onMouseMoved>(*this);
 
-  auto camera = Neat::makeRef<Neat::OrthographicCamera>(
-      Neat::Vector2F{0.0f, 0.0f}, 1280.0f / 720.0f);
-  auto camera_controller_system =
-      m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(camera);
-  m_systems->addSystem<Neat::Render2DSystem>(camera);
+  auto camera = m_entities->createEntity();
+  camera.addComponentFromCopy<Neat::CameraComponent>(
+      Neat::CameraComponent::createOrthographic(1280.0f / 720.0f));
+  camera.addComponent<Neat::TransformComponent>(Neat::Vector2F{0.0f, 0.0f});
+  camera.addComponent<Neat::MainCameraTagComponent>();
+
+  m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(camera);
+  m_systems->addSystem<Neat::Render2DSystem>();
   m_systems->init();
 
   for (std::size_t i = 0; i < this->numberOfLines; ++i) {

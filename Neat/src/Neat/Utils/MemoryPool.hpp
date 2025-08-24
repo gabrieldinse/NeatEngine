@@ -67,7 +67,7 @@ class MemoryPool : public BaseMemoryPool {
 
   template <typename... Args>
   void construct(std::size_t n, Args &&...args) {
-    new (this->get(n)) T(std::forward<Args>(args)...);
+    new (this->get(n)) T{std::forward<Args>(args)...};
   }
 
   const T &at(std::size_t n) const { return *static_cast<T *>(this->get(n)); }

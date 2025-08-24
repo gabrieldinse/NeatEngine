@@ -2,6 +2,7 @@
 
 #include "Neat/Math/Types/TypeMatrixMxN.hpp"
 #include "Neat/Math/Types/TypeVectorN.hpp"
+#include "Neat/Math/Types/Vector3.hpp"
 
 namespace Neat {
 template <typename T>

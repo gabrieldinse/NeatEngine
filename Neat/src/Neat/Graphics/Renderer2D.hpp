@@ -5,11 +5,12 @@
 
 #include "Neat/Core/Types.hpp"
 #include "Neat/Graphics/Color.hpp"
-#include "Neat/Graphics/Cameras/Camera.hpp"
 #include "Neat/Graphics/Texture2D.hpp"
 #include "Neat/Graphics/VertexArray.hpp"
 #include "Neat/Graphics/ShaderProgram.hpp"
 #include "Neat/Components/RenderableSpriteComponent.hpp"
+#include "Neat/Components/CameraComponent.hpp"
+#include "Neat/Components/TransformComponent.hpp"
 
 namespace Neat {
 class Renderer2D {
@@ -17,9 +18,14 @@ class Renderer2D {
   static void init();
   static void shutdown();
 
-  static void beginScene(const Ref<Camera> &camera);
+  static void beginScene(const CameraComponent &camera,
+                         const TransformComponent &cameraTransform);
+  static void beginScene(const Matrix4F &cameraProjection,
+                         const Matrix4F &cameraView);
   static void endScene();
 
+  static void drawSprite(const TransformComponent &transform,
+                         const RenderableSpriteComponent &renderableSprite);
   static void drawSprite(const Matrix4F &transform,
                          const RenderableSpriteComponent &renderableSprite);
   static void drawQuad(const Matrix4F &transform, const Ref<Texture2D> &texture,
