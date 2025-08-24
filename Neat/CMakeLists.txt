@@ -32,7 +32,7 @@ add_library(Neat STATIC ${NEAT_SOURCES})
 
 target_compile_options(Neat PRIVATE
     -Wall -Wextra -Wpedantic
-    $<$<CONFIG:Debug>:-Werror>
+    $<$<CONFIG:Debug>:-Werror -O0>
 )
 
 target_precompile_headers(Neat PRIVATE

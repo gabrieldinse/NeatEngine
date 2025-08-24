@@ -15,19 +15,19 @@ struct TransformComponent {
   TransformComponent(const Vector3F &position,
                      const Vector3F &scaling = {1.0f, 1.0f, 1.0f},
                      const Vector3F &rotation = {0.0f, 0.0f, 0.0f})
-      : position(position), scaling(scaling), rotation(rotation) {}
+      : position{position}, scaling{scaling}, rotation{rotation} {}
   TransformComponent(const Vector2F &position,
                      const Vector2F &scaling = {1.0f, 1.0f},
                      float rotation = 0.0f)
-      : position(Vector3F{position, 0.0f}),
-        scaling(Vector3F{scaling, 1.0f}),
-        rotation(Vector3F{0.0f, 0.0f, rotation}) {}
+      : position{position, 0.0f},
+        scaling{scaling, 1.0f},
+        rotation{0.0f, 0.0f, rotation} {}
   TransformComponent(const Vector3F &position,
                      const Vector2F &scaling = {1.0f, 1.0f},
                      float rotation = 0.0f)
-      : position(position),
-        scaling(Vector3F{scaling, 1.0f}),
-        rotation(Vector3F{0.0f, 0.0f, rotation}) {}
+      : position{position},
+        scaling{scaling, 1.0f},
+        rotation{0.0f, 0.0f, rotation} {}
 
   Vector2F getPosition2D() const { return Vector2F{position.x, position.y}; }
   float getRotationX() const { return rotation.x; }
