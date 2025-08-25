@@ -46,4 +46,5 @@
 #include "Neat/Core/Assert.hpp"
 #include "Neat/Core/PlatformDetection.hpp"
 #include "Neat/Core/Types.hpp"
+#include "Neat/Core/Limits.hpp"
 #include "Neat/Debug/Debug.hpp"

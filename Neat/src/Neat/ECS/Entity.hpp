@@ -36,12 +36,15 @@ class Entity {
    public:
     Id() : m_id(0) {}
     Id(UInt32 index, UInt32 version)
-        : m_id(UInt64(index) | UInt64(version) << 32) {}
+        : m_id(static_cast<UInt64>(index) | static_cast<UInt64>(version)
+                                                << 32) {}
     explicit Id(UInt64 id) : m_id(id) {}
 
     UInt64 id() const { return m_id; }
-    UInt32 index() const { return (UInt32)(m_id & UInt64(UInt32Max)); }
-    UInt32 version() const { return (UInt32)(m_id >> 32); }
+    UInt32 index() const {
+      return static_cast<UInt32>(m_id & static_cast<Int64>(UInt32Max));
+    }
+    UInt32 version() const { return static_cast<UInt32>(m_id >> 32); }
 
     bool operator==(const Id &other) const { return m_id == other.m_id; }
     bool operator!=(const Id &other) const { return m_id != other.m_id; }
@@ -467,9 +470,10 @@ class EntityManager : public NonCopyable {
 
   void reset();
 
-  bool isValid(const Entity::Id &id) const {
-    return id.index() < m_entityIdsVersion.size() and
-           m_entityIdsVersion[id.index()] == id.version();
+  bool hasEntity(const Entity &entity) const { return hasEntity(entity.id()); }
+
+  bool hasEntity(const Entity::Id &id) const {
+    return isEntityIndexValid(id) and isEntityVersionValid(id);
   }
 
   Entity createEntity() {
@@ -492,6 +496,8 @@ class EntityManager : public NonCopyable {
     return entity;
   }
 
+  void destroyEntity(const Entity &entity) { destroyEntity(entity.id()); }
+
   void destroyEntity(const Entity::Id &id) {
     checkIsValid(id);
 
@@ -502,7 +508,7 @@ class EntityManager : public NonCopyable {
 
     for (std::size_t i = 0; i < m_componentArrays.size(); ++i) {
       BaseMemoryPool *component_array = m_componentArrays[i];
-      if ((component_array != nullptr) and component_mask.test(i)) {
+      if (component_array and component_mask.test(i)) {
         component_array->destroy(index);
       }
     }
@@ -661,12 +667,20 @@ class EntityManager : public NonCopyable {
   template <typename C, typename EM>
   friend class ComponentHandle;
 
+  bool isEntityIndexValid(const Entity::Id &id) const {
+    return id.index() < m_entityIdsVersion.size();
+  }
+
+  bool isEntityVersionValid(const Entity::Id &id) const {
+    return m_entityIdsVersion[id.index()] == id.version();
+  }
+
   void checkIsValid(const Entity::Id &id) const {
-    if (id.index() >= m_entityIdsVersion.size()) {
+    if (not isEntityIndexValid(id)) {
       throw InvalidEntityIdIndexError();
     }
 
-    if (m_entityIdsVersion[id.index()] != id.version()) {
+    if (not isEntityVersionValid(id)) {
       throw InvalidEntityIdVersionError();
     }
   }
@@ -775,7 +789,7 @@ class EntityManager : public NonCopyable {
 
 // Entity methods ------------------------------------------------------- //
 inline bool Entity::isValid() const {
-  return m_entityManager != nullptr and m_entityManager->isValid(m_id);
+  return m_entityManager != nullptr and m_entityManager->hasEntity(m_id);
 }
 
 inline void Entity::checkIsValid() const {
@@ -899,7 +913,7 @@ inline ComponentHandle<C, EM>::operator bool() const {
 // ComponentHandle methods ---------------------------------------------- //
 template <typename C, typename EM>
 inline bool ComponentHandle<C, EM>::isValid() const {
-  return m_entityManager != nullptr and !m_entityManager->isValid(m_id) and
+  return m_entityManager != nullptr and not m_entityManager->hasEntity(m_id) and
          m_entityManager->template hasComponent<C>(m_id);
 }
 

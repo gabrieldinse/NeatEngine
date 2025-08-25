@@ -19,10 +19,14 @@ else
     root_dir="$(realpath ".")"
 fi
 
+scripts_dir="${root_dir}/Scripts"
 build_dir="${root_dir}/build"
 
 do_log "Current working dir: ${curr_dir_full}."
 do_log "Build dir: ${build_dir}."
+
+do_log "Running clang-format."
+${scripts_dir}/clang-format.sh
 
 do_log "Initializing submodules."
 git submodule update --init --recursive
