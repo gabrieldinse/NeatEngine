@@ -42,7 +42,7 @@ TEST_F(SystemManagerTest, DoNotInitSystems) { expectDefault(); }
 
 TEST_F(SystemManagerTest, InitSystems) {
   expectDefault();
-  systemManager->init();
+  systemManager->initialize();
   expectInitialized();
 }
 

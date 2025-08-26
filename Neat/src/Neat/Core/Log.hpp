@@ -16,7 +16,7 @@ class Log {
  public:
   Log() = default;
   ~Log() = default;
-  static void init(const char *pattern = "%^[%T] %n: %v%$");
+  static void initialize(const char *pattern = "%^[%T] %n: %v%$");
 
   inline static Ref<spdlog::logger> &getCoreLogger() {
     return Log::s_coreLogger;

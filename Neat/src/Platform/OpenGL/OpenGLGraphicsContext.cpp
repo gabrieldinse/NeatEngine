@@ -9,7 +9,7 @@ namespace Neat {
 OpenGLGraphicsContext::OpenGLGraphicsContext(GLFWwindow *window)
     : m_glfwWindow(window) {}
 
-void OpenGLGraphicsContext::init() {
+void OpenGLGraphicsContext::initialize() {
   NT_PROFILE_FUNCTION();
   glfwMakeContextCurrent(m_glfwWindow);
 

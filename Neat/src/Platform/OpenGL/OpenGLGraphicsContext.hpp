@@ -10,7 +10,7 @@ class OpenGLGraphicsContext : public GraphicsContext {
   OpenGLGraphicsContext(GLFWwindow *window);
   virtual ~OpenGLGraphicsContext() = default;
 
-  virtual void init() override;
+  virtual void initialize() override;
   virtual void onUpdate() override;
 
  private:

@@ -1,13 +1,13 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/ECS/Entity.hpp"
+#include "Neat/ECS/EntityManager.hpp"
 #include "Neat/Graphics/RenderCommand.hpp"
 #include "Neat/Graphics/Renderer2D.hpp"
 #include "Neat/Systems/Render2DSystem.hpp"
 #include "Neat/Components/RenderableSpriteComponent.hpp"
 #include "Neat/Components/TransformComponent.hpp"
 #include "Neat/Components/CameraComponent.hpp"
-#include "Neat/Components/MainCameraTagComponent.hpp"
+#include "Neat/Components/ActiveCameraTagComponent.hpp"
 
 namespace Neat {
 void Render2DSystem::onUpdate(
@@ -20,7 +20,7 @@ void Render2DSystem::onUpdate(
 
   for (auto entity :
        entityManager->entitiesWithComponents<
-           MainCameraTagComponent, CameraComponent, TransformComponent>()) {
+           ActiveCameraTagComponent, CameraComponent, TransformComponent>()) {
     auto camera = entity.getComponent<CameraComponent>();
     auto cameraTransform = entity.getComponent<TransformComponent>();
     Renderer2D::beginScene(*camera, *cameraTransform);

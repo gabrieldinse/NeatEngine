@@ -7,10 +7,10 @@ namespace Neat {
 Scope<Renderer::SceneData> Renderer::m_sceneData =
     makeScope<Renderer::SceneData>();
 
-void Renderer::init() {
+void Renderer::initialize() {
   NT_PROFILE_FUNCTION();
-  RenderCommand::init();
-  Renderer2D::init();
+  RenderCommand::initialize();
+  Renderer2D::initialize();
 }
 
 void Renderer::shutdown() {

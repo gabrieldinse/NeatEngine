@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Neat/ECS/System.hpp"
-#include "Neat/ECS/Entity.hpp"
+#include "Neat/ECS/EntityManager.hpp"
 #include "Neat/Events/MouseScrolledEvent.hpp"
 #include "Neat/Events/MouseMovedEvent.hpp"
 #include "Neat/Events/WindowResizeEvent.hpp"
@@ -18,8 +18,8 @@ class OrthographicCameraControllerSystem
                                      bool rotationEnabled = true);
   ~OrthographicCameraControllerSystem();
 
-  virtual void init(Ref<EntityManager> &entityManager,
-                    Ref<EventDispatcher> &eventDispatcher) override;
+  virtual void initialize(Ref<EntityManager> &entityManager,
+                          Ref<EventDispatcher> &eventDispatcher) override;
   virtual void onUpdate(Ref<EntityManager> &entityManager,
                         Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds) override;

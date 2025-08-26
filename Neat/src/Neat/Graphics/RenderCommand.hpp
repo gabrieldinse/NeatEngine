@@ -11,9 +11,9 @@
 namespace Neat {
 class RenderCommand {
  public:
-  static void init() {
+  static void initialize() {
     NT_PROFILE_FUNCTION();
-    s_rendererAPI->init();
+    s_rendererAPI->initialize();
   }
 
   static void setClearColor(const Vector4F &color) {

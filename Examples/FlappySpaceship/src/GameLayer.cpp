@@ -22,10 +22,10 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
       .connect<&GameLayer::onMouseButtonPressedEvent>(*this);
   m_eventDispatcher->get<Neat::WindowResizeEvent>()
       .connect<&GameLayer::onWindowResizeEvent>(*this);
-  init();
+  initialize();
 }
 
-void GameLayer::init() {
+void GameLayer::initialize() {
   m_movePillarThresholdPosX = 30.0f;
   m_pillarHSV = Neat::Vector3F{0.0f, 0.8f, 0.8f};
 
@@ -36,11 +36,11 @@ void GameLayer::init() {
   m_camera.addComponentFromCopy(
       Neat::CameraComponent::createOrthographic(1280, 720, 8.0f));
   m_camera.addComponent<Neat::TransformComponent>(Neat::Vector2F{-10.0f, 0.0f});
-  m_camera.addComponent<Neat::MainCameraTagComponent>();
+  m_camera.addComponent<Neat::ActiveCameraTagComponent>();
 
   m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(m_camera);
   m_systems->addSystem<Neat::Render2DSystem>();
-  m_systems->init();
+  m_systems->initialize();
 
   auto background = m_entities->createEntity();
   background.addComponent<Neat::RenderableSpriteComponent>(
@@ -224,7 +224,7 @@ void GameLayer::onPillarUpdate() {
 void GameLayer::onImGui() {
   ImGui::Begin("MyWindow");
   if (ImGui::Button("Reset Game")) {
-    init();
+    initialize();
   }
   ImGui::SliderFloat("Gravity", &m_gravity, 0.0f, 100.0f);
   ImGui::SliderFloat("Engine Force", &m_engineForce, 0.0f, 200.0f);
@@ -309,7 +309,7 @@ bool GameLayer::onMouseButtonPressedEvent(
     const Neat::MouseButtonPressedEvent &event) {
   if (event.button == Neat::MouseButton::ButtonLeft) {
     if (m_gameState == GameState::GameOver) {
-      init();
+      initialize();
     }
     m_gameState = GameState::Playing;
   }

@@ -23,7 +23,7 @@ class GameLayer : public Neat::Layer {
   GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventManager);
   ~GameLayer() = default;
 
-  void init();
+  void initialize();
   virtual void onUpdate(double deltaTimeSeconds) override;
 
  private:

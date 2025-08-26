@@ -15,7 +15,7 @@ class RendererAPI {
  public:
   virtual ~RendererAPI() = default;
 
-  virtual void init() = 0;
+  virtual void initialize() = 0;
 
   virtual void setClearColor(const Vector4F &color) = 0;
   virtual void clear() = 0;

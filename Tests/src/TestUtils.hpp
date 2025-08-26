@@ -83,8 +83,8 @@ struct TestingSystem : public System<TestingSystem> {
                         double deltaTimeSeconds) override {
     onUpdateCounter++;
   }
-  virtual void init(Ref<EntityManager> &entityManager,
-                    Ref<EventDispatcher> &eventDispatcher) override {
+  virtual void initialize(Ref<EntityManager> &entityManager,
+                          Ref<EventDispatcher> &eventDispatcher) override {
     initCounter++;
   }
 
@@ -100,8 +100,8 @@ struct TestingSystem2 : public System<TestingSystem2> {
                         double deltaTimeSeconds) override {
     onUpdateCounter++;
   }
-  virtual void init(Ref<EntityManager> &entityManager,
-                    Ref<EventDispatcher> &eventDispatcher) override {
+  virtual void initialize(Ref<EntityManager> &entityManager,
+                          Ref<EventDispatcher> &eventDispatcher) override {
     initCounter++;
   }
 

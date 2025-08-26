@@ -15,7 +15,7 @@
 namespace Neat {
 class Renderer2D {
  public:
-  static void init();
+  static void initialize();
   static void shutdown();
 
   static void beginScene(const CameraComponent &camera,

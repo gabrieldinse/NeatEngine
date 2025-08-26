@@ -57,7 +57,7 @@ LinuxWindow::LinuxWindow(const Ref<EventDispatcher> &eventDispatcher,
   s_windowCount++;
 
   m_graphicsContext = GraphicsContext::create(m_glfwWindow);
-  m_graphicsContext->init();
+  m_graphicsContext->initialize();
 
   NT_CORE_INFO("Created window {0} ({1}, {2})",
                m_windowData.windowProperties.title,

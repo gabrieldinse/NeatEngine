@@ -5,7 +5,7 @@
 namespace Neat {
 class OpenGLRendererAPI : public RendererAPI {
  public:
-  virtual void init() override;
+  virtual void initialize() override;
 
   virtual void setClearColor(const Vector4F &color) override;
   virtual void clear() override;

@@ -11,7 +11,7 @@
 #include <glad/glad.h>
 
 namespace Neat {
-void ImGuiRender::init() {
+void ImGuiRender::initialize() {
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();

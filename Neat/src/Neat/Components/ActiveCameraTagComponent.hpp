@@ -1,5 +1,5 @@
 #pragma once
 
 namespace Neat {
-struct MainCameraTagComponent {};
+struct ActiveCameraTagComponent {};
 }  // namespace Neat

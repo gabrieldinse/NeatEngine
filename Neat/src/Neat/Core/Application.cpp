@@ -21,9 +21,9 @@ Application::Application(const ApplicationProperties &appProperties)
   m_eventDispatcher->get<WindowResizeEvent>()
       .connect<&Application::onWindowResize>(*this, EventPriorityHighest);
 
-  Renderer::init();
+  Renderer::initialize();
   Input::setWindow(*m_window);
-  ImGuiRender::init();
+  ImGuiRender::initialize();
 }
 
 Application::~Application() {

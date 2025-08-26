@@ -5,7 +5,7 @@
 #include <glad/glad.h>
 
 namespace Neat {
-void OpenGLRendererAPI::init() {
+void OpenGLRendererAPI::initialize() {
   NT_PROFILE_FUNCTION();
   glEnable(GL_DEPTH_TEST);
   // glEnable(GL_CULL_FACE);

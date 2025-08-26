@@ -6,7 +6,7 @@
 namespace Neat {
 class Renderer {
  public:
-  static void init();
+  static void initialize();
   static void shutdown();
 
   static void onWindowResize(UInt32 width, UInt32 height);

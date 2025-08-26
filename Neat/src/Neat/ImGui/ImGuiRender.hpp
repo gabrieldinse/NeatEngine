@@ -3,7 +3,7 @@
 namespace Neat {
 class ImGuiRender {
  public:
-  static void init();
+  static void initialize();
   static void shutdown();
   static void begin();
   static void end();

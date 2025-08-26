@@ -11,7 +11,7 @@ namespace Neat {
 Scope<Renderer2D::Renderer2DData> Renderer2D::s_data =
     makeScope<Renderer2D::Renderer2DData>();
 
-void Renderer2D::init() {
+void Renderer2D::initialize() {
   NT_PROFILE_FUNCTION();
   s_data->quadVertexArray = VertexArray::create();
   s_data->quadVertexBuffer =

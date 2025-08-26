@@ -4,15 +4,15 @@
 #include <TestUtils.hpp>
 
 namespace Neat {
-class EntityTest : public testing::Test {
+class EntityManagerTest : public testing::Test {
  protected:
-  EntityTest() {
+  EntityManagerTest() {
     eventDispatcher = makeRef<EventDispatcher>();
     entityManager = makeRef<EntityManager>(eventDispatcher);
     eventDispatcher->get<EntityCreatedEvent>()
-        .connect<&EntityTest::onEntityCreated>(*this);
+        .connect<&EntityManagerTest::onEntityCreated>(*this);
     eventDispatcher->get<EntityDestroyedEvent>()
-        .connect<&EntityTest::onEntityDestroyed>(*this);
+        .connect<&EntityManagerTest::onEntityDestroyed>(*this);
   }
 
   bool onEntityCreated(const EntityCreatedEvent &event) {
@@ -32,12 +32,12 @@ class EntityTest : public testing::Test {
   Entity lastEntityDestroyed;
 };
 
-TEST_F(EntityTest, InvalidEntity) {
+TEST_F(EntityManagerTest, InvalidEntity) {
   EXPECT_FALSE(entityManager->hasEntity(invalidEntity));
   EXPECT_FALSE(invalidEntity.isValid());
 }
 
-TEST_F(EntityTest, CreateEntity) {
+TEST_F(EntityManagerTest, CreateEntity) {
   EXPECT_EQ(entityManager->size(), 0);
 
   auto entity = entityManager->createEntity();
@@ -55,7 +55,7 @@ TEST_F(EntityTest, CreateEntity) {
   EXPECT_EQ(lastEntityCreated.id().index(), entity2.id().index());
 }
 
-TEST_F(EntityTest, DestroyEntity) {
+TEST_F(EntityManagerTest, DestroyEntity) {
   auto entity = entityManager->createEntity();
   EXPECT_EQ(entityManager->size(), 1);
 
@@ -71,7 +71,7 @@ TEST_F(EntityTest, DestroyEntity) {
   EXPECT_EQ(lastEntityDestroyed.id().index(), entity.id().index());
 }
 
-TEST_F(EntityTest, ResetEntityManager) {
+TEST_F(EntityManagerTest, ResetEntityManager) {
   EXPECT_EQ(entityManager->size(), 0);
   auto entity = entityManager->createEntity();
 
@@ -90,5 +90,13 @@ TEST_F(EntityTest, ResetEntityManager) {
   EXPECT_FALSE(entityManager->hasEntity(entity));
   EXPECT_FALSE(entity2.isValid());
   EXPECT_FALSE(entityManager->hasEntity(entity2));
+
+  auto entity3 = entityManager->createEntity();
+  eventDispatcher->onUpdate();
+
+  EXPECT_EQ(entityManager->size(), 1);
+  EXPECT_TRUE(entity3.isValid());
+  EXPECT_TRUE(entityManager->hasEntity(entity3));
+  EXPECT_EQ(lastEntityCreated.id().index(), entity3.id().index());
 }
 }  // namespace Neat

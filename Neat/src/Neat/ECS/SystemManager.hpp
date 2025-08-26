@@ -17,9 +17,9 @@ class SystemManager : public NonCopyable {
                 const Ref<EventDispatcher> &eventDispatcher)
       : m_entityManager(entityManager), m_eventDispatcher(eventDispatcher) {}
 
-  void init() {
+  void initialize() {
     for (auto &&[family, system] : m_systems) {
-      system->init(m_entityManager, m_eventDispatcher);
+      system->initialize(m_entityManager, m_eventDispatcher);
     }
     m_initialized = true;
   }
@@ -53,7 +53,7 @@ class SystemManager : public NonCopyable {
   template <typename S>
   void onUpdate(double deltaTimeSeconds) {
     if (not m_initialized) {
-      init();
+      initialize();
     }
 
     if (auto system = getSystem<S>()) {
@@ -63,7 +63,7 @@ class SystemManager : public NonCopyable {
 
   void updateAll(double deltaTimeSeconds) {
     if (not m_initialized) {
-      init();
+      initialize();
     }
 
     for (auto &&[family, system] : m_systems) {

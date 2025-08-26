@@ -4,7 +4,7 @@
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Input.hpp"
 #include "Neat/Math/Transform.hpp"
-#include "Neat/ECS/Entity.hpp"
+#include "Neat/ECS/EntityManager.hpp"
 
 namespace Neat {
 OrthographicCameraControllerSystem::OrthographicCameraControllerSystem(
@@ -13,7 +13,7 @@ OrthographicCameraControllerSystem::OrthographicCameraControllerSystem(
 
 OrthographicCameraControllerSystem::~OrthographicCameraControllerSystem() {}
 
-void OrthographicCameraControllerSystem::init(
+void OrthographicCameraControllerSystem::initialize(
     Ref<EntityManager> &entityManager, Ref<EventDispatcher> &eventDispatcher) {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&OrthographicCameraControllerSystem::onMouseScrolled>(*this);

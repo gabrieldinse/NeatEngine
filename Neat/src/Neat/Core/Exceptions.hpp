@@ -175,7 +175,7 @@ struct SystemError : public ECSError {
 
 struct SystemManagerNotInitializedError : public SystemError {
   SystemManagerNotInitializedError(
-      const std::string &msg = "SystemManager::init() not called.")
+      const std::string &msg = "SystemManager::initialize() not called.")
       : SystemError(msg) {}
 };
 

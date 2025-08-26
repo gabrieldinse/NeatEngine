@@ -23,11 +23,11 @@ ExampleLayer::ExampleLayer(
   camera.addComponentFromCopy<Neat::CameraComponent>(
       Neat::CameraComponent::createOrthographic(1280.0f / 720.0f));
   camera.addComponent<Neat::TransformComponent>(Neat::Vector2F{0.0f, 0.0f});
-  camera.addComponent<Neat::MainCameraTagComponent>();
+  camera.addComponent<Neat::ActiveCameraTagComponent>();
 
   m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(camera);
   m_systems->addSystem<Neat::Render2DSystem>();
-  m_systems->init();
+  m_systems->initialize();
 
   for (std::size_t i = 0; i < this->numberOfLines; ++i) {
     for (std::size_t j = 0; j < this->numberOfColumns; ++j) {

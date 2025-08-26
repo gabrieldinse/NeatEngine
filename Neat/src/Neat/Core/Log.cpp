@@ -8,7 +8,7 @@ namespace Neat {
 Ref<spdlog::logger> Log::s_clientLogger;
 Ref<spdlog::logger> Log::s_coreLogger;
 
-void Log::init(const char *pattern) {
+void Log::initialize(const char *pattern) {
   spdlog::set_pattern(pattern);
   Log::s_coreLogger = spdlog::stdout_color_mt("NEAT");
   Log::s_coreLogger->set_level(spdlog::level::trace);

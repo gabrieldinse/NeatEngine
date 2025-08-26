@@ -3,7 +3,7 @@
 #include "Neat/Scene/Scene.hpp"
 #include "Neat/Components/CameraComponent.hpp"
 #include "Neat/Components/TransformComponent.hpp"
-#include "Neat/Components/MainCameraTagComponent.hpp"
+#include "Neat/Components/ActiveCameraTagComponent.hpp"
 
 namespace Neat {
 Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
@@ -13,12 +13,12 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
   m_camera = m_entities->createEntity();
   m_camera.addComponentFromCopy(
       CameraComponent::createOrthographic(1280, 720, 8.0f));
-  m_camera.addComponent<TransformComponent>(Vector2F{0.0f, 0.0f});
-  m_camera.addComponent<MainCameraTagComponent>();
+  m_camera.addComponent<TransformComponent>();
+  m_camera.addComponent<ActiveCameraTagComponent>();
 
   m_systems->addSystem<OrthographicCameraControllerSystem>(m_camera);
   m_systems->addSystem<Render2DSystem>();
-  m_systems->init();
+  m_systems->initialize();
 }
 
 Scene::~Scene() {}

@@ -11,7 +11,7 @@ class System : public BaseSystem {
  public:
   virtual ~System() = default;
 
-  virtual void init(
+  virtual void initialize(
       [[maybe_unused]] Ref<EntityManager> &entityManager,
       [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher) override {}
   virtual void onUpdate([[maybe_unused]] Ref<EntityManager> &entityManager,

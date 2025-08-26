@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/ECS/Entity.hpp"
+#include "Neat/ECS/EntityManager.hpp"
 #include "Neat/Core/Exceptions.hpp"
 
 namespace Neat {
