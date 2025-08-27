@@ -34,7 +34,7 @@ std::ostream &operator<<(std::ostream &os, const Entity &entity) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Entity::Id &id) {
-  os << "Entity::Id(" << id.index() << "." << id.version() << ")";
+  os << "Entity::Id(" << id.version() << "." << id.index() << ")";
   return os;
 }
 }  // namespace Neat

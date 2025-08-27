@@ -36,17 +36,20 @@ class Entity {
    public:
     Id() : m_id(0) {}
     Id(UInt32 index, UInt32 version)
-        : m_id(static_cast<UInt64>(index) | static_cast<UInt64>(version)
-                                                << 32) {}
+        : m_id(static_cast<UInt64>(version) << 32 |
+               static_cast<UInt64>(index)) {}
     explicit Id(UInt64 id) : m_id(id) {}
 
     UInt64 id() const { return m_id; }
     UInt32 index() const {
-      return static_cast<UInt32>(m_id & static_cast<Int64>(UInt32Max));
+      return static_cast<UInt32>(m_id & UINT64_C(0xFFFFFFFF));
     }
     UInt32 version() const { return static_cast<UInt32>(m_id >> 32); }
 
+    explicit operator UInt64() const { return m_id; }
+
     bool operator==(const Id &other) const { return m_id == other.m_id; }
+    bool operator==(UInt64 other) const { return m_id == other; }
     bool operator!=(const Id &other) const { return m_id != other.m_id; }
     bool operator<(const Id &other) const { return m_id < other.m_id; }
 
@@ -69,14 +72,13 @@ class Entity {
   Entity &operator=(const Entity &entity) = default;
 
   explicit operator bool() const { return isValid(); }
+  explicit operator UInt64() const { return m_id.id(); }
 
   bool operator==(const Entity &other) const {
     return other.m_entityManager == m_entityManager and other.m_id == m_id;
   }
-
   bool operator!=(const Entity &other) const { return not(other == *this); }
-
-  bool operator<(const Entity &other) const { return other.m_id < m_id; }
+  bool operator<(const Entity &other) const { return m_id < other.m_id; }
 
   Id id() const { return m_id; }
 

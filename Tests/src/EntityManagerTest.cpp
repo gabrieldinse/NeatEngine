@@ -99,4 +99,35 @@ TEST_F(EntityManagerTest, ResetEntityManager) {
   EXPECT_TRUE(entityManager->hasEntity(entity3));
   EXPECT_EQ(lastEntityCreated.id().index(), entity3.id().index());
 }
+
+TEST_F(EntityManagerTest, EntitiesIDs) {
+  auto entity = entityManager->createEntity();
+  auto entity2 = entityManager->createEntity();
+  auto entity3 = entityManager->createEntity();
+
+  EXPECT_TRUE(entity < entity2);
+  EXPECT_TRUE(entity < entity2);
+  EXPECT_TRUE(entity < entity3);
+  EXPECT_TRUE(entity2 < entity3);
+
+  entityManager->destroyEntity(entity2);
+  // Gets entity ID
+  auto entity4 = entityManager->createEntity();
+
+  EXPECT_TRUE(entity < entity4);
+  EXPECT_TRUE(entity < entity4);
+  EXPECT_TRUE(entity < entity3);
+  EXPECT_TRUE(entity3 < entity4);
+
+  entityManager->reset();
+
+  entity = entityManager->createEntity();
+  entity2 = entityManager->createEntity();
+  entity3 = entityManager->createEntity();
+
+  EXPECT_TRUE(entity < entity2);
+  EXPECT_TRUE(entity < entity2);
+  EXPECT_TRUE(entity < entity3);
+  EXPECT_TRUE(entity2 < entity3);
+}
 }  // namespace Neat
