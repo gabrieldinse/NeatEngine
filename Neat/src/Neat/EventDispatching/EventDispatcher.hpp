@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Neat/EventDispatching/QueuedEvent.hpp"
 #include "Neat/EventDispatching/EventConnections.hpp"
 #include "Neat/Utils/SafeQueue.hpp"
 #include <iostream>
@@ -20,14 +21,15 @@ class EventDispatcher {
 
   template <typename EventType>
   void enqueue(const EventType& event) {
-    m_eventsQueue.push(makeScope<QueuedEvent>(getTypeId<EventType>(), event));
+    m_eventsQueue.push(
+        makeScope<QueuedEvent<EventType>>(getTypeId<EventType>(), event));
   }
 
   template <typename EventType>
   void enqueue(EventType&& event) {
     using DecayedEventType = std::remove_reference_t<EventType>;
-    m_eventsQueue.push(
-        makeScope<QueuedEvent>(getTypeId<DecayedEventType>(), event));
+    m_eventsQueue.push(makeScope<QueuedEvent<DecayedEventType>>(
+        getTypeId<DecayedEventType>(), event));
   }
 
   template <typename EventType, typename... Args,
@@ -35,7 +37,7 @@ class EventDispatcher {
                                              std::tuple<EventType>>,
                              int> = 0>
   void enqueue(Args&&... args) {
-    m_eventsQueue.push(makeScope<QueuedEvent>(
+    m_eventsQueue.push(makeScope<QueuedEvent<EventType>>(
         getTypeId<EventType>(), EventType(std::forward<Args>(args)...)));
   }
 
@@ -61,14 +63,9 @@ class EventDispatcher {
   void onUpdate();
 
  private:
-  struct QueuedEvent {
-    TypeId eventId;
-    std::any event;
-  };
-
   using EventConnectionsMap =
-      std::unordered_map<TypeId, Scope<IEventConnections>>;
-  using EventsQueue = SafeQueue<Scope<QueuedEvent>>;
+      std::unordered_map<TypeId, Scope<BaseEventConnections>>;
+  using EventsQueue = SafeQueue<Scope<BaseQueuedEvent>>;
 
  private:
   EventConnectionsMap m_eventConnectionsMap;

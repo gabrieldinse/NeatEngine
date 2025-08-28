@@ -3,8 +3,8 @@
 #include <functional>
 #include <memory>
 #include <list>
-#include <any>
 
+#include "Neat/EventDispatching/QueuedEvent.hpp"
 #include "Neat/Utils/TypeId.hpp"
 #include "Neat/Core/Limits.hpp"
 
@@ -12,14 +12,14 @@ namespace Neat {
 constexpr UInt16 EventPriorityHighest = 0;
 constexpr UInt16 EventPriorityLowest = UInt16Max;
 
-class IEventConnections {
+class BaseEventConnections {
  public:
-  virtual void onUpdate(const std::any &event) = 0;
-  virtual ~IEventConnections() = default;
+  virtual void onUpdate(const BaseQueuedEvent &queuedEvent) = 0;
+  virtual ~BaseEventConnections() = default;
 };
 
 template <typename EventType>
-class EventConnections : public IEventConnections {
+class EventConnections : public BaseEventConnections {
  public:
   using HandlerFunction = std::function<bool(const EventType &)>;
 
@@ -43,7 +43,7 @@ class EventConnections : public IEventConnections {
         [&instance](const EventType &event) {
           return (instance.*method)(event);
         },
-        static_cast<void *>(&instance), Neat::getMethodId<method>(),
+        static_cast<void *>(&instance), getMethodId<method>(),
         ignoreIfHandled, priority);
   }
 
@@ -69,8 +69,8 @@ class EventConnections : public IEventConnections {
 
   void onUpdate(EventType &&event) { onUpdate(event); }
 
-  void onUpdate(const std::any &event) {
-    onUpdate(std::any_cast<const EventType &>(event));
+  void onUpdate(const BaseQueuedEvent &queuedEvent) {
+    onUpdate(static_cast<const QueuedEvent<EventType> &>(queuedEvent).event);
   }
 
   // Enable this template only if the Args is not EventType

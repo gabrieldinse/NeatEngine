@@ -127,8 +127,8 @@ class Entity {
   void checkIsValid() const;
 
  private:
-  EntityManager *m_entityManager = nullptr;
-  Id m_id = INVALID_ID;
+  EntityManager *m_entityManager{nullptr};
+  Id m_id{INVALID_ID};
 };
 
 std::ostream &operator<<(std::ostream &os, const Entity &entity);
@@ -343,7 +343,7 @@ class EntityManager : public NonCopyable {
 
     Iterator end() {
       return Iterator(m_entityManager, m_componentGroupMask,
-                      (UInt32)m_entityManager->capacity());
+                      static_cast<UInt32>(m_entityManager->capacity()));
     }
 
     const Iterator begin() const {
@@ -352,7 +352,7 @@ class EntityManager : public NonCopyable {
 
     const Iterator end() const {
       return Iterator(m_entityManager, m_componentGroupMask,
-                      (UInt32)m_entityManager->capacity());
+                      static_cast<UInt32>(m_entityManager->capacity()));
     }
 
    private:
