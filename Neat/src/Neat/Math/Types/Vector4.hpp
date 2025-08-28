@@ -126,7 +126,7 @@ using Vector4B = Vector<4, bool>;
 using Vector4D = Vector<4, double>;
 using Vector4U = Vector4UI;
 
-// Nom member operators
+// Non-member operators
 template <typename T>
 inline constexpr Vector<4, T> operator+(const Vector<4, T> &va,
                                         const Vector<4, T> &vb);

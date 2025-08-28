@@ -27,6 +27,20 @@ class VectorTest : public testing::Test {
   Vector1I vector1i{1};
   Vector1U vector1u{1};
   Vector1B vector1b{true};
+
+  // Non-default, less than 4 bytes, types
+  Vector<4, Char> vector4c{'a', 'b', 'c', 'd'};
+  Vector<3, Char> vector3c{'a', 'b', 'c'};
+  Vector<2, Char> vector2c{'a', 'b'};
+  Vector<1, Char> vector1c{'a'};
+  Vector<4, Short> vector4s{1, 2, 3, 4};
+  Vector<3, Short> vector3s{1, 2, 3};
+  Vector<2, Short> vector2s{1, 2};
+  Vector<1, Short> vector1s{1};
+  Vector<4, UShort> vector4us{1, 2, 3, 4};
+  Vector<3, UShort> vector3us{1, 2, 3};
+  Vector<2, UShort> vector2us{1, 2};
+  Vector<1, UShort> vector1us{1};
 };
 
 TEST_F(VectorTest, OperatorAt) {
@@ -84,6 +98,39 @@ TEST_F(VectorTest, OperatorAt) {
   EXPECT_TRUE(vector2b[0]);
   EXPECT_FALSE(vector2b[1]);
   EXPECT_TRUE(vector1b[0]);
+
+  EXPECT_EQ(vector4c[0], 'a');
+  EXPECT_EQ(vector4c[1], 'b');
+  EXPECT_EQ(vector4c[2], 'c');
+  EXPECT_EQ(vector4c[3], 'd');
+  EXPECT_EQ(vector3c[0], 'a');
+  EXPECT_EQ(vector3c[1], 'b');
+  EXPECT_EQ(vector3c[2], 'c');
+  EXPECT_EQ(vector2c[0], 'a');
+  EXPECT_EQ(vector2c[1], 'b');
+  EXPECT_EQ(vector1c[0], 'a');
+
+  EXPECT_EQ(vector4s[0], 1);
+  EXPECT_EQ(vector4s[1], 2);
+  EXPECT_EQ(vector4s[2], 3);
+  EXPECT_EQ(vector4s[3], 4);
+  EXPECT_EQ(vector3s[0], 1);
+  EXPECT_EQ(vector3s[1], 2);
+  EXPECT_EQ(vector3s[2], 3);
+  EXPECT_EQ(vector2s[0], 1);
+  EXPECT_EQ(vector2s[1], 2);
+  EXPECT_EQ(vector1s[0], 1);
+
+  EXPECT_EQ(vector4us[0], 1U);
+  EXPECT_EQ(vector4us[1], 2U);
+  EXPECT_EQ(vector4us[2], 3U);
+  EXPECT_EQ(vector4us[3], 4U);
+  EXPECT_EQ(vector3us[0], 1U);
+  EXPECT_EQ(vector3us[1], 2U);
+  EXPECT_EQ(vector3us[2], 3U);
+  EXPECT_EQ(vector2us[0], 1U);
+  EXPECT_EQ(vector2us[1], 2U);
+  EXPECT_EQ(vector1us[0], 1U);
 }
 
 TEST_F(VectorTest, CoordinatesAccessingXYZW) {
@@ -141,6 +188,39 @@ TEST_F(VectorTest, CoordinatesAccessingXYZW) {
   EXPECT_TRUE(vector2b.x);
   EXPECT_FALSE(vector2b.y);
   EXPECT_TRUE(vector1b.x);
+
+  EXPECT_EQ(vector4c.x, 'a');
+  EXPECT_EQ(vector4c.y, 'b');
+  EXPECT_EQ(vector4c.z, 'c');
+  EXPECT_EQ(vector4c.w, 'd');
+  EXPECT_EQ(vector3c.x, 'a');
+  EXPECT_EQ(vector3c.y, 'b');
+  EXPECT_EQ(vector3c.z, 'c');
+  EXPECT_EQ(vector2c.x, 'a');
+  EXPECT_EQ(vector2c.y, 'b');
+  EXPECT_EQ(vector1c.x, 'a');
+
+  EXPECT_EQ(vector4s.x, 1);
+  EXPECT_EQ(vector4s.y, 2);
+  EXPECT_EQ(vector4s.z, 3);
+  EXPECT_EQ(vector4s.w, 4);
+  EXPECT_EQ(vector3s.x, 1);
+  EXPECT_EQ(vector3s.y, 2);
+  EXPECT_EQ(vector3s.z, 3);
+  EXPECT_EQ(vector2s.x, 1);
+  EXPECT_EQ(vector2s.y, 2);
+  EXPECT_EQ(vector1s.x, 1);
+
+  EXPECT_EQ(vector4us.x, 1U);
+  EXPECT_EQ(vector4us.y, 2U);
+  EXPECT_EQ(vector4us.z, 3U);
+  EXPECT_EQ(vector4us.w, 4U);
+  EXPECT_EQ(vector3us.x, 1U);
+  EXPECT_EQ(vector3us.y, 2U);
+  EXPECT_EQ(vector3us.z, 3U);
+  EXPECT_EQ(vector2us.x, 1U);
+  EXPECT_EQ(vector2us.y, 2U);
+  EXPECT_EQ(vector1us.x, 1U);
 }
 
 TEST_F(VectorTest, CoordinatesAccessingRGBA) {
@@ -198,6 +278,39 @@ TEST_F(VectorTest, CoordinatesAccessingRGBA) {
   EXPECT_TRUE(vector2b.r);
   EXPECT_FALSE(vector2b.g);
   EXPECT_TRUE(vector1b.r);
+
+  EXPECT_EQ(vector4c.r, 'a');
+  EXPECT_EQ(vector4c.g, 'b');
+  EXPECT_EQ(vector4c.b, 'c');
+  EXPECT_EQ(vector4c.a, 'd');
+  EXPECT_EQ(vector3c.r, 'a');
+  EXPECT_EQ(vector3c.g, 'b');
+  EXPECT_EQ(vector3c.b, 'c');
+  EXPECT_EQ(vector2c.r, 'a');
+  EXPECT_EQ(vector2c.g, 'b');
+  EXPECT_EQ(vector1c.r, 'a');
+
+  EXPECT_EQ(vector4s.r, 1);
+  EXPECT_EQ(vector4s.g, 2);
+  EXPECT_EQ(vector4s.b, 3);
+  EXPECT_EQ(vector4s.a, 4);
+  EXPECT_EQ(vector3s.r, 1);
+  EXPECT_EQ(vector3s.g, 2);
+  EXPECT_EQ(vector3s.b, 3);
+  EXPECT_EQ(vector2s.r, 1);
+  EXPECT_EQ(vector2s.g, 2);
+  EXPECT_EQ(vector1s.r, 1);
+
+  EXPECT_EQ(vector4us.r, 1U);
+  EXPECT_EQ(vector4us.g, 2U);
+  EXPECT_EQ(vector4us.b, 3U);
+  EXPECT_EQ(vector4us.a, 4U);
+  EXPECT_EQ(vector3us.r, 1U);
+  EXPECT_EQ(vector3us.g, 2U);
+  EXPECT_EQ(vector3us.b, 3U);
+  EXPECT_EQ(vector2us.r, 1U);
+  EXPECT_EQ(vector2us.g, 2U);
+  EXPECT_EQ(vector1us.r, 1U);
 }
 
 TEST_F(VectorTest, CoordinatesAccessingIJKL) {
@@ -255,6 +368,39 @@ TEST_F(VectorTest, CoordinatesAccessingIJKL) {
   EXPECT_TRUE(vector2b.i);
   EXPECT_FALSE(vector2b.j);
   EXPECT_TRUE(vector1b.i);
+
+  EXPECT_EQ(vector4c.i, 'a');
+  EXPECT_EQ(vector4c.j, 'b');
+  EXPECT_EQ(vector4c.k, 'c');
+  EXPECT_EQ(vector4c.l, 'd');
+  EXPECT_EQ(vector3c.i, 'a');
+  EXPECT_EQ(vector3c.j, 'b');
+  EXPECT_EQ(vector3c.k, 'c');
+  EXPECT_EQ(vector2c.i, 'a');
+  EXPECT_EQ(vector2c.j, 'b');
+  EXPECT_EQ(vector1c.i, 'a');
+
+  EXPECT_EQ(vector4s.i, 1);
+  EXPECT_EQ(vector4s.j, 2);
+  EXPECT_EQ(vector4s.k, 3);
+  EXPECT_EQ(vector4s.l, 4);
+  EXPECT_EQ(vector3s.i, 1);
+  EXPECT_EQ(vector3s.j, 2);
+  EXPECT_EQ(vector3s.k, 3);
+  EXPECT_EQ(vector2s.i, 1);
+  EXPECT_EQ(vector2s.j, 2);
+  EXPECT_EQ(vector1s.i, 1);
+
+  EXPECT_EQ(vector4us.i, 1U);
+  EXPECT_EQ(vector4us.j, 2U);
+  EXPECT_EQ(vector4us.k, 3U);
+  EXPECT_EQ(vector4us.l, 4U);
+  EXPECT_EQ(vector3us.i, 1U);
+  EXPECT_EQ(vector3us.j, 2U);
+  EXPECT_EQ(vector3us.k, 3U);
+  EXPECT_EQ(vector2us.i, 1U);
+  EXPECT_EQ(vector2us.j, 2U);
+  EXPECT_EQ(vector1us.i, 1U);
 }
 
 TEST_F(VectorTest, CoordinatesAccessingSTPQ) {
@@ -312,5 +458,38 @@ TEST_F(VectorTest, CoordinatesAccessingSTPQ) {
   EXPECT_TRUE(vector2b.s);
   EXPECT_FALSE(vector2b.t);
   EXPECT_TRUE(vector1b.s);
+
+  EXPECT_EQ(vector4c.s, 'a');
+  EXPECT_EQ(vector4c.t, 'b');
+  EXPECT_EQ(vector4c.p, 'c');
+  EXPECT_EQ(vector4c.q, 'd');
+  EXPECT_EQ(vector3c.s, 'a');
+  EXPECT_EQ(vector3c.t, 'b');
+  EXPECT_EQ(vector3c.p, 'c');
+  EXPECT_EQ(vector2c.s, 'a');
+  EXPECT_EQ(vector2c.t, 'b');
+  EXPECT_EQ(vector1c.s, 'a');
+
+  EXPECT_EQ(vector4s.s, 1);
+  EXPECT_EQ(vector4s.t, 2);
+  EXPECT_EQ(vector4s.p, 3);
+  EXPECT_EQ(vector4s.q, 4);
+  EXPECT_EQ(vector3s.s, 1);
+  EXPECT_EQ(vector3s.t, 2);
+  EXPECT_EQ(vector3s.p, 3);
+  EXPECT_EQ(vector2s.s, 1);
+  EXPECT_EQ(vector2s.t, 2);
+  EXPECT_EQ(vector1s.s, 1);
+
+  EXPECT_EQ(vector4us.s, 1U);
+  EXPECT_EQ(vector4us.t, 2U);
+  EXPECT_EQ(vector4us.p, 3U);
+  EXPECT_EQ(vector4us.q, 4U);
+  EXPECT_EQ(vector3us.s, 1U);
+  EXPECT_EQ(vector3us.t, 2U);
+  EXPECT_EQ(vector3us.p, 3U);
+  EXPECT_EQ(vector2us.s, 1U);
+  EXPECT_EQ(vector2us.t, 2U);
+  EXPECT_EQ(vector1us.s, 1U);
 }
 }  // namespace Neat
