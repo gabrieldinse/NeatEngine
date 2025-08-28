@@ -11,7 +11,7 @@ EntityManager::EntityManager(const Ref<EventDispatcher> &eventDispatcher)
 EntityManager::~EntityManager() { reset(); }
 
 void EntityManager::reset() {
-  for (Entity entity : entitiesForDebugging()) {
+  for (Entity entity : entities()) {
     entity.destroy();
   }
 

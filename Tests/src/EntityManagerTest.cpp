@@ -130,4 +130,26 @@ TEST_F(EntityManagerTest, EntitiesIDs) {
   EXPECT_TRUE(entity < entity3);
   EXPECT_TRUE(entity2 < entity3);
 }
+
+TEST_F(EntityManagerTest, IterateOverEntities) {
+  auto entity1 = entityManager->createEntity();
+  auto entity2 = entityManager->createEntity();
+  auto entity3 = entityManager->createEntity();
+
+  auto entities = entityManager->entities();
+  auto it = entities.begin();
+
+  EXPECT_EQ(*(it), entity1);
+  ++it;
+  EXPECT_EQ(*(it), entity2);
+  ++it;
+  EXPECT_EQ(*(it), entity3);
+  ++it;
+  EXPECT_EQ(it, entities.end());
+
+  for (Entity entity : entityManager->entities()) {
+    EXPECT_TRUE(entity.isValid());
+    EXPECT_TRUE(entityManager->hasEntity(entity));
+  }
+}
 }  // namespace Neat

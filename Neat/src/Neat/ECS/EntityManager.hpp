@@ -282,8 +282,9 @@ class EntityManager : public NonCopyable {
     }
 
     void next() {
-      while (m_pos < m_capacity and not((IterateOverAll and IsValidEntity()) or
-                                        matchComponentMask())) {
+      while (m_pos < m_capacity and
+             not((IterateOverAll and isCurrentEntityValid()) or
+                 componentMaskMatches())) {
         ++m_pos;
       }
 
@@ -294,12 +295,12 @@ class EntityManager : public NonCopyable {
       }
     }
 
-    bool matchComponentMask() const {
+    bool componentMaskMatches() const {
       return (m_entityManager->m_entityComponentMasks[m_pos] &
               m_componentGroupMask) == m_componentGroupMask;
     }
 
-    bool IsValidEntity() {
+    bool isCurrentEntityValid() {
       if (m_freeCursor < m_entityManager->m_freeEntityIds.size() and
           m_entityManager->m_freeEntityIds[m_freeCursor] == m_pos) {
         ++m_freeCursor;
@@ -641,7 +642,7 @@ class EntityManager : public NonCopyable {
     return UnpackingView<Components...>(this, component_mask, components...);
   }
 
-  DebugView entitiesForDebugging() { return DebugView(this); }
+  DebugView entities() { return DebugView(this); }
 
   template <typename C>
   void unpack(const Entity::Id &id, ComponentHandle<C> &component) {

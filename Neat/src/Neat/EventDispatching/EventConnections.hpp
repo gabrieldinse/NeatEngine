@@ -43,8 +43,8 @@ class EventConnections : public BaseEventConnections {
         [&instance](const EventType &event) {
           return (instance.*method)(event);
         },
-        static_cast<void *>(&instance), getMethodId<method>(),
-        ignoreIfHandled, priority);
+        static_cast<void *>(&instance), getMethodId<method>(), ignoreIfHandled,
+        priority);
   }
 
   template <auto method, typename Instance>
