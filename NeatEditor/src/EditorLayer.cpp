@@ -11,6 +11,8 @@ EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&EditorLayer::onMouseScrolled>(*this, EventPriorityHighest);
 
+  m_sceneHierarchyPanel.setScene(m_scene);
+
   // Set values different from the default
   m_checkerboardTexture->setMinification(Texture2DFilter::Nearest);
   m_checkerboardTexture->setMagnification(Texture2DFilter::Nearest);
@@ -22,6 +24,7 @@ EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
   checkerboardQuad.addComponent<TransformComponent>(
       Vector3F{0.0f, 0.0f, 0.5f}, Vector3F{1.0f, 1.0f, 1.0f},
       Vector3F{0.0f, 0.0f, 45.0f});
+  checkerboardQuad.addComponent<LabelComponent>("Checkerboard Quad");
 
   FrameBufferSpecification specification{1280, 720};
   m_frameBuffer = FrameBuffer::create(specification);
@@ -148,6 +151,8 @@ void EditorLayer::onImGuiRender() {
     }
     ImGui::EndMenuBar();
   }
+
+  m_sceneHierarchyPanel.onUpdate();
 
   auto stats = Renderer2D::getStats();
   ImGui::Begin("Example Layer");

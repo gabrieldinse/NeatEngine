@@ -3,6 +3,7 @@
 #include "Neat.hpp"
 #include "Neat/ImGui/ImGuiRender.hpp"
 #include "Neat/Scene/Scene.hpp"
+#include "SceneHierarchyPanel.hpp"
 
 #include <ImGui/imgui.h>
 
@@ -20,6 +21,7 @@ class EditorLayer : public Layer {
 
  private:
   Ref<Scene> m_scene;
+  SceneHierarchyPanel m_sceneHierarchyPanel;
 
   Ref<Texture2D> m_checkerboardTexture;
   Ref<Texture2D> m_spritesheetTexture;

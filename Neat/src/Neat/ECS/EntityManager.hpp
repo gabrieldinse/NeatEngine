@@ -97,12 +97,10 @@ class Entity {
   template <typename C>
   void removeComponent();
 
-  template <typename C,
-            typename = typename std::enable_if_t<not std::is_const<C>::value>>
+  template <typename C>
   ComponentHandle<C> getComponent();
 
-  template <typename C,
-            typename = typename std::enable_if_t<std::is_const<C>::value>>
+  template <typename C>
   const ComponentHandle<C, const EntityManager> getComponent() const;
 
   template <typename... Components>
@@ -282,9 +280,8 @@ class EntityManager : public NonCopyable {
     }
 
     void next() {
-      while (m_pos < m_capacity and
-             not((IterateOverAll and isCurrentEntityValid()) or
-                 componentMaskMatches())) {
+      while (m_pos < m_capacity and not((IterateOverAll and IsValidEntity()) or
+                                        matchComponentMask())) {
         ++m_pos;
       }
 
@@ -295,12 +292,12 @@ class EntityManager : public NonCopyable {
       }
     }
 
-    bool componentMaskMatches() const {
+    bool matchComponentMask() const {
       return (m_entityManager->m_entityComponentMasks[m_pos] &
               m_componentGroupMask) == m_componentGroupMask;
     }
 
-    bool isCurrentEntityValid() {
+    bool IsValidEntity() {
       if (m_freeCursor < m_entityManager->m_freeEntityIds.size() and
           m_entityManager->m_freeEntityIds[m_freeCursor] == m_pos) {
         ++m_freeCursor;
@@ -590,8 +587,7 @@ class EntityManager : public NonCopyable {
     return true;
   }
 
-  template <typename C,
-            typename = typename std::enable_if_t<!std::is_const<C>::value>>
+  template <typename C>
   ComponentHandle<C> getComponent(const Entity::Id &id) {
     checkIsValid(id);
 
@@ -602,13 +598,12 @@ class EntityManager : public NonCopyable {
     return ComponentHandle<C>(this, id);
   }
 
-  template <typename C,
-            typename = typename std::enable_if_t<std::is_const<C>::value>>
+  template <typename C>
   const ComponentHandle<C, const EntityManager> getComponent(
       const Entity::Id &id) const {
     checkIsValid(id);
 
-    if (not hasComponent<C>()) {
+    if (not hasComponent<C>(id)) {
       return ComponentHandle<C, const EntityManager>();
     }
 
@@ -849,20 +844,20 @@ inline void Entity::removeComponent() {
   m_entityManager->removeComponent<C>(m_id);
 }
 
-template <typename C, typename>
+template <typename C>
 inline ComponentHandle<C> Entity::getComponent() {
   checkIsValid();
 
   return m_entityManager->getComponent<C>(m_id);
 }
 
-template <typename C, typename>
+template <typename C>
 inline const ComponentHandle<C, const EntityManager> Entity::getComponent()
     const {
   checkIsValid();
 
   return const_cast<const EntityManager *>(m_entityManager)
-      ->getComponent<const C>(m_id);
+      ->getComponent<C>(m_id);
 }
 
 template <typename... Components>
