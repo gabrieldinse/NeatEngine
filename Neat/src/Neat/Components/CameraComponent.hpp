@@ -124,6 +124,7 @@ class CameraComponent {
     requires std::is_integral_v<T> and std::is_integral_v<U>
   void setOrthographicAspectRatio(T width, U height) {
     m_orthographicProperties.setAspectRatio(width, height);
+    updateProjection();
   }
   void setOrthographicZoomLevel(float zoomLevel);
   float getOrthographicLeft() const { return m_orthographicProperties.left; }

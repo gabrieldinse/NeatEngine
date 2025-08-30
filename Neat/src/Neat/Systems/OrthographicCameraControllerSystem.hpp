@@ -5,7 +5,6 @@
 #include "Neat/ECS/EntityManager.hpp"
 #include "Neat/Events/MouseScrolledEvent.hpp"
 #include "Neat/Events/MouseMovedEvent.hpp"
-#include "Neat/Events/WindowResizeEvent.hpp"
 #include "Neat/EventDispatching/EventDispatcher.hpp"
 #include "Neat/Math/Vector.hpp"
 #include "Neat/Components/CameraComponent.hpp"
@@ -25,25 +24,14 @@ class OrthographicCameraControllerSystem
                         Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds) override;
 
+ private:
   void moveUp(TransformComponent &transform, float distance);
   void moveDown(TransformComponent &transform, float distance);
   void moveRight(TransformComponent &transform, float distance);
   void moveLeft(TransformComponent &transform, float distance);
   void incrementZoomLevel(CameraComponent &camera, float offset,
                           float translationSpeed = 0.2f);
-  void setAspectRatio(CameraComponent &camera, float aspectRatio);
-  void setAspectRatio(float aspectRatio);
-  template <typename T, typename U>
-    requires std::is_integral_v<T> and std::is_integral_v<U>
-  void setAspectRatio(T width, U height) {
-    NT_PROFILE_FUNCTION();
-    auto camera = m_camera.getComponent<CameraComponent>();
-    camera->setOrthographicAspectRatio(width, height);
-  }
-
- private:
   bool onMouseScrolled(const MouseScrolledEvent &event);
-  bool onWindowResize(const WindowResizeEvent &event);
 
  private:
   Ref<EntityManager> m_entityManager;

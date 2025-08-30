@@ -17,8 +17,6 @@ void OrthographicCameraControllerSystem::initialize(
     Ref<EntityManager> &entityManager, Ref<EventDispatcher> &eventDispatcher) {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&OrthographicCameraControllerSystem::onMouseScrolled>(*this);
-  eventDispatcher->get<WindowResizeEvent>()
-      .connect<&OrthographicCameraControllerSystem::onWindowResize>(*this);
   m_entityManager = entityManager;
 }
 
@@ -108,26 +106,6 @@ void OrthographicCameraControllerSystem::moveLeft(TransformComponent &transform,
   transform.incrementPosition(
       -cos(degreesToRadians(transform.getRotationZ())) * distance,
       -sin(degreesToRadians(transform.getRotationZ())) * distance);
-}
-
-void OrthographicCameraControllerSystem::setAspectRatio(CameraComponent &camera,
-                                                        float aspectRatio) {
-  NT_PROFILE_FUNCTION();
-  camera.setOrthographicAspectRatio(aspectRatio);
-}
-
-void OrthographicCameraControllerSystem::setAspectRatio(float aspectRatio) {
-  NT_PROFILE_FUNCTION();
-  auto camera = m_camera.getComponent<CameraComponent>();
-  camera->setOrthographicAspectRatio(aspectRatio);
-}
-
-bool OrthographicCameraControllerSystem::onWindowResize(
-    const WindowResizeEvent &event) {
-  NT_PROFILE_FUNCTION();
-  setAspectRatio(event.width, event.height);
-
-  return false;
 }
 
 bool OrthographicCameraControllerSystem::onMouseScrolled(

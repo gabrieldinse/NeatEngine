@@ -19,13 +19,13 @@ ExampleLayer::ExampleLayer(
   eventDispatcher->get<Neat::MouseMovedEvent>()
       .connect<&ExampleLayer::onMouseMoved>(*this);
 
-  auto camera = m_entities->createEntity();
-  camera.addComponent<Neat::CameraComponent>(
-      Neat::OrthographicProperties{1280.0f / 720.0f});
-  camera.addComponent<Neat::TransformComponent>(Neat::Vector2F{0.0f, 0.0f});
-  camera.addComponent<Neat::ActiveCameraTagComponent>();
+  m_camera = m_entities->createEntity();
+  m_camera.addComponent<Neat::CameraComponent>(
+      Neat::OrthographicProperties{1280, 720});
+  m_camera.addComponent<Neat::TransformComponent>(Neat::Vector2F{0.0f, 0.0f});
+  m_camera.addComponent<Neat::ActiveCameraTagComponent>();
 
-  m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(camera);
+  m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(m_camera);
   m_systems->addSystem<Neat::Render2DSystem>();
   m_systems->initialize();
 
@@ -83,6 +83,9 @@ void ExampleLayer::onUpdate(double deltaTimeSeconds) {
 
 bool ExampleLayer::onWindowResize(const Neat::WindowResizeEvent &event) {
   NT_CORE_INFO("Example handle window resize event.");
+  m_camera.getComponent<Neat::CameraComponent>()->setOrthographicAspectRatio(
+      event.width, event.height);
+
   return false;
 }
 

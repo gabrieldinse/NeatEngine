@@ -29,11 +29,8 @@ Ref<EntityManager> Scene::getEntityManager() { return m_entities; }
 Ref<SystemManager> Scene::getSystems() { return m_systems; }
 
 void Scene::setViewport(UInt32 width, UInt32 height) {
-  auto camera_controller =
-      m_systems->getSystem<OrthographicCameraControllerSystem>();
-  if (camera_controller) {
-    (*camera_controller)->setAspectRatio(width, height);
-  }
+  m_camera.getComponent<CameraComponent>()->setOrthographicAspectRatio(width,
+                                                                       height);
 }
 
 void Scene::onUpdate(double deltaTimeSeconds) {

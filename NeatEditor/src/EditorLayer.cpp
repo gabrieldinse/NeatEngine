@@ -183,6 +183,8 @@ void EditorLayer::onImGuiRender() {
 
 void EditorLayer::onUpdate(double deltaTimeSeconds) {
   if (m_viewportSize != m_newViewportSize) {
+    NT_CORE_TRACE("Resizing framebuffer to ({}, {})", m_newViewportSize.x,
+                  m_newViewportSize.y);
     m_viewportSize = m_newViewportSize;
     m_scene->setViewport(m_viewportSize.x, m_viewportSize.y);
     m_frameBuffer->resize(m_viewportSize.x, m_viewportSize.y);
