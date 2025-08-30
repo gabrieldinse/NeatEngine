@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Neat/Debug/Debug.hpp"
 #include "Neat/ECS/System.hpp"
 #include "Neat/ECS/EntityManager.hpp"
 #include "Neat/Events/MouseScrolledEvent.hpp"
@@ -32,28 +33,23 @@ class OrthographicCameraControllerSystem
                           float translationSpeed = 0.2f);
   void setAspectRatio(CameraComponent &camera, float aspectRatio);
   void setAspectRatio(float aspectRatio);
-  void setAspectRatio(UInt32 width, UInt32 height);
+  template <typename T, typename U>
+    requires std::is_integral_v<T> and std::is_integral_v<U>
+  void setAspectRatio(T width, U height) {
+    NT_PROFILE_FUNCTION();
+    auto camera = m_camera.getComponent<CameraComponent>();
+    camera->setOrthographicAspectRatio(width, height);
+  }
 
  private:
   bool onMouseScrolled(const MouseScrolledEvent &event);
   bool onWindowResize(const WindowResizeEvent &event);
-  void updateCameraProjection(CameraComponent &camera);
 
  private:
   Ref<EntityManager> m_entityManager;
   Entity m_camera;
 
-  Vector3F m_position;
-  float m_left = -1.0f;
-  float m_right = 1.0f;
-  float m_bottom = -1.0f;
-  float m_top = 1.0f;
-  float m_near = -1.0f;
-  float m_far = 1.0f;
-  float m_rotation = 0.0f;
-
   float m_maxZoomLevel = 0.25f;
-  float m_zoomLevel = 1.0f;
   float m_zoomSpeed = 0.1f;
   float m_initialTranslationSpeed = 2.0f;
   float m_translationSpeed = m_initialTranslationSpeed;

@@ -30,8 +30,8 @@ void Render2DSystem::onUpdate(
     for ([[maybe_unused]] auto entity :
          entityManager->entitiesWithComponents(renderableSprite, transform)) {
       Renderer2D::drawSprite(*transform, *renderableSprite);
-      Renderer2D::endScene();
     }
+    Renderer2D::endScene();
   }
 }
 }  // namespace Neat

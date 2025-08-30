@@ -20,8 +20,8 @@ ExampleLayer::ExampleLayer(
       .connect<&ExampleLayer::onMouseMoved>(*this);
 
   auto camera = m_entities->createEntity();
-  camera.addComponentFromCopy<Neat::CameraComponent>(
-      Neat::CameraComponent::createOrthographic(1280.0f / 720.0f));
+  camera.addComponent<Neat::CameraComponent>(
+      Neat::OrthographicProperties{1280.0f / 720.0f});
   camera.addComponent<Neat::TransformComponent>(Neat::Vector2F{0.0f, 0.0f});
   camera.addComponent<Neat::ActiveCameraTagComponent>();
 

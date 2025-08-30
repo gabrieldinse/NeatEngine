@@ -33,8 +33,8 @@ void GameLayer::initialize() {
   m_systems = Neat::makeRef<Neat::SystemManager>(m_entities, m_eventDispatcher);
 
   m_camera = m_entities->createEntity();
-  m_camera.addComponentFromCopy(
-      Neat::CameraComponent::createOrthographic(1280, 720, 8.0f));
+  m_camera.addComponent<Neat::CameraComponent>(
+      Neat::OrthographicProperties{1280, 720, 8.0f});
   m_camera.addComponent<Neat::TransformComponent>(Neat::Vector2F{-10.0f, 0.0f});
   m_camera.addComponent<Neat::ActiveCameraTagComponent>();
 
@@ -318,8 +318,8 @@ bool GameLayer::onMouseButtonPressedEvent(
 
 bool GameLayer::onWindowResizeEvent(const Neat::WindowResizeEvent &event) {
   m_camera.removeComponent<Neat::CameraComponent>();
-  m_camera.addComponentFromCopy(Neat::CameraComponent::createOrthographic(
-      event.width, event.height, 8.0f));
+  m_camera.addComponent<Neat::CameraComponent>(
+      Neat::OrthographicProperties{event.width, event.height, 8.0f});
 
   return true;
 }

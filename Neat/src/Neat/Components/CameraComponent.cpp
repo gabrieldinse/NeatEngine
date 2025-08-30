@@ -3,57 +3,122 @@
 #include "Neat/Components/CameraComponent.hpp"
 
 namespace Neat {
-CameraComponent::CameraComponent(const Matrix4F &projection)
-    : m_projectionMatrix{projection} {}
-
-CameraComponent::CameraComponent(float left, float right, float bottom,
-                                 float top, float near, float far)
-    : m_projectionMatrix{
-          orthographicProjection(left, right, bottom, top, near, far)} {}
-
-CameraComponent::CameraComponent(float aspectRatio, float zoomLevel) {
-  setOrthographic(aspectRatio, zoomLevel);
+CameraComponent::CameraComponent(
+    const OrthographicProperties &orthographicProperties)
+    : m_type(CameraType::Orthographic),
+      m_orthographicProperties{orthographicProperties} {
+  updateProjection();
 }
 
-CameraComponent::CameraComponent(UInt32 width, UInt32 height, float zoomLevel) {
-  setOrthographic(width, height, zoomLevel);
+CameraComponent::CameraComponent(
+    const PerspectiveProperties &perspectiveProperties)
+    : m_type(CameraType::Perspective),
+      m_perspectiveProperties{perspectiveProperties} {
+  updateProjection();
 }
 
-void CameraComponent::setOrthographic(UInt32 width, UInt32 height,
-                                      float zoomLevel) {
-  setOrthographic(static_cast<float>(width) / static_cast<float>(height),
-                  zoomLevel);
-}
-
-CameraComponent CameraComponent::createOrthographic(float left, float right,
-                                                    float bottom, float top,
-                                                    float near, float far) {
-  return CameraComponent(left, right, bottom, top, near, far);
-}
-
-CameraComponent CameraComponent::createOrthographic(float aspectRatio,
-                                                    float zoomLevel) {
-  return CameraComponent(aspectRatio, zoomLevel);
-}
-
-CameraComponent CameraComponent::createOrthographic(UInt32 width, UInt32 height,
-                                                    float zoomLevel) {
-  return CameraComponent(width, height, zoomLevel);
-}
-
-void CameraComponent::setOrthographic(float aspectRatio, float zoomLevel) {
+void CameraComponent::setOrthographic(
+    const OrthographicProperties &orthographicProperties) {
   NT_PROFILE_FUNCTION();
-  float left = -aspectRatio * zoomLevel;
-  float right = aspectRatio * zoomLevel;
-  float bottom = -zoomLevel;
-  float top = zoomLevel;
-  setOrthographic(left, right, bottom, top);
+  m_type = CameraType::Orthographic;
+  m_orthographicProperties = orthographicProperties;
+  updateProjection();
 }
 
-void CameraComponent::setOrthographic(float left, float right, float bottom,
-                                      float top, float near, float far) {
+void CameraComponent::setPerspective(
+    const PerspectiveProperties &perspectiveProperties) {
   NT_PROFILE_FUNCTION();
-  m_projectionMatrix =
-      orthographicProjection(left, right, bottom, top, near, far);
+  m_type = CameraType::Perspective;
+  m_perspectiveProperties = perspectiveProperties;
+  updateProjection();
+}
+
+void CameraComponent::setOrthographicLeft(float left) {
+  NT_PROFILE_FUNCTION();
+  m_orthographicProperties.left = left;
+  updateProjection();
+}
+
+void CameraComponent::setOrthographicRight(float right) {
+  NT_PROFILE_FUNCTION();
+  m_orthographicProperties.right = right;
+  updateProjection();
+}
+
+void CameraComponent::setOrthographicBottom(float bottom) {
+  NT_PROFILE_FUNCTION();
+  m_orthographicProperties.bottom = bottom;
+  updateProjection();
+}
+
+void CameraComponent::setOrthographicTop(float top) {
+  NT_PROFILE_FUNCTION();
+  m_orthographicProperties.top = top;
+  updateProjection();
+}
+
+void CameraComponent::setOrthographicNear(float near) {
+  NT_PROFILE_FUNCTION();
+  m_orthographicProperties.near = near;
+  updateProjection();
+}
+
+void CameraComponent::setOrthographicFar(float far) {
+  NT_PROFILE_FUNCTION();
+  m_orthographicProperties.far = far;
+  updateProjection();
+}
+
+void CameraComponent::setOrthographicAspectRatio(float aspectRatio) {
+  NT_PROFILE_FUNCTION();
+  m_orthographicProperties.setAspectRatio(aspectRatio);
+  updateProjection();
+}
+
+void CameraComponent::setOrthographicZoomLevel(float zoomLevel) {
+  NT_PROFILE_FUNCTION();
+  m_orthographicProperties.setZoomLevel(zoomLevel);
+  updateProjection();
+}
+
+void CameraComponent::setPerspectiveFOV(float fov) {
+  NT_PROFILE_FUNCTION();
+  m_perspectiveProperties.fov = fov;
+  updateProjection();
+}
+
+void CameraComponent::setPerspectiveAspectRatio(float aspectRatio) {
+  NT_PROFILE_FUNCTION();
+  m_perspectiveProperties.aspectRatio = aspectRatio;
+  updateProjection();
+}
+
+void CameraComponent::setPerspectiveNear(float near) {
+  NT_PROFILE_FUNCTION();
+  m_perspectiveProperties.near = near;
+  updateProjection();
+}
+
+void CameraComponent::setPerspectiveFar(float far) {
+  NT_PROFILE_FUNCTION();
+  m_perspectiveProperties.far = far;
+  updateProjection();
+}
+
+void CameraComponent::updateProjection() {
+  NT_PROFILE_FUNCTION();
+  switch (m_type) {
+    case CameraType::Orthographic:
+      m_projectionMatrix = orthographicProjection(
+          m_orthographicProperties.left, m_orthographicProperties.right,
+          m_orthographicProperties.bottom, m_orthographicProperties.top,
+          m_orthographicProperties.near, m_orthographicProperties.far);
+      break;
+    case CameraType::Perspective:
+      m_projectionMatrix = perspectiveProjection(
+          m_perspectiveProperties.fov, m_perspectiveProperties.aspectRatio,
+          m_perspectiveProperties.near, m_perspectiveProperties.far);
+      break;
+  }
 }
 }  // namespace Neat

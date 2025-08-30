@@ -11,8 +11,7 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
   m_systems = makeRef<SystemManager>(m_entities, eventDispatcher);
 
   m_camera = m_entities->createEntity();
-  m_camera.addComponentFromCopy(
-      CameraComponent::createOrthographic(1280, 720, 8.0f));
+  m_camera.addComponent<CameraComponent>(OrthographicProperties{1280, 720});
   m_camera.addComponent<TransformComponent>();
   m_camera.addComponent<ActiveCameraTagComponent>();
 

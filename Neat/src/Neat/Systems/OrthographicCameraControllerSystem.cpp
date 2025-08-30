@@ -68,23 +68,14 @@ void OrthographicCameraControllerSystem::onUpdate(
   }
 }
 
-void OrthographicCameraControllerSystem::updateCameraProjection(
-    CameraComponent &camera) {
-  float aspectRatio = m_right / m_top;
-  m_bottom = -m_zoomLevel;
-  m_top = m_zoomLevel;
-  m_left = -aspectRatio * m_zoomLevel;
-  m_right = aspectRatio * m_zoomLevel;
-  camera.setOrthographic(m_left, m_right, m_bottom, m_top, m_near, m_far);
-}
-
 void OrthographicCameraControllerSystem::incrementZoomLevel(
     CameraComponent &camera, float offset, float zoomTranslationSpeed) {
   NT_PROFILE_FUNCTION();
-  m_zoomLevel -= offset * zoomTranslationSpeed;
-  m_zoomLevel = std::max(m_zoomLevel, m_maxZoomLevel);
-  m_translationSpeed = m_initialTranslationSpeed * m_zoomLevel;
-  updateCameraProjection(camera);
+  float zoomLevel = camera.getOrthographicZoomLevel();
+  zoomLevel -= offset * zoomTranslationSpeed;
+  zoomLevel = std::max(zoomLevel, m_maxZoomLevel);
+  m_translationSpeed = m_initialTranslationSpeed * zoomLevel;
+  camera.setOrthographicZoomLevel(zoomLevel);
 }
 
 void OrthographicCameraControllerSystem::moveUp(TransformComponent &transform,
@@ -106,45 +97,35 @@ void OrthographicCameraControllerSystem::moveDown(TransformComponent &transform,
 void OrthographicCameraControllerSystem::moveRight(
     TransformComponent &transform, float distance) {
   NT_PROFILE_FUNCTION();
-  transform.incrementPosition(cos(degreesToRadians(m_rotation)) * distance,
-                              sin(degreesToRadians(m_rotation)) * distance);
+  transform.incrementPosition(
+      cos(degreesToRadians(transform.getRotationZ())) * distance,
+      sin(degreesToRadians(transform.getRotationZ())) * distance);
 }
 
 void OrthographicCameraControllerSystem::moveLeft(TransformComponent &transform,
                                                   float distance) {
   NT_PROFILE_FUNCTION();
-  transform.incrementPosition(-cos(degreesToRadians(m_rotation)) * distance,
-                              -sin(degreesToRadians(m_rotation)) * distance);
+  transform.incrementPosition(
+      -cos(degreesToRadians(transform.getRotationZ())) * distance,
+      -sin(degreesToRadians(transform.getRotationZ())) * distance);
 }
 
 void OrthographicCameraControllerSystem::setAspectRatio(CameraComponent &camera,
                                                         float aspectRatio) {
   NT_PROFILE_FUNCTION();
-  m_zoomLevel = m_top;
-  m_left = -aspectRatio * m_zoomLevel;
-  m_right = aspectRatio * m_zoomLevel;
-  camera.setOrthographic(m_left, m_right, m_bottom, m_top, m_near, m_far);
+  camera.setOrthographicAspectRatio(aspectRatio);
 }
 
 void OrthographicCameraControllerSystem::setAspectRatio(float aspectRatio) {
   NT_PROFILE_FUNCTION();
   auto camera = m_camera.getComponent<CameraComponent>();
-  setAspectRatio(*camera, aspectRatio);
-}
-
-void OrthographicCameraControllerSystem::setAspectRatio(UInt32 width,
-                                                        UInt32 height) {
-  NT_PROFILE_FUNCTION();
-  auto camera = m_camera.getComponent<CameraComponent>();
-  setAspectRatio(*camera,
-                 static_cast<float>(width) / static_cast<float>(height));
+  camera->setOrthographicAspectRatio(aspectRatio);
 }
 
 bool OrthographicCameraControllerSystem::onWindowResize(
     const WindowResizeEvent &event) {
   NT_PROFILE_FUNCTION();
-  setAspectRatio(static_cast<float>(event.width) /
-                 static_cast<float>(event.height));
+  setAspectRatio(event.width, event.height);
 
   return false;
 }
