@@ -38,17 +38,11 @@ class CameraComponent {
     m_orthographicProperties.setAspectRatio(width, height);
     updateProjection();
   }
-  void setOrthographicZoomLevel(float zoomLevel);
-  float getOrthographicLeft() const { return m_orthographicProperties.left; }
-  float getOrthographicRight() const { return m_orthographicProperties.right; }
-  float getOrthographicBottom() const {
-    return m_orthographicProperties.bottom;
-  }
-  float getOrthographicTop() const { return m_orthographicProperties.top; }
+  void setOrthographicSize(float size);
   float getOrthographicNear() const { return m_orthographicProperties.near; }
   float getOrthographicFar() const { return m_orthographicProperties.far; }
-  float getOrthographicZoomLevel() const {
-    return m_orthographicProperties.getZoomLevel();
+  float getOrthographicSize() const {
+    return m_orthographicProperties.getSize();
   }
   float getOrthographicAspectRatio() const {
     return m_orthographicProperties.getAspectRatio();

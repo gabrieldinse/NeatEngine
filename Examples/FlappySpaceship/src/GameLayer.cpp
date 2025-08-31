@@ -34,7 +34,7 @@ void GameLayer::initialize() {
 
   m_camera = m_entities->createEntity();
   m_camera.addComponent<Neat::CameraComponent>(
-      Neat::OrthographicProperties{1280, 720, 8.0f});
+      Neat::OrthographicProperties{1280, 720, 16.0f});
   m_camera.addComponent<Neat::TransformComponent>(Neat::Vector2F{-10.0f, 0.0f});
   m_camera.addComponent<Neat::ActiveCameraTagComponent>();
 

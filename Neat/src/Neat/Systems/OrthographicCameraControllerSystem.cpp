@@ -47,11 +47,11 @@ void OrthographicCameraControllerSystem::onUpdate(
   }
 
   if (Input::isKeyPressed(Key::Up)) {
-    incrementZoomLevel(*camera, m_zoomSpeed);
+    incrementZoomLevel(*camera, m_sizeIncreaseSpeed);
   }
 
   if (Input::isKeyPressed(Key::Down)) {
-    incrementZoomLevel(*camera, -m_zoomSpeed);
+    incrementZoomLevel(*camera, -m_sizeIncreaseSpeed);
   }
 
   if (m_rotationEnabled) {
@@ -69,11 +69,11 @@ void OrthographicCameraControllerSystem::onUpdate(
 void OrthographicCameraControllerSystem::incrementZoomLevel(
     CameraComponent &camera, float offset, float zoomTranslationSpeed) {
   NT_PROFILE_FUNCTION();
-  float zoomLevel = camera.getOrthographicZoomLevel();
-  zoomLevel -= offset * zoomTranslationSpeed;
-  zoomLevel = std::max(zoomLevel, m_maxZoomLevel);
-  m_translationSpeed = m_initialTranslationSpeed * zoomLevel;
-  camera.setOrthographicZoomLevel(zoomLevel);
+  float size = camera.getOrthographicSize();
+  size -= offset * zoomTranslationSpeed;
+  size = std::max(size, m_maxSize);
+  m_translationSpeed = m_initialTranslationSpeed * size;
+  camera.setOrthographicSize(size);
 }
 
 void OrthographicCameraControllerSystem::moveUp(TransformComponent &transform,

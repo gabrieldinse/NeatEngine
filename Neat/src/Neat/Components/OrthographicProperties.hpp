@@ -10,17 +10,20 @@ struct OrthographicProperties {
   float top = 1.0f;
   float near = -1.0f;
   float far = 1.0f;
+  float size = 2.0f;
+  float aspectRatio = 1.0f;
+  float fixedAspectRatio = false;
 
   OrthographicProperties() = default;
 
-  OrthographicProperties(float aspectRatio, float zoomLevel = 1.0f) {
-    setProperties(aspectRatio, zoomLevel);
+  OrthographicProperties(float aspectRatio, float size = 2.0f) {
+    setProperties(aspectRatio, size);
   }
 
   template <typename T, typename U>
     requires std::is_integral_v<T> and std::is_integral_v<U>
-  OrthographicProperties(T width, U height, float zoomLevel = 1.0f) {
-    setProperties(width, height, zoomLevel);
+  OrthographicProperties(T width, U height, float size = 2.0f) {
+    setProperties(width, height, size);
   }
 
   OrthographicProperties(float left, float right, float bottom, float top,
@@ -28,18 +31,18 @@ struct OrthographicProperties {
     setProperties(left, right, bottom, top, near, far);
   }
 
-  void setProperties(float aspectRatio, float zoomLevel = 1.0f) {
-    left = -aspectRatio * zoomLevel;
-    right = aspectRatio * zoomLevel;
-    bottom = -zoomLevel;
-    top = zoomLevel;
+  void setProperties(float aspectRatio, float size = 2.0f) {
+    float halfSize = size * 0.5f;
+    left = -aspectRatio * halfSize;
+    right = aspectRatio * halfSize;
+    bottom = -halfSize;
+    top = halfSize;
   }
 
   template <typename T, typename U>
     requires std::is_integral_v<T> and std::is_integral_v<U>
-  void setProperties(T width, U height, float zoomLevel = 1.0f) {
-    setProperties(static_cast<float>(width) / static_cast<float>(height),
-                  zoomLevel);
+  void setProperties(T width, U height, float size = 2.0f) {
+    setProperties(static_cast<float>(width) / static_cast<float>(height), size);
   }
 
   void setProperties(float left, float right, float bottom, float top,
@@ -52,12 +55,12 @@ struct OrthographicProperties {
     far = far;
   }
 
-  float getAspectRatio() const { return right / top; }
+  float getAspectRatio() const { return (right - left) / (top - bottom); }
 
   void setAspectRatio(float aspectRatio) {
-    float zoomLevel = top;
-    left = -aspectRatio * zoomLevel;
-    right = aspectRatio * zoomLevel;
+    float halfSize = (top - bottom) * 0.5f;
+    left = -aspectRatio * halfSize;
+    right = aspectRatio * halfSize;
   }
 
   template <typename T, typename U>
@@ -66,14 +69,15 @@ struct OrthographicProperties {
     setAspectRatio(static_cast<float>(width) / static_cast<float>(height));
   }
 
-  float getZoomLevel() const { return top; }
+  float getSize() const { return top - bottom; }
 
-  void setZoomLevel(float zoomLevel) {
+  void setSize(float size) {
     float aspectRatio = right / top;
-    bottom = -zoomLevel;
-    top = zoomLevel;
-    left = -aspectRatio * zoomLevel;
-    right = aspectRatio * zoomLevel;
+    float halfSize = size * 0.5f;
+    bottom = -halfSize;
+    top = halfSize;
+    left = -aspectRatio * halfSize;
+    right = aspectRatio * halfSize;
   }
 };
 }  // namespace Neat

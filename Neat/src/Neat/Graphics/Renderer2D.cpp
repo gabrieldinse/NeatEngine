@@ -204,7 +204,6 @@ void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
   drawQuad(model_matrix, texture, tint, tilingFactor);
 }
 
-// Rotated Quads
 void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
                                  float angleDegrees, const Vector4F &color) {
   NT_PROFILE_FUNCTION();
@@ -240,7 +239,6 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
   drawQuad(model_matrix, texture, tint, tilingFactor);
 }
 
-// Statistics
 Renderer2D::Statistics Renderer2D::getStats() { return s_data->stats; }
 
 void Renderer2D::resetStats() { s_data->stats = Statistics{}; }

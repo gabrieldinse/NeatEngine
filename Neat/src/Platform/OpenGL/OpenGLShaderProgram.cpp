@@ -81,14 +81,12 @@ void OpenGLShaderProgram::set(const std::string &name, Int32 *values,
 
 void OpenGLShaderProgram::set(const std::string &name, Matrix3F matrix) {
   NT_PROFILE_FUNCTION();
-  glUniformMatrix3fv(getUniformLocation(name), 1, GL_TRUE,
-                     matrix.dataPointer());
+  glUniformMatrix3fv(getUniformLocation(name), 1, GL_TRUE, matrix.raw());
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Matrix4F matrix) {
   NT_PROFILE_FUNCTION();
-  glUniformMatrix4fv(getUniformLocation(name), 1, GL_TRUE,
-                     matrix.dataPointer());
+  glUniformMatrix4fv(getUniformLocation(name), 1, GL_TRUE, matrix.raw());
 }
 
 Int32 OpenGLShaderProgram::getUniformLocation(const std::string &name) {

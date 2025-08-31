@@ -92,8 +92,8 @@ struct Vector<2, T> {
   constexpr const T &operator[](UInt32 pos) const;
   constexpr T &operator()(UInt32 pos) { return (*this)[pos]; }
   constexpr const T &operator()(UInt32 pos) const { return (*this)[pos]; }
-  constexpr T *dataPointer() { return &x; }
-  constexpr const T *dataPointer() const { return &x; }
+  constexpr T *raw() { return &x; }
+  constexpr const T *raw() const { return &x; }
 
   // Static member variables
   static constexpr UInt32 size() { return 2; }

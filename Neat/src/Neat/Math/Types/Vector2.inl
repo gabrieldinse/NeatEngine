@@ -53,8 +53,8 @@ inline constexpr Vector<2, T>::Vector(const T *data, UInt32 count) {
     count = size();
   }
 
-  std::copy(data, data + count, dataPointer());
-  std::fill(dataPointer() + count, dataPointer() + size(), zero<T>);
+  std::copy(data, data + count, raw());
+  std::fill(raw() + count, raw() + size(), zero<T>);
 }
 
 // Assignment operators

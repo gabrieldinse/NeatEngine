@@ -71,8 +71,8 @@ struct Matrix<4, 4, T> {
   constexpr Matrix<4, 4, T> &operator/=(const U &scalar);
 
   // Elements accessing
-  constexpr T *dataPointer() { return m_flattened; }
-  constexpr const T *dataPointer() const { return m_flattened; }
+  constexpr T *raw() { return m_flattened; }
+  constexpr const T *raw() const { return m_flattened; }
   constexpr RowType &operator[](UInt32 row);
   constexpr const RowType &operator[](UInt32 row) const;
   constexpr T &operator()(UInt32 pos);

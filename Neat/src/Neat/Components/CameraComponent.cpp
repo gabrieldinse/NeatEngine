@@ -75,9 +75,9 @@ void CameraComponent::setOrthographicAspectRatio(float aspectRatio) {
   updateProjection();
 }
 
-void CameraComponent::setOrthographicZoomLevel(float zoomLevel) {
+void CameraComponent::setOrthographicSize(float size) {
   NT_PROFILE_FUNCTION();
-  m_orthographicProperties.setZoomLevel(zoomLevel);
+  m_orthographicProperties.setSize(size);
   updateProjection();
 }
 

@@ -27,7 +27,7 @@ void OpenGLRendererAPI::clearWithColor(const Vector4F &color) {
   NT_PROFILE_FUNCTION();
   static constexpr float one = 1.0f;
   glClearBufferfv(GL_DEPTH, 0, &one);
-  glClearBufferfv(GL_COLOR, 0, color.dataPointer());
+  glClearBufferfv(GL_COLOR, 0, color.raw());
 }
 
 void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray> &vertexArray,

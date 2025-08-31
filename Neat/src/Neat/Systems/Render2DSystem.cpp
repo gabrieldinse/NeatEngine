@@ -32,6 +32,7 @@ void Render2DSystem::onUpdate(
       Renderer2D::drawSprite(*transform, *renderableSprite);
     }
     Renderer2D::endScene();
+    break;
   }
 }
 }  // namespace Neat

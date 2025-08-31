@@ -222,11 +222,11 @@ class EntityManager : public NonCopyable {
   template <class DelegatedIterator, bool IterateOverAll = false>
   class ViewIterator {
    public:
-    using iterator_category = std::input_iterator_tag;
-    using value_type = Entity::Id;
-    using difference_type = std::ptrdiff_t;
-    using pointer = value_type *;
-    using reference = value_type &;
+    using IteratorCategory = std::input_iterator_tag;
+    using ValueType = Entity::Id;
+    using DifferenceType = std::ptrdiff_t;
+    using Pointer = ValueType *;
+    using Reference = ValueType &;
 
    public:
     DelegatedIterator &operator++() {

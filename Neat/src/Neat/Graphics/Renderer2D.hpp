@@ -62,7 +62,6 @@ class Renderer2D {
                               float angleDegrees, const Ref<Texture2D> &texture,
                               const Vector4F &tint = Vector4F(1.0f),
                               float tilingFactor = 1.0f);
-  // ----------------------------------------------------------------------
 
   struct Statistics {
     UInt32 drawCalls = 0;

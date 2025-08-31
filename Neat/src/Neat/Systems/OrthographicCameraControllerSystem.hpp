@@ -37,8 +37,8 @@ class OrthographicCameraControllerSystem
   Ref<EntityManager> m_entityManager;
   Entity m_camera;
 
-  float m_maxZoomLevel = 0.25f;
-  float m_zoomSpeed = 0.1f;
+  float m_maxSize = 0.5f;
+  float m_sizeIncreaseSpeed = 0.2f;
   float m_initialTranslationSpeed = 2.0f;
   float m_translationSpeed = m_initialTranslationSpeed;
   float m_rotationSpeed = 90.0f;
