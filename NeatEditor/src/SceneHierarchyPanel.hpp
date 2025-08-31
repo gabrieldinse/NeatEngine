@@ -18,6 +18,9 @@ class SceneHierarchyPanel {
   template <typename Component, typename Function>
   void drawComponent(const std::string &name, Entity &entity,
                      Function function);
+  static void drawVector3FControl(const std::string label, Vector3F &values,
+                                  float resetValue = 0.0f,
+                                  float columnWidth = 100.0f);
 
  private:
   Ref<Scene> m_scene;

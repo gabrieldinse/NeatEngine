@@ -16,7 +16,7 @@ class EditorLayer : public Layer {
   void onImGuiRender();
   virtual void onUpdate(double deltaTimeSeconds) override;
   bool onMouseScrolled([[maybe_unused]] const MouseScrolledEvent &event) {
-    return !m_viewportFocused || !m_viewportHovered;
+    return not m_viewportFocused or not m_viewportHovered;
   }
 
  private:

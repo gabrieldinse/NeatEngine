@@ -1,10 +1,13 @@
 #include "NeatPCH.hpp"
 
 #include "Neat/Components/Components.hpp"
+#include "Neat/Utils/TypeConversions.hpp"
+#include "Neat/Graphics/Color.hpp"
 
 #include "SceneHierarchyPanel.hpp"
 
 #include <ImGui/imgui.h>
+#include <ImGui/imgui_internal.h>
 
 namespace Neat {
 SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
@@ -63,9 +66,9 @@ void SceneHierarchyPanel::drawEntityComponents(Entity &entity) {
   }
 
   drawComponent<TransformComponent>("Transform", entity, [](auto &transform) {
-    ImGui::DragFloat3("Position", transform->position.raw(), 0.1f);
-    ImGui::DragFloat3("Rotation", transform->rotation.raw(), 0.1f);
-    ImGui::DragFloat3("Scale", transform->scaling.raw(), 0.1f);
+    drawVector3FControl("Position", transform->position);
+    drawVector3FControl("Rotation", transform->rotation);
+    drawVector3FControl("Scale", transform->scaling, 1.0f);
   });
 
   drawComponent<CameraComponent>("Camera", entity, [&entity](auto &camera) {
@@ -133,6 +136,13 @@ void SceneHierarchyPanel::drawEntityComponents(Entity &entity) {
       }
     }
   });
+
+  drawComponent<RenderableSpriteComponent>(
+      "Sprite", entity, [&entity](auto &sprite) {
+        ImGui::ColorEdit4("Color", sprite->color.raw());
+        ImGui::DragFloat("Tiling Factor", &sprite->tilingFactor, 0.1f, 0.1f);
+        // TODO texture selection
+      });
 }
 
 template <typename Component, typename Function>
@@ -147,6 +157,78 @@ void SceneHierarchyPanel::drawComponent(const std::string &name, Entity &entity,
       ImGui::TreePop();
     }
   }
+}
+
+void SceneHierarchyPanel::drawVector3FControl(const std::string label,
+                                              Vector3F &values,
+                                              float resetValue,
+                                              float columnWidth) {
+  ImGuiIO &io = ImGui::GetIO();
+  auto boldFont = io.Fonts->Fonts[0];
+
+  ImGui::PushID(label.c_str());
+
+  ImGui::Columns(2);
+  ImGui::SetColumnWidth(0, columnWidth);
+  ImGui::Text("%s", label.c_str());
+  ImGui::NextColumn();
+
+  ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+  ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0, 0});
+
+  float lineHeight =
+      GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+  ImVec2 buttonSize = {lineHeight + 3.0f, lineHeight};
+
+  ImVec4 xColor = toImVec4(Color::vermilion);
+  ImVec4 xColorHovered =
+      toImVec4(Color::vermilion + Vector4F{0.1f, 0.1f, 0.1f, 0.0f});
+  ImGui::PushStyleColor(ImGuiCol_Button, xColor);
+  ImGui::PushStyleColor(ImGuiCol_ButtonHovered, xColorHovered);
+  ImGui::PushStyleColor(ImGuiCol_ButtonActive, xColor);
+  ImGui::PushFont(boldFont);
+  if (ImGui::Button("X", buttonSize)) values.x = resetValue;
+  ImGui::PopFont();
+  ImGui::PopStyleColor(3);
+  ImGui::SameLine();
+  ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+  ImGui::PopItemWidth();
+  ImGui::SameLine();
+
+  ImVec4 yColor = toImVec4(Color::appleGreen);
+  ImVec4 yColorHovered =
+      toImVec4(Color::appleGreen + Vector4F{0.1f, 0.1f, 0.1f, 0.0f});
+  ImGui::PushStyleColor(ImGuiCol_Button, yColor);
+  ImGui::PushStyleColor(ImGuiCol_ButtonHovered, yColorHovered);
+  ImGui::PushStyleColor(ImGuiCol_ButtonActive, yColor);
+  ImGui::PushFont(boldFont);
+  if (ImGui::Button("Y", buttonSize)) values.y = resetValue;
+  ImGui::PopFont();
+  ImGui::PopStyleColor(3);
+  ImGui::SameLine();
+  ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+  ImGui::PopItemWidth();
+  ImGui::SameLine();
+
+  ImVec4 zColor = toImVec4(Color::mediumDodgerBlue);
+  ImVec4 zColorHovered =
+      toImVec4(Color::mediumDodgerBlue + Vector4F{0.1f, 0.1f, 0.1f, 0.0f});
+  ImGui::PushStyleColor(ImGuiCol_Button, zColor);
+  ImGui::PushStyleColor(ImGuiCol_ButtonHovered, zColorHovered);
+  ImGui::PushStyleColor(ImGuiCol_ButtonActive, zColor);
+  ImGui::PushFont(boldFont);
+  if (ImGui::Button("Z", buttonSize)) values.z = resetValue;
+  ImGui::PopFont();
+  ImGui::PopStyleColor(3);
+  ImGui::SameLine();
+  ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+  ImGui::PopItemWidth();
+
+  ImGui::PopStyleVar();
+
+  ImGui::Columns(1);
+
+  ImGui::PopID();
 }
 
 }  // namespace Neat
