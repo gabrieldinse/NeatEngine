@@ -24,11 +24,22 @@ void SceneHierarchyPanel::onUpdate() {
   if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered()) {
     m_selectedEntity = Entity{};
   }
+
+  // Right-click on blank space
+  if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems)) {
+    if (ImGui::MenuItem("Create Empty Entity")) {
+      Entity entity = m_scene->getEntityManager()->createEntity();
+      entity.addComponent<LabelComponent>("Empty Entity");
+    }
+    ImGui::EndPopup();
+  }
+
   ImGui::End();
 
   ImGui::Begin("Properties");
   if (m_selectedEntity) {
-    drawEntityComponents(m_selectedEntity);
+    drawComponentNodes(m_selectedEntity);
+    drawAddComponentButton();
   }
   ImGui::End();
 }
@@ -39,6 +50,7 @@ void SceneHierarchyPanel::drawEntityNode(Entity &entity) {
   }
 
   const auto &label = entity.getComponent<LabelComponent>();
+  // TODO review these flags;
   ImGuiTreeNodeFlags flags =
       ((m_selectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) |
       ImGuiTreeNodeFlags_OpenOnArrow;
@@ -49,11 +61,26 @@ void SceneHierarchyPanel::drawEntityNode(Entity &entity) {
       m_selectedEntity = entity;
     }
 
+    bool entityDestroyed = false;
+    if (ImGui::BeginPopupContextItem("Entity Settings")) {
+      if (ImGui::MenuItem("Destroy Entity")) {
+        entityDestroyed = true;
+      }
+      ImGui::EndPopup();
+    }
+
     ImGui::TreePop();
+
+    if (entityDestroyed) {
+      entity.destroy();
+      if (m_selectedEntity.id() == entity.id()) {
+        m_selectedEntity = {};
+      }
+    }
   }
 }
 
-void SceneHierarchyPanel::drawEntityComponents(Entity &entity) {
+void SceneHierarchyPanel::drawComponentNodes(Entity &entity) {
   if (entity.hasComponent<LabelComponent>()) {
     auto label = entity.getComponent<LabelComponent>();
     // TODO use a string instead of a buffer + copy to label string?
@@ -71,14 +98,15 @@ void SceneHierarchyPanel::drawEntityComponents(Entity &entity) {
     drawVector3FControl("Scale", transform->scaling, 1.0f);
   });
 
-  drawComponent<CameraComponent>("Camera", entity, [&entity](auto &camera) {
-    bool activeCamera = entity.hasComponent<ActiveCameraTagComponent>();
+  drawComponent<CameraComponent>("Camera", entity, [&](auto &camera) {
+    bool activeCamera =
+        m_selectedEntity.hasComponent<ActiveCameraTagComponent>();
     bool activeCameraSelection = activeCamera;
     ImGui::Checkbox("Primary", &activeCameraSelection);
     if (activeCamera and not activeCameraSelection) {
-      entity.removeComponent<ActiveCameraTagComponent>();
+      m_selectedEntity.removeComponent<ActiveCameraTagComponent>();
     } else if (not activeCamera and activeCameraSelection) {
-      entity.addComponent<ActiveCameraTagComponent>();
+      m_selectedEntity.addComponent<ActiveCameraTagComponent>();
     }
 
     const char *projectionTypes[] = {"Orthographic", "Perspective"};
@@ -149,13 +177,61 @@ template <typename Component, typename Function>
 void SceneHierarchyPanel::drawComponent(const std::string &name, Entity &entity,
                                         Function function) {
   if (entity.hasComponent<Component>()) {
-    if (ImGui::TreeNodeEx(
-            reinterpret_cast<void *>(typeid(Component).hash_code()),
-            ImGuiTreeNodeFlags_DefaultOpen, "%s", name.c_str())) {
+    const ImGuiTreeNodeFlags treeNodeFlags =
+        ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{4, 4});
+    bool treeNodeOpened = ImGui::TreeNodeEx(
+        reinterpret_cast<void *>(typeid(Component).hash_code()), treeNodeFlags,
+        "%s", name.c_str());
+    ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
+    if (ImGui::Button("+", ImVec2{20, 20})) {
+      ImGui::OpenPopup("Component Settings");
+    }
+    ImGui::PopStyleVar();
+
+    bool removeComponent = false;
+    if (ImGui::BeginPopup("Component Settings")) {
+      if (ImGui::MenuItem("Remove Component")) {
+        removeComponent = true;
+      }
+      ImGui::EndPopup();
+    }
+
+    if (treeNodeOpened) {
       auto component = entity.getComponent<Component>();
       function(component);
       ImGui::TreePop();
     }
+
+    if (removeComponent) {
+      entity.removeComponent<Component>();
+    }
+  }
+}
+
+void SceneHierarchyPanel::drawAddComponentButton() {
+  if (ImGui::Button("Add Component")) {
+    ImGui::OpenPopup("Add Component");
+  }
+
+  if (ImGui::BeginPopup("Add Component")) {
+    if (ImGui::MenuItem("Transform")) {
+      m_selectedEntity.addComponent<TransformComponent>();
+      ImGui::CloseCurrentPopup();
+    }
+
+    if (ImGui::MenuItem("Camera")) {
+      m_selectedEntity.addComponent<CameraComponent>(
+          OrthographicProperties{1280, 720});
+      ImGui::CloseCurrentPopup();
+    }
+
+    if (ImGui::MenuItem("Sprite")) {
+      m_selectedEntity.addComponent<RenderableSpriteComponent>();
+      ImGui::CloseCurrentPopup();
+    }
+
+    ImGui::EndPopup();
   }
 }
 

@@ -2,6 +2,7 @@
 
 #include "Neat/ECS/ECS.hpp"
 #include "Neat/Systems/Systems.hpp"
+#include "Neat/Components/ActiveCameraTagComponent.hpp"
 
 namespace Neat {
 class Scene {
@@ -16,8 +17,13 @@ class Scene {
   void setViewport(UInt32 width, UInt32 height);
 
  private:
+  bool onActiveCameraTagComponentAdded(
+      const ComponentAddedEvent<ActiveCameraTagComponent> &event);
+
+ private:
   Ref<SystemManager> m_systems;
-  Ref<EntityManager> m_entities;
-  Entity m_camera;
+  Ref<EntityManager> m_entityManager;
+  UInt32 m_viewportWidth{0};
+  UInt32 m_viewportHeight{0};
 };
 }  // namespace Neat

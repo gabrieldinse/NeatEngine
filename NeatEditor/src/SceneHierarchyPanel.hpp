@@ -14,7 +14,8 @@ class SceneHierarchyPanel {
 
  private:
   void drawEntityNode(Entity &entity);
-  void drawEntityComponents(Entity &entity);
+  void drawComponentNodes(Entity &entity);
+  void drawAddComponentButton();
   template <typename Component, typename Function>
   void drawComponent(const std::string &name, Entity &entity,
                      Function function);

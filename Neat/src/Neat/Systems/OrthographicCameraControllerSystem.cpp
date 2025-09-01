@@ -5,11 +5,12 @@
 #include "Neat/Core/Input.hpp"
 #include "Neat/Math/Transform.hpp"
 #include "Neat/ECS/EntityManager.hpp"
+#include "Neat/Components/ActiveCameraTagComponent.hpp"
 
 namespace Neat {
 OrthographicCameraControllerSystem::OrthographicCameraControllerSystem(
-    const Entity &camera, bool rotationEnabled)
-    : m_camera(camera), m_rotationEnabled(rotationEnabled) {}
+    bool rotationEnabled)
+    : m_rotationEnabled(rotationEnabled) {}
 
 OrthographicCameraControllerSystem::~OrthographicCameraControllerSystem() {}
 
@@ -26,9 +27,19 @@ void OrthographicCameraControllerSystem::onUpdate(
     double deltaTimeSeconds) {
   NT_PROFILE_FUNCTION();
 
+  auto mainCamera = getCamera();
+  if (not mainCamera) {
+    return;
+  }
+
+  Entity cameraEntity = *mainCamera;
+  auto camera = cameraEntity.getComponent<CameraComponent>();
+  if (camera->getType() != CameraType::Orthographic) {
+    return;
+  }
+
   auto distance = static_cast<float>(m_translationSpeed * deltaTimeSeconds);
-  auto camera = m_camera.getComponent<CameraComponent>();
-  auto transform = m_camera.getComponent<TransformComponent>();
+  auto transform = cameraEntity.getComponent<TransformComponent>();
 
   if (Input::isKeyPressed(Key::W)) {
     moveUp(*transform, distance);
@@ -111,10 +122,25 @@ void OrthographicCameraControllerSystem::moveLeft(TransformComponent &transform,
 bool OrthographicCameraControllerSystem::onMouseScrolled(
     const MouseScrolledEvent &event) {
   NT_PROFILE_FUNCTION();
-  auto camera = m_camera.getComponent<CameraComponent>();
+  auto mainCamera = getCamera();
+  if (not mainCamera) {
+    return false;
+  }
+
+  Entity cameraEntity = *mainCamera;
+  auto camera = cameraEntity.getComponent<CameraComponent>();
   incrementZoomLevel(*camera, -event.yOffset);
 
   return false;
+}
+
+std::optional<Entity> OrthographicCameraControllerSystem::getCamera() {
+  for (auto entity :
+       m_entityManager->entitiesWithComponents<
+           ActiveCameraTagComponent, CameraComponent, TransformComponent>()) {
+    return entity;
+  }
+  return std::nullopt;
 }
 
 }  // namespace Neat

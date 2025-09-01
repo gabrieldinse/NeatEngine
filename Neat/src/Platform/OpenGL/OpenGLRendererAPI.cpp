@@ -33,10 +33,23 @@ void OpenGLRendererAPI::clearWithColor(const Vector4F &color) {
 void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray> &vertexArray,
                                     UInt32 indexCount) {
   NT_PROFILE_FUNCTION();
-  UInt32 count = (indexCount == 0) ? vertexArray->getIndexBuffer()->getCount()
-                                   : indexCount;
+  if (indexCount == 0) {
+    return;
+  }
+
   vertexArray->bind();
-  glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+  glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
+}
+
+void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray> &vertexArray) {
+  NT_PROFILE_FUNCTION();
+  if (vertexArray->getIndexBuffer()->getCount() == 0) {
+    return;
+  }
+
+  vertexArray->bind();
+  glDrawElements(GL_TRIANGLES, vertexArray->getIndexBuffer()->getCount(),
+                 GL_UNSIGNED_INT, nullptr);
 }
 
 void OpenGLRendererAPI::setViewport(UInt32 xOffset, UInt32 yOffset,

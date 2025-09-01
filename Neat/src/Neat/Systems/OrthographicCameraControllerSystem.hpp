@@ -14,8 +14,7 @@ namespace Neat {
 class OrthographicCameraControllerSystem
     : public System<OrthographicCameraControllerSystem> {
  public:
-  OrthographicCameraControllerSystem(const Entity &camera,
-                                     bool rotationEnabled = true);
+  OrthographicCameraControllerSystem(bool rotationEnabled = true);
   ~OrthographicCameraControllerSystem();
 
   virtual void initialize(Ref<EntityManager> &entityManager,
@@ -32,10 +31,10 @@ class OrthographicCameraControllerSystem
   void incrementZoomLevel(CameraComponent &camera, float offset,
                           float translationSpeed = 0.2f);
   bool onMouseScrolled(const MouseScrolledEvent &event);
+  std::optional<Entity> getCamera();
 
  private:
   Ref<EntityManager> m_entityManager;
-  Entity m_camera;
 
   float m_maxSize = 0.5f;
   float m_sizeIncreaseSpeed = 0.2f;

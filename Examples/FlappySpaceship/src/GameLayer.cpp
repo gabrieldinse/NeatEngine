@@ -29,34 +29,35 @@ void GameLayer::initialize() {
   m_movePillarThresholdPosX = 30.0f;
   m_pillarHSV = Neat::Vector3F{0.0f, 0.8f, 0.8f};
 
-  m_entities = Neat::makeRef<Neat::EntityManager>(m_eventDispatcher);
-  m_systems = Neat::makeRef<Neat::SystemManager>(m_entities, m_eventDispatcher);
+  m_entityManager = Neat::makeRef<Neat::EntityManager>(m_eventDispatcher);
+  m_systems =
+      Neat::makeRef<Neat::SystemManager>(m_entityManager, m_eventDispatcher);
 
-  m_camera = m_entities->createEntity();
+  m_camera = m_entityManager->createEntity();
   m_camera.addComponent<Neat::CameraComponent>(
       Neat::OrthographicProperties{1280, 720, 16.0f});
   m_camera.addComponent<Neat::TransformComponent>(Neat::Vector2F{-10.0f, 0.0f});
   m_camera.addComponent<Neat::ActiveCameraTagComponent>();
 
-  m_systems->addSystem<Neat::OrthographicCameraControllerSystem>(m_camera);
+  m_systems->addSystem<Neat::OrthographicCameraControllerSystem>();
   m_systems->addSystem<Neat::Render2DSystem>();
   m_systems->initialize();
 
-  auto background = m_entities->createEntity();
+  auto background = m_entityManager->createEntity();
   background.addComponent<Neat::RenderableSpriteComponent>(
       Neat::Color::forestBrown);
   background.addComponent<Neat::TransformComponent>(
       Neat::Vector3F{0.0f, 0.0f, -0.5f}, Neat::Vector2F{50.0f, 50.0f});
   background.addComponent<BackgroundTag>();
 
-  auto floor = m_entities->createEntity();
+  auto floor = m_entityManager->createEntity();
   floor.addComponent<Neat::RenderableSpriteComponent>(Neat::Color::white);
   floor.addComponent<Neat::TransformComponent>(
       Neat::Vector3F{0.0f, -34.0f, 0.0f}, Neat::Vector2F{50.0f, 50.0f});
   floor.addComponent<BackgroundTag>();
   floor.addComponent<PillarBackgroundTag>();
 
-  auto ceiling = m_entities->createEntity();
+  auto ceiling = m_entityManager->createEntity();
   ceiling.addComponent<Neat::RenderableSpriteComponent>(Neat::Color::white);
   ceiling.addComponent<Neat::TransformComponent>(
       Neat::Vector3F{0.0f, 34.0f, 0.0f}, Neat::Vector2F{50.0f, 50.0f});
@@ -68,14 +69,14 @@ void GameLayer::initialize() {
     float topPillarZPos = 0.1f * i;
     float bottomPillarZPos = 0.1f * i + 0.05f;
 
-    auto topPillar = m_entities->createEntity();
+    auto topPillar = m_entityManager->createEntity();
     topPillar.addComponent<Neat::RenderableSpriteComponent>(m_pillarTexture);
     topPillar.addComponent<Neat::TransformComponent>(
         Neat::Vector3F{10.f * i, topPillarYPos, topPillarZPos},
         Neat::Vector2F{15.0f, 20.0f}, 180.0f);
     topPillar.addComponent<PillarTag>();
 
-    auto bottomPillar = m_entities->createEntity();
+    auto bottomPillar = m_entityManager->createEntity();
     bottomPillar.addComponent<Neat::RenderableSpriteComponent>(m_pillarTexture);
     bottomPillar.addComponent<Neat::TransformComponent>(
         Neat::Vector3F{10.0f * i, bottomPillarYPos, bottomPillarZPos},
@@ -83,7 +84,7 @@ void GameLayer::initialize() {
     bottomPillar.addComponent<PillarTag>();
   }
 
-  m_player = m_entities->createEntity();
+  m_player = m_entityManager->createEntity();
   m_player.addComponent<Neat::RenderableSpriteComponent>(m_spaceshipTexture);
   m_player.addComponent<Neat::TransformComponent>(
       Neat::Vector3F{-10.0f, 0.0f, 0.5f}, Neat::Vector2F{1.0f, 1.3f}, -90.0f);
@@ -172,7 +173,7 @@ void GameLayer::onBackgroundUpdate() {
   Neat::ComponentHandle<BackgroundTag> backgroundTag;
   Neat::ComponentHandle<Neat::TransformComponent> backgroundTransform;
   for ([[maybe_unused]] auto entity :
-       m_entities
+       m_entityManager
            ->entitiesWithComponents<BackgroundTag, Neat::TransformComponent>(
                backgroundTag, backgroundTransform)) {
     backgroundTransform->setX(playerTransform->position.x);
@@ -181,8 +182,8 @@ void GameLayer::onBackgroundUpdate() {
   Neat::ComponentHandle<PillarBackgroundTag> pillarBackgroundTag;
   Neat::ComponentHandle<Neat::RenderableSpriteComponent> sprite;
   for ([[maybe_unused]] auto entity :
-       m_entities->entitiesWithComponents<PillarBackgroundTag,
-                                          Neat::RenderableSpriteComponent>(
+       m_entityManager->entitiesWithComponents<PillarBackgroundTag,
+                                               Neat::RenderableSpriteComponent>(
            pillarBackgroundTag, sprite)) {
     sprite->color = m_pilllarRGB;
   }
@@ -196,9 +197,10 @@ void GameLayer::onPillarUpdate() {
   auto [topPillarYPos, bottomPillarYPos] = genPillarsYPositions();
   bool moved_pillar = false;
   for ([[maybe_unused]] auto entity :
-       m_entities->entitiesWithComponents<PillarTag, Neat::TransformComponent,
-                                          Neat::RenderableSpriteComponent>(
-           pillarTag, pillarTransform, sprite)) {
+       m_entityManager
+           ->entitiesWithComponents<PillarTag, Neat::TransformComponent,
+                                    Neat::RenderableSpriteComponent>(
+               pillarTag, pillarTransform, sprite)) {
     sprite->color = m_pilllarRGB;
     if (playerTransform->position.x > m_movePillarThresholdPosX) {
       if (pillarTransform->position.x <= m_movePillarThresholdPosX - 25.0f) {
@@ -264,9 +266,10 @@ void GameLayer::collisionTest() {
   auto [topPillarYPos, bottomPillarYPos] = genPillarsYPositions();
   bool moved_pillar = false;
   for ([[maybe_unused]] auto entity :
-       m_entities->entitiesWithComponents<PillarTag, Neat::TransformComponent,
-                                          Neat::RenderableSpriteComponent>(
-           pillarTag, pillarTransform, sprite)) {
+       m_entityManager
+           ->entitiesWithComponents<PillarTag, Neat::TransformComponent,
+                                    Neat::RenderableSpriteComponent>(
+               pillarTag, pillarTransform, sprite)) {
     Neat::Vector4F pillarVertices[3] = {
         {-0.5f + 0.1f, -0.5f + 0.1f, 0.0f, 1.0f},
         {0.5f - 0.1f, -0.5f + 0.1f, 0.0f, 1.0f},

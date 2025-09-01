@@ -13,6 +13,7 @@ class OpenGLRendererAPI : public RendererAPI {
 
   virtual void drawIndexed(const Ref<VertexArray> &vertexArray,
                            UInt32 indexCount = 0) override;
+  virtual void drawIndexed(const Ref<VertexArray> &vertexArray) override;
 
   virtual void setViewport(UInt32 xOffset, UInt32 yOffset, UInt32 width,
                            UInt32 height) override;

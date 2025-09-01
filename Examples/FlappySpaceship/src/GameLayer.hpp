@@ -54,7 +54,7 @@ class GameLayer : public Neat::Layer {
  private:
   Neat::Ref<Neat::EventDispatcher> m_eventDispatcher;
   Neat::Ref<Neat::SystemManager> m_systems;
-  Neat::Ref<Neat::EntityManager> m_entities;
+  Neat::Ref<Neat::EntityManager> m_entityManager;
   Neat::Entity m_camera;
 
   Neat::Ref<Neat::Texture2D> m_spaceshipTexture;
