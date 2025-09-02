@@ -1,5 +1,3 @@
-#include "NeatPCH.hpp"
-
 #include "Neat/Components/Components.hpp"
 #include "Neat/Utils/TypeConversions.hpp"
 #include "Neat/Graphics/Color.hpp"
@@ -11,9 +9,100 @@
 
 namespace Neat {
 SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
-    : m_scene(scene) {}
+    : m_scene(scene), m_componentWidgetsRenderer{m_scene->getEntityManager()} {
+  m_componentWidgetsRenderer.registerComponent<TransformComponent>(
+      "Transform", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
+                      Entity &entity) {
+        auto transform = entity.getComponent<TransformComponent>();
+        drawVector3FControl("Position", transform->position);
+        drawVector3FControl("Rotation", transform->rotation);
+        drawVector3FControl("Scale", transform->scaling, 1.0f);
+      });
 
-void SceneHierarchyPanel::setScene(const Ref<Scene> &scene) { m_scene = scene; }
+  m_componentWidgetsRenderer.registerComponent<CameraComponent>(
+      "Camera", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
+                   Entity &entity) {
+        auto camera = entity.getComponent<CameraComponent>();
+        bool activeCamera = entity.hasComponent<ActiveCameraTagComponent>();
+        bool activeCameraSelection = activeCamera;
+        ImGui::Checkbox("Primary", &activeCameraSelection);
+        if (activeCamera and not activeCameraSelection) {
+          entity.removeComponent<ActiveCameraTagComponent>();
+        } else if (not activeCamera and activeCameraSelection) {
+          entity.addComponent<ActiveCameraTagComponent>();
+        }
+
+        const char *projectionTypes[] = {"Orthographic", "Perspective"};
+        const char *currentProjectionType =
+            projectionTypes[enumToInt(camera->getType())];
+
+        if (ImGui::BeginCombo("Projection", currentProjectionType)) {
+          for (UInt32 i = 0; i < 2; ++i) {
+            const char *projectionType = projectionTypes[i];
+
+            bool isSelected = currentProjectionType == projectionType;
+            if (ImGui::Selectable(projectionType, isSelected)) {
+              camera->setType(static_cast<CameraType>(i));
+            }
+
+            if (isSelected) {
+              ImGui::SetItemDefaultFocus();
+            }
+          }
+          ImGui::EndCombo();
+        }
+
+        switch (camera->getType()) {
+          case CameraType::Orthographic: {
+            float size = camera->getOrthographicSize();
+            if (ImGui::DragFloat("Size", &size, 0.1f)) {
+              camera->setOrthographicSize(size);
+            }
+
+            float near = camera->getOrthographicNear();
+            if (ImGui::DragFloat("Near Clip", &near, 0.1f)) {
+              camera->setOrthographicNear(near);
+            }
+
+            float far = camera->getOrthographicFar();
+            if (ImGui::DragFloat("Far Clip", &far, 0.1f)) {
+              camera->setOrthographicFar(far);
+            }
+          } break;
+          case CameraType::Perspective: {
+            float fov = camera->getPerspectiveFOV();
+            if (ImGui::DragFloat("FOV", &fov, 1.0f, 1.0f, 179.0f)) {
+              camera->setPerspectiveFOV(fov);
+            }
+
+            float near = camera->getPerspectiveNear();
+            if (ImGui::DragFloat("Near Clip", &near)) {
+              camera->setPerspectiveNear(near);
+            }
+
+            float far = camera->getPerspectiveFar();
+            if (ImGui::DragFloat("Far Clip", &far)) {
+              camera->setPerspectiveFar(far);
+            }
+          }
+        }
+      });
+
+  m_componentWidgetsRenderer.registerComponent<RenderableSpriteComponent>(
+      "Sprite", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
+                   Entity &entity) {
+        auto sprite = entity.getComponent<RenderableSpriteComponent>();
+        ImGui::ColorEdit4("Color", sprite->color.raw());
+        ImGui::DragFloat("Tiling Factor", &sprite->tilingFactor, 0.1f, 0.1f);
+        // TODO texture selection
+      });
+}
+
+void SceneHierarchyPanel::setScene(const Ref<Scene> &scene) {
+  m_scene = scene;
+  m_componentWidgetsRenderer =
+      ComponentWidgetsRenderer(m_scene->getEntityManager());
+}
 
 void SceneHierarchyPanel::onUpdate() {
   ImGui::Begin("Scene Hierarchy");
@@ -97,131 +186,7 @@ void SceneHierarchyPanel::drawComponentNodes(Entity &entity) {
   drawAddComponentButton();
   ImGui::PopItemWidth();
 
-  drawComponent<TransformComponent>("Transform", entity, [](auto &transform) {
-    drawVector3FControl("Position", transform->position);
-    drawVector3FControl("Rotation", transform->rotation);
-    drawVector3FControl("Scale", transform->scaling, 1.0f);
-  });
-
-  drawComponent<CameraComponent>("Camera", entity, [&](auto &camera) {
-    bool activeCamera =
-        m_selectedEntity.hasComponent<ActiveCameraTagComponent>();
-    bool activeCameraSelection = activeCamera;
-    ImGui::Checkbox("Primary", &activeCameraSelection);
-    if (activeCamera and not activeCameraSelection) {
-      m_selectedEntity.removeComponent<ActiveCameraTagComponent>();
-    } else if (not activeCamera and activeCameraSelection) {
-      m_selectedEntity.addComponent<ActiveCameraTagComponent>();
-    }
-
-    const char *projectionTypes[] = {"Orthographic", "Perspective"};
-    const char *currentProjectionType =
-        projectionTypes[enumToInt(camera->getType())];
-
-    if (ImGui::BeginCombo("Projection", currentProjectionType)) {
-      for (UInt32 i = 0; i < 2; ++i) {
-        const char *projectionType = projectionTypes[i];
-
-        bool isSelected = currentProjectionType == projectionType;
-        if (ImGui::Selectable(projectionType, isSelected)) {
-          camera->setType(static_cast<CameraType>(i));
-        }
-
-        if (isSelected) {
-          ImGui::SetItemDefaultFocus();
-        }
-      }
-      ImGui::EndCombo();
-    }
-
-    switch (camera->getType()) {
-      case CameraType::Orthographic: {
-        float size = camera->getOrthographicSize();
-        if (ImGui::DragFloat("Size", &size, 0.1f)) {
-          camera->setOrthographicSize(size);
-        }
-
-        float near = camera->getOrthographicNear();
-        if (ImGui::DragFloat("Near Clip", &near, 0.1f)) {
-          camera->setOrthographicNear(near);
-        }
-
-        float far = camera->getOrthographicFar();
-        if (ImGui::DragFloat("Far Clip", &far, 0.1f)) {
-          camera->setOrthographicFar(far);
-        }
-      } break;
-      case CameraType::Perspective: {
-        float fov = camera->getPerspectiveFOV();
-        if (ImGui::DragFloat("FOV", &fov, 1.0f, 1.0f, 179.0f)) {
-          camera->setPerspectiveFOV(fov);
-        }
-
-        float near = camera->getPerspectiveNear();
-        if (ImGui::DragFloat("Near Clip", &near)) {
-          camera->setPerspectiveNear(near);
-        }
-
-        float far = camera->getPerspectiveFar();
-        if (ImGui::DragFloat("Far Clip", &far)) {
-          camera->setPerspectiveFar(far);
-        }
-      }
-    }
-  });
-
-  drawComponent<RenderableSpriteComponent>(
-      "Sprite", entity, [&entity](auto &sprite) {
-        ImGui::ColorEdit4("Color", sprite->color.raw());
-        ImGui::DragFloat("Tiling Factor", &sprite->tilingFactor, 0.1f, 0.1f);
-        // TODO texture selection
-      });
-}
-
-template <typename Component, typename Function>
-void SceneHierarchyPanel::drawComponent(const std::string &name, Entity &entity,
-                                        Function function) {
-  if (entity.hasComponent<Component>()) {
-    const ImGuiTreeNodeFlags treeNodeFlags =
-        ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
-        ImGuiTreeNodeFlags_SpanAvailWidth |
-        ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
-
-    ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{4, 4});
-    float lineHeight =
-        GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-    ImGui::Separator();
-
-    bool treeNodeOpened = ImGui::TreeNodeEx(
-        reinterpret_cast<void *>(typeid(Component).hash_code()), treeNodeFlags,
-        "%s", name.c_str());
-    ImGui::PopStyleVar();
-    ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
-
-    ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
-    if (ImGui::Button("+", ImVec2{lineHeight, lineHeight})) {
-      ImGui::OpenPopup("Component Settings");
-    }
-
-    bool removeComponent = false;
-    if (ImGui::BeginPopup("Component Settings")) {
-      if (ImGui::MenuItem("Remove Component")) {
-        removeComponent = true;
-      }
-      ImGui::EndPopup();
-    }
-
-    if (treeNodeOpened) {
-      auto component = entity.getComponent<Component>();
-      function(component);
-      ImGui::TreePop();
-    }
-
-    if (removeComponent) {
-      entity.removeComponent<Component>();
-    }
-  }
+  m_componentWidgetsRenderer.drawAllComponents(entity);
 }
 
 void SceneHierarchyPanel::drawAddComponentButton() {

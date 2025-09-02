@@ -73,11 +73,9 @@ class EventConnections : public BaseEventConnections {
     onUpdate(static_cast<const QueuedEvent<EventType> &>(queuedEvent).event);
   }
 
-  // Enable this template only if the Args is not EventType
-  template <typename... Args,
-            std::enable_if_t<!std::is_same_v<std::tuple<std::decay_t<Args>...>,
-                                             std::tuple<EventType>>,
-                             int> = 0>
+  template <typename... Args>
+    requires(not std::same_as<std::tuple<std::decay_t<Args>...>,
+                              std::tuple<EventType> >)
   void onUpdate(Args &&...args) {
     onUpdate(EventType(std::forward<Args>(args)...));
   }

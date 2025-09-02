@@ -4,14 +4,13 @@
 
 namespace Neat {
 EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
-    : m_scene(makeRef<Scene>(eventDispatcher)),
+    : m_scene{makeRef<Scene>(eventDispatcher)},
+      m_sceneHierarchyPanel{m_scene},
       m_checkerboardTexture{Texture2D::create("assets/textures/texture1.png")},
       m_spritesheetTexture{
           Texture2D::create("assets/textures/spritesheet1.png")} {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&EditorLayer::onMouseScrolled>(*this, EventPriorityHighest);
-
-  m_sceneHierarchyPanel.setScene(m_scene);
 
   // Set values different from the default
   m_checkerboardTexture->setMinification(Texture2DFilter::Nearest);

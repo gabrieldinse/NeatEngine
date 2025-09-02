@@ -5,7 +5,7 @@
 
 namespace Neat {
 struct RenderableSpriteComponent {
-  Ref<Texture2D> texture;
+  Ref<Texture2D> texture{nullptr};
   Vector4F color{Color::magenta};
   float tilingFactor{1.0f};
 

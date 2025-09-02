@@ -46,13 +46,14 @@ LinuxWindow::LinuxWindow(const Ref<EventDispatcher> &eventDispatcher,
     NT_CORE_ASSERT(status, "Failed to initialize GLFW!");
   }
 
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
   m_glfwWindow =
       glfwCreateWindow(static_cast<Int32>(m_windowData.windowProperties.width),
                        static_cast<Int32>(m_windowData.windowProperties.height),
                        m_windowData.windowProperties.title.c_str(), NULL, NULL);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   NT_CORE_ASSERT(m_glfwWindow, "Window is null!");
   s_windowCount++;
 

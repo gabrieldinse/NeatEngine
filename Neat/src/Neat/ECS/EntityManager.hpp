@@ -113,6 +113,8 @@ class Entity {
   template <typename C>
   bool hasComponent() const;
 
+  bool hasComponent(BaseComponent::Family family) const;
+
   template <typename C1, typename... OtherComponents>
   void unpack(ComponentHandle<C1> &c1,
               ComponentHandle<OtherComponents> &...others);
@@ -567,6 +569,23 @@ class EntityManager : public NonCopyable {
     component_array->destroy(id.index());
   }
 
+  bool hasComponent(const Entity::Id &id, BaseComponent::Family family) const {
+    checkIsValid(id);
+
+    if (family >= m_componentArrays.size()) {
+      return false;
+    }
+
+    BaseMemoryPool *component_array = m_componentArrays[family];
+
+    if (component_array == nullptr or
+        not m_entityComponentMasks[id.index()][family]) {
+      return false;
+    }
+
+    return true;
+  }
+
   template <typename C>
   bool hasComponent(const Entity::Id &id) const {
     checkIsValid(id);
@@ -874,6 +893,12 @@ Entity::getComponents() const {
 
   return const_cast<const EntityManager *>(m_entityManager)
       ->getComponents<const Components...>(m_id);
+}
+
+inline bool Entity::hasComponent(BaseComponent::Family family) const {
+  checkIsValid();
+
+  return m_entityManager->hasComponent(m_id, family);
 }
 
 template <typename C>

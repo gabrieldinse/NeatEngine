@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ComponentWidgetsRenderer.hpp"
+
 #include "Neat/Scene/Scene.hpp"
 
 namespace Neat {
@@ -16,9 +18,6 @@ class SceneHierarchyPanel {
   void drawEntityNode(Entity &entity);
   void drawComponentNodes(Entity &entity);
   void drawAddComponentButton();
-  template <typename Component, typename Function>
-  void drawComponent(const std::string &name, Entity &entity,
-                     Function function);
   static void drawVector3FControl(const std::string label, Vector3F &values,
                                   float resetValue = 0.0f,
                                   float columnWidth = 100.0f);
@@ -26,5 +25,6 @@ class SceneHierarchyPanel {
  private:
   Ref<Scene> m_scene;
   Entity m_selectedEntity;
+  ComponentWidgetsRenderer m_componentWidgetsRenderer;
 };
 }  // namespace Neat

@@ -13,7 +13,7 @@ enum class CameraType { Orthographic = 0, Perspective = 1 };
 
 class CameraComponent {
  public:
-  CameraComponent() = delete;
+  CameraComponent() = default;
   CameraComponent(const OrthographicProperties &orthographicProperties);
   CameraComponent(const PerspectiveProperties &perspectiveProperties);
 
@@ -63,9 +63,9 @@ class CameraComponent {
   void updateProjection();
 
  private:
-  CameraType m_type;
-  OrthographicProperties m_orthographicProperties;
-  PerspectiveProperties m_perspectiveProperties;
+  CameraType m_type = CameraType::Orthographic;
+  OrthographicProperties m_orthographicProperties{};
+  PerspectiveProperties m_perspectiveProperties{};
   Matrix4F m_projectionMatrix{1.0f};
 };
 }  // namespace Neat
