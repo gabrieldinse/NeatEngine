@@ -14,7 +14,7 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
       .connect<&Scene::onActiveCameraTagComponentAdded>(*this);
 
   auto cameraEntity = m_entityManager->createEntity();
-  cameraEntity.addComponent<CameraComponent>(OrthographicProperties{1280, 720});
+  cameraEntity.addComponent<CameraComponent>(OrthographicProperties{1600, 900});
   cameraEntity.addComponent<TransformComponent>();
   cameraEntity.addComponent<ActiveCameraTagComponent>();
   cameraEntity.addComponent<LabelComponent>("Scene Camera");

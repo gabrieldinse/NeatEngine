@@ -26,7 +26,7 @@ EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
       Vector3F{0.0f, 0.0f, 45.0f});
   checkerboardQuad.addComponent<LabelComponent>("Checkerboard Quad");
 
-  FrameBufferSpecification specification{1280, 720};
+  FrameBufferSpecification specification{1600, 900};
   m_frameBuffer = FrameBuffer::create(specification);
 }
 
@@ -99,10 +99,16 @@ void EditorLayer::onImGuiRender() {
 
   // Submit the DockSpace
   ImGuiIO &io = ImGui::GetIO();
+  ImGuiStyle &style = ImGui::GetStyle();
+  float minWinSizeX = style.WindowMinSize.x;
+  style.WindowMinSize.x = 370.0f;
+
   if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
     ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
     ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
   }
+
+  style.WindowMinSize.x = minWinSizeX;
 
   if (ImGui::BeginMenuBar()) {
     if (ImGui::BeginMenu("File")) {

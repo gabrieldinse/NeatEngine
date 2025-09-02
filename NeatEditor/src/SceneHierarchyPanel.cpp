@@ -39,7 +39,6 @@ void SceneHierarchyPanel::onUpdate() {
   ImGui::Begin("Properties");
   if (m_selectedEntity) {
     drawComponentNodes(m_selectedEntity);
-    drawAddComponentButton();
   }
   ImGui::End();
 }
@@ -54,6 +53,7 @@ void SceneHierarchyPanel::drawEntityNode(Entity &entity) {
   ImGuiTreeNodeFlags flags =
       ((m_selectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) |
       ImGuiTreeNodeFlags_OpenOnArrow;
+  flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 
   if (ImGui::TreeNodeEx(reinterpret_cast<void *>(static_cast<UInt64>(entity)),
                         flags, "%s", label->getRawLabel())) {
@@ -87,10 +87,15 @@ void SceneHierarchyPanel::drawComponentNodes(Entity &entity) {
     char buffer[256];
     memset(buffer, 0, sizeof(buffer));
     strncpy(buffer, label->getRawLabel(), sizeof(buffer));
-    if (ImGui::InputText("Label", buffer, sizeof(buffer))) {
+    if (ImGui::InputText("##Label", buffer, sizeof(buffer))) {
       label->label = std::string(buffer);
     }
   }
+
+  ImGui::SameLine();
+  ImGui::PushItemWidth(-1);
+  drawAddComponentButton();
+  ImGui::PopItemWidth();
 
   drawComponent<TransformComponent>("Transform", entity, [](auto &transform) {
     drawVector3FControl("Position", transform->position);
@@ -178,16 +183,26 @@ void SceneHierarchyPanel::drawComponent(const std::string &name, Entity &entity,
                                         Function function) {
   if (entity.hasComponent<Component>()) {
     const ImGuiTreeNodeFlags treeNodeFlags =
-        ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
+        ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
+        ImGuiTreeNodeFlags_SpanAvailWidth |
+        ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+
+    ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{4, 4});
+    float lineHeight =
+        GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+    ImGui::Separator();
+
     bool treeNodeOpened = ImGui::TreeNodeEx(
         reinterpret_cast<void *>(typeid(Component).hash_code()), treeNodeFlags,
         "%s", name.c_str());
+    ImGui::PopStyleVar();
+    ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
+
     ImGui::SameLine(ImGui::GetWindowWidth() - 25.0f);
-    if (ImGui::Button("+", ImVec2{20, 20})) {
+    if (ImGui::Button("+", ImVec2{lineHeight, lineHeight})) {
       ImGui::OpenPopup("Component Settings");
     }
-    ImGui::PopStyleVar();
 
     bool removeComponent = false;
     if (ImGui::BeginPopup("Component Settings")) {
@@ -222,7 +237,7 @@ void SceneHierarchyPanel::drawAddComponentButton() {
 
     if (ImGui::MenuItem("Camera")) {
       m_selectedEntity.addComponent<CameraComponent>(
-          OrthographicProperties{1280, 720});
+          OrthographicProperties{1600, 900});
       ImGui::CloseCurrentPopup();
     }
 

@@ -7,5 +7,8 @@ class ImGuiRender {
   static void shutdown();
   static void begin();
   static void end();
+
+ private:
+  static void setFontsAndColorTheme();
 };
 }  // namespace Neat

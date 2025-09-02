@@ -22,7 +22,7 @@ ExampleLayer::ExampleLayer(
 
   auto cameraEntity = m_entityManager->createEntity();
   cameraEntity.addComponent<Neat::CameraComponent>(
-      Neat::OrthographicProperties{1280, 720});
+      Neat::OrthographicProperties{1600, 900});
   cameraEntity.addComponent<Neat::TransformComponent>(
       Neat::Vector2F{0.0f, 0.0f});
   cameraEntity.addComponent<Neat::ActiveCameraTagComponent>();

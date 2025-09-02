@@ -152,4 +152,13 @@ TEST_F(EntityManagerTest, IterateOverEntities) {
     EXPECT_TRUE(entityManager->hasEntity(entity));
   }
 }
+
+TEST_F(EntityManagerTest, EntitiesEquality) {
+  auto entity1 = entityManager->createEntity();
+  auto entity2 = entityManager->createEntity();
+  EXPECT_NE(entity1, entity2);
+
+  entity1 = entity2;
+  EXPECT_EQ(entity1, entity2);
+}
 }  // namespace Neat

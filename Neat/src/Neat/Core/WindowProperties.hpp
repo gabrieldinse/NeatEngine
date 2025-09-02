@@ -13,8 +13,8 @@ struct WindowProperties {
   bool minimized;
   bool vSync;
 
-  WindowProperties(const std::string &title = "Neat Engine", Int32 width = 1280,
-                   Int32 height = 720, bool minimized = false,
+  WindowProperties(const std::string &title = "Neat Engine", Int32 width = 1600,
+                   Int32 height = 900, bool minimized = false,
                    bool vSync = false)
       : title(title),
         width(width),
