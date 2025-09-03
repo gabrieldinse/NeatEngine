@@ -115,6 +115,8 @@ class Entity {
 
   bool hasComponent(BaseComponent::Family family) const;
 
+  bool hasAnyComponent() const;
+
   template <typename C1, typename... OtherComponents>
   void unpack(ComponentHandle<C1> &c1,
               ComponentHandle<OtherComponents> &...others);
@@ -605,6 +607,8 @@ class EntityManager : public NonCopyable {
 
     return true;
   }
+
+  bool hasAnyComponent(const Entity::Id &id) const;
 
   template <typename C>
   ComponentHandle<C> getComponent(const Entity::Id &id) {

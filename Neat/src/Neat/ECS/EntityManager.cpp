@@ -28,6 +28,18 @@ void EntityManager::reset() {
   m_indexCounter = 0;
 }
 
+bool EntityManager::hasAnyComponent(const Entity::Id &id) const {
+  checkIsValid(id);
+
+  return m_entityComponentMasks[id.index()].any();
+}
+
+bool Entity::hasAnyComponent() const {
+  checkIsValid();
+
+  return m_entityManager->hasAnyComponent(m_id);
+}
+
 std::ostream &operator<<(std::ostream &os, const Entity &entity) {
   os << "Entity(" << entity.id() << ")";
   return os;

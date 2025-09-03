@@ -42,6 +42,10 @@ struct OrthographicProperties {
   template <typename T, typename U>
     requires std::is_integral_v<T> and std::is_integral_v<U>
   void setProperties(T width, U height, float size = 2.0f) {
+    if (height == 0) {
+      return;
+    }
+
     setProperties(static_cast<float>(width) / static_cast<float>(height), size);
   }
 
@@ -58,7 +62,7 @@ struct OrthographicProperties {
   float getAspectRatio() const { return (right - left) / (top - bottom); }
 
   void setAspectRatio(float aspectRatio) {
-    float halfSize = (top - bottom) * 0.5f;
+    float halfSize = getSize() * 0.5f;
     left = -aspectRatio * halfSize;
     right = aspectRatio * halfSize;
   }
@@ -66,13 +70,17 @@ struct OrthographicProperties {
   template <typename T, typename U>
     requires std::is_integral_v<T> and std::is_integral_v<U>
   void setAspectRatio(T width, U height) {
+    if (height == 0) {
+      return;
+    }
+
     setAspectRatio(static_cast<float>(width) / static_cast<float>(height));
   }
 
   float getSize() const { return top - bottom; }
 
   void setSize(float size) {
-    float aspectRatio = right / top;
+    float aspectRatio = getAspectRatio();
     float halfSize = size * 0.5f;
     bottom = -halfSize;
     top = halfSize;

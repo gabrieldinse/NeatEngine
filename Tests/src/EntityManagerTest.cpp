@@ -40,12 +40,12 @@ TEST_F(EntityManagerTest, InvalidEntity) {
 TEST_F(EntityManagerTest, CreateEntity) {
   EXPECT_EQ(entityManager->size(), 0);
 
-  auto entity = entityManager->createEntity();
+  auto entity1 = entityManager->createEntity();
   eventDispatcher->onUpdate();
   EXPECT_EQ(entityManager->size(), 1);
-  EXPECT_TRUE(entity.isValid());
-  EXPECT_TRUE(entityManager->hasEntity(entity));
-  EXPECT_EQ(lastEntityCreated.id().index(), entity.id().index());
+  EXPECT_TRUE(entity1.isValid());
+  EXPECT_TRUE(entityManager->hasEntity(entity1));
+  EXPECT_EQ(lastEntityCreated.id().index(), entity1.id().index());
 
   auto entity2 = entityManager->createEntity();
   eventDispatcher->onUpdate();
@@ -56,24 +56,24 @@ TEST_F(EntityManagerTest, CreateEntity) {
 }
 
 TEST_F(EntityManagerTest, DestroyEntity) {
-  auto entity = entityManager->createEntity();
+  auto entity1 = entityManager->createEntity();
   EXPECT_EQ(entityManager->size(), 1);
 
   auto entity2 = entityManager->createEntity();
   EXPECT_EQ(entityManager->size(), 2);
 
-  entityManager->destroyEntity(entity);
+  entityManager->destroyEntity(entity1);
   eventDispatcher->onUpdate();
   EXPECT_EQ(entityManager->size(), 1);
 
-  EXPECT_FALSE(entityManager->hasEntity(entity));
-  EXPECT_FALSE(entity.isValid());
-  EXPECT_EQ(lastEntityDestroyed.id().index(), entity.id().index());
+  EXPECT_FALSE(entityManager->hasEntity(entity1));
+  EXPECT_FALSE(entity1.isValid());
+  EXPECT_EQ(lastEntityDestroyed.id().index(), entity1.id().index());
 }
 
 TEST_F(EntityManagerTest, ResetEntityManager) {
   EXPECT_EQ(entityManager->size(), 0);
-  auto entity = entityManager->createEntity();
+  auto entity1 = entityManager->createEntity();
 
   EXPECT_EQ(entityManager->size(), 1);
   auto entity2 = entityManager->createEntity();
@@ -86,8 +86,8 @@ TEST_F(EntityManagerTest, ResetEntityManager) {
 
   entityManager->reset();
   EXPECT_EQ(entityManager->size(), 0);
-  EXPECT_FALSE(entity.isValid());
-  EXPECT_FALSE(entityManager->hasEntity(entity));
+  EXPECT_FALSE(entity1.isValid());
+  EXPECT_FALSE(entityManager->hasEntity(entity1));
   EXPECT_FALSE(entity2.isValid());
   EXPECT_FALSE(entityManager->hasEntity(entity2));
 
@@ -101,33 +101,33 @@ TEST_F(EntityManagerTest, ResetEntityManager) {
 }
 
 TEST_F(EntityManagerTest, EntitiesIDs) {
-  auto entity = entityManager->createEntity();
+  auto entity1 = entityManager->createEntity();
   auto entity2 = entityManager->createEntity();
   auto entity3 = entityManager->createEntity();
 
-  EXPECT_TRUE(entity < entity2);
-  EXPECT_TRUE(entity < entity2);
-  EXPECT_TRUE(entity < entity3);
+  EXPECT_TRUE(entity1 < entity2);
+  EXPECT_TRUE(entity1 < entity2);
+  EXPECT_TRUE(entity1 < entity3);
   EXPECT_TRUE(entity2 < entity3);
 
   entityManager->destroyEntity(entity2);
   // Gets entity ID
   auto entity4 = entityManager->createEntity();
 
-  EXPECT_TRUE(entity < entity4);
-  EXPECT_TRUE(entity < entity4);
-  EXPECT_TRUE(entity < entity3);
+  EXPECT_TRUE(entity1 < entity4);
+  EXPECT_TRUE(entity1 < entity4);
+  EXPECT_TRUE(entity1 < entity3);
   EXPECT_TRUE(entity3 < entity4);
 
   entityManager->reset();
 
-  entity = entityManager->createEntity();
+  entity1 = entityManager->createEntity();
   entity2 = entityManager->createEntity();
   entity3 = entityManager->createEntity();
 
-  EXPECT_TRUE(entity < entity2);
-  EXPECT_TRUE(entity < entity2);
-  EXPECT_TRUE(entity < entity3);
+  EXPECT_TRUE(entity1 < entity2);
+  EXPECT_TRUE(entity1 < entity2);
+  EXPECT_TRUE(entity1 < entity3);
   EXPECT_TRUE(entity2 < entity3);
 }
 
@@ -160,5 +160,11 @@ TEST_F(EntityManagerTest, EntitiesEquality) {
 
   entity1 = entity2;
   EXPECT_EQ(entity1, entity2);
+}
+
+TEST_F(EntityManagerTest, DoesNotHaveComponent) {
+  auto entity1 = entityManager->createEntity();
+  EXPECT_FALSE(entity1.hasComponent<std::string>());
+  EXPECT_FALSE(entity1.hasAnyComponent());
 }
 }  // namespace Neat
