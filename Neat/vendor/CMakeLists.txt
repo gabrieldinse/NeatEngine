@@ -1,2 +1,4 @@
 add_subdirectory(GLFW)
 add_subdirectory(Glad)
+add_subdirectory(yaml-cpp)
+add_subdirectory(reflect-cpp)

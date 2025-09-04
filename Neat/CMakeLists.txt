@@ -1,6 +1,10 @@
 
+# reflect-cpp
+set(REFLECTCPP_YAML ON)
+
 add_subdirectory(vendor)
 
+# ImGui
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DGLFW_INCLUDE_NONE)
 
 file(GLOB_RECURSE NEAT_SOURCES
@@ -48,7 +52,7 @@ target_include_directories(Neat PUBLIC
     vendor/stb_image
 )
 
-set(LIBS glfw Glad)
+set(LIBS glfw Glad yaml-cpp reflectcpp)
 
 if(WIN32)
     set(LIBS ${LIBS} opengl32.lib)

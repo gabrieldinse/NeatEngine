@@ -2,6 +2,15 @@
 
 #include "ExampleLayer.hpp"
 
+#include <rfl/yaml.hpp>
+#include <rfl.hpp>
+
+struct Person {
+  std::string first_name;
+  std::string last_name;
+  int age;
+};
+
 ExampleLayer::ExampleLayer(
     const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
     : m_checkerboardTexture(
@@ -12,6 +21,15 @@ ExampleLayer::ExampleLayer(
                                                           {7, 6}, {64, 64})),
       stairsTexture2(Neat::SubTexture2D::createFromIndex(m_spritesheetTexture,
                                                          {8, 6}, {64, 64})) {
+  const auto homer =
+      Person{.first_name = "Homer", .last_name = "Simpson", .age = 45};
+
+  // We can now write into and read from a JSON string.
+  const std::string json_string = rfl::yaml::write(homer);
+  std::cout << json_string << std::endl;
+  // auto homer2 = rfl::json::read<Person>(json_string).value();
+  // std::cout << homer2 << std::endl;
+
   m_entityManager = Neat::makeRef<Neat::EntityManager>(eventDispatcher);
   m_systems =
       Neat::makeRef<Neat::SystemManager>(m_entityManager, eventDispatcher);

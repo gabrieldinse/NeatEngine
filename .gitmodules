@@ -10,3 +10,9 @@
 [submodule "Neat/vendor/spdlog"]
 	path = Neat/vendor/spdlog
 	url = git@github.com:gabime/spdlog.git
+[submodule "Neat/vendor/reflect-cpp"]
+	path = Neat/vendor/reflect-cpp
+	url = git@github.com:getml/reflect-cpp.git
+[submodule "Neat/vendor/yaml-cpp"]
+	path = Neat/vendor/yaml-cpp
+	url = git@github.com:jbeder/yaml-cpp.git

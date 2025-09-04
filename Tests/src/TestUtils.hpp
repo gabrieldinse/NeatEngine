@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <iostream>
 #include <Neat/ECS/ECS.hpp>
 
 namespace Neat {
@@ -20,7 +19,6 @@ struct EventC {
 
 struct ListenerA {
   bool handle(const EventA &event) {
-    std::cout << "ListenerA EventA: val=" << event.val << std::endl;
     count++;
     val = event.val;
     return false;
@@ -31,14 +29,11 @@ struct ListenerA {
 
 struct ListenerB {
   bool process(const EventB &event) {
-    std::cout << "ListenerB EventB: msg=" << event.msg << std::endl;
     count++;
     msg = event.msg;
     return false;
   }
   bool handleEventC(const EventC &event) {
-    std::cout << "ListenerB EventC: posX=" << event.posX
-              << ", posY=" << event.posY << std::endl;
     count++;
     posX = event.posX;
     posY = event.posY;
@@ -52,8 +47,6 @@ struct ListenerB {
 
 struct ListenerC {
   bool handle(const EventC &event) {
-    std::cout << "ListenerC EventC: posX=" << event.posX
-              << ", posY=" << event.posY << std::endl;
     count++;
     posX = event.posX;
     posY = event.posY;
@@ -66,7 +59,6 @@ struct ListenerC {
 
 struct ListenerD {
   bool handleA(const EventA &event) {
-    std::cout << "ListenerD EventA: val=" << event.val << std::endl;
     count++;
     val = event.val;
     return true;
