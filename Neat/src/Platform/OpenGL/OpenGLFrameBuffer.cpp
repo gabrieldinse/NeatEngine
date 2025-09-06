@@ -19,13 +19,19 @@ OpenGLFrameBuffer::~OpenGLFrameBuffer() {
 }
 
 void OpenGLFrameBuffer::bind() {
+  NT_PROFILE_FUNCTION();
   glBindFramebuffer(GL_FRAMEBUFFER, m_id);
   glViewport(0, 0, m_specification.width, m_specification.height);
 }
 
-void OpenGLFrameBuffer::unbind() { glBindFramebuffer(GL_FRAMEBUFFER, 0); }
+void OpenGLFrameBuffer::unbind() {
+  NT_PROFILE_FUNCTION();
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
 
 void OpenGLFrameBuffer::recreate() {
+  NT_PROFILE_FUNCTION();
+
   if (m_id != 0) {
     glDeleteFramebuffers(1, &m_id);
     m_id = 0;
@@ -69,6 +75,14 @@ void OpenGLFrameBuffer::recreate() {
 
 void OpenGLFrameBuffer::resize(UInt32 width, UInt32 height) {
   NT_PROFILE_FUNCTION();
+
+  if (width == 0 || height == 0 || width > 8192 || height > 8192) {
+    NT_CORE_WARN(
+        "Attempted to resize framebuffer to ({}, {}). Framebuffer resize "
+        "aborted.",
+        width, height);
+    return;
+  }
 
   m_specification.width = width;
   m_specification.height = height;

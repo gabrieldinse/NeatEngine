@@ -29,15 +29,17 @@ struct TransformComponent {
         scaling{scaling, 1.0f},
         rotation{0.0f, 0.0f, rotation} {}
 
-  Vector2F getPosition2D() const { return Vector2F{position.x, position.y}; }
-  float getRotationX() const { return rotation.x; }
-  float getRotationY() const { return rotation.y; }
-  float getRotationZ() const { return rotation.z; }
+  Vector2F getPosition2D() const {
+    return Vector2F{position.x(), position.y()};
+  }
+  float getRotationX() const { return rotation.x(); }
+  float getRotationY() const { return rotation.y(); }
+  float getRotationZ() const { return rotation.z(); }
 
   void setPosition(const Vector3F &newPosition) { position = newPosition; }
   void setPosition(float x, float y, float z) { setPosition({x, y, z}); }
   void setPosition(const Vector2F &newPosition) {
-    position = Vector3F{newPosition, position.z};
+    position = Vector3F{newPosition, position.z()};
   }
   void setPosition(float x, float y) { setPosition({x, y}); }
 
@@ -46,48 +48,48 @@ struct TransformComponent {
     incrementPosition({x, y, z});
   }
   void incrementPosition(const Vector2F &offset) {
-    position.x += offset.x;
-    position.y += offset.y;
+    position.x() += offset.x();
+    position.y() += offset.y();
   }
   void incrementPosition(float x, float y) { incrementPosition({x, y}); }
 
-  void setX(float x) { position.x = x; }
-  void setY(float y) { position.y = y; }
-  void setZ(float z) { position.z = z; }
-  void incrementX(float offset) { position.x += offset; }
-  void incrementY(float offset) { position.y += offset; }
-  void incrementZ(float offset) { position.z += offset; }
+  void setX(float x) { position.x() = x; }
+  void setY(float y) { position.y() = y; }
+  void setZ(float z) { position.z() = z; }
+  void incrementX(float offset) { position.x() += offset; }
+  void incrementY(float offset) { position.y() += offset; }
+  void incrementZ(float offset) { position.z() += offset; }
 
   void setRotation(const Vector3F &rotation) { this->rotation = rotation; }
   void incrementRotation(const Vector3F &rotationIncrement) {
     rotation += rotationIncrement;
   }
 
-  void setRotationX(float angleDegrees) { rotation.x = angleDegrees; }
+  void setRotationX(float angleDegrees) { rotation.x() = angleDegrees; }
   void setRotationXRadians(float angleRadians) {
-    rotation.x = radiansToDegrees(angleRadians);
+    rotation.x() = radiansToDegrees(angleRadians);
   }
-  void incrementRotationX(float angleDegrees) { rotation.x += angleDegrees; }
+  void incrementRotationX(float angleDegrees) { rotation.x() += angleDegrees; }
   void incrementRotationXRadians(float angleRadians) {
-    rotation.x += radiansToDegrees(angleRadians);
+    rotation.x() += radiansToDegrees(angleRadians);
   }
 
-  void setRotationY(float angleDegrees) { rotation.y = angleDegrees; }
+  void setRotationY(float angleDegrees) { rotation.y() = angleDegrees; }
   void setRotationYRadians(float angleRadians) {
-    rotation.y = radiansToDegrees(angleRadians);
+    rotation.y() = radiansToDegrees(angleRadians);
   }
-  void incrementRotationY(float angleDegrees) { rotation.y += angleDegrees; }
+  void incrementRotationY(float angleDegrees) { rotation.y() += angleDegrees; }
   void incrementRotationYRadians(float angleRadians) {
-    rotation.y += radiansToDegrees(angleRadians);
+    rotation.y() += radiansToDegrees(angleRadians);
   }
 
-  void setRotationZ(float angleDegrees) { rotation.z = angleDegrees; }
+  void setRotationZ(float angleDegrees) { rotation.z() = angleDegrees; }
   void setRotationZRadians(float angleRadians) {
-    rotation.z = radiansToDegrees(angleRadians);
+    rotation.z() = radiansToDegrees(angleRadians);
   }
-  void incrementRotationZ(float angleDegrees) { rotation.z += angleDegrees; }
+  void incrementRotationZ(float angleDegrees) { rotation.z() += angleDegrees; }
   void incrementRotationZRadians(float angleRadians) {
-    rotation.z += radiansToDegrees(angleRadians);
+    rotation.z() += radiansToDegrees(angleRadians);
   }
   void setRotation(float angleDegrees) { setRotationZ(angleDegrees); }
   void setRotationRadians(float angleRadians) {

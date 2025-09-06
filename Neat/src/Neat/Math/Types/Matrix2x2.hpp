@@ -1,5 +1,8 @@
 #pragma once
 
+#include <array>
+#include <span>
+
 #include "Neat/Math/Types/TypeMatrixMxN.hpp"
 #include "Neat/Math/Types/TypeVectorN.hpp"
 #include "Neat/Math/Types/Vector2.hpp"
@@ -18,6 +21,7 @@ struct Matrix<2, 2, T> {
   constexpr Matrix(const T &m00, const T &m01, const T &m10, const T &m11);
 
   constexpr explicit Matrix(const T &scalar);
+  constexpr Matrix(const std::array<T, 2 * 2> &data);
 
   // Copy constructor
   constexpr Matrix(const Matrix<2, 2, T> &m);
@@ -39,7 +43,7 @@ struct Matrix<2, 2, T> {
   constexpr Matrix(const T *data, UInt32 count);
 
   // Static factory constructors
-  static constexpr Matrix<2, 2, T> identity() { return Matrix<2, 2, T>(); }
+  static constexpr Matrix<2, 2, T> identity() { return Matrix<2, 2, T>{}; }
 
   // Assignment operators
   constexpr Matrix<2, 2, T> &operator=(const Matrix<2, 2, T> &m);
@@ -61,23 +65,19 @@ struct Matrix<2, 2, T> {
   constexpr Matrix<2, 2, T> &operator/=(const U &scalar);
 
   // Elements acessing
-  constexpr T *raw() { return m_flattened; }
-  constexpr const T *raw() const { return m_flattened; }
-  constexpr RowType &operator[](UInt32 row);
-  constexpr const RowType &operator[](UInt32 row) const;
+  constexpr T *data() { return m_data.data(); }
+  constexpr const T *data() const { return m_data.data(); }
+  constexpr std::span<T, 2> operator[](UInt32 row);
+  constexpr std::span<T, 2> operator[](UInt32 row) const;
   constexpr T &operator()(UInt32 pos);
   constexpr const T &operator()(UInt32 pos) const;
+  constexpr T &operator()(UInt32 row, UInt32 col);
+  constexpr const T &operator()(UInt32 row, UInt32 col) const;
 
-  // Static member functions
-  static constexpr UInt32 size() { return 2 * 2; }
-  static constexpr UInt32 length() { return size(); }
+  constexpr UInt32 size() { return m_data.size(); }
 
  private:
-  // Class data
-  union {
-    RowType m_rows[2];
-    T m_flattened[2 * 2];
-  };
+  std::array<T, 2 * 2> m_data;
 };
 
 // Predefined types

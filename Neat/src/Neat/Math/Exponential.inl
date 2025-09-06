@@ -104,21 +104,23 @@ inline Vector<N, T> exp2(const Vector<N, T> &v) {
 // Quaternion
 template <typename T>
 inline Quaternion<T> log(const Quaternion<T> &q) {
-  T norm_v = norm(q.v);
+  T norm_v = norm(q.vector());
 
   // To prevent dividing by 0 later on
   if (norm_v < epsilon<T>) {
-    if (q.w > zero<T>)  // Computes log of a scalar
-      return Quaternion<T>(log(q.w), zero<T>, zero<T>, zero<T>);
-    else if (q.w < zero<T>)  // Computes log of a scalar
-      return Quaternion<T>(log(-q.w), pi<T>, zero<T>, zero<T>);
-    else  // Division by 0 anyway
+    if (q.scalar() > zero<T>) {  // Computes log of a scalar
+      return Quaternion<T>(log(q.scalar()), zero<T>, zero<T>, zero<T>);
+    } else if (q.scalar() < zero<T>) {  // Computes log of a scalar
+      return Quaternion<T>(log(-q.scalar()), pi<T>, zero<T>, zero<T>);
+    } else {  // Division by 0 anyway
       throw QuaternionLogUndefined();
+    }
   }
 
   T norm_q = norm(q);
 
-  return Quaternion<T>(log(norm_q), q.v * acos(q.w / norm_q) / norm_v);
+  return Quaternion<T>{log(norm_q),
+                       q.vector() * acos(q.scalar() / norm_q) / norm_v};
 }
 
 template <typename T>
@@ -128,36 +130,37 @@ inline Quaternion<T> ln(const Quaternion<T> &q) {
 
 template <typename T>
 inline Quaternion<T> exp(const Quaternion<T> &q) {
-  T norm_v = norm(q.v);  // or theta
+  T norm_v = norm(q.vector);  // or theta
 
   if (norm_v < epsilon<T>) return Quaternion<T>::identity();
 
-  T exp_w = exp(q.w);
-  auto v = q.v * sin(norm_v) / norm_v;
+  T exp_w = exp(q.scalar());
+  auto vector = q.vector() * sin(norm_v) / norm_v;
 
-  return Quaternion<T>(exp_w * cos(norm_v), exp_w * q.v);
+  return Quaternion<T>(exp_w * cos(norm_v), exp_w * q.vector());
 }
 
 template <typename T>
 inline Quaternion<T> pow(const Quaternion<T> &q, T exponent) {
   // Raising to the power of 0 should return identity
-  if (exponent > -epsilon<T> and exponent < epsilon<T>)
+  if (exponent > -epsilon<T> and exponent < epsilon<T>) {
     return Quaternion<T>::identity();
+  }
 
   T norm_q = norm(q);
 
   T angle;
-  if (abs(q.w / norm_q) > cosOneHalf<T>)  // Better using asin for precision
-  {
-    T norm_v = norm(q.v);
+  if (abs(q.scalar() / norm_q) >
+      cosOneHalf<T>) {  // Better using asin for precision
+    T norm_v = norm(q.vector());
     // To prevent dividing by 0 later on
-    if (abs(norm_v) < epsilon<T>)  // Computes pow of a scalar
-      return Quaternion<T>(pow(q.w, exponent), zero<T>, zero<T>, zero<T>);
-
+    if (abs(norm_v) < epsilon<T>) {  // Computes pow of a scalar
+      return Quaternion<T>(pow(q.scalar(), exponent), zero<T>, zero<T>,
+                           zero<T>);
+    }
     angle = asin(norm_v / norm_q);
-  } else  // Can use cos normally, shouldn't cause loss of precision
-  {
-    angle = acos(q.w / norm_q);
+  } else {  // Can use cos normally, shouldn't cause loss of precision
+    angle = acos(q.scalar() / norm_q);
   }
 
   T new_angle = angle * exponent;
@@ -165,6 +168,6 @@ inline Quaternion<T> pow(const Quaternion<T> &q, T exponent) {
   T norm_q_factor = pow(norm_q, exponent - one<T>);
 
   return Quaternion<T>(cos(new_angle) * norm_q_factor * norm_q,
-                       sin_factor * norm_q_factor * q.v);
+                       sin_factor * norm_q_factor * q.vector());
 }
 }  // namespace Neat

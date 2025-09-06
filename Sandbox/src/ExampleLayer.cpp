@@ -11,6 +11,57 @@ struct Person {
   int age;
 };
 
+namespace rfl {
+template <>
+struct Reflector<Neat::Vector1F> {
+  struct ReflType {
+    float x;
+  };
+
+  static Neat::Vector1F to(const ReflType &v) noexcept {
+    return Neat::Vector1F{v.x};
+  }
+
+  static ReflType from(const Neat::Vector1F &v) { return {v.x()}; }
+
+  static Neat::Vector1F to_refl(const ReflType &v) noexcept {
+    return Neat::Vector1F{v.x};
+  }
+
+  static ReflType from_refl(const Neat::Vector1F &v) { return {v.x()}; }
+};
+}  // namespace rfl
+
+// namespace rfl {
+// template <>
+// struct Reflector<Neat::Vector3F> {
+//   struct ReflType {
+//     float x;
+//     float y;
+//     float z;
+//   };
+//
+//   static Neat::Vector3F to(const ReflType &v) noexcept {
+//     return {v.x, v.y, v.z};
+//   }
+//
+//   static ReflType from(const Neat::Vector3F &v) { return {v.x, v.y, v.z}; }
+//   static ReflType to_refl(const Neat::Vector3F &v) noexcept {
+//     return {v.x, v.y, v.z};
+//   }
+//
+//   static Neat::Vector3F from_refl(const ReflType &r) noexcept {
+//     return {r.x, r.y, r.z};
+//   }
+// };
+// }  // namespace rfl
+//
+// struct TransformDummy {
+//   Neat::Vector2F position;
+//   Neat::Vector2F rotation;
+//   Neat::Vector2F scale;
+// };
+
 ExampleLayer::ExampleLayer(
     const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
     : m_checkerboardTexture(
@@ -24,11 +75,22 @@ ExampleLayer::ExampleLayer(
   const auto homer =
       Person{.first_name = "Homer", .last_name = "Simpson", .age = 45};
 
+  Neat::Vector1F v1{3.0f};
+  std::cout << v1 << std::endl;
+
   // We can now write into and read from a JSON string.
-  const std::string json_string = rfl::yaml::write(homer);
-  std::cout << json_string << std::endl;
-  // auto homer2 = rfl::json::read<Person>(json_string).value();
-  // std::cout << homer2 << std::endl;
+  const std::string yaml_string = rfl::yaml::write(homer);
+  std::cout << yaml_string << std::endl;
+  auto homer2 = rfl::yaml::read<Person>(yaml_string).value();
+  std::cout << homer2.age << homer2.first_name << homer2.last_name << std::endl;
+
+  const std::string yaml_string2 = rfl::yaml::write(Neat::Vector1F{1.0f});
+
+  std::cout << yaml_string2 << std::endl;
+
+  // for (const auto &f : rfl::fields<Neat::Vector1F>()) {
+  //   std::cout << "name: " << f.name() << ", type: " << f.type() << std::endl;
+  // }
 
   m_entityManager = Neat::makeRef<Neat::EntityManager>(eventDispatcher);
   m_systems =

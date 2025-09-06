@@ -1,43 +1,16 @@
 #pragma once
 
+#include <array>
+#include <span>
+
 #include "Neat/Math/Types/TypeMatrixMxN.hpp"
 #include "Neat/Math/Types/TypeVectorN.hpp"
 
 namespace Neat {
-
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
-#pragma clang diagnostic ignored "-Wnested-anon-types"
-#elif defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-#elif defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable : 4201)
-#endif
-
 template <typename T>
 struct Quaternion {
   using Type = Quaternion<T>;
   using ValueType = T;
-
-  // Class data
-  union {
-    struct {
-      T w, x, y, z;
-    };
-    struct {
-      T a, b, c, d;
-    };
-    struct {
-      T q0, q1, q2, q3;
-    };
-    struct {
-      T s;
-      Vector<3, T> v;
-    };
-  };
 
   // Default constructor
   constexpr Quaternion();
@@ -90,22 +63,49 @@ struct Quaternion {
   explicit operator Matrix<3, 3, T>() const;
   explicit operator Matrix<4, 4, T>() const;
 
-  // Element accessing
+  constexpr T &w() { return m_data[0]; }
+  constexpr const T &w() const { return m_data[0]; }
+  constexpr T &x() { return m_data[1]; }
+  constexpr const T &x() const { return m_data[1]; }
+  constexpr T &y() { return m_data[2]; }
+  constexpr const T &y() const { return m_data[2]; }
+  constexpr T &z() { return m_data[3]; }
+  constexpr const T &z() const { return m_data[3]; }
+
+  constexpr T &a() { return w(); }
+  constexpr const T &a() const { return w(); }
+  constexpr T &b() { return x(); }
+  constexpr const T &b() const { return x(); }
+  constexpr T &c() { return y(); }
+  constexpr const T &c() const { return y(); }
+  constexpr T &d() { return z(); }
+  constexpr const T &d() const { return z(); }
+
+  constexpr T &q0() { return w(); }
+  constexpr const T &q0() const { return w(); }
+  constexpr T &q1() { return x(); }
+  constexpr const T &q1() const { return x(); }
+  constexpr T &q2() { return y(); }
+  constexpr const T &q2() const { return y(); }
+  constexpr T &q3() { return z(); }
+  constexpr const T &q3() const { return z(); }
+
+  constexpr T &s() { return w(); }
+  constexpr const T &s() const { return w(); }
+  constexpr T &scalar() { return s(); }
+  constexpr const T &scalar() const { return s(); }
+  constexpr Vector<3, T> v() const { return Vector<3, T>{x(), y(), z()}; }
+  constexpr Vector<3, T> vector() const { return Vector<3, T>{x(), y(), z()}; }
+
   constexpr T &operator[](UInt32 pos);
   constexpr const T &operator[](UInt32 pos) const;
 
   // Static member functions
-  static constexpr UInt32 size() { return 4; }
-  static constexpr UInt32 length() { return size(); }
-};
+  constexpr UInt32 size() { return m_data.size(); }
 
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#elif defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic pop
-#elif defined(_MSC_VER)
-#pragma warning(pop)
-#endif
+ private:
+  std::array<T, 4> m_data;
+};
 
 // Predefined types
 using QuaternionF = Quaternion<float>;

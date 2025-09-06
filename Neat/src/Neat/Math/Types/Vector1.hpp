@@ -2,38 +2,22 @@
 
 #include <cmath>
 #include <type_traits>
+#include <array>
 
 #include "Neat/Math/Types/TypeVectorN.hpp"
 
 namespace Neat {
-
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
-#pragma clang diagnostic ignored "-Wnested-anon-types"
-#elif defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-#elif defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable : 4201)
-#endif
-
 template <typename T>
 struct Vector<1, T> {
   using Type = Vector<1, T>;
   using ValueType = T;
-
-  // Class data
-  union {
-    T x, r, i, s;
-  };
 
   // Default constructor
   constexpr Vector();
 
   // Basic Constructors
   constexpr explicit Vector(const T &scalar);
+  constexpr Vector(const std::array<T, 1> &data);
 
   // Copy Constructor
   constexpr Vector(const Vector<1, T> &v);
@@ -47,8 +31,8 @@ struct Vector<1, T> {
   constexpr explicit Vector(const Vector<3, U> &v);
   template <typename U>
   constexpr explicit Vector(const Vector<2, U> &v);
-  template <typename X>
-  constexpr Vector(const X &x);
+  template <typename U>
+  constexpr Vector(const U &x);
 
   // Assignment operators
   constexpr Vector<1, T> &operator=(const T &scalar);
@@ -72,25 +56,38 @@ struct Vector<1, T> {
   inline constexpr explicit operator bool() const;
 
   // Element acessing
+  constexpr T &x() { return m_data[0]; }
+  constexpr const T &x() const { return m_data[0]; }
+
+  constexpr T &r() { return x(); }
+  constexpr const T &r() const { return x(); }
+
+  constexpr T &i() { return x(); }
+  constexpr const T &i() const { return x(); }
+
+  constexpr T &s() { return x(); }
+  constexpr const T &s() const { return x(); }
+
   constexpr T &operator[](UInt32 pos);
   constexpr const T &operator[](UInt32 pos) const;
   constexpr T &operator()(UInt32 pos) { return (*this)[pos]; }
   constexpr const T &operator()(UInt32 pos) const { return (*this)[pos]; }
-  constexpr T *raw() { return &x; }
-  constexpr const T *raw() const { return &x; }
+  constexpr T *data() { return m_data.data(); }
+  constexpr const T *data() const { return m_data.data(); }
 
-  // Static member variables
-  static constexpr UInt32 size() { return 1; }
-  static constexpr UInt32 length() { return size(); }
+  constexpr UInt32 size() { return m_data.size(); }
+
+  // Relational operators
+  template <typename U>
+  friend constexpr bool operator==(const Vector<1, U> &va,
+                                   const Vector<1, U> &vb);
+  template <typename U>
+  friend constexpr bool operator!=(const Vector<1, U> &va,
+                                   const Vector<1, U> &vb);
+
+ private:
+  std::array<T, 1> m_data;
 };
-
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#elif defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic pop
-#elif defined(_MSC_VER)
-#pragma warning(pop)
-#endif
 
 // Predefined types
 using Vector1F = Vector<1, float>;
@@ -124,15 +121,6 @@ inline constexpr Vector<1, T> operator*(const Vector<1, T> &v, const T &scalar);
 
 template <typename T>
 inline constexpr Vector<1, T> operator/(const Vector<1, T> &v, const T &scalar);
-
-// Relational operators
-template <typename T>
-inline constexpr bool operator==(const Vector<1, T> &va,
-                                 const Vector<1, T> &vb);
-
-template <typename T>
-inline constexpr bool operator!=(const Vector<1, T> &va,
-                                 const Vector<1, T> &vb);
 
 // Output stream operator
 template <typename T>

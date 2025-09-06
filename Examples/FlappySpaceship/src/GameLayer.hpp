@@ -44,7 +44,8 @@ class GameLayer : public Neat::Layer {
   bool onWindowResizeEvent(const Neat::WindowResizeEvent &event);
   unsigned getScore() {
     return static_cast<unsigned>(
-        (m_player.getComponent<Neat::TransformComponent>()->position.x + 10.f) /
+        (m_player.getComponent<Neat::TransformComponent>()->position.x() +
+         10.f) /
         10.0f);
   }
   static bool pointInTriangle(const Neat::Vector2F &p, const Neat::Vector2F &p0,

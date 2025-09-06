@@ -11,7 +11,7 @@ struct FunctorVector {};
 template <template <UInt32 N, typename T> class Vector, typename R, typename T>
 struct FunctorVector<Vector, 1, R, T> {
   static Vector<1, R> call(R (*function)(T x), const Vector<1, T> &v) {
-    return Vector<1, R>(function(v.x));
+    return Vector<1, R>(function(v.x()));
   }
 };
 
@@ -19,7 +19,7 @@ struct FunctorVector<Vector, 1, R, T> {
 template <template <UInt32 N, typename T> class Vector, typename R, typename T>
 struct FunctorVector<Vector, 2, R, T> {
   static Vector<2, R> call(R (*function)(T x), const Vector<2, T> &v) {
-    return Vector<2, R>(function(v.x), function(v.y));
+    return Vector<2, R>(function(v.x()), function(v.y()));
   }
 };
 
@@ -27,7 +27,7 @@ struct FunctorVector<Vector, 2, R, T> {
 template <template <UInt32 N, typename T> class Vector, typename R, typename T>
 struct FunctorVector<Vector, 3, R, T> {
   static Vector<3, R> call(R (*function)(T x), const Vector<3, T> &v) {
-    return Vector<3, R>(function(v.x), function(v.y), function(v.z));
+    return Vector<3, R>(function(v.x()), function(v.y()), function(v.z()));
   }
 };
 
@@ -35,8 +35,8 @@ struct FunctorVector<Vector, 3, R, T> {
 template <template <UInt32 N, typename T> class Vector, typename R, typename T>
 struct FunctorVector<Vector, 4, R, T> {
   static Vector<4, R> call(R (*function)(T x), const Vector<4, T> &v) {
-    return Vector<4, R>(function(v.x), function(v.y), function(v.z),
-                        function(v.w));
+    return Vector<4, R>(function(v.x()), function(v.y()), function(v.z()),
+                        function(v.w()));
   }
 };
 }  // namespace Neat

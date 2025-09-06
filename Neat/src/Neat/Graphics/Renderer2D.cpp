@@ -177,14 +177,13 @@ void Renderer2D::drawQuad(const Matrix4F &transform, const Vector4F &color) {
 void Renderer2D::drawQuad(const Vector2F &position, const Vector2F &size,
                           const Vector4F &color) {
   NT_PROFILE_FUNCTION();
-  drawQuad({position.x, position.y, 0.0f}, size, color);
+  drawQuad(Vector3F{position}, size, color);
 }
 
 void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
                           const Vector4F &color) {
   NT_PROFILE_FUNCTION();
-  Matrix4F model_matrix =
-      translate(position) * scale(Vector3F(size.x, size.y, 1.0f));
+  Matrix4F model_matrix = translate(position) * scale(Vector3F{size});
   drawQuad(model_matrix, color);
 }
 
@@ -192,22 +191,21 @@ void Renderer2D::drawQuad(const Vector2F &position, const Vector2F &size,
                           const Ref<Texture2D> &texture, const Vector4F &tint,
                           float tilingFactor) {
   NT_PROFILE_FUNCTION();
-  drawQuad({position.x, position.y, 0.0f}, size, texture, tint, tilingFactor);
+  drawQuad(Vector3F{position}, size, texture, tint, tilingFactor);
 }
 
 void Renderer2D::drawQuad(const Vector3F &position, const Vector2F &size,
                           const Ref<Texture2D> &texture, const Vector4F &tint,
                           float tilingFactor) {
   NT_PROFILE_FUNCTION();
-  Matrix4F model_matrix =
-      translate(position) * scale(Vector3F(size.x, size.y, 1.0f));
+  Matrix4F model_matrix = translate(position) * scale(Vector3F{size, 1.0f});
   drawQuad(model_matrix, texture, tint, tilingFactor);
 }
 
 void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
                                  float angleDegrees, const Vector4F &color) {
   NT_PROFILE_FUNCTION();
-  drawRotatedQuad({position.x, position.y, 0.0f}, size, angleDegrees, color);
+  drawRotatedQuad(Vector3F{position}, size, angleDegrees, color);
 }
 
 void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
@@ -215,7 +213,7 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
   NT_PROFILE_FUNCTION();
   Matrix4F model_matrix = translate(Matrix4F(1.0f), position) *
                           rotateZ(degreesToRadians(angleDegrees)) *
-                          scale(Vector3F(size.x, size.y, 1.0f));
+                          scale(Vector3F{size, 1.0f});
   drawQuad(model_matrix, color);
 }
 
@@ -224,8 +222,8 @@ void Renderer2D::drawRotatedQuad(const Vector2F &position, const Vector2F &size,
                                  const Ref<Texture2D> &texture,
                                  const Vector4F &tint, float tilingFactor) {
   NT_PROFILE_FUNCTION();
-  drawRotatedQuad({position.x, position.y, 0.0f}, size, angleDegrees, texture,
-                  tint, tilingFactor);
+  drawRotatedQuad(Vector3F{position}, size, angleDegrees, texture, tint,
+                  tilingFactor);
 }
 
 void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
@@ -235,7 +233,7 @@ void Renderer2D::drawRotatedQuad(const Vector3F &position, const Vector2F &size,
   NT_PROFILE_FUNCTION();
   Matrix4F model_matrix = translate(position) *
                           rotateZ(degreesToRadians(angleDegrees)) *
-                          scale(Vector3F(size.x, size.y, 1.0f));
+                          scale(Vector3F{size, 1.0f});
   drawQuad(model_matrix, texture, tint, tilingFactor);
 }
 

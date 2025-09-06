@@ -177,8 +177,8 @@ void EditorLayer::onImGuiRender() {
                                static_cast<UInt32>(viewportPanelSize.y)};
   UInt32 textureID = m_frameBuffer->getColorAttachmentID();
   ImGui::Image(static_cast<ImTextureID>(textureID),
-               ImVec2{static_cast<float>(m_viewportSize.x),
-                      static_cast<float>(m_viewportSize.y)},
+               ImVec2{static_cast<float>(m_viewportSize.x()),
+                      static_cast<float>(m_viewportSize.y())},
                ImVec2{0, 1}, ImVec2{1, 0});
   ImGui::PopStyleVar();
   ImGui::End();
@@ -188,11 +188,11 @@ void EditorLayer::onImGuiRender() {
 
 void EditorLayer::onUpdate(double deltaTimeSeconds) {
   if (m_viewportSize != m_newViewportSize) {
-    NT_CORE_TRACE("Resizing framebuffer to ({}, {})", m_newViewportSize.x,
-                  m_newViewportSize.y);
+    NT_CORE_TRACE("Resizing framebuffer to ({}, {})", m_newViewportSize.x(),
+                  m_newViewportSize.y());
     m_viewportSize = m_newViewportSize;
-    m_scene->setViewport(m_viewportSize.x, m_viewportSize.y);
-    m_frameBuffer->resize(m_viewportSize.x, m_viewportSize.y);
+    m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
+    m_frameBuffer->resize(m_viewportSize.x(), m_viewportSize.y());
   }
 
   if (m_viewportFocused) {

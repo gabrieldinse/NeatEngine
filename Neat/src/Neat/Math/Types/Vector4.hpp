@@ -5,47 +5,18 @@
 #include "Neat/Math/Types/TypeVectorN.hpp"
 
 namespace Neat {
-
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wgnu-anonymous-struct"
-#pragma clang diagnostic ignored "-Wnested-anon-types"
-#elif defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
-#elif defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable : 4201)
-#endif
-
 template <typename T>
 struct Vector<4, T> {
   using Type = Vector<4, T>;
   using ValueType = T;
-
-  // Class Data
-  union {
-    struct {
-      T x, y, z, w;
-    };
-    struct {
-      T r, g, b, a;
-    };
-    struct {
-      T i, j, k, l;
-    };
-    struct {
-      T s, t, p, q;
-    };
-  };
 
   // Default constructor
   constexpr Vector();
 
   // Basic Constructors
   constexpr explicit Vector(const T &scalar);
-
   constexpr Vector(const T &x, const T &y, const T &z, const T &w);
+  constexpr Vector(const std::array<T, 4> &data);
 
   // Copy Constructor
   constexpr Vector(const Vector<4, T> &v);
@@ -98,25 +69,63 @@ struct Vector<4, T> {
   constexpr explicit operator bool() const;
 
   // Element acessing
+  constexpr T &x() { return m_data[0]; }
+  constexpr const T &x() const { return m_data[0]; }
+  constexpr T &y() { return m_data[1]; }
+  constexpr const T &y() const { return m_data[1]; }
+  constexpr T &z() { return m_data[2]; }
+  constexpr const T &z() const { return m_data[2]; }
+  constexpr T &w() { return m_data[3]; }
+  constexpr const T &w() const { return m_data[3]; }
+
+  constexpr T &r() { return x(); }
+  constexpr const T &r() const { return x(); }
+  constexpr T &g() { return y(); }
+  constexpr const T &g() const { return y(); }
+  constexpr T &b() { return z(); }
+  constexpr const T &b() const { return z(); }
+  constexpr T &a() { return w(); }
+  constexpr const T &a() const { return w(); }
+
+  constexpr T &i() { return x(); }
+  constexpr const T &i() const { return x(); }
+  constexpr T &j() { return y(); }
+  constexpr const T &j() const { return y(); }
+  constexpr T &k() { return z(); }
+  constexpr const T &k() const { return z(); }
+  constexpr T &l() { return w(); }
+  constexpr const T &l() const { return w(); }
+
+  constexpr T &s() { return x(); }
+  constexpr const T &s() const { return x(); }
+  constexpr T &t() { return y(); }
+  constexpr const T &t() const { return y(); }
+  constexpr T &p() { return z(); }
+  constexpr const T &p() const { return z(); }
+  constexpr T &q() { return w(); }
+  constexpr const T &q() const { return w(); }
+
   constexpr T &operator[](UInt32 pos);
   constexpr const T &operator[](UInt32 pos) const;
   constexpr T &operator()(UInt32 pos) { return (*this)[pos]; }
   constexpr const T &operator()(UInt32 pos) const { return (*this)[pos]; }
-  constexpr T *raw() { return &x; }
-  constexpr const T *raw() const { return &x; }
+  constexpr T *data() { return m_data.data(); }
+  constexpr const T *data() const { return m_data.data(); }
 
   // Static member variables
-  static constexpr UInt32 size() { return 4; }
-  static constexpr UInt32 length() { return size(); }
-};
+  constexpr UInt32 size() { return m_data.size(); }
 
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#elif defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic pop
-#elif defined(_MSC_VER)
-#pragma warning(pop)
-#endif
+  // Relational operators
+  template <typename U>
+  friend constexpr bool operator==(const Vector<4, U> &va,
+                                   const Vector<4, U> &vb);
+  template <typename U>
+  friend constexpr bool operator!=(const Vector<4, U> &va,
+                                   const Vector<4, U> &vb);
+
+ private:
+  std::array<T, 4> m_data;
+};
 
 // Predefined types
 using Vector4F = Vector<4, float>;
@@ -158,15 +167,6 @@ inline constexpr Vector<4, T> operator*(const Vector<4, T> &v, const T &scalar);
 
 template <typename T>
 inline constexpr Vector<4, T> operator/(const Vector<4, T> &v, const T &scalar);
-
-// Relational operators
-template <typename T>
-inline constexpr bool operator==(const Vector<4, T> &va,
-                                 const Vector<4, T> &vb);
-
-template <typename T>
-inline constexpr bool operator!=(const Vector<4, T> &va,
-                                 const Vector<4, T> &vb);
 
 // Output stream operator
 template <typename T>

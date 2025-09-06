@@ -55,17 +55,18 @@ void OpenGLShaderProgram::set(const std::string &name, float value) {
 
 void OpenGLShaderProgram::set(const std::string &name, Vector2F values) {
   NT_PROFILE_FUNCTION();
-  glUniform2f(getUniformLocation(name), values.x, values.y);
+  glUniform2f(getUniformLocation(name), values.x(), values.y());
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Vector3F values) {
   NT_PROFILE_FUNCTION();
-  glUniform3f(getUniformLocation(name), values.x, values.y, values.z);
+  glUniform3f(getUniformLocation(name), values.x(), values.y(), values.z());
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Vector4F values) {
   NT_PROFILE_FUNCTION();
-  glUniform4f(getUniformLocation(name), values.x, values.y, values.z, values.w);
+  glUniform4f(getUniformLocation(name), values.x(), values.y(), values.z(),
+              values.w());
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Int32 value) {
@@ -81,12 +82,12 @@ void OpenGLShaderProgram::set(const std::string &name, Int32 *values,
 
 void OpenGLShaderProgram::set(const std::string &name, Matrix3F matrix) {
   NT_PROFILE_FUNCTION();
-  glUniformMatrix3fv(getUniformLocation(name), 1, GL_TRUE, matrix.raw());
+  glUniformMatrix3fv(getUniformLocation(name), 1, GL_TRUE, matrix.data());
 }
 
 void OpenGLShaderProgram::set(const std::string &name, Matrix4F matrix) {
   NT_PROFILE_FUNCTION();
-  glUniformMatrix4fv(getUniformLocation(name), 1, GL_TRUE, matrix.raw());
+  glUniformMatrix4fv(getUniformLocation(name), 1, GL_TRUE, matrix.data());
 }
 
 Int32 OpenGLShaderProgram::getUniformLocation(const std::string &name) {

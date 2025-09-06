@@ -12,7 +12,7 @@ template <template <UInt32 N, typename T> class Vector, typename R, typename T>
 struct FunctorDoubleVector<Vector, 1, R, T> {
   static Vector<1, R> call(R (*function)(T x, T y), const Vector<1, T> &va,
                            const Vector<1, T> &vb) {
-    return Vector<1, R>(function(va.x, vb.x));
+    return Vector<1, R>(function(va.x(), vb.x()));
   }
 };
 
@@ -21,7 +21,7 @@ template <template <UInt32 N, typename T> class Vector, typename R, typename T>
 struct FunctorDoubleVector<Vector, 2, R, T> {
   static Vector<2, R> call(R (*function)(T x, T y), const Vector<2, T> &va,
                            const Vector<2, T> &vb) {
-    return Vector<2, R>(function(va.x, vb.x), function(va.y, vb.y));
+    return Vector<2, R>(function(va.x(), vb.x()), function(va.y(), vb.y()));
   }
 };
 
@@ -30,8 +30,8 @@ template <template <UInt32 N, typename T> class Vector, typename R, typename T>
 struct FunctorDoubleVector<Vector, 3, R, T> {
   static Vector<3, R> call(R (*function)(T x, T y), const Vector<3, T> &va,
                            const Vector<3, T> &vb) {
-    return Vector<3, R>(function(va.x, vb.x), function(va.y, vb.y),
-                        function(va.z, vb.z));
+    return Vector<3, R>(function(va.x(), vb.x()), function(va.y(), vb.y()),
+                        function(va.z(), vb.z()));
   }
 };
 
@@ -40,8 +40,8 @@ template <template <UInt32 N, typename T> class Vector, typename R, typename T>
 struct FunctorDoubleVector<Vector, 4, R, T> {
   static Vector<4, R> call(R (*function)(T x, T y), const Vector<4, T> &va,
                            const Vector<4, T> &vb) {
-    return Vector<4, R>(function(va.x, vb.x), function(va.y, vb.y),
-                        function(va.z, vb.z), function(va.w, vb.w));
+    return Vector<4, R>(function(va.x(), vb.x()), function(va.y(), vb.y()),
+                        function(va.z(), vb.z()), function(va.w(), vb.w()));
   }
 };
 }  // namespace Neat

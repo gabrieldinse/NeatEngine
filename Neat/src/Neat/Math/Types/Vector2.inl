@@ -3,49 +3,55 @@
 namespace Neat {
 // Default constructor
 template <typename T>
-inline constexpr Vector<2, T>::Vector() : x(zero<T>), y(zero<T>) {}
+inline constexpr Vector<2, T>::Vector() : m_data{zero<T>, zero<T>} {}
 
 // Basic Constructors
 template <typename T>
-inline constexpr Vector<2, T>::Vector(const T &scalar) : x(scalar), y(scalar) {}
+inline constexpr Vector<2, T>::Vector(const T &scalar)
+    : m_data{scalar, scalar} {}
 
 template <typename T>
-inline constexpr Vector<2, T>::Vector(const T &x, const T &y) : x(x), y(y) {}
+inline constexpr Vector<2, T>::Vector(const T &x, const T &y) : m_data{x, y} {}
+
+template <typename T>
+inline constexpr Vector<2, T>::Vector(const std::array<T, 2> &data)
+    : m_data{data} {}
 
 // Copy Constructor
 template <typename T>
-inline constexpr Vector<2, T>::Vector(const Vector<2, T> &v) : x(v.x), y(v.y) {}
+inline constexpr Vector<2, T>::Vector(const Vector<2, T> &v)
+    : m_data{v.m_data} {}
 
 // Conversion constructors
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T>::Vector(const Vector<2, U> &v)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
+    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y())} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T>::Vector(const Vector<4, U> &v)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
+    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y())} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T>::Vector(const Vector<3, U> &v)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)) {}
+    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y())} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T>::Vector(const Vector<1, U> &v)
-    : x(static_cast<T>(v.x)), y(zero<T>) {}
+    : m_data{static_cast<T>(v.x), zero<T>} {}
 
 template <typename T>
 template <typename A, typename B>
 inline constexpr Vector<2, T>::Vector(const Vector<1, A> &v, const B &scalar1)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(scalar1)) {}
+    : m_data{static_cast<T>(v.x), static_cast<T>(scalar1)} {}
 
 template <typename T>
 template <typename X, typename Y>
 inline constexpr Vector<2, T>::Vector(const X &x, const Y &y)
-    : x(static_cast<T>(x)), y(static_cast<T>(y)) {}
+    : m_data{static_cast<T>(x), static_cast<T>(y)} {}
 
 template <typename T>
 inline constexpr Vector<2, T>::Vector(const T *data, UInt32 count) {
@@ -53,8 +59,8 @@ inline constexpr Vector<2, T>::Vector(const T *data, UInt32 count) {
     count = size();
   }
 
-  std::copy(data, data + count, raw());
-  std::fill(raw() + count, raw() + size(), zero<T>);
+  std::copy(data, data + count, m_data.data());
+  std::fill(m_data.data() + count, m_data.data() + size(), zero<T>);
 }
 
 // Assignment operators
@@ -62,8 +68,8 @@ template <typename T>
 template <typename U>
 inline constexpr Vector<2, T> &Vector<2, T>::operator=(
     const Vector<2, U> &other) {
-  x = other.x;
-  y = other.y;
+  x() = other.x();
+  y() = other.y();
 
   return *this;
 }
@@ -72,8 +78,8 @@ inline constexpr Vector<2, T> &Vector<2, T>::operator=(
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T> &Vector<2, T>::operator+=(const Vector<2, U> &v) {
-  x += v.x;
-  y += v.y;
+  x() += v.x();
+  y() += v.y();
 
   return *this;
 }
@@ -81,8 +87,8 @@ inline constexpr Vector<2, T> &Vector<2, T>::operator+=(const Vector<2, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T> &Vector<2, T>::operator-=(const Vector<2, U> &v) {
-  x -= v.x;
-  y -= v.y;
+  x() -= v.x();
+  y() -= v.y();
 
   return *this;
 }
@@ -90,8 +96,8 @@ inline constexpr Vector<2, T> &Vector<2, T>::operator-=(const Vector<2, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T> &Vector<2, T>::operator*=(const Vector<2, U> &v) {
-  x *= v.x;
-  y *= v.y;
+  x() *= v.x();
+  y() *= v.y();
 
   return *this;
 }
@@ -99,8 +105,8 @@ inline constexpr Vector<2, T> &Vector<2, T>::operator*=(const Vector<2, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T> &Vector<2, T>::operator*=(const U &scalar) {
-  x *= scalar;
-  y *= scalar;
+  x() *= scalar;
+  y() *= scalar;
 
   return *this;
 }
@@ -108,8 +114,8 @@ inline constexpr Vector<2, T> &Vector<2, T>::operator*=(const U &scalar) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T> &Vector<2, T>::operator/=(const U &scalar) {
-  x /= scalar;
-  y /= scalar;
+  x() /= scalar;
+  y() /= scalar;
 
   return *this;
 }
@@ -117,7 +123,7 @@ inline constexpr Vector<2, T> &Vector<2, T>::operator/=(const U &scalar) {
 template <typename T>
 inline constexpr Vector<2, T>::operator bool() const {
   if constexpr (std::is_same_v<T, bool>) {
-    return x and y;
+    return x() and y();
   } else {
     return (norm(*this) > zero<T>);
   }
@@ -125,30 +131,30 @@ inline constexpr Vector<2, T>::operator bool() const {
 
 template <typename T>
 inline constexpr T &Vector<2, T>::operator[](UInt32 pos) {
-  return (&x)[pos];
+  return m_data[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<2, T>::operator[](UInt32 pos) const {
-  return (&x)[pos];
+  return m_data[pos];
 }
 
 // Non member operators
 template <typename T>
 inline constexpr Vector<2, T> operator+(const Vector<2, T> &va,
                                         const Vector<2, T> &vb) {
-  return Vector<2, T>(va) += vb;
+  return Vector<2, T>{va} += vb;
 }
 
 template <typename T>
 inline constexpr Vector<2, T> operator-(const Vector<2, T> &v) {
-  return Vector<2, T>(-v.x, -v.y);
+  return Vector<2, T>{-v.x(), -v.y()};
 }
 
 template <typename T>
 inline constexpr Vector<2, T> operator-(const Vector<2, T> &va,
                                         const Vector<2, T> &vb) {
-  return Vector<2, T>(va) -= vb;
+  return Vector<2, T>{va} -= vb;
 }
 
 template <typename T>
@@ -160,43 +166,43 @@ inline constexpr Vector<2, T> operator*(const Vector<2, T> &va,
 template <typename T>
 inline constexpr Vector<2, T> operator*(const Vector<2, T> &va,
                                         const Vector<1, T> &vb) {
-  return Vector<2, T>(va) *= vb.x;
+  return Vector<2, T>{va} *= vb.x();
 }
 
 template <typename T>
 inline constexpr Vector<2, T> operator*(const Vector<1, T> &va,
                                         const Vector<2, T> &vb) {
-  return Vector<2, T>(vb) *= va.x;
+  return Vector<2, T>{vb} *= va.x();
 }
 
 template <typename T>
 inline constexpr Vector<2, T> operator*(const T &scalar,
                                         const Vector<2, T> &v) {
-  return Vector<2, T>(v) *= scalar;
+  return Vector<2, T>{v} *= scalar;
 }
 
 template <typename T>
 inline constexpr Vector<2, T> operator*(const Vector<2, T> &v,
                                         const T &scalar) {
-  return Vector<2, T>(v) *= scalar;
+  return Vector<2, T>{v} *= scalar;
 }
 
 template <typename T>
 inline constexpr Vector<2, T> operator/(const Vector<2, T> &v,
                                         const T &scalar) {
-  return Vector<2, T>(v) /= scalar;
+  return Vector<2, T>{v} /= scalar;
 }
 
 // Relational operators
-template <typename T>
-inline constexpr bool operator==(const Vector<2, T> &va,
-                                 const Vector<2, T> &vb) {
-  return va.x == vb.x and va.y == vb.y;
+template <typename U>
+inline constexpr bool operator==(const Vector<2, U> &va,
+                                 const Vector<2, U> &vb) {
+  return va.m_data == vb.m_data;
 }
 
-template <typename T>
-inline constexpr bool operator!=(const Vector<2, T> &va,
-                                 const Vector<2, T> &vb) {
+template <typename U>
+inline constexpr bool operator!=(const Vector<2, U> &va,
+                                 const Vector<2, U> &vb) {
   return not(va == vb);
 }
 
@@ -204,14 +210,14 @@ inline constexpr bool operator!=(const Vector<2, T> &va,
 template <typename T>
 inline constexpr std::ostream &operator<<(std::ostream &os,
                                           const Vector<2, T> &v) {
-  return os << "Vector2<" << typeid(T).name() << ">{" << v.x << ", " << v.y
+  return os << "Vector2<" << typeid(T).name() << ">{" << v.x() << ", " << v.y()
             << "}";
 }
 
 // Vector operations
 template <typename T>
 T dot(const Vector<2, T> &va, const Vector<2, T> &vb) {
-  return va.x * vb.x + va.y * vb.y;
+  return va.x() * vb.x() + va.y() * vb.y();
 }
 
 template <typename T>

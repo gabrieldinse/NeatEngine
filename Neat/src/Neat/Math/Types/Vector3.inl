@@ -3,62 +3,66 @@
 namespace Neat {
 // Default constructor
 template <typename T>
-inline constexpr Vector<3, T>::Vector() : x(zero<T>), y(zero<T>), z(zero<T>) {}
+inline constexpr Vector<3, T>::Vector() : m_data{zero<T>, zero<T>, zero<T>} {}
 
 // Basic Constructors
 template <typename T>
 inline constexpr Vector<3, T>::Vector(const T &scalar)
-    : x(scalar), y(scalar), z(scalar) {}
+    : m_data{scalar, scalar, scalar} {}
 
 template <typename T>
 inline constexpr Vector<3, T>::Vector(const T &x, const T &y, const T &z)
-    : x(x), y(y), z(z) {}
+    : m_data{x, y, z} {}
+
+template <typename T>
+inline constexpr Vector<3, T>::Vector(const std::array<T, 3> &data)
+    : m_data{data} {}
 
 // Copy Constructor
 template <typename T>
 inline constexpr Vector<3, T>::Vector(const Vector<3, T> &v)
-    : x(v.x), y(v.y), z(v.z) {}
+    : m_data{v.m_data} {}
 
 // Conversion constructors
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T>::Vector(const Vector<3, U> &v)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)) {}
+    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y()),
+             static_cast<T>(v.z())} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T>::Vector(const Vector<4, U> &v)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)) {}
+    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y()),
+             static_cast<T>(v.z())} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T>::Vector(const Vector<2, U> &v)
-    : x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(zero<T>) {}
+    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y()), zero<T>} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T>::Vector(const Vector<1, U> &v)
-    : x(static_cast<T>(v.x)), y(zero<T>), z(zero<T>) {}
+    : m_data{static_cast<T>(v.x()), zero<T>, zero<T>} {}
 
 template <typename T>
 template <typename A, typename B>
 inline constexpr Vector<3, T>::Vector(const Vector<2, A> &v, const B &scalar1)
-    : x(static_cast<T>(v.x)),
-      y(static_cast<T>(v.y)),
-      z(static_cast<T>(scalar1)) {}
+    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y()),
+             static_cast<T>(scalar1)} {}
 
 template <typename T>
 template <typename A, typename B, typename C>
 inline constexpr Vector<3, T>::Vector(const Vector<1, A> &v, const B &scalar1,
                                       const C &scalar2)
-    : x(static_cast<T>(v.x)),
-      y(static_cast<T>(scalar1)),
-      z(static_cast<T>(scalar2)) {}
+    : m_data{static_cast<T>(v.x()), static_cast<T>(scalar1),
+             static_cast<T>(scalar2)} {}
 
 template <typename T>
 template <typename X, typename Y, typename Z>
 inline constexpr Vector<3, T>::Vector(const X &x, const Y &y, const Z &z)
-    : x(static_cast<T>(x)), y(static_cast<T>(y)), z(static_cast<T>(z)) {}
+    : m_data{static_cast<T>(x), static_cast<T>(y), static_cast<T>(z)} {}
 
 template <typename T>
 inline constexpr Vector<3, T>::Vector(const T *data, UInt32 count) {
@@ -66,8 +70,8 @@ inline constexpr Vector<3, T>::Vector(const T *data, UInt32 count) {
     count = size();
   }
 
-  std::copy(data, data + count, raw());
-  std::fill(raw() + count, raw() + size(), zero<T>);
+  std::copy(data, data + count, m_data.data());
+  std::fill(m_data.data() + count, m_data.data() + size(), zero<T>);
 }
 
 // Assignment operators
@@ -76,9 +80,9 @@ template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator=(
     const Vector<3, U> &other) {
-  x = other.x;
-  y = other.y;
-  z = other.z;
+  x() = other.x();
+  y() = other.y();
+  z() = other.z();
 
   return *this;
 }
@@ -87,9 +91,9 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator=(
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator+=(const Vector<3, U> &v) {
-  x += v.x;
-  y += v.y;
-  z += v.z;
+  x() += v.x();
+  y() += v.y();
+  z() += v.z();
 
   return *this;
 }
@@ -97,9 +101,9 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator+=(const Vector<3, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator-=(const Vector<3, U> &v) {
-  x -= v.x;
-  y -= v.y;
-  z -= v.z;
+  x() -= v.x();
+  y() -= v.y();
+  z() -= v.z();
 
   return *this;
 }
@@ -107,9 +111,9 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator-=(const Vector<3, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator*=(const Vector<3, U> &v) {
-  x *= v.x;
-  y *= v.y;
-  z *= v.z;
+  x() *= v.x();
+  y() *= v.y();
+  z() *= v.z();
 
   return *this;
 }
@@ -117,9 +121,9 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator*=(const Vector<3, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator*=(const U &scalar) {
-  x *= scalar;
-  y *= scalar;
-  z *= scalar;
+  x() *= scalar;
+  y() *= scalar;
+  z() *= scalar;
 
   return *this;
 }
@@ -127,9 +131,9 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator*=(const U &scalar) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator/=(const U &scalar) {
-  x /= scalar;
-  y /= scalar;
-  z /= scalar;
+  x() /= scalar;
+  y() /= scalar;
+  z() /= scalar;
 
   return *this;
 }
@@ -137,7 +141,7 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator/=(const U &scalar) {
 template <typename T>
 inline constexpr Vector<3, T>::operator bool() const {
   if constexpr (std::is_same_v<T, bool>) {
-    return x and y and z;
+    return x() and y() and z();
   } else {
     return (norm(*this) > zero<T>);
   }
@@ -145,78 +149,78 @@ inline constexpr Vector<3, T>::operator bool() const {
 
 template <typename T>
 inline constexpr T &Vector<3, T>::operator[](UInt32 pos) {
-  return (&x)[pos];
+  return m_data[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<3, T>::operator[](UInt32 pos) const {
-  return (&x)[pos];
+  return m_data[pos];
 }
 
 // Non member operators
 template <typename T>
 inline constexpr Vector<3, T> operator+(const Vector<3, T> &va,
                                         const Vector<3, T> &vb) {
-  return Vector<3, T>(va) += vb;
+  return Vector<3, T>{va} += vb;
 }
 
 template <typename T>
 inline constexpr Vector<3, T> operator-(const Vector<3, T> &v) {
-  return Vector<3, T>(-v.x, -v.y, -v.z);
+  return Vector<3, T>{-v.x(), -v.y(), -v.z()};
 }
 
 template <typename T>
 inline constexpr Vector<3, T> operator-(const Vector<3, T> &va,
                                         const Vector<3, T> &vb) {
-  return Vector<3, T>(va) -= vb;
+  return Vector<3, T>{va} -= vb;
 }
 
 template <typename T>
 inline constexpr Vector<3, T> operator*(const Vector<3, T> &va,
                                         const Vector<3, T> &vb) {
-  return Vector<3, T>(va) *= vb;
+  return Vector<3, T>{va} *= vb;
 }
 
 template <typename T>
 inline constexpr Vector<3, T> operator*(const Vector<3, T> &va,
                                         const Vector<1, T> &vb) {
-  return Vector<3, T>(va) *= vb.x;
+  return Vector<3, T>{va} *= vb.x;
 }
 
 template <typename T>
 inline constexpr Vector<3, T> operator*(const Vector<1, T> &va,
                                         const Vector<3, T> &vb) {
-  return Vector<3, T>(vb) *= va.x;
+  return Vector<3, T>{vb} *= va.x();
 }
 
 template <typename T>
 inline constexpr Vector<3, T> operator*(const T &scalar,
                                         const Vector<3, T> &v) {
-  return Vector<3, T>(v) *= scalar;
+  return Vector<3, T>{v} *= scalar;
 }
 
 template <typename T>
 inline constexpr Vector<3, T> operator*(const Vector<3, T> &v,
                                         const T &scalar) {
-  return Vector<3, T>(v) *= scalar;
+  return Vector<3, T>{v} *= scalar;
 }
 
 template <typename T>
 inline constexpr Vector<3, T> operator/(const Vector<3, T> &v,
                                         const T &scalar) {
-  return Vector<3, T>(v) /= scalar;
+  return Vector<3, T>{v} /= scalar;
 }
 
 // Relational operators
-template <typename T>
-inline constexpr bool operator==(const Vector<3, T> &va,
-                                 const Vector<3, T> &vb) {
-  return va.x == vb.x and va.y == vb.y and va.z == vb.z;
+template <typename U>
+inline constexpr bool operator==(const Vector<3, U> &va,
+                                 const Vector<3, U> &vb) {
+  return va.m_data == vb.m_data;
 }
 
-template <typename T, UInt32 N>
-inline constexpr bool operator!=(const Vector<3, T> &va,
-                                 const Vector<3, T> &vb) {
+template <typename U>
+inline constexpr bool operator!=(const Vector<3, U> &va,
+                                 const Vector<3, U> &vb) {
   return not(va == vb);
 }
 
@@ -224,20 +228,21 @@ inline constexpr bool operator!=(const Vector<3, T> &va,
 template <typename T>
 inline constexpr std::ostream &operator<<(std::ostream &os,
                                           const Vector<3, T> &v) {
-  return os << "Vector3<" << typeid(T).name() << ">{" << v.x << ", " << v.y
-            << ", " << v.z << "}";
+  return os << "Vector3<" << typeid(T).name() << ">{" << v.x() << ", " << v.y()
+            << ", " << v.z() << "}";
 }
 
 // Vector operations
 template <typename T>
 T dot(const Vector<3, T> &va, const Vector<3, T> &vb) {
-  return va.x * vb.x + va.y * vb.y + va.z * vb.z;
+  return va.x() * vb.x() + va.y() * vb.y() + va.z() * vb.z();
 }
 
 template <typename T>
 Vector<3, T> cross(const Vector<3, T> &va, const Vector<3, T> &vb) {
-  return Vector<3, T>(va.y * vb.z - va.z * vb.y, va.z * vb.x - va.x * vb.z,
-                      va.x * vb.y - va.y * vb.x);
+  return Vector<3, T>(va.y() * vb.z() - va.z() * vb.y(),
+                      va.z() * vb.x() - va.x() * vb.z(),
+                      va.x() * vb.y() - va.y() * vb.x());
 }
 
 template <typename T>

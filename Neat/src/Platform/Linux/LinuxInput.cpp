@@ -38,7 +38,7 @@ Vector2F Input::getMousePosition() {
   return {(float)xPos, (float)yPos};
 }
 
-float Input::getMouseX() { return getMousePosition().x; }
+float Input::getMouseX() { return getMousePosition().x(); }
 
-float Input::getMouseY() { return getMousePosition().y; }
+float Input::getMouseY() { return getMousePosition().y(); }
 }  // namespace Neat

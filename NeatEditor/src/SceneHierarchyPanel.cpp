@@ -92,7 +92,7 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
       "Sprite", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
                    Entity &entity) {
         auto sprite = entity.getComponent<RenderableSpriteComponent>();
-        ImGui::ColorEdit4("Color", sprite->color.raw());
+        ImGui::ColorEdit4("Color", sprite->color.data());
         ImGui::DragFloat("Tiling Factor", &sprite->tilingFactor, 0.1f, 0.1f);
         // TODO texture selection
       });
@@ -243,11 +243,11 @@ void SceneHierarchyPanel::drawVector3FControl(const std::string label,
   ImGui::PushStyleColor(ImGuiCol_ButtonHovered, xColorHovered);
   ImGui::PushStyleColor(ImGuiCol_ButtonActive, xColor);
   ImGui::PushFont(boldFont);
-  if (ImGui::Button("X", buttonSize)) values.x = resetValue;
+  if (ImGui::Button("X", buttonSize)) values.x() = resetValue;
   ImGui::PopFont();
   ImGui::PopStyleColor(3);
   ImGui::SameLine();
-  ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+  ImGui::DragFloat("##X", &values.x(), 0.1f, 0.0f, 0.0f, "%.2f");
   ImGui::PopItemWidth();
   ImGui::SameLine();
 
@@ -258,11 +258,11 @@ void SceneHierarchyPanel::drawVector3FControl(const std::string label,
   ImGui::PushStyleColor(ImGuiCol_ButtonHovered, yColorHovered);
   ImGui::PushStyleColor(ImGuiCol_ButtonActive, yColor);
   ImGui::PushFont(boldFont);
-  if (ImGui::Button("Y", buttonSize)) values.y = resetValue;
+  if (ImGui::Button("Y", buttonSize)) values.y() = resetValue;
   ImGui::PopFont();
   ImGui::PopStyleColor(3);
   ImGui::SameLine();
-  ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+  ImGui::DragFloat("##Y", &values.y(), 0.1f, 0.0f, 0.0f, "%.2f");
   ImGui::PopItemWidth();
   ImGui::SameLine();
 
@@ -273,11 +273,11 @@ void SceneHierarchyPanel::drawVector3FControl(const std::string label,
   ImGui::PushStyleColor(ImGuiCol_ButtonHovered, zColorHovered);
   ImGui::PushStyleColor(ImGuiCol_ButtonActive, zColor);
   ImGui::PushFont(boldFont);
-  if (ImGui::Button("Z", buttonSize)) values.z = resetValue;
+  if (ImGui::Button("Z", buttonSize)) values.z() = resetValue;
   ImGui::PopFont();
   ImGui::PopStyleColor(3);
   ImGui::SameLine();
-  ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+  ImGui::DragFloat("##Z", &values.z(), 0.1f, 0.0f, 0.0f, "%.2f");
   ImGui::PopItemWidth();
 
   ImGui::PopStyleVar();

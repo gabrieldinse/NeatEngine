@@ -42,8 +42,8 @@ Matrix<4, 4, T> lookAtRightHandView(const Vector<3, T> &eye,
   Vector<3, T> right(normalize(cross(front, upDirection)));
   Vector<3, T> up(cross(right, front));
 
-  return Matrix<4, 4, T>(right.x, right.y, right.z, -dot(eye, right), up.x,
-                         up.y, up.z, -dot(eye, up), -front.x, -front.y,
+  return Matrix<4, 4, T>(right.x(), right.y, right.z, -dot(eye, right), up.x(),
+                         up.y, up.z, -dot(eye, up), -front.x(), -front.y,
                          -front.z, dot(eye, front), 0, 0, 0, 1);
 }
 
@@ -55,8 +55,8 @@ Matrix<4, 4, T> lookAtLeftHandView(const Vector<3, T> &eye,
   Vector<3, T> right(normalize(cross(upDirection, front)));
   Vector<3, T> up(cross(front, right));
 
-  return Matrix<4, 4, T>(right.x, right.y, right.z, -dot(eye, right), up.x,
-                         up.y, up.z, -dot(eye, up), front.x, front.y, front.z,
-                         -dot(eye, front), 0, 0, 0, 1);
+  return Matrix<4, 4, T>(right.x(), right.y(), right.z(), -dot(eye, right),
+                         up.x(), up.y(), up.z(), -dot(eye, up), front.x(),
+                         front.y(), front.z(), -dot(eye, front), 0, 0, 0, 1);
 }
 }  // namespace Neat

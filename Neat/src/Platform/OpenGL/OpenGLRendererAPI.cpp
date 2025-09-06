@@ -15,7 +15,7 @@ void OpenGLRendererAPI::initialize() {
 
 void OpenGLRendererAPI::setClearColor(const Vector4F &color) {
   NT_PROFILE_FUNCTION();
-  glClearColor(color.r, color.g, color.b, color.a);
+  glClearColor(color.r(), color.g(), color.b(), color.a());
 }
 
 void OpenGLRendererAPI::clear() {
@@ -27,7 +27,7 @@ void OpenGLRendererAPI::clearWithColor(const Vector4F &color) {
   NT_PROFILE_FUNCTION();
   static constexpr float one = 1.0f;
   glClearBufferfv(GL_DEPTH, 0, &one);
-  glClearBufferfv(GL_COLOR, 0, color.raw());
+  glClearBufferfv(GL_COLOR, 0, color.data());
 }
 
 void OpenGLRendererAPI::drawIndexed(const Ref<VertexArray> &vertexArray,

@@ -5,9 +5,9 @@
 namespace Neat {
 namespace Color {
 Vector4F HSVToRGB(const Vector3F& hsv) {
-  int h = static_cast<int>(hsv.x * 360.0f);
-  double s = hsv.y;
-  double v = hsv.z;
+  int h = static_cast<int>(hsv.x() * 360.0f);
+  double s = hsv.y();
+  double v = hsv.z();
 
   double c = s * v;
   double x = c * (1 - abs(fmod(h / 60.0, 2) - 1));
