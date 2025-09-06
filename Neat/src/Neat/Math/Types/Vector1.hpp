@@ -12,6 +12,8 @@ struct Vector<1, T> {
   using Type = Vector<1, T>;
   using ValueType = T;
 
+  std::array<T, 1> elements;
+
   // Default constructor
   constexpr Vector();
 
@@ -56,8 +58,8 @@ struct Vector<1, T> {
   inline constexpr explicit operator bool() const;
 
   // Element acessing
-  constexpr T &x() { return m_data[0]; }
-  constexpr const T &x() const { return m_data[0]; }
+  constexpr T &x() { return elements[0]; }
+  constexpr const T &x() const { return elements[0]; }
 
   constexpr T &r() { return x(); }
   constexpr const T &r() const { return x(); }
@@ -72,10 +74,10 @@ struct Vector<1, T> {
   constexpr const T &operator[](UInt32 pos) const;
   constexpr T &operator()(UInt32 pos) { return (*this)[pos]; }
   constexpr const T &operator()(UInt32 pos) const { return (*this)[pos]; }
-  constexpr T *data() { return m_data.data(); }
-  constexpr const T *data() const { return m_data.data(); }
+  constexpr T *data() { return elements.data(); }
+  constexpr const T *data() const { return elements.data(); }
 
-  constexpr UInt32 size() { return m_data.size(); }
+  constexpr UInt32 size() { return elements.size(); }
 
   // Relational operators
   template <typename U>
@@ -84,9 +86,6 @@ struct Vector<1, T> {
   template <typename U>
   friend constexpr bool operator!=(const Vector<1, U> &va,
                                    const Vector<1, U> &vb);
-
- private:
-  std::array<T, 1> m_data;
 };
 
 // Predefined types

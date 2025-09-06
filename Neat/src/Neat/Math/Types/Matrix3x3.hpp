@@ -14,6 +14,8 @@ struct Matrix<3, 3, T> {
   using RowType = Vector<3, T>;
   using ValueType = T;
 
+  std::array<T, 3 * 3> elements;
+
   // Default constructor
   constexpr Matrix();
 
@@ -71,8 +73,8 @@ struct Matrix<3, 3, T> {
   constexpr Matrix<3, 3, T> &operator/=(const U &scalar);
 
   // Elements acessing
-  constexpr T *data() { return m_data.data(); }
-  constexpr const T *data() const { return m_data.data(); }
+  constexpr T *data() { return elements.data(); }
+  constexpr const T *data() const { return elements.data(); }
   constexpr std::span<T, 3> operator[](UInt32 row);
   constexpr std::span<T, 3> operator[](UInt32 row) const;
   constexpr T &operator()(UInt32 pos);
@@ -80,10 +82,7 @@ struct Matrix<3, 3, T> {
   constexpr T &operator()(UInt32 row, UInt32 col);
   constexpr const T &operator()(UInt32 row, UInt32 col) const;
 
-  constexpr UInt32 size() { return m_data.size(); }
-
- private:
-  std::array<T, 3 * 3> m_data;
+  constexpr UInt32 size() { return elements.size(); }
 };
 
 // Predefined types

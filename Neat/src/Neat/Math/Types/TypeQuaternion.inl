@@ -93,28 +93,28 @@ Quaternion<T> QuaternionCast(const Matrix<4, 4, T> &m) {
 // Default constructor
 template <typename T>
 inline constexpr Quaternion<T>::Quaternion()
-    : m_data{one<T>, zero<T>, zero<T>, zero<T>} {}
+    : elements{one<T>, zero<T>, zero<T>, zero<T>} {}
 
 // Basic constructors
 template <typename T>
 inline constexpr Quaternion<T>::Quaternion(T s, const Vector<3, T> &v)
-    : m_data{s, v.x(), v.y(), v.z()} {}
+    : elements{s, v.x(), v.y(), v.z()} {}
 
 template <typename T>
 inline constexpr Quaternion<T>::Quaternion(T w, T x, T y, T z)
-    : m_data{w, x, y, z} {}
+    : elements{w, x, y, z} {}
 
 // Copy Constructor
 template <typename T>
 inline constexpr Quaternion<T>::Quaternion(const Quaternion<T> &q)
-    : m_data{q.m_data} {}
+    : elements{q.elements} {}
 
 // Conversion constructors
 template <typename T>
 template <typename U>
 inline constexpr Quaternion<T>::Quaternion(const Quaternion<U> &q)
-    : m_data{static_cast<T>(q.w()), static_cast<T>(q.x()),
-             static_cast<T>(q.y()), static_cast<T>(q.z())} {}
+    : elements{static_cast<T>(q.w()), static_cast<T>(q.x()),
+               static_cast<T>(q.y()), static_cast<T>(q.z())} {}
 
 // Matrix constructor
 template <typename T>
@@ -168,7 +168,7 @@ template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator=(
     const Quaternion<U> &q) {
-  m_data = q.m_data;
+  elements = q.elements;
 
   return *this;
 }
@@ -178,8 +178,8 @@ template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator+=(
     const Quaternion<U> &q) {
-  m_data = {static_cast<T>(q.w()), static_cast<T>(q.x()), static_cast<T>(q.y()),
-            static_cast<T>(q.z())};
+  elements = {static_cast<T>(q.w()), static_cast<T>(q.x()),
+              static_cast<T>(q.y()), static_cast<T>(q.z())};
 
   return *this;
 }
@@ -188,10 +188,10 @@ template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator-=(
     const Quaternion<U> &q) {
-  m_data[0] -= static_cast<T>(q.w());
-  m_data[1] -= static_cast<T>(q.x());
-  m_data[2] -= static_cast<T>(q.y());
-  m_data[3] -= static_cast<T>(q.z());
+  elements[0] -= static_cast<T>(q.w());
+  elements[1] -= static_cast<T>(q.x());
+  elements[2] -= static_cast<T>(q.y());
+  elements[3] -= static_cast<T>(q.z());
 
   return *this;
 }
@@ -200,14 +200,14 @@ template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator*=(
     const Quaternion<U> &q) {
-  m_data[0] = m_data[0] * q.w() - m_data[1] * q.x() - m_data[2] * q.y() -
-              m_data[3] * q.z();
-  m_data[1] = m_data[0] * q.x() + m_data[1] * q.w() + m_data[2] * q.z() -
-              m_data[3] * q.y();
-  m_data[2] = m_data[0] * q.y() + m_data[1] * q.x() + m_data[3] * q.x() -
-              m_data[2] * q.z();
-  m_data[3] = m_data[0] * q.z() + m_data[1] * q.y() + m_data[2] * q.x() -
-              m_data[3] * q.w();
+  elements[0] = elements[0] * q.w() - elements[1] * q.x() -
+                elements[2] * q.y() - elements[3] * q.z();
+  elements[1] = elements[0] * q.x() + elements[1] * q.w() +
+                elements[2] * q.z() - elements[3] * q.y();
+  elements[2] = elements[0] * q.y() + elements[1] * q.x() +
+                elements[3] * q.x() - elements[2] * q.z();
+  elements[3] = elements[0] * q.z() + elements[1] * q.y() +
+                elements[2] * q.x() - elements[3] * q.w();
 
   return *this;
 }
@@ -215,10 +215,10 @@ inline constexpr Quaternion<T> &Quaternion<T>::operator*=(
 template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator*=(U scalar) {
-  m_data[0] *= static_cast<T>(scalar);
-  m_data[1] *= static_cast<T>(scalar);
-  m_data[2] *= static_cast<T>(scalar);
-  m_data[3] *= static_cast<T>(scalar);
+  elements[0] *= static_cast<T>(scalar);
+  elements[1] *= static_cast<T>(scalar);
+  elements[2] *= static_cast<T>(scalar);
+  elements[3] *= static_cast<T>(scalar);
 
   return *this;
 }
@@ -226,10 +226,10 @@ inline constexpr Quaternion<T> &Quaternion<T>::operator*=(U scalar) {
 template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator/=(U scalar) {
-  m_data[0] /= static_cast<T>(scalar);
-  m_data[1] /= static_cast<T>(scalar);
-  m_data[2] /= static_cast<T>(scalar);
-  m_data[3] /= static_cast<T>(scalar);
+  elements[0] /= static_cast<T>(scalar);
+  elements[1] /= static_cast<T>(scalar);
+  elements[2] /= static_cast<T>(scalar);
+  elements[3] /= static_cast<T>(scalar);
 
   return *this;
 }
@@ -248,12 +248,12 @@ inline Quaternion<T>::operator Matrix<4, 4, T>() const {
 // Elements accessing
 template <typename T>
 inline constexpr T &Quaternion<T>::operator[](UInt32 pos) {
-  return m_data[pos];
+  return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Quaternion<T>::operator[](UInt32 pos) const {
-  return m_data[pos];
+  return elements[pos];
 }
 
 // Non member operators
@@ -332,7 +332,7 @@ inline constexpr Quaternion<T> operator/(const Quaternion<T> &q,
 template <typename T>
 inline constexpr bool operator==(const Quaternion<T> &qa,
                                  const Quaternion<T> &qb) {
-  return qa.m_data == qb.m_data;
+  return qa.elements == qb.elements;
 }
 
 template <typename T>

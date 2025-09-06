@@ -12,6 +12,8 @@ struct Quaternion {
   using Type = Quaternion<T>;
   using ValueType = T;
 
+  std::array<T, 4> elements;
+
   // Default constructor
   constexpr Quaternion();
 
@@ -63,14 +65,14 @@ struct Quaternion {
   explicit operator Matrix<3, 3, T>() const;
   explicit operator Matrix<4, 4, T>() const;
 
-  constexpr T &w() { return m_data[0]; }
-  constexpr const T &w() const { return m_data[0]; }
-  constexpr T &x() { return m_data[1]; }
-  constexpr const T &x() const { return m_data[1]; }
-  constexpr T &y() { return m_data[2]; }
-  constexpr const T &y() const { return m_data[2]; }
-  constexpr T &z() { return m_data[3]; }
-  constexpr const T &z() const { return m_data[3]; }
+  constexpr T &w() { return elements[0]; }
+  constexpr const T &w() const { return elements[0]; }
+  constexpr T &x() { return elements[1]; }
+  constexpr const T &x() const { return elements[1]; }
+  constexpr T &y() { return elements[2]; }
+  constexpr const T &y() const { return elements[2]; }
+  constexpr T &z() { return elements[3]; }
+  constexpr const T &z() const { return elements[3]; }
 
   constexpr T &a() { return w(); }
   constexpr const T &a() const { return w(); }
@@ -101,10 +103,7 @@ struct Quaternion {
   constexpr const T &operator[](UInt32 pos) const;
 
   // Static member functions
-  constexpr UInt32 size() { return m_data.size(); }
-
- private:
-  std::array<T, 4> m_data;
+  constexpr UInt32 size() { return elements.size(); }
 };
 
 // Predefined types

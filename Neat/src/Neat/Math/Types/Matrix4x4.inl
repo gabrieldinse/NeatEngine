@@ -4,9 +4,9 @@ namespace Neat {
 // Default constructor
 template <typename T>
 inline constexpr Matrix<4, 4, T>::Matrix()
-    : m_data{one<T>,  zero<T>, zero<T>, zero<T>, zero<T>, one<T>,
-             zero<T>, zero<T>, zero<T>, zero<T>, one<T>,  zero<T>,
-             zero<T>, zero<T>, zero<T>, one<T>} {}
+    : elements{one<T>,  zero<T>, zero<T>, zero<T>, zero<T>, one<T>,
+               zero<T>, zero<T>, zero<T>, zero<T>, one<T>,  zero<T>,
+               zero<T>, zero<T>, zero<T>, one<T>} {}
 
 // Basic constructors
 template <typename T>
@@ -15,23 +15,23 @@ inline constexpr Matrix<4, 4, T>::Matrix(
     const T &m11, const T &m12, const T &m13, const T &m20, const T &m21,
     const T &m22, const T &m23, const T &m30, const T &m31, const T &m32,
     const T &m33)
-    : m_data{m00, m01, m02, m03, m10, m11, m12, m13,
-             m20, m21, m22, m23, m30, m31, m32, m33} {}
+    : elements{m00, m01, m02, m03, m10, m11, m12, m13,
+               m20, m21, m22, m23, m30, m31, m32, m33} {}
 
 template <typename T>
 inline constexpr Matrix<4, 4, T>::Matrix(const T &scalar)
-    : m_data{scalar,  zero<T>, zero<T>, zero<T>, zero<T>, scalar,
-             zero<T>, zero<T>, zero<T>, zero<T>, scalar,  zero<T>,
-             zero<T>, zero<T>, zero<T>, scalar} {}
+    : elements{scalar,  zero<T>, zero<T>, zero<T>, zero<T>, scalar,
+               zero<T>, zero<T>, zero<T>, zero<T>, scalar,  zero<T>,
+               zero<T>, zero<T>, zero<T>, scalar} {}
 
 template <typename T>
 inline constexpr Matrix<4, 4, T>::Matrix(const std::array<T, 4 * 4> &data)
-    : m_data{data} {}
+    : elements{data} {}
 
 // Copy constructor
 template <typename T>
 inline constexpr Matrix<4, 4, T>::Matrix(const Matrix<4, 4, T> &m)
-    : m_data{m.m_data} {}
+    : elements{m.elements} {}
 
 // Conversion constructors
 template <typename T>
@@ -44,25 +44,26 @@ inline constexpr Matrix<4, 4, T>::Matrix(
     const Y2 &m11, const Z2 &m12, const W2 &m13, const X3 &m20, const Y3 &m21,
     const Z3 &m22, const W3 &m23, const X4 &m30, const Y4 &m31, const Z4 &m32,
     const W4 &m33)
-    : m_data{m00, m01, m02, m03, m10, m11, m12, m13,
-             m20, m21, m22, m23, m30, m31, m32, m33} {}
+    : elements{m00, m01, m02, m03, m10, m11, m12, m13,
+               m20, m21, m22, m23, m30, m31, m32, m33} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T>::Matrix(const Matrix<4, 4, U> &m)
-    : m_data{m.m_data} {}
+    : elements{m.elements} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T>::Matrix(const Matrix<3, 3, U> &m)
-    : m_data{m(0), m(1), m(2), zero<T>, m(3),    m(4),    m(5),    zero<T>,
-             m(6), m(7), m(8), zero<T>, zero<T>, zero<T>, zero<T>, one<T>} {}
+    : elements{m(0), m(1), m(2), zero<T>, m(3),    m(4),    m(5),    zero<T>,
+               m(6), m(7), m(8), zero<T>, zero<T>, zero<T>, zero<T>, one<T>} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T>::Matrix(const Matrix<2, 2, U> &m)
-    : m_data{m(0), m(1), zero<T>, zero<T>, m(3),    m(4),    zero<T>, zero<T>,
-             m(6), m(7), zero<T>, zero<T>, zero<T>, zero<T>, zero<T>, one<T>} {}
+    : elements{m(0),    m(1),    zero<T>, zero<T>, m(3),    m(4),
+               zero<T>, zero<T>, m(6),    m(7),    zero<T>, zero<T>,
+               zero<T>, zero<T>, zero<T>, one<T>} {}
 
 template <typename T>
 template <typename V1, typename V2, typename V3, typename V4>
@@ -70,8 +71,8 @@ inline constexpr Matrix<4, 4, T>::Matrix(const Vector<4, V1> &row1,
                                          const Vector<4, V2> &row2,
                                          const Vector<4, V3> &row3,
                                          const Vector<4, V4> &row4)
-    : m_data{row1.x(), row1.y(), row1.z(), row1.w(), row2.x(), row2.y(),
-             row2.z(), row2.w(), row3.x(), row3.y(), row3.z(), row3.w()} {}
+    : elements{row1.x(), row1.y(), row1.z(), row1.w(), row2.x(), row2.y(),
+               row2.z(), row2.w(), row3.x(), row3.y(), row3.z(), row3.w()} {}
 
 template <typename T>
 inline constexpr Matrix<4, 4, T>::Matrix(const T *data, UInt32 count) {
@@ -79,8 +80,8 @@ inline constexpr Matrix<4, 4, T>::Matrix(const T *data, UInt32 count) {
     count = size();
   }
 
-  std::copy(data, data + count, m_data.data());
-  std::fill(m_data.data() + count, m_data.data() + size(), zero<T>);
+  std::copy(data, data + count, elements.data());
+  std::fill(elements.data() + count, elements.data() + size(), zero<T>);
 }
 
 // Non member operators
@@ -194,7 +195,7 @@ template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator=(
     const Matrix<4, 4, U> &m) {
-  m_data = m.m_data;
+  elements = m.elements;
 
   return *this;
 }
@@ -202,7 +203,7 @@ inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator=(
 template <typename T>
 inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator=(
     const Matrix<4, 4, T> &m) {
-  m_data = m.m_data;
+  elements = m.elements;
 
   return *this;
 }
@@ -212,22 +213,22 @@ template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator+=(
     Matrix<4, 4, U> const &m) {
-  m_data[0] += m(0);
-  m_data[1] += m(1);
-  m_data[2] += m(2);
-  m_data[3] += m(3);
-  m_data[4] += m(4);
-  m_data[5] += m(5);
-  m_data[6] += m(6);
-  m_data[7] += m(7);
-  m_data[8] += m(8);
-  m_data[9] += m(9);
-  m_data[10] += m(10);
-  m_data[11] += m(11);
-  m_data[12] += m(12);
-  m_data[13] += m(13);
-  m_data[14] += m(14);
-  m_data[15] += m(15);
+  elements[0] += m(0);
+  elements[1] += m(1);
+  elements[2] += m(2);
+  elements[3] += m(3);
+  elements[4] += m(4);
+  elements[5] += m(5);
+  elements[6] += m(6);
+  elements[7] += m(7);
+  elements[8] += m(8);
+  elements[9] += m(9);
+  elements[10] += m(10);
+  elements[11] += m(11);
+  elements[12] += m(12);
+  elements[13] += m(13);
+  elements[14] += m(14);
+  elements[15] += m(15);
 
   return *this;
 }
@@ -235,22 +236,22 @@ inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator+=(
 template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator-=(const U &scalar) {
-  m_data[0] -= scalar;
-  m_data[1] -= scalar;
-  m_data[2] -= scalar;
-  m_data[3] -= scalar;
-  m_data[4] -= scalar;
-  m_data[5] -= scalar;
-  m_data[6] -= scalar;
-  m_data[7] -= scalar;
-  m_data[8] -= scalar;
-  m_data[9] -= scalar;
-  m_data[10] -= scalar;
-  m_data[11] -= scalar;
-  m_data[12] -= scalar;
-  m_data[13] -= scalar;
-  m_data[14] -= scalar;
-  m_data[15] -= scalar;
+  elements[0] -= scalar;
+  elements[1] -= scalar;
+  elements[2] -= scalar;
+  elements[3] -= scalar;
+  elements[4] -= scalar;
+  elements[5] -= scalar;
+  elements[6] -= scalar;
+  elements[7] -= scalar;
+  elements[8] -= scalar;
+  elements[9] -= scalar;
+  elements[10] -= scalar;
+  elements[11] -= scalar;
+  elements[12] -= scalar;
+  elements[13] -= scalar;
+  elements[14] -= scalar;
+  elements[15] -= scalar;
 
   return *this;
 }
@@ -259,22 +260,22 @@ template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator-=(
     Matrix<4, 4, U> const &m) {
-  m_data[0] -= m(0);
-  m_data[1] -= m(1);
-  m_data[2] -= m(2);
-  m_data[3] -= m(3);
-  m_data[4] -= m(4);
-  m_data[5] -= m(5);
-  m_data[6] -= m(6);
-  m_data[7] -= m(7);
-  m_data[8] -= m(8);
-  m_data[9] -= m(9);
-  m_data[10] -= m(10);
-  m_data[11] -= m(11);
-  m_data[12] -= m(12);
-  m_data[13] -= m(13);
-  m_data[14] -= m(14);
-  m_data[15] -= m(15);
+  elements[0] -= m(0);
+  elements[1] -= m(1);
+  elements[2] -= m(2);
+  elements[3] -= m(3);
+  elements[4] -= m(4);
+  elements[5] -= m(5);
+  elements[6] -= m(6);
+  elements[7] -= m(7);
+  elements[8] -= m(8);
+  elements[9] -= m(9);
+  elements[10] -= m(10);
+  elements[11] -= m(11);
+  elements[12] -= m(12);
+  elements[13] -= m(13);
+  elements[14] -= m(14);
+  elements[15] -= m(15);
 
   return *this;
 }
@@ -282,22 +283,22 @@ inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator-=(
 template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator*=(const U &scalar) {
-  m_data[0] *= scalar;
-  m_data[1] *= scalar;
-  m_data[2] *= scalar;
-  m_data[3] *= scalar;
-  m_data[4] *= scalar;
-  m_data[5] *= scalar;
-  m_data[6] *= scalar;
-  m_data[7] *= scalar;
-  m_data[8] *= scalar;
-  m_data[9] *= scalar;
-  m_data[10] *= scalar;
-  m_data[11] *= scalar;
-  m_data[12] *= scalar;
-  m_data[13] *= scalar;
-  m_data[14] *= scalar;
-  m_data[15] *= scalar;
+  elements[0] *= scalar;
+  elements[1] *= scalar;
+  elements[2] *= scalar;
+  elements[3] *= scalar;
+  elements[4] *= scalar;
+  elements[5] *= scalar;
+  elements[6] *= scalar;
+  elements[7] *= scalar;
+  elements[8] *= scalar;
+  elements[9] *= scalar;
+  elements[10] *= scalar;
+  elements[11] *= scalar;
+  elements[12] *= scalar;
+  elements[13] *= scalar;
+  elements[14] *= scalar;
+  elements[15] *= scalar;
 
   return *this;
 }
@@ -312,22 +313,22 @@ inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator*=(
 template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator/=(const U &scalar) {
-  m_data[0] /= scalar;
-  m_data[1] /= scalar;
-  m_data[2] /= scalar;
-  m_data[3] /= scalar;
-  m_data[4] /= scalar;
-  m_data[5] /= scalar;
-  m_data[6] /= scalar;
-  m_data[7] /= scalar;
-  m_data[8] /= scalar;
-  m_data[9] /= scalar;
-  m_data[10] /= scalar;
-  m_data[11] /= scalar;
-  m_data[12] /= scalar;
-  m_data[13] /= scalar;
-  m_data[14] /= scalar;
-  m_data[15] /= scalar;
+  elements[0] /= scalar;
+  elements[1] /= scalar;
+  elements[2] /= scalar;
+  elements[3] /= scalar;
+  elements[4] /= scalar;
+  elements[5] /= scalar;
+  elements[6] /= scalar;
+  elements[7] /= scalar;
+  elements[8] /= scalar;
+  elements[9] /= scalar;
+  elements[10] /= scalar;
+  elements[11] /= scalar;
+  elements[12] /= scalar;
+  elements[13] /= scalar;
+  elements[14] /= scalar;
+  elements[15] /= scalar;
 
   return *this;
 }
@@ -335,33 +336,33 @@ inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator/=(const U &scalar) {
 // Element accessing
 template <typename T>
 inline constexpr std::span<T, 4> Matrix<4, 4, T>::operator[](UInt32 row) {
-  return std::span<T, 4>{m_data.data() + row * 4, 4};
+  return std::span<T, 4>{elements.data() + row * 4, 4};
 }
 
 template <typename T>
 inline constexpr std::span<T, 4> Matrix<4, 4, T>::operator[](UInt32 row) const {
-  return std::span<T, 4>{m_data.data() + row * 4, 4};
+  return std::span<T, 4>{elements.data() + row * 4, 4};
 }
 
 template <typename T>
 inline constexpr T &Matrix<4, 4, T>::operator()(UInt32 pos) {
-  return m_data[pos];
+  return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Matrix<4, 4, T>::operator()(UInt32 pos) const {
-  return m_data[pos];
+  return elements[pos];
 }
 
 template <typename T>
 inline constexpr T &Matrix<4, 4, T>::operator()(UInt32 row, UInt32 col) {
-  return m_data[row * 4 + col];
+  return elements[row * 4 + col];
 }
 
 template <typename T>
 inline constexpr const T &Matrix<4, 4, T>::operator()(UInt32 row,
                                                       UInt32 col) const {
-  return m_data[row * 4 + col];
+  return elements[row * 4 + col];
 }
 
 // Matrix operations

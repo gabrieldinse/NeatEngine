@@ -3,77 +3,78 @@
 namespace Neat {
 // Default constructor
 template <typename T>
-constexpr Vector<4, T>::Vector() : m_data{zero<T>, zero<T>, zero<T>, zero<T>} {}
+constexpr Vector<4, T>::Vector()
+    : elements{zero<T>, zero<T>, zero<T>, zero<T>} {}
 
 // Basic Constructors
 template <typename T>
 inline constexpr Vector<4, T>::Vector(const T &scalar)
-    : m_data{scalar, scalar, scalar, scalar} {}
+    : elements{scalar, scalar, scalar, scalar} {}
 
 template <typename T>
 inline constexpr Vector<4, T>::Vector(const T &x, const T &y, const T &z,
                                       const T &w)
-    : m_data{x, y, z, w} {}
+    : elements{x, y, z, w} {}
 
 template <typename T>
 inline constexpr Vector<4, T>::Vector(const std::array<T, 4> &data)
-    : m_data{data} {}
+    : elements{data} {}
 
 // Copy Constructor
 template <typename T>
 inline constexpr Vector<4, T>::Vector(const Vector<4, T> &v)
-    : m_data{v.m_data} {}
+    : elements{v.elements} {}
 
 // Conversion constructors
 template <typename T>
 template <typename U>
 inline constexpr Vector<4, T>::Vector(const Vector<4, U> &v)
-    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y()),
-             static_cast<T>(v.z()), static_cast<T>(v.w())} {}
+    : elements{static_cast<T>(v.x()), static_cast<T>(v.y()),
+               static_cast<T>(v.z()), static_cast<T>(v.w())} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<4, T>::Vector(const Vector<3, U> &v)
-    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y()),
-             static_cast<T>(v.z()), zero<T>()} {}
+    : elements{static_cast<T>(v.x()), static_cast<T>(v.y()),
+               static_cast<T>(v.z()), zero<T>()} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<4, T>::Vector(const Vector<2, U> &v)
-    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y()), zero<T>(),
-             zero<T>()} {}
+    : elements{static_cast<T>(v.x()), static_cast<T>(v.y()), zero<T>(),
+               zero<T>()} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<4, T>::Vector(const Vector<1, U> &v)
-    : m_data{static_cast<T>(v.x()), zero<T>(), zero<T>(), zero<T>()} {}
+    : elements{static_cast<T>(v.x()), zero<T>(), zero<T>(), zero<T>()} {}
 
 template <typename T>
 template <typename A, typename B>
 inline constexpr Vector<4, T>::Vector(const Vector<3, A> &v, const B &scalar)
-    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y()),
-             static_cast<T>(v.z()), static_cast<T>(scalar)} {}
+    : elements{static_cast<T>(v.x()), static_cast<T>(v.y()),
+               static_cast<T>(v.z()), static_cast<T>(scalar)} {}
 
 template <typename T>
 template <typename A, typename B, typename C>
 inline constexpr Vector<4, T>::Vector(const Vector<2, A> &v, const B &scalar1,
                                       const C &scalar2)
-    : m_data{static_cast<T>(v.x()), static_cast<T>(v.y()),
-             static_cast<T>(scalar1), static_cast<T>(scalar2)} {}
+    : elements{static_cast<T>(v.x()), static_cast<T>(v.y()),
+               static_cast<T>(scalar1), static_cast<T>(scalar2)} {}
 
 template <typename T>
 template <typename A, typename B, typename C, typename D>
 inline constexpr Vector<4, T>::Vector(const Vector<1, A> &v, const B &scalar1,
                                       const C &scalar2, const D &scalar3)
-    : m_data{static_cast<T>(v.x()), static_cast<T>(scalar1),
-             static_cast<T>(scalar2), static_cast<T>(scalar3)} {}
+    : elements{static_cast<T>(v.x()), static_cast<T>(scalar1),
+               static_cast<T>(scalar2), static_cast<T>(scalar3)} {}
 
 template <typename T>
 template <typename X, typename Y, typename Z, typename W>
 inline constexpr Vector<4, T>::Vector(const X &x, const Y &y, const Z &z,
                                       const W &w)
-    : m_data{static_cast<T>(x), static_cast<T>(y), static_cast<T>(z),
-             static_cast<T>(w)} {}
+    : elements{static_cast<T>(x), static_cast<T>(y), static_cast<T>(z),
+               static_cast<T>(w)} {}
 
 template <typename T>
 inline constexpr Vector<4, T>::Vector(const T *data, UInt32 count) {
@@ -81,8 +82,8 @@ inline constexpr Vector<4, T>::Vector(const T *data, UInt32 count) {
     count = size();
   }
 
-  std::copy(data, data + count, m_data.data());
-  std::fill(m_data.data() + count, m_data.data() + size(), zero<T>);
+  std::copy(data, data + count, elements.data());
+  std::fill(elements.data() + count, elements.data() + size(), zero<T>);
 }
 
 // Assignment operators
@@ -165,12 +166,12 @@ inline constexpr Vector<4, T>::operator bool() const {
 
 template <typename T>
 inline constexpr T &Vector<4, T>::operator[](UInt32 pos) {
-  return m_data[pos];
+  return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<4, T>::operator[](UInt32 pos) const {
-  return m_data[pos];
+  return elements[pos];
 }
 
 // Non member operators
@@ -231,7 +232,7 @@ inline constexpr Vector<4, T> operator/(const Vector<4, T> &v,
 template <typename U>
 inline constexpr bool operator==(const Vector<4, U> &va,
                                  const Vector<4, U> &vb) {
-  return va.m_data == vb.m_data;
+  return va.elements == vb.elements;
 }
 
 template <typename U>

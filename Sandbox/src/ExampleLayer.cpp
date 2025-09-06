@@ -88,9 +88,9 @@ ExampleLayer::ExampleLayer(
 
   std::cout << yaml_string2 << std::endl;
 
-  // for (const auto &f : rfl::fields<Neat::Vector1F>()) {
-  //   std::cout << "name: " << f.name() << ", type: " << f.type() << std::endl;
-  // }
+  for (const auto &f : rfl::fields<Neat::Vector1F>()) {
+    std::cout << "name: " << f.name() << ", type: " << f.type() << std::endl;
+  }
 
   m_entityManager = Neat::makeRef<Neat::EntityManager>(eventDispatcher);
   m_systems =
