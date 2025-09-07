@@ -36,18 +36,18 @@ template <typename T>
 template <typename U>
 inline constexpr Vector<4, T>::Vector(const Vector<3, U> &v)
     : elements{static_cast<T>(v.x()), static_cast<T>(v.y()),
-               static_cast<T>(v.z()), zero<T>()} {}
+               static_cast<T>(v.z()), zero<T>} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<4, T>::Vector(const Vector<2, U> &v)
-    : elements{static_cast<T>(v.x()), static_cast<T>(v.y()), zero<T>(),
-               zero<T>()} {}
+    : elements{static_cast<T>(v.x()), static_cast<T>(v.y()), zero<T>, zero<T>} {
+}
 
 template <typename T>
 template <typename U>
 inline constexpr Vector<4, T>::Vector(const Vector<1, U> &v)
-    : elements{static_cast<T>(v.x()), zero<T>(), zero<T>(), zero<T>()} {}
+    : elements{static_cast<T>(v.x()), zero<T>, zero<T>, zero<T>} {}
 
 template <typename T>
 template <typename A, typename B>
@@ -245,8 +245,8 @@ inline constexpr bool operator!=(const Vector<4, U> &va,
 template <typename T>
 inline constexpr std::ostream &operator<<(std::ostream &os,
                                           const Vector<4, T> &v) {
-  return os << "Vector4<" << typeid(T).name() << ">{" << v.x << ", " << v.y
-            << ", " << v.z << ", " << v.w << "}";
+  return os << "Vector4<" << typeid(T).name() << ">{" << v.x() << ", " << v.y()
+            << ", " << v.z() << ", " << v.w() << "}";
 }
 
 // Vector operations

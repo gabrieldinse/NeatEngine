@@ -492,4 +492,149 @@ TEST_F(VectorTest, CoordinatesAccessingSTPQ) {
   EXPECT_EQ(vector2us.t(), 2U);
   EXPECT_EQ(vector1us.s(), 1U);
 }
+
+TEST_F(VectorTest, DefaultConstructor) {
+  Vector4F vector4f2{};
+  Vector3F vector3f2{};
+  Vector2F vector2f2{};
+  Vector1F vector1f2{};
+  Vector4I vector4i2{};
+  Vector3I vector3i2{};
+  Vector2I vector2i2{};
+  Vector1I vector1i2{};
+
+  EXPECT_EQ(vector4f2.x(), 0.0f);
+  EXPECT_EQ(vector4f2.y(), 0.0f);
+  EXPECT_EQ(vector4f2.z(), 0.0f);
+  EXPECT_EQ(vector4f2.w(), 0.0f);
+  EXPECT_EQ(vector3f2.x(), 0.0f);
+  EXPECT_EQ(vector3f2.y(), 0.0f);
+  EXPECT_EQ(vector3f2.z(), 0.0f);
+  EXPECT_EQ(vector2f2.x(), 0.0f);
+  EXPECT_EQ(vector2f2.y(), 0.0f);
+  EXPECT_EQ(vector1f2.x(), 0.0f);
+
+  EXPECT_EQ(vector4i2.x(), 0);
+  EXPECT_EQ(vector4i2.y(), 0);
+  EXPECT_EQ(vector4i2.z(), 0);
+  EXPECT_EQ(vector4i2.w(), 0);
+  EXPECT_EQ(vector3i2.x(), 0);
+  EXPECT_EQ(vector3i2.y(), 0);
+  EXPECT_EQ(vector3i2.z(), 0);
+  EXPECT_EQ(vector2i2.x(), 0);
+  EXPECT_EQ(vector2i2.y(), 0);
+  EXPECT_EQ(vector1i2.x(), 0);
+}
+
+TEST_F(VectorTest, ScalarConstructor) {
+  Vector4F vector4f2{1.5f};
+  Vector3F vector3f2{2.5f};
+  Vector2F vector2f2{3.5f};
+  Vector1F vector1f2{4.5f};
+  Vector4I vector4i2{10};
+  Vector3I vector3i2{20};
+  Vector2I vector2i2{30};
+  Vector1I vector1i2{40};
+
+  EXPECT_EQ(vector4f2.x(), 1.5f);
+  EXPECT_EQ(vector4f2.y(), 1.5f);
+  EXPECT_EQ(vector4f2.z(), 1.5f);
+  EXPECT_EQ(vector4f2.w(), 1.5f);
+  EXPECT_EQ(vector3f2.x(), 2.5f);
+  EXPECT_EQ(vector3f2.y(), 2.5f);
+  EXPECT_EQ(vector3f2.z(), 2.5f);
+  EXPECT_EQ(vector2f2.x(), 3.5f);
+  EXPECT_EQ(vector2f2.y(), 3.5f);
+  EXPECT_EQ(vector1f2.x(), 4.5f);
+
+  EXPECT_EQ(vector4i2.x(), 10);
+  EXPECT_EQ(vector4i2.y(), 10);
+  EXPECT_EQ(vector4i2.z(), 10);
+  EXPECT_EQ(vector4i2.w(), 10);
+  EXPECT_EQ(vector3i2.x(), 20);
+  EXPECT_EQ(vector3i2.y(), 20);
+  EXPECT_EQ(vector3i2.z(), 20);
+  EXPECT_EQ(vector2i2.x(), 30);
+  EXPECT_EQ(vector2i2.y(), 30);
+  EXPECT_EQ(vector1i2.x(), 40);
+}
+
+TEST_F(VectorTest, ConversionConstructor) {
+  Vector4F vector4f2{Vector3F{1.0f, 2.0f, 3.0f}, 4.0f};
+  Vector4F vector4f3{Vector2F{1.0f, 2.0f}, 3.0f, 4.0f};
+  Vector4F vector4f4{Vector1F{1.0f}, 2.0f, 3.0f, 4.0f};
+  Vector4F vector4f5{Vector3F{1.0f, 2.0f, 3.0f}};
+  Vector4F vector4f6{Vector2F{1.0f, 2.0f}};
+  Vector4F vector4f7{Vector1F{1.0f}};
+  Vector3F vector3f2{Vector2F{1.0f, 2.0f}, 3.0f};
+  Vector3F vector3f3{Vector1F{1.0f}, 2.0f, 3.0f};
+  Vector3F vector3f4{Vector2F{1.0f, 2.0f}};
+  Vector3F vector3f5{Vector1F{1.0f}};
+  Vector4I vector4i2{Vector3I{10, 20, 30}, 40};
+  Vector4I vector4i3{Vector2I{10, 20}, 30, 40};
+  Vector4I vector4i4{Vector1I{10}, 20, 30, 40};
+  Vector4I vector4i5{Vector3I{10, 20, 30}};
+  Vector4I vector4i6{Vector2I{10, 20}};
+  Vector4I vector4i7{Vector1I{10}};
+  Vector3I vector3i2{Vector2I{10, 20}, 30};
+  Vector3I vector3i3{Vector1I{10}, 20, 30};
+  Vector3I vector3i4{Vector2I{10, 20}};
+  Vector3I vector3i5{Vector1I{10}};
+
+  EXPECT_EQ(vector4f2, (Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_EQ(vector4f3, (Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_EQ(vector4f4, (Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_EQ(vector4f5, (Vector4F{1.0f, 2.0f, 3.0f, 0.0f}));
+  EXPECT_EQ(vector4f6, (Vector4F{1.0f, 2.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(vector4f7, (Vector4F{1.0f, 0.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(vector3f2, (Vector3F{1.0f, 2.0f, 3.0f}));
+  EXPECT_EQ(vector3f3, (Vector3F{1.0f, 2.0f, 3.0f}));
+  EXPECT_EQ(vector3f4, (Vector3F{1.0f, 2.0f, 0.0f}));
+  EXPECT_EQ(vector3f5, (Vector3F{1.0f, 0.0f, 0.0f}));
+
+  EXPECT_EQ(vector4i2, (Vector4I{10, 20, 30, 40}));
+  EXPECT_EQ(vector4i3, (Vector4I{10, 20, 30, 40}));
+  EXPECT_EQ(vector4i4, (Vector4I{10, 20, 30, 40}));
+  EXPECT_EQ(vector4i5, (Vector4I{10, 20, 30, 0}));
+  EXPECT_EQ(vector4i6, (Vector4I{10, 20, 0, 0}));
+  EXPECT_EQ(vector4i7, (Vector4I{10, 0, 0, 0}));
+  EXPECT_EQ(vector3i2, (Vector3I{10, 20, 30}));
+  EXPECT_EQ(vector3i3, (Vector3I{10, 20, 30}));
+  EXPECT_EQ(vector3i4, (Vector3I{10, 20, 0}));
+  EXPECT_EQ(vector3i5, (Vector3I{10, 0, 0}));
+}
+
+TEST_F(VectorTest, Assignment) {
+  vector4f = Vector4F{1.5f, 2.5f, 3.5f, 4.5f};
+  vector3f = Vector3F{1.5f, 2.5f, 3.5f};
+  vector2f = Vector2F{1.5f, 2.5f};
+  vector1f = Vector1F{1.5f};
+  vector4i = Vector4I{10, 20, 30, 40};
+  vector3i = Vector3I{10, 20, 30};
+  vector2i = Vector2I{10, 20};
+  vector1i = Vector1I{10};
+
+  EXPECT_EQ(vector4f.x(), 1.5f);
+  EXPECT_EQ(vector4f.y(), 2.5f);
+  EXPECT_EQ(vector4f.z(), 3.5f);
+  EXPECT_EQ(vector4f.w(), 4.5f);
+  EXPECT_EQ(vector3f.x(), 1.5f);
+  EXPECT_EQ(vector3f.y(), 2.5f);
+  EXPECT_EQ(vector3f.z(), 3.5f);
+  EXPECT_EQ(vector2f.x(), 1.5f);
+  EXPECT_EQ(vector2f.y(), 2.5f);
+  EXPECT_EQ(vector1f.x(), 1.5f);
+
+  EXPECT_EQ(vector4i.x(), 10);
+  EXPECT_EQ(vector4i.y(), 20);
+  EXPECT_EQ(vector4i.z(), 30);
+  EXPECT_EQ(vector4i.w(), 40);
+  EXPECT_EQ(vector3i.x(), 10);
+  EXPECT_EQ(vector3i.y(), 20);
+  EXPECT_EQ(vector3i.z(), 30);
+  EXPECT_EQ(vector2i.x(), 10);
+  EXPECT_EQ(vector2i.y(), 20);
+  EXPECT_EQ(vector1i.x(), 10);
+}
+
 }  // namespace Neat
