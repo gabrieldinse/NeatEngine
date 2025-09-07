@@ -42,12 +42,12 @@ inline constexpr Vector<2, T>::Vector(const Vector<3, U> &v)
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T>::Vector(const Vector<1, U> &v)
-    : elements{static_cast<T>(v.x), zero<T>} {}
+    : elements{static_cast<T>(v.x()), zero<T>} {}
 
 template <typename T>
 template <typename A, typename B>
 inline constexpr Vector<2, T>::Vector(const Vector<1, A> &v, const B &scalar1)
-    : elements{static_cast<T>(v.x), static_cast<T>(scalar1)} {}
+    : elements{static_cast<T>(v.x()), static_cast<T>(scalar1)} {}
 
 template <typename T>
 template <typename X, typename Y>

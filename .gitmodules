@@ -16,3 +16,6 @@
 [submodule "Neat/vendor/yaml-cpp"]
 	path = Neat/vendor/yaml-cpp
 	url = git@github.com:jbeder/yaml-cpp.git
+[submodule "Neat/vendor/glaze"]
+	path = Neat/vendor/glaze
+	url = git@github.com:stephenberry/glaze.git
