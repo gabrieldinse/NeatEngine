@@ -90,52 +90,52 @@ namespace rfl {
 // };
 //
 
-template <typename T>
-struct Reflector<Neat::Vector<4, T>> {
-  struct ReflType {
-    T x;
-    T y;
-    T z;
-    T w;
-  };
-
-  static Neat::Vector<4, T> to(const ReflType &refl) noexcept {
-    return Neat::Vector<4, T>{refl.x, refl.y, refl.z, refl.w};
-  }
-
-  static ReflType from(const Neat::Vector<4, T> &v) {
-    return {v.x(), v.y(), v.z(), v.w()};
-  }
-
-  static Neat::Vector<4, T> to_refl(const ReflType &refl) noexcept {
-    return Neat::Vector<4, T>{refl.x, refl.y, refl.z, refl.w};
-  }
-
-  static ReflType from_refl(const Neat::Vector<4, T> &v) {
-    return {v.x(), v.y(), v.z(), v.w()};
-  }
-};
-
-// template <Neat::UInt32 N, typename T>
-// struct Reflector<Neat::Vector<N, T>> {
+// template <typename T>
+// struct Reflector<Neat::Vector<4, T>> {
 //   struct ReflType {
-//     std::array<T, N> elements;
+//     T x;
+//     T y;
+//     T z;
+//     T w;
 //   };
 //
-//   static Neat::Vector<N, T> to(const ReflType &rv) noexcept {
-//     return Neat::Vector<N, T>{rv.elements};
+//   static Neat::Vector<4, T> to(const ReflType &refl) noexcept {
+//     return Neat::Vector<4, T>{refl.x, refl.y, refl.z, refl.w};
 //   }
 //
-//   static ReflType from(const Neat::Vector<N, T> &v) { return {v.elements}; }
-//
-//   static Neat::Vector<N, T> to_refl(const ReflType &rv) noexcept {
-//     return Neat::Vector<N, T>{rv.elements};
+//   static ReflType from(const Neat::Vector<4, T> &v) {
+//     return {v.x(), v.y(), v.z(), v.w()};
 //   }
 //
-//   static ReflType from_refl(const Neat::Vector<N, T> &v) {
-//     return {v.elements};
+//   static Neat::Vector<4, T> to_refl(const ReflType &refl) noexcept {
+//     return Neat::Vector<4, T>{refl.x, refl.y, refl.z, refl.w};
+//   }
+//
+//   static ReflType from_refl(const Neat::Vector<4, T> &v) {
+//     return {v.x(), v.y(), v.z(), v.w()};
 //   }
 // };
+
+template <Neat::UInt32 N, typename T>
+struct Reflector<Neat::Vector<N, T>> {
+  struct ReflType {
+    std::array<T, N> elements;
+  };
+
+  static Neat::Vector<N, T> to(const ReflType &rv) noexcept {
+    return Neat::Vector<N, T>{rv.elements};
+  }
+
+  static ReflType from(const Neat::Vector<N, T> &v) { return {v.elements}; }
+
+  static Neat::Vector<N, T> to_refl(const ReflType &rv) noexcept {
+    return Neat::Vector<N, T>{rv.elements};
+  }
+
+  static ReflType from_refl(const Neat::Vector<N, T> &v) {
+    return {v.elements};
+  }
+};
 
 // template <>
 // struct Reflector<Neat::Vector<4, float>> {
@@ -162,7 +162,6 @@ struct Reflector<Neat::Vector<4, T>> {
 //     return {v.x(), v.y(), v.z(), v.w()};
 //   }
 // };
-}  // namespace rfl
 
 // namespace rfl {
 // template <>
@@ -186,13 +185,7 @@ struct Reflector<Neat::Vector<4, T>> {
 //     return {r.x, r.y, r.z};
 //   }
 // };
-// }  // namespace rfl
-//
-// struct TransformDummy {
-//   Neat::Vector2F position;
-//   Neat::Vector2F rotation;
-//   Neat::Vector2F scale;
-// };
+}  // namespace rfl
 
 template <Neat::UInt32 N, typename T>
 struct glz::meta<Neat::Vector<N, T>> {
@@ -282,10 +275,10 @@ ExampleLayer::ExampleLayer(
   //   std::cout << "name: " << f.name() << ", type: " << f.type() << std::endl;
   // }
 
-  // Neat::Vector4F vec4{1.0f, 2.0f, 3.0f, 4.0f};
-  // const std::string yaml_string3 = rfl::yaml::write(vec4);
+  Neat::TransformComponent transform;
+  const std::string yaml_string3 = rfl::yaml::write(transform);
+  std::cout << yaml_string3 << std::endl;
 
-  // std::cout << yaml_string3 << std::endl;
   // const auto view = rfl::to_view(vec4);
   // std::cout << *view.get<0>() << std::endl;
 

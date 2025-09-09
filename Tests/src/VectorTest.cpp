@@ -570,8 +570,11 @@ TEST_F(VectorTest, ConversionConstructor) {
   Vector3F vector3f3{Vector1F{1.0f}, 2.0f, 3.0f};
   Vector3F vector3f4{Vector2F{1.0f, 2.0f}};
   Vector3F vector3f5{Vector1F{1.0f}};
+  Vector3F vector3f6{Vector4F{1.0f, 2.0f, 3.0f, 4.0f}};
   Vector2F vector2f2{Vector1F{1.0f}, 2.0f};
   Vector2F vector2f3{Vector1F{1.0f}};
+  Vector2F vector2f4{Vector4F{1.0f, 2.0f, 3.0f, 4.0f}};
+  Vector2F vector2f5{Vector3F{1.0f, 2.0f, 3.0f}};
 
   Vector4I vector4i2{Vector3I{10, 20, 30}, 40};
   Vector4I vector4i3{Vector2I{10, 20}, 30, 40};
@@ -583,8 +586,11 @@ TEST_F(VectorTest, ConversionConstructor) {
   Vector3I vector3i3{Vector1I{10}, 20, 30};
   Vector3I vector3i4{Vector2I{10, 20}};
   Vector3I vector3i5{Vector1I{10}};
+  Vector3I vector3i6{Vector4I{10, 20, 30, 40}};
   Vector2I vector2i2{Vector1I{10}, 20};
   Vector2I vector2i3{Vector1I{10}};
+  Vector2I vector2i4{Vector4I{10, 20, 30, 40}};
+  Vector2I vector2i5{Vector4I{10, 20, 30, 40}};
 
   EXPECT_EQ(vector4f2, (Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
   EXPECT_EQ(vector4f3, (Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
@@ -596,8 +602,11 @@ TEST_F(VectorTest, ConversionConstructor) {
   EXPECT_EQ(vector3f3, (Vector3F{1.0f, 2.0f, 3.0f}));
   EXPECT_EQ(vector3f4, (Vector3F{1.0f, 2.0f, 0.0f}));
   EXPECT_EQ(vector3f5, (Vector3F{1.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(vector3f6, (Vector3F{1.0f, 2.0f, 3.0f}));
   EXPECT_EQ(vector2f2, (Vector2F{1.0f, 2.0f}));
   EXPECT_EQ(vector2f3, (Vector2F{1.0f, 0.0f}));
+  EXPECT_EQ(vector2f4, (Vector2F{1.0f, 2.0f}));
+  EXPECT_EQ(vector2f5, (Vector2F{1.0f, 2.0f}));
 
   EXPECT_EQ(vector4i2, (Vector4I{10, 20, 30, 40}));
   EXPECT_EQ(vector4i3, (Vector4I{10, 20, 30, 40}));
@@ -609,8 +618,11 @@ TEST_F(VectorTest, ConversionConstructor) {
   EXPECT_EQ(vector3i3, (Vector3I{10, 20, 30}));
   EXPECT_EQ(vector3i4, (Vector3I{10, 20, 0}));
   EXPECT_EQ(vector3i5, (Vector3I{10, 0, 0}));
+  EXPECT_EQ(vector3i6, (Vector3I{10, 20, 30}));
   EXPECT_EQ(vector2i2, (Vector2I{10, 20}));
   EXPECT_EQ(vector2i3, (Vector2I{10, 0}));
+  EXPECT_EQ(vector2i4, (Vector2I{10, 20}));
+  EXPECT_EQ(vector2i5, (Vector2I{10, 20}));
 }
 
 // TEST_F(VectorTest, STDArrayConstructor) {
