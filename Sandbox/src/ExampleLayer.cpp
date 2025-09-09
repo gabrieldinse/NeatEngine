@@ -7,8 +7,6 @@
 #include <rfl/yaml.hpp>
 #include <rfl.hpp>
 
-//#include <glaze/glaze.hpp>
-
 struct Person {
   std::string first_name;
   std::string last_name;
@@ -22,71 +20,6 @@ struct Person2 {
 };
 
 namespace rfl {
-// template <typename T>
-// struct Reflector<Neat::Vector<1, T>> {
-//   struct ReflType {
-//     T x;
-//   };
-//
-//   static Neat::Vector<1, T> to(const ReflType &v) noexcept {
-//     return Neat::Vector<1, T>{v.x};
-//   }
-//
-//   static ReflType from(const Neat::Vector<1, T> &v) { return {v.x()}; }
-//
-// };
-//
-// template <typename T>
-// struct Reflector<Neat::Vector<2, T>> {
-//   struct ReflType {
-//     T x;
-//     T y;
-//   };
-//
-//   static Neat::Vector<2, T> to(const ReflType &v) noexcept {
-//     return Neat::Vector<2, T>{v.x, v.y};
-//   }
-//
-//   static ReflType from(const Neat::Vector<2, T> &v) { return {v.x(), v.y()};
-//   }
-// };
-//
-// template <typename T>
-// struct Reflector<Neat::Vector<3, T>> {
-//   struct ReflType {
-//     T x;
-//     T y;
-//     T z;
-//   };
-//
-//   static Neat::Vector<3, T> to(const ReflType &v) noexcept {
-//     return Neat::Vector<3, T>{v.x, v.y, v.z};
-//   }
-//
-//   static ReflType from(const Neat::Vector<3, T> &v) {
-//     return {v.x(), v.y(), v.z()};
-//   }
-// };
-//
-
-// template <typename T>
-// struct Reflector<Neat::Vector<4, T>> {
-//   struct ReflType {
-//     T x;
-//     T y;
-//     T z;
-//     T w;
-//   };
-//
-//   static Neat::Vector<4, T> to(const ReflType &refl) noexcept {
-//     return Neat::Vector<4, T>{refl.x, refl.y, refl.z, refl.w};
-//   }
-//
-//   static ReflType from(const Neat::Vector<4, T> &v) {
-//     return {v.x(), v.y(), v.z(), v.w()};
-//   }
-// };
-
 template <Neat::UInt32 N, typename T>
 struct Reflector<Neat::Vector<N, T>> {
   struct ReflType {
@@ -117,49 +50,7 @@ struct Reflector<Neat::TransformComponent> {
     return {transform.position, transform.scaling, transform.rotation};
   }
 };
-
-// template <>
-// struct Reflector<Neat::Vector<4, float>> {
-//   struct ReflType {
-//     float x;
-//     float y;
-//     float z;
-//     float w;
-//   };
-//
-//   static Neat::Vector<4, float> to(const ReflType &v) noexcept {
-//     return Neat::Vector<4, float>{v.x, v.y, v.z, v.w};
-//   }
-//
-//   static ReflType from(const Neat::Vector<4, float> &v) {
-//     return {v.x(), v.y(), v.z(), v.w()};
-//   }
-//
-// };
-
-// namespace rfl {
-// template <>
-// struct Reflector<Neat::Vector3F> {
-//   struct ReflType {
-//     float x;
-//     float y;
-//     float z;
-//   };
-//
-//   static Neat::Vector3F to(const ReflType &v) noexcept {
-//     return {v.x, v.y, v.z};
-//   }
-//
-//   static ReflType from(const Neat::Vector3F &v) { return {v.x, v.y, v.z}; }
-// };
 }  // namespace rfl
-
-//template <Neat::UInt32 N, typename T>
-//struct glz::meta<Neat::Vector<N, T>> {
-//  using Type = Neat::Vector<N, T>;
-//  static constexpr auto value = glz::object(&Type::elements);
-//  // static_assert(glz::reflect<Type>::size == 1);  // Number of fields
-//};
 
 ExampleLayer::ExampleLayer(
     const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
@@ -173,85 +64,14 @@ ExampleLayer::ExampleLayer(
                                                          {8, 6}, {64, 64})) {
   Person2 person{30, "Alice", 5.7};
 
-  /* GLAZE */
-  // Write to JSON
-  //NT_TRACE("GLAZE TEST");
-  //std::string json = glz::write_json(person).value_or("error");
-  //std::cout << json << std::endl;
-  //// Result: {"age":30,"name":"Alice","height":5.7}
-
-  //// Read from JSON
-  //std::string input = R"({"age":25,"name":"Bob","height":6.1})";
-  //Person2 new_person{};
-  //auto error = glz::read_json(new_person, input);
-  //if (error) {
-  //  std::string error_msg = glz::format_error(error, input);
-  //  std::cout << error_msg << std::endl;
-  //} else {
-  //  // Success! new_person is now populated
-  //  std::cout << new_person.name << " is " << new_person.age << " years old\n";
-  //}
-
-  //Neat::Vector4F vec4{1.0f, 2.0f, 3.0f, 4.0f};
-  //std::string jsonVector4f = glz::write_json(vec4).value_or("error");
-  //std::cout << jsonVector4f << std::endl;
-
-  //Neat::Vector3F vec3{1.0f, 2.0f, 3.0f};
-  //std::string jsonVector3f = glz::write_json(vec3).value_or("error");
-  //std::cout << jsonVector3f << std::endl;
-  //Neat::Vector2F vec2{1.0f, 2.0f};
-  //std::string jsonVector2f = glz::write_json(vec2).value_or("error");
-  //std::cout << jsonVector2f << std::endl;
-  //Neat::Vector1F vec1{1.0f};
-  //std::string jsonVector1f = glz::write_json(vec1).value_or("error");
-  //std::cout << jsonVector1f << std::endl;
-
-  //constexpr auto meta = glz::reflect<Neat::Vector4F>();
-  //int i = 0;
-  //glz::for_each_field(Neat::Vector4F{5.0f, 6.0f, 7.0f, 8.0f}, [&](auto &field) {
-  //  std::string_view field_name = meta.keys[i];
-  //  std::cout << field_name << " = ";
-  //  for (auto elem : field) {
-  //    std::cout << elem << " ";
-  //  }
-  //  std::cout << std::endl;
-  //  i++;
-  //});
-
-  /* REFLECT-CPP */
-  // NT_TRACE("REFLECT-CPP TEST");
-  // const auto homer =
-  //     Person{.first_name = "Homer", .last_name = "Simpson", .age = 45};
-
-  // Neat::Vector1F v1{3.0f};
-  // std::cout << v1 << std::endl;
-
-  ////// We can now write into and read from a JSON string.
-  // const std::string yaml_string = rfl::yaml::write(homer);
-  // std::cout << yaml_string << std::endl;
-  // auto homer2 = rfl::yaml::read<Person>(yaml_string).value();
-  // std::cout << homer2.age << homer2.first_name << homer2.last_name <<
-  // std::endl;
-
-  //// Vector1F
-  // const std::string yaml_string2 = rfl::yaml::write(Neat::Vector1F{1.0f});
-
-  // std::cout << yaml_string2 << std::endl;
-
-  // for (const auto &f : rfl::fields<Neat::Vector1F>()) {
-  //   std::cout << "name: " << f.name() << ", type: " << f.type() << std::endl;
-  // }
-
   Neat::TransformComponent transform;
   const std::string yaml_string3 = rfl::yaml::write(transform);
   std::cout << yaml_string3 << std::endl;
 
-  // auto refl = rfl::Reflector<Neat::Vector<3, float>>::from(
-  //     Neat::Vector3F{1.0f, 2.0f, 3.0f});
-  // const auto view = rfl::to_view(refl);
-  // std::cout << *view.get<0>()[0] << std::endl;
-  auto refl2 = rfl::Reflector<Neat::TransformComponent>::from(
-      Neat::TransformComponent{});
+  auto refl2 =
+      rfl::Reflector<Neat::TransformComponent>::from(Neat::TransformComponent{
+          Neat::Vector3F{1.0f, 2.0f, 3.0f}, Neat::Vector3F{1.0f, 1.0f, 1.0f},
+          Neat::Vector3F{45.0f, 0.0f, 90.0f}});
   const auto view2 = rfl::to_view(refl2);
   std::cout << *view2.get<0>() << std::endl;
   if constexpr (std::is_aggregate_v<Person>) {
@@ -263,15 +83,96 @@ ExampleLayer::ExampleLayer(
     NT_TRACE("ReflType is NOT an aggregate");
   }
 
-  // const auto view = rfl::to_view(transform);
-  // std::cout << *view.get<0>() << std::endl;
+  //////////////////////// IMPORTANT! ////////////////////////////
+  /*********** Writing Scene to YAML *************/
+  auto sceneWrite = rfl::Generic::Object();
+  // Add scene
+  sceneWrite["Name"] = "Scene";
 
-  // const auto view = rfl::to_view(vec4);
-  // std::cout << *view.get<0>() << std::endl;
+  // Add entity1
+  auto entity1 = rfl::Generic::Object();
+  entity1["ID"] = 1;
 
-  // for (const auto &f : rfl::fields<Neat::Vector2F>()) {
-  //   std::cout << "name: " << f.name() << ", type: " << f.type() << std::endl;
-  // }
+  // Add component to entity1
+  entity1["TransformComponent"] = rfl::to_generic(refl2);
+  sceneWrite["entities"] = rfl::Generic::Array({entity1});
+  std::cout << rfl::yaml::write(sceneWrite) << std::endl;
+  /*********** Writing Scene to YAML *************/
+
+  /*********** Reading Scene from YAML *************/
+  // As we were loading from a file
+  auto sceneReadGeneric =
+      rfl::yaml::read<rfl::Generic>(rfl::yaml::write(sceneWrite));
+  std::cout << "Debug YAML after read:\n"
+            << rfl::yaml::write(sceneReadGeneric.value()) << std::endl;
+  NT_INFO("Reading Scene");
+  if (!sceneReadGeneric) {
+    NT_ERROR("Error reading scene");
+    return;
+  }
+
+  NT_INFO("Reading Scene object");
+  if (!sceneReadGeneric.value().to_object()) {
+    NT_ERROR("Error reading scene");
+    return;
+  }
+
+  auto sceneObject = sceneReadGeneric.value().to_object().value();
+
+  NT_INFO("Checking entities");
+  if (sceneObject.count("entities") == 0) {
+    NT_ERROR("No entities found in the scene");
+    return;
+  }
+
+  NT_INFO("Reading entities");
+  if (!sceneObject["entities"].to_array()) {
+    NT_ERROR("Entities is not an array");
+    return;
+  }
+
+  NT_INFO("Entities is an array");
+  NT_INFO("Scene name: {0}",
+          sceneObject["Name"].to_string().value_or("Unnamed Scene"));
+  auto entitiesArray = sceneObject["entities"].to_array().value();
+
+  for (const auto &entity : entitiesArray) {
+    NT_INFO("Reading entity");
+    if (!entity.to_object()) {
+      NT_ERROR("Entity is not an object");
+      continue;
+    }
+
+    NT_ERROR("Entity is an object");
+
+    auto entityObj = entity.to_object().value();
+
+    NT_INFO("Checking TransformComponent");
+    if (entityObj.count("TransformComponent") == 0) {
+      NT_ERROR("No TransformComponent found in the entity");
+      continue;
+    }
+
+    NT_INFO("Reading TransformComponent");
+    if (!entityObj["TransformComponent"].to_object()) {
+      NT_ERROR("TransformComponent is not an object");
+      continue;
+    }
+
+    auto transformObj = entityObj["TransformComponent"].to_object().value();
+    auto reflTransformRead = rfl::yaml::read<Neat::TransformComponent>(
+        rfl::yaml::write(transformObj));
+    if (reflTransformRead) {
+      auto transformComponent = reflTransformRead.value();
+      NT_TRACE("TransformComponent read successfully");
+      NT_TRACE("Entity ID: {0}", entityObj["ID"].to_int().value_or(-1));
+      std::cout << "Position: " << transformComponent.position << std::endl;
+      std::cout << "Scaling: " << transformComponent.scaling << std::endl;
+      std::cout << "Rotation: " << transformComponent.rotation << std::endl;
+    }
+  }
+  /*********** Reading Scene from YAML *************/
+  //////////////////////// IMPORTANT! ////////////////////////////
 
   m_entityManager = Neat::makeRef<Neat::EntityManager>(eventDispatcher);
   m_systems =
