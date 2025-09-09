@@ -52,7 +52,7 @@ target_include_directories(Neat PUBLIC
     vendor/stb_image
 )
 
-set(LIBS glfw Glad yaml-cpp reflectcpp glaze::glaze)
+set(LIBS glfw Glad yaml-cpp reflectcpp)
 
 if(WIN32)
     set(LIBS ${LIBS} opengl32.lib)

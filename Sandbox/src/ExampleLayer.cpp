@@ -7,15 +7,15 @@
 #include <rfl/yaml.hpp>
 #include <rfl.hpp>
 
-#include <glaze/glaze.hpp>
-
-// struct Person {
-//   std::string first_name;
-//   std::string last_name;
-//   int age;
-// };
+//#include <glaze/glaze.hpp>
 
 struct Person {
+  std::string first_name;
+  std::string last_name;
+  int age;
+};
+
+struct Person2 {
   int age = 25;
   std::string name = "John";
   double height = 5.9;
@@ -34,11 +34,6 @@ namespace rfl {
 //
 //   static ReflType from(const Neat::Vector<1, T> &v) { return {v.x()}; }
 //
-//   static Neat::Vector<1, T> to_refl(const ReflType &v) noexcept {
-//     return Neat::Vector<1, T>{v.x};
-//   }
-//
-//   static ReflType from_refl(const Neat::Vector<1, T> &v) { return {v.x()}; }
 // };
 //
 // template <typename T>
@@ -53,14 +48,6 @@ namespace rfl {
 //   }
 //
 //   static ReflType from(const Neat::Vector<2, T> &v) { return {v.x(), v.y()};
-//   }
-//
-//   static Neat::Vector<2, T> to_refl(const ReflType &v) noexcept {
-//     return Neat::Vector<2, T>{v.x, v.y};
-//   }
-//
-//   static ReflType from_refl(const Neat::Vector<2, T> &v) {
-//     return {v.x(), v.y()};
 //   }
 // };
 //
@@ -77,14 +64,6 @@ namespace rfl {
 //   }
 //
 //   static ReflType from(const Neat::Vector<3, T> &v) {
-//     return {v.x(), v.y(), v.z()};
-//   }
-//
-//   static Neat::Vector<3, T> to_refl(const ReflType &v) noexcept {
-//     return Neat::Vector<3, T>{v.x, v.y, v.z};
-//   }
-//
-//   static ReflType from_refl(const Neat::Vector<3, T> &v) {
 //     return {v.x(), v.y(), v.z()};
 //   }
 // };
@@ -106,14 +85,6 @@ namespace rfl {
 //   static ReflType from(const Neat::Vector<4, T> &v) {
 //     return {v.x(), v.y(), v.z(), v.w()};
 //   }
-//
-//   static Neat::Vector<4, T> to_refl(const ReflType &refl) noexcept {
-//     return Neat::Vector<4, T>{refl.x, refl.y, refl.z, refl.w};
-//   }
-//
-//   static ReflType from_refl(const Neat::Vector<4, T> &v) {
-//     return {v.x(), v.y(), v.z(), v.w()};
-//   }
 // };
 
 template <Neat::UInt32 N, typename T>
@@ -127,13 +98,23 @@ struct Reflector<Neat::Vector<N, T>> {
   }
 
   static ReflType from(const Neat::Vector<N, T> &v) { return {v.elements}; }
+};
 
-  static Neat::Vector<N, T> to_refl(const ReflType &rv) noexcept {
-    return Neat::Vector<N, T>{rv.elements};
+template <>
+struct Reflector<Neat::TransformComponent> {
+  struct ReflType {
+    Neat::Vector3F position;
+    Neat::Vector3F scaling;
+    Neat::Vector3F rotation;
+  };
+
+  static Neat::TransformComponent to(const ReflType &reflTransform) noexcept {
+    return Neat::TransformComponent{
+        reflTransform.position, reflTransform.scaling, reflTransform.rotation};
   }
 
-  static ReflType from_refl(const Neat::Vector<N, T> &v) {
-    return {v.elements};
+  static ReflType from(const Neat::TransformComponent &transform) {
+    return {transform.position, transform.scaling, transform.rotation};
   }
 };
 
@@ -154,13 +135,6 @@ struct Reflector<Neat::Vector<N, T>> {
 //     return {v.x(), v.y(), v.z(), v.w()};
 //   }
 //
-//   static Neat::Vector<4, float> to_refl(const ReflType &v) noexcept {
-//     return Neat::Vector<4, float>{v.x, v.y, v.z, v.w};
-//   }
-//
-//   static ReflType from_refl(const Neat::Vector<4, float> &v) {
-//     return {v.x(), v.y(), v.z(), v.w()};
-//   }
 // };
 
 // namespace rfl {
@@ -177,22 +151,15 @@ struct Reflector<Neat::Vector<N, T>> {
 //   }
 //
 //   static ReflType from(const Neat::Vector3F &v) { return {v.x, v.y, v.z}; }
-//   static ReflType to_refl(const Neat::Vector3F &v) noexcept {
-//     return {v.x, v.y, v.z};
-//   }
-//
-//   static Neat::Vector3F from_refl(const ReflType &r) noexcept {
-//     return {r.x, r.y, r.z};
-//   }
 // };
 }  // namespace rfl
 
-template <Neat::UInt32 N, typename T>
-struct glz::meta<Neat::Vector<N, T>> {
-  using Type = Neat::Vector<N, T>;
-  static constexpr auto value = glz::object(&Type::elements);
-  // static_assert(glz::reflect<Type>::size == 1);  // Number of fields
-};
+//template <Neat::UInt32 N, typename T>
+//struct glz::meta<Neat::Vector<N, T>> {
+//  using Type = Neat::Vector<N, T>;
+//  static constexpr auto value = glz::object(&Type::elements);
+//  // static_assert(glz::reflect<Type>::size == 1);  // Number of fields
+//};
 
 ExampleLayer::ExampleLayer(
     const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
@@ -204,52 +171,52 @@ ExampleLayer::ExampleLayer(
                                                           {7, 6}, {64, 64})),
       stairsTexture2(Neat::SubTexture2D::createFromIndex(m_spritesheetTexture,
                                                          {8, 6}, {64, 64})) {
-  Person person{30, "Alice", 5.7};
+  Person2 person{30, "Alice", 5.7};
 
   /* GLAZE */
   // Write to JSON
-  NT_TRACE("GLAZE TEST");
-  std::string json = glz::write_json(person).value_or("error");
-  std::cout << json << std::endl;
-  // Result: {"age":30,"name":"Alice","height":5.7}
+  //NT_TRACE("GLAZE TEST");
+  //std::string json = glz::write_json(person).value_or("error");
+  //std::cout << json << std::endl;
+  //// Result: {"age":30,"name":"Alice","height":5.7}
 
-  // Read from JSON
-  std::string input = R"({"age":25,"name":"Bob","height":6.1})";
-  Person new_person{};
-  auto error = glz::read_json(new_person, input);
-  if (error) {
-    std::string error_msg = glz::format_error(error, input);
-    std::cout << error_msg << std::endl;
-  } else {
-    // Success! new_person is now populated
-    std::cout << new_person.name << " is " << new_person.age << " years old\n";
-  }
+  //// Read from JSON
+  //std::string input = R"({"age":25,"name":"Bob","height":6.1})";
+  //Person2 new_person{};
+  //auto error = glz::read_json(new_person, input);
+  //if (error) {
+  //  std::string error_msg = glz::format_error(error, input);
+  //  std::cout << error_msg << std::endl;
+  //} else {
+  //  // Success! new_person is now populated
+  //  std::cout << new_person.name << " is " << new_person.age << " years old\n";
+  //}
 
-  Neat::Vector4F vec4{1.0f, 2.0f, 3.0f, 4.0f};
-  std::string jsonVector4f = glz::write_json(vec4).value_or("error");
-  std::cout << jsonVector4f << std::endl;
+  //Neat::Vector4F vec4{1.0f, 2.0f, 3.0f, 4.0f};
+  //std::string jsonVector4f = glz::write_json(vec4).value_or("error");
+  //std::cout << jsonVector4f << std::endl;
 
-  Neat::Vector3F vec3{1.0f, 2.0f, 3.0f};
-  std::string jsonVector3f = glz::write_json(vec3).value_or("error");
-  std::cout << jsonVector3f << std::endl;
-  Neat::Vector2F vec2{1.0f, 2.0f};
-  std::string jsonVector2f = glz::write_json(vec2).value_or("error");
-  std::cout << jsonVector2f << std::endl;
-  Neat::Vector1F vec1{1.0f};
-  std::string jsonVector1f = glz::write_json(vec1).value_or("error");
-  std::cout << jsonVector1f << std::endl;
+  //Neat::Vector3F vec3{1.0f, 2.0f, 3.0f};
+  //std::string jsonVector3f = glz::write_json(vec3).value_or("error");
+  //std::cout << jsonVector3f << std::endl;
+  //Neat::Vector2F vec2{1.0f, 2.0f};
+  //std::string jsonVector2f = glz::write_json(vec2).value_or("error");
+  //std::cout << jsonVector2f << std::endl;
+  //Neat::Vector1F vec1{1.0f};
+  //std::string jsonVector1f = glz::write_json(vec1).value_or("error");
+  //std::cout << jsonVector1f << std::endl;
 
-  constexpr auto meta = glz::reflect<Neat::Vector4F>();
-  int i = 0;
-  glz::for_each_field(Neat::Vector4F{5.0f, 6.0f, 7.0f, 8.0f}, [&](auto &field) {
-    std::string_view field_name = meta.keys[i];
-    std::cout << field_name << " = ";
-    for (auto elem : field) {
-      std::cout << elem << " ";
-    }
-    std::cout << std::endl;
-    i++;
-  });
+  //constexpr auto meta = glz::reflect<Neat::Vector4F>();
+  //int i = 0;
+  //glz::for_each_field(Neat::Vector4F{5.0f, 6.0f, 7.0f, 8.0f}, [&](auto &field) {
+  //  std::string_view field_name = meta.keys[i];
+  //  std::cout << field_name << " = ";
+  //  for (auto elem : field) {
+  //    std::cout << elem << " ";
+  //  }
+  //  std::cout << std::endl;
+  //  i++;
+  //});
 
   /* REFLECT-CPP */
   // NT_TRACE("REFLECT-CPP TEST");
@@ -278,6 +245,26 @@ ExampleLayer::ExampleLayer(
   Neat::TransformComponent transform;
   const std::string yaml_string3 = rfl::yaml::write(transform);
   std::cout << yaml_string3 << std::endl;
+
+  // auto refl = rfl::Reflector<Neat::Vector<3, float>>::from(
+  //     Neat::Vector3F{1.0f, 2.0f, 3.0f});
+  // const auto view = rfl::to_view(refl);
+  // std::cout << *view.get<0>()[0] << std::endl;
+  auto refl2 = rfl::Reflector<Neat::TransformComponent>::from(
+      Neat::TransformComponent{});
+  const auto view2 = rfl::to_view(refl2);
+  std::cout << *view2.get<0>() << std::endl;
+  if constexpr (std::is_aggregate_v<Person>) {
+    Person personTest{"John", "Doe", 30};
+    const auto view3 = rfl::to_view(personTest);
+    std::cout << *view3.get<0>() << std::endl;
+    NT_TRACE("ReflType is an aggregate");
+  } else {
+    NT_TRACE("ReflType is NOT an aggregate");
+  }
+
+  // const auto view = rfl::to_view(transform);
+  // std::cout << *view.get<0>() << std::endl;
 
   // const auto view = rfl::to_view(vec4);
   // std::cout << *view.get<0>() << std::endl;
