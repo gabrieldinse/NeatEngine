@@ -724,4 +724,88 @@ TEST_F(VectorTest, PlusEqualOperator) {
   EXPECT_EQ(vector2i.y(), 40);
   EXPECT_EQ(vector1i.x(), 20);
 }
+
+TEST_F(VectorTest, MinusEqualOperator) {
+  vector4f = Vector4F{1.5f, 2.5f, 3.5f, 4.5f};
+  vector3f = Vector3F{1.5f, 2.5f, 3.5f};
+  vector2f = Vector2F{1.5f, 2.5f};
+  vector1f = Vector1F{1.5f};
+  vector4i = Vector4I{10, 20, 30, 40};
+  vector3i = Vector3I{10, 20, 30};
+  vector2i = Vector2I{10, 20};
+  vector1i = Vector1I{10};
+
+  vector4f -= Vector4F{1.5f, 2.5f, 3.5f, 4.5f};
+  vector3f -= Vector3F{1.5f, 2.5f, 3.5f};
+  vector2f -= Vector2F{1.5f, 2.5f};
+  vector1f -= Vector1F{1.5f};
+  vector4i -= Vector4I{10, 20, 30, 40};
+  vector3i -= Vector3I{10, 20, 30};
+  vector2i -= Vector2I{10, 20};
+  vector1i -= Vector1I{10};
+
+  EXPECT_EQ(vector4f.x(), 0.0f);
+  EXPECT_EQ(vector4f.y(), 0.0f);
+  EXPECT_EQ(vector4f.z(), 0.0f);
+  EXPECT_EQ(vector4f.w(), 0.0f);
+  EXPECT_EQ(vector3f.x(), 0.0f);
+  EXPECT_EQ(vector3f.y(), 0.0f);
+  EXPECT_EQ(vector3f.z(), 0.0f);
+  EXPECT_EQ(vector2f.x(), 0.0f);
+  EXPECT_EQ(vector2f.y(), 0.0f);
+  EXPECT_EQ(vector1f.x(), 0.0f);
+
+  EXPECT_EQ(vector4i.x(), 0);
+  EXPECT_EQ(vector4i.y(), 0);
+  EXPECT_EQ(vector4i.z(), 0);
+  EXPECT_EQ(vector4i.w(), 0);
+  EXPECT_EQ(vector3i.x(), 0);
+  EXPECT_EQ(vector3i.y(), 0);
+  EXPECT_EQ(vector3i.z(), 0);
+  EXPECT_EQ(vector2i.x(), 0);
+  EXPECT_EQ(vector2i.y(), 0);
+  EXPECT_EQ(vector1i.x(), 0);
+}
+
+TEST_F(VectorTest, MultiplyEqualOperator) {
+  vector4f = Vector4F{1.5f, 2.5f, 3.5f, 4.5f};
+  vector3f = Vector3F{1.5f, 2.5f, 3.5f};
+  vector2f = Vector2F{1.5f, 2.5f};
+  vector1f = Vector1F{1.5f};
+  vector4i = Vector4I{10, 20, 30, 40};
+  vector3i = Vector3I{10, 20, 30};
+  vector2i = Vector2I{10, 20};
+  vector1i = Vector1I{10};
+
+  vector4f *= Vector4F{10.0f, 10.0f, 10.0f, 10.0f};
+  vector3f *= Vector3F{10.0f, 10.0f, 10.0f};
+  vector2f *= Vector2F{10.0f, 10.0f};
+  vector1f *= Vector1F{10.0f};
+  vector4i *= Vector4I{10, 10, 10, 10};
+  vector3i *= Vector3I{10, 10, 10};
+  vector2i *= Vector2I{10, 10};
+  vector1i *= Vector1I{10};
+
+  EXPECT_EQ(vector4f.x(), 15.0f);
+  EXPECT_EQ(vector4f.y(), 25.0f);
+  EXPECT_EQ(vector4f.z(), 35.0f);
+  EXPECT_EQ(vector4f.w(), 45.0f);
+  EXPECT_EQ(vector3f.x(), 15.0f);
+  EXPECT_EQ(vector3f.y(), 25.0f);
+  EXPECT_EQ(vector3f.z(), 35.0f);
+  EXPECT_EQ(vector2f.x(), 15.0f);
+  EXPECT_EQ(vector2f.y(), 25.0f);
+  EXPECT_EQ(vector1f.x(), 15.0f);
+
+  EXPECT_EQ(vector4i.x(), 100);
+  EXPECT_EQ(vector4i.y(), 200);
+  EXPECT_EQ(vector4i.z(), 300);
+  EXPECT_EQ(vector4i.w(), 400);
+  EXPECT_EQ(vector3i.x(), 100);
+  EXPECT_EQ(vector3i.y(), 200);
+  EXPECT_EQ(vector3i.z(), 300);
+  EXPECT_EQ(vector2i.x(), 100);
+  EXPECT_EQ(vector2i.y(), 200);
+  EXPECT_EQ(vector1i.x(), 100);
+}
 }  // namespace Neat
