@@ -116,10 +116,6 @@ template <typename T>
 inline constexpr Matrix<2, 2, T> operator/(const Matrix<2, 2, T> &m,
                                            const T &scalar);
 
-// Output stream operator
-template <typename U>
-std::ostream &operator<<(std::ostream &os, const Matrix<2, 2, U> &m);
-
 // Matrix operations
 template <typename T>
 inline T determinant(const Matrix<2, 2, T> &m);

@@ -245,21 +245,6 @@ inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator/=(const U &scalar) {
   return *this;
 }
 
-// Output stream operator
-template <typename U>
-std::ostream &operator<<(std::ostream &os, const Matrix<3, 3, U> &m) {
-  os << "Matrix3<" << typeid(U).name() << ">{\n";
-  for (int i = 0; i < 3; ++i) {
-    os << " ";
-    for (int j = 0; j < 3; ++j) {
-      os << " " << m(i, j);
-    }
-    os << "\n";
-  }
-  os << "}";
-  return os;
-}
-
 // Element accessing
 template <typename T>
 inline constexpr std::span<T, 3> Matrix<3, 3, T>::operator[](UInt32 row) {

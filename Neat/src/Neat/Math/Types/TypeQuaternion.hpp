@@ -206,10 +206,6 @@ inline constexpr Vector<3, T> rotate(const Quaternion<T> &q,
 template <typename T>
 inline constexpr Vector<4, T> rotate(const Quaternion<T> &q,
                                      const Vector<4, T> &v);
-
-// Ostream operators
-template <typename T, UInt32 N>
-std::ostream &operator<<(std::ostream &os, const Quaternion<T> &q);
 }  // namespace Neat
 
 #include "Neat/Math/Types/TypeQuaternion.inl"

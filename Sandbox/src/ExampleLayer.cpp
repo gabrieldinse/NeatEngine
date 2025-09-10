@@ -66,18 +66,18 @@ ExampleLayer::ExampleLayer(
 
   Neat::TransformComponent transform;
   const std::string yaml_string3 = rfl::yaml::write(transform);
-  std::cout << yaml_string3 << std::endl;
+  NT_INFO(yaml_string3);
 
   auto refl2 =
       rfl::Reflector<Neat::TransformComponent>::from(Neat::TransformComponent{
           Neat::Vector3F{1.0f, 2.0f, 3.0f}, Neat::Vector3F{1.0f, 1.0f, 1.0f},
           Neat::Vector3F{45.0f, 0.0f, 90.0f}});
   const auto view2 = rfl::to_view(refl2);
-  std::cout << *view2.get<0>() << std::endl;
+  NT_INFO(*view2.get<0>());
   if constexpr (std::is_aggregate_v<Person>) {
     Person personTest{"John", "Doe", 30};
     const auto view3 = rfl::to_view(personTest);
-    std::cout << *view3.get<0>() << std::endl;
+    NT_INFO(*view3.get<0>());
     NT_TRACE("ReflType is an aggregate");
   } else {
     NT_TRACE("ReflType is NOT an aggregate");
@@ -96,15 +96,15 @@ ExampleLayer::ExampleLayer(
   // Add component to entity1
   entity1["TransformComponent"] = rfl::to_generic(refl2);
   sceneWrite["entities"] = rfl::Generic::Array({entity1});
-  std::cout << rfl::yaml::write(sceneWrite) << std::endl;
+  NT_INFO(rfl::yaml::write(sceneWrite));
   /*********** Writing Scene to YAML *************/
 
   /*********** Reading Scene from YAML *************/
   // As we were loading from a file
   auto sceneReadGeneric =
       rfl::yaml::read<rfl::Generic>(rfl::yaml::write(sceneWrite));
-  std::cout << "Debug YAML after read:\n"
-            << rfl::yaml::write(sceneReadGeneric.value()) << std::endl;
+  NT_INFO("Debug YAML after read:");
+  NT_INFO(rfl::yaml::write(sceneReadGeneric.value()));
   NT_INFO("Reading Scene");
   if (!sceneReadGeneric) {
     NT_ERROR("Error reading scene");
@@ -166,9 +166,9 @@ ExampleLayer::ExampleLayer(
       auto transformComponent = reflTransformRead.value();
       NT_TRACE("TransformComponent read successfully");
       NT_TRACE("Entity ID: {0}", entityObj["ID"].to_int().value_or(-1));
-      std::cout << "Position: " << transformComponent.position << std::endl;
-      std::cout << "Scaling: " << transformComponent.scaling << std::endl;
-      std::cout << "Rotation: " << transformComponent.rotation << std::endl;
+      NT_TRACE("Position: {}", transformComponent.position);
+      NT_TRACE("Scaling: {}", transformComponent.scaling);
+      NT_TRACE("Rotation: {}", transformComponent.rotation);
     }
   }
   /*********** Reading Scene from YAML *************/

@@ -241,14 +241,6 @@ inline constexpr bool operator!=(const Vector<4, U> &va,
   return not(va == vb);
 }
 
-// Output stream operator
-template <typename T>
-inline constexpr std::ostream &operator<<(std::ostream &os,
-                                          const Vector<4, T> &v) {
-  return os << "Vector4<" << typeid(T).name() << ">{" << v.x() << ", " << v.y()
-            << ", " << v.z() << ", " << v.w() << "}";
-}
-
 // Vector operations
 template <typename T>
 T dot(const Vector<4, T> &va, const Vector<4, T> &vb) {

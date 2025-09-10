@@ -139,11 +139,6 @@ inline constexpr Vector<2, T> operator*(const Vector<2, T> &v, const T &scalar);
 template <typename T>
 inline constexpr Vector<2, T> operator/(const Vector<2, T> &v, const T &scalar);
 
-// Output stream operator
-template <typename T>
-inline constexpr std::ostream &operator<<(std::ostream &os,
-                                          const Vector<2, T> &v);
-
 // Vector operations
 template <typename T>
 inline T dot(const Vector<2, T> &va, const Vector<2, T> &vb);

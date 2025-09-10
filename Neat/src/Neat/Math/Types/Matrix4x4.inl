@@ -175,21 +175,6 @@ inline constexpr Matrix<4, 4, T> operator/(const Matrix<4, 4, T> &m,
       scalar * m[12], scalar * m[13], scalar * m[14], scalar * m[15]};
 }
 
-// Output stream operator
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const Matrix<4, 4, T> &m) {
-  os << "Matrix4<" << typeid(T).name() << ">{";
-  for (int i = 0; i < 4; ++i) {
-    os << " ";
-    for (int j = 0; j < 4; ++j) {
-      os << " " << m(i, j);
-    }
-    os << "\n";
-  }
-  os << "}";
-  return os;
-}
-
 // Assignment operators
 template <typename T>
 template <typename U>

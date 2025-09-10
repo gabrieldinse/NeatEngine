@@ -6,7 +6,6 @@
 #include "Neat/Core/Types.hpp"
 
 #include "spdlog/spdlog.h"
-#include "spdlog/fmt/ostr.h"
 
 #undef near
 #undef far

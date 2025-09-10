@@ -118,21 +118,6 @@ inline constexpr Matrix<2, 2, T> operator/(const Matrix<2, 2, T> &m,
                          m(3) / scalar};
 }
 
-// Output stream operator
-template <typename U>
-std::ostream &operator<<(std::ostream &os, const Matrix<2, 2, U> &m) {
-  os << "Matrix2<" << typeid(U).name() << ">{";
-  for (int i = 0; i < 2; ++i) {
-    os << " ";
-    for (int j = 0; j < 2; ++j) {
-      os << " " << m(i, j);
-    }
-    os << "\n";
-  }
-  os << "}";
-  return os;
-}
-
 // Assignment operators
 template <typename T>
 inline constexpr Matrix<2, 2, T> &Matrix<2, 2, T>::operator=(
