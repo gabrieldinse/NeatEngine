@@ -15,10 +15,10 @@ struct ComponentWidgetProperties {
   WidgetFunction remove;
 };
 
-class ComponentWidgetsRenderer {
+class ComponentWidgetsRegistry {
  public:
-  ComponentWidgetsRenderer() = default;
-  ComponentWidgetsRenderer(Ref<EntityManager> entityManager)
+  ComponentWidgetsRegistry() = default;
+  ComponentWidgetsRegistry(Ref<EntityManager> entityManager)
       : m_entityManager(entityManager) {}
 
   void drawAllComponents(Entity& entity);
@@ -31,8 +31,7 @@ class ComponentWidgetsRenderer {
 
  private:
   Ref<EntityManager> m_entityManager;
-  std::map<BaseComponent::Family, ComponentWidgetProperties>
-      m_registeredComponents;
+  std::map<BaseComponent::Family, ComponentWidgetProperties> m_registry;
 };
 
 template <typename Component>
@@ -48,9 +47,9 @@ void removeComponentAction(
 }
 
 template <typename Component>
-void ComponentWidgetsRenderer::registerComponent(const std::string& name,
+void ComponentWidgetsRegistry::registerComponent(const std::string& name,
                                                  WidgetFunction drawFunction) {
-  m_registeredComponents[m_entityManager->getComponentFamily<Component>()] = {
+  m_registry[m_entityManager->getComponentFamily<Component>()] = {
       name, drawFunction, addComponentAction<Component>,
       removeComponentAction<Component>};
 }

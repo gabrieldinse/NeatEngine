@@ -1,6 +1,7 @@
 #include <memory>
 
 #include "EditorLayer.hpp"
+#include "Neat/Scene/SceneSerializer.hpp"
 
 namespace Neat {
 EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
@@ -27,6 +28,11 @@ EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
 
   FrameBufferSpecification specification{1600, 900};
   m_frameBuffer = FrameBuffer::create(specification);
+}
+
+EditorLayer::~EditorLayer() {
+  SceneSerializer serializer(m_scene);
+  serializer.serialize("./scene.yaml");
 }
 
 void EditorLayer::onImGuiRender() {

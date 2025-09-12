@@ -9,8 +9,8 @@
 
 namespace Neat {
 SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
-    : m_scene(scene), m_componentWidgetsRenderer{m_scene->getEntityManager()} {
-  m_componentWidgetsRenderer.registerComponent<TransformComponent>(
+    : m_scene(scene), m_componentWidgetsRegistry{m_scene->getEntityManager()} {
+  m_componentWidgetsRegistry.registerComponent<TransformComponent>(
       "Transform", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
                       Entity &entity) {
         auto transform = entity.getComponent<TransformComponent>();
@@ -19,7 +19,7 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
         drawVector3FControl("Scale", transform->scaling, 1.0f);
       });
 
-  m_componentWidgetsRenderer.registerComponent<CameraComponent>(
+  m_componentWidgetsRegistry.registerComponent<CameraComponent>(
       "Camera", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
                    Entity &entity) {
         auto camera = entity.getComponent<CameraComponent>();
@@ -88,7 +88,7 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
         }
       });
 
-  m_componentWidgetsRenderer.registerComponent<RenderableSpriteComponent>(
+  m_componentWidgetsRegistry.registerComponent<RenderableSpriteComponent>(
       "Sprite", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
                    Entity &entity) {
         auto sprite = entity.getComponent<RenderableSpriteComponent>();
@@ -100,8 +100,8 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
 
 void SceneHierarchyPanel::setScene(const Ref<Scene> &scene) {
   m_scene = scene;
-  m_componentWidgetsRenderer =
-      ComponentWidgetsRenderer(m_scene->getEntityManager());
+  m_componentWidgetsRegistry =
+      ComponentWidgetsRegistry(m_scene->getEntityManager());
 }
 
 void SceneHierarchyPanel::onUpdate() {
@@ -186,7 +186,7 @@ void SceneHierarchyPanel::drawComponentNodes(Entity &entity) {
   drawAddComponentButton();
   ImGui::PopItemWidth();
 
-  m_componentWidgetsRenderer.drawAllComponents(entity);
+  m_componentWidgetsRegistry.drawAllComponents(entity);
 }
 
 void SceneHierarchyPanel::drawAddComponentButton() {

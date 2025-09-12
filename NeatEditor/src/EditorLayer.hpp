@@ -11,7 +11,7 @@ namespace Neat {
 class EditorLayer : public Layer {
  public:
   EditorLayer(const Ref<EventDispatcher> &eventManager);
-  ~EditorLayer() = default;
+  ~EditorLayer();
 
   void onImGuiRender();
   virtual void onUpdate(double deltaTimeSeconds) override;

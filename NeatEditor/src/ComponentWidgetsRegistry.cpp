@@ -1,16 +1,16 @@
-#include "ComponentWidgetsRenderer.hpp"
+#include "ComponentWidgetsRegistry.hpp"
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 
 namespace Neat {
-void ComponentWidgetsRenderer::drawAllComponents(Entity &entity) {
-  for (const auto &[family, widgetProperties] : m_registeredComponents) {
+void ComponentWidgetsRegistry::drawAllComponents(Entity &entity) {
+  for (const auto &[family, widgetProperties] : m_registry) {
     drawComponent(entity, family, widgetProperties);
   }
 }
 
-void ComponentWidgetsRenderer::drawComponent(Entity &entity,
+void ComponentWidgetsRegistry::drawComponent(Entity &entity,
                                              BaseComponent::Family family,
                                              ComponentWidgetProperties widget) {
   if (entity.hasComponent(family)) {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ComponentWidgetsRenderer.hpp"
+#include "ComponentWidgetsRegistry.hpp"
 
 #include "Neat/Scene/Scene.hpp"
 
@@ -25,6 +25,6 @@ class SceneHierarchyPanel {
  private:
   Ref<Scene> m_scene;
   Entity m_selectedEntity;
-  ComponentWidgetsRenderer m_componentWidgetsRenderer;
+  ComponentWidgetsRegistry m_componentWidgetsRegistry;
 };
 }  // namespace Neat

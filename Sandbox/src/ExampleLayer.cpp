@@ -83,6 +83,9 @@ ExampleLayer::ExampleLayer(
     NT_TRACE("ReflType is NOT an aggregate");
   }
 
+  Person personTest2{"John", "Doe", 30};
+  auto generic = rfl::to_generic(personTest2);
+
   //////////////////////// IMPORTANT! ////////////////////////////
   /*********** Writing Scene to YAML *************/
   auto sceneWrite = rfl::Generic::Object();
@@ -97,12 +100,16 @@ ExampleLayer::ExampleLayer(
   entity1["TransformComponent"] = rfl::to_generic(refl2);
   sceneWrite["entities"] = rfl::Generic::Array({entity1});
   NT_INFO(rfl::yaml::write(sceneWrite));
+
+  // Save Scene to file
+  rfl::yaml::save("./scene.yaml", sceneWrite);
   /*********** Writing Scene to YAML *************/
 
   /*********** Reading Scene from YAML *************/
   // As we were loading from a file
-  auto sceneReadGeneric =
-      rfl::yaml::read<rfl::Generic>(rfl::yaml::write(sceneWrite));
+  auto sceneReadGeneric = rfl::yaml::load<rfl::Generic>("./scene.yaml");
+  // auto sceneReadGeneric =
+  //     rfl::yaml::read<rfl::Generic>(rfl::yaml::write(sceneWrite));
   NT_INFO("Debug YAML after read:");
   NT_INFO(rfl::yaml::write(sceneReadGeneric.value()));
   NT_INFO("Reading Scene");

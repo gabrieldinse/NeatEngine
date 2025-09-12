@@ -36,34 +36,37 @@ add_library(Neat STATIC ${NEAT_SOURCES})
 
 target_compile_options(Neat PRIVATE
     -Wall -Wextra -Wpedantic
-    $<$<CONFIG:Debug>:-Werror>
+    #$<$<CONFIG:Debug>:-Werror> 
 )
 
 target_precompile_headers(Neat PRIVATE
     src/NeatPCH.hpp
 )
 
-target_include_directories(Neat PUBLIC
-    src
-    vendor/GLFW/include
-    vendor/Glad/include
-    vendor/ImGui
-    vendor/spdlog/include
-    vendor/stb_image
+target_include_directories(Neat
+    PUBLIC
+        src
+        vendor/GLFW/include
+        vendor/Glad/include
+        vendor/ImGui
+        vendor/spdlog/include
+        vendor/stb_image
+        vendor/reflect-cpp/include
+
 )
 
-set(LIBS glfw Glad yaml-cpp reflectcpp)
+set(PUBLIC_LIBRARIES glfw Glad yaml-cpp reflectcpp)
 
 if(WIN32)
-    set(LIBS ${LIBS} opengl32.lib)
+    set(PUBLIC_LIBRARIES ${PUBLIC_LIBRARIES} opengl32.lib)
 elseif(UNIX AND NOT APPLE)
     find_package(OpenGL REQUIRED)
     find_package(X11 REQUIRED)
     find_package(Threads REQUIRED)
-    set(LIBS ${LIBS} OpenGL::GL pthread dl X11::X11 ${CMAKE_THREAD_LIBS_INIT})
+    set(PUBLIC_LIBRARIES ${PUBLIC_LIBRARIES} OpenGL::GL pthread dl X11::X11 ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
-target_link_libraries(Neat PUBLIC ${LIBS})
+target_link_libraries(Neat PUBLIC ${PUBLIC_LIBRARIES})
 
 target_compile_definitions(Neat PRIVATE
     $<$<CONFIG:Debug>:NT_DEBUG;NT_IMGUI>

@@ -16,7 +16,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
   NT_PROFILE_END_SESSION();
 
   NT_PROFILE_BEGIN_SESSION("Runtime", "Neat-Profile.json");
-  // app->run();
+  app->run();
   NT_PROFILE_END_SESSION();
 }
 

@@ -16,8 +16,8 @@ class Application {
       const ApplicationProperties &appProperties = ApplicationProperties{});
   virtual ~Application();
 
-  void run();
-  void close() { stop(); }
+  virtual void run();
+  virtual void close() { stop(); }
   virtual void onUpdate([[maybe_unused]] double deltaTimeSeconds) {}
 
   template <typename T, typename... Args>
