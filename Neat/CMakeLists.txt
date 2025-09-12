@@ -36,7 +36,10 @@ add_library(Neat STATIC ${NEAT_SOURCES})
 
 target_compile_options(Neat PRIVATE
     -Wall -Wextra -Wpedantic
-    #$<$<CONFIG:Debug>:-Werror> 
+)
+
+set_source_files_properties(${NEAT_SOURCES} PROPERTIES
+    COMPILE_OPTIONS "$<$<CONFIG:Debug>:-Werror>"
 )
 
 target_precompile_headers(Neat PRIVATE
@@ -46,13 +49,18 @@ target_precompile_headers(Neat PRIVATE
 target_include_directories(Neat
     PUBLIC
         src
+)
+
+# Use SYSTEM to suppress warnings from external headers to be treated as errors
+target_include_directories(Neat
+    SYSTEM PUBLIC
         vendor/GLFW/include
         vendor/Glad/include
         vendor/ImGui
         vendor/spdlog/include
         vendor/stb_image
         vendor/reflect-cpp/include
-
+        vendor/yaml-cpp/include
 )
 
 set(PUBLIC_LIBRARIES glfw Glad yaml-cpp reflectcpp)

@@ -16,7 +16,10 @@ set_target_properties(NeatEditor PROPERTIES
 
 target_compile_options(NeatEditor PRIVATE
     -Wall -Wextra -Wpedantic
-    #$<$<CONFIG:Debug>:-Werror>
+)
+
+set_source_files_properties(${NEAT_EDIT_SOURCES} PROPERTIES
+    COMPILE_OPTIONS "$<$<CONFIG:Debug>:-Werror>"
 )
 
 target_compile_definitions(NeatEditor PRIVATE

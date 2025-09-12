@@ -31,7 +31,8 @@ class ComponentSerializationRegistry {
             return rfl::to_generic(rfl::Reflector<C>::from(*component));
           }
         },
-        [](Entity &entity, const rfl::Generic &data) {}};
+        []([[maybe_unused]] Entity &entity,
+           [[maybe_unused]] const rfl::Generic &data) {}};
 
     m_registry[name] = properties;
   }
