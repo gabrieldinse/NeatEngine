@@ -30,7 +30,8 @@ template <typename T>
 template <typename X1, typename Y1, typename X2, typename Y2>
 inline constexpr Matrix<2, 2, T>::Matrix(const X1 &m00, const Y1 &m01,
                                          const X2 &m10, const Y2 &m11)
-    : elements{m00, m01, m10, m11} {}
+    : elements{static_cast<T>(m00), static_cast<T>(m01), static_cast<T>(m10),
+               static_cast<T>(m11)} {}
 
 template <typename T>
 template <typename U>
@@ -231,6 +232,18 @@ template <typename T>
 inline constexpr const T &Matrix<2, 2, T>::operator()(UInt32 row,
                                                       UInt32 col) const {
   return elements[row * 2 + col];
+}
+
+template <typename T>
+inline constexpr Matrix<2, 2, T>::RowType Matrix<2, 2, T>::row(
+    UInt32 row) const {
+  return RowType{elements[row * 2], elements[row * 2 + 1]};
+}
+
+template <typename T>
+inline constexpr Matrix<2, 2, T>::RowType Matrix<2, 2, T>::col(
+    UInt32 col) const {
+  return RowType{elements[col], elements[col + 2]};
 }
 
 // Matrix operations

@@ -44,8 +44,12 @@ inline constexpr Matrix<4, 4, T>::Matrix(
     const Y2 &m11, const Z2 &m12, const W2 &m13, const X3 &m20, const Y3 &m21,
     const Z3 &m22, const W3 &m23, const X4 &m30, const Y4 &m31, const Z4 &m32,
     const W4 &m33)
-    : elements{m00, m01, m02, m03, m10, m11, m12, m13,
-               m20, m21, m22, m23, m30, m31, m32, m33} {}
+    : elements{static_cast<T>(m00), static_cast<T>(m01), static_cast<T>(m02),
+               static_cast<T>(m03), static_cast<T>(m10), static_cast<T>(m11),
+               static_cast<T>(m12), static_cast<T>(m13), static_cast<T>(m20),
+               static_cast<T>(m21), static_cast<T>(m22), static_cast<T>(m23),
+               static_cast<T>(m30), static_cast<T>(m31), static_cast<T>(m32),
+               static_cast<T>(m33)} {}
 
 template <typename T>
 template <typename U>
@@ -348,6 +352,20 @@ template <typename T>
 inline constexpr const T &Matrix<4, 4, T>::operator()(UInt32 row,
                                                       UInt32 col) const {
   return elements[row * 4 + col];
+}
+
+template <typename T>
+inline constexpr Matrix<4, 4, T>::RowType Matrix<4, 4, T>::row(
+    UInt32 row) const {
+  return RowType{elements[row * 4], elements[row * 4 + 1],
+                 elements[row * 4 + 2], elements[row * 4 + 3]};
+}
+
+template <typename T>
+inline constexpr Matrix<4, 4, T>::RowType Matrix<4, 4, T>::col(
+    UInt32 col) const {
+  return RowType{elements[col], elements[col + 4], elements[col + 8],
+                 elements[col + 12]};
 }
 
 // Matrix operations

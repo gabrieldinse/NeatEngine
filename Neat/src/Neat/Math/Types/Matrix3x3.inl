@@ -39,7 +39,9 @@ inline constexpr Matrix<3, 3, T>::Matrix(const X1 &m00, const Y1 &m01,
                                          const Y2 &m11, const Z2 &m12,
                                          const X3 &m20, const Y3 &m21,
                                          const Z3 &m22)
-    : elements{m00, m01, m02, m10, m11, m12, m20, m21, m22} {}
+    : elements{static_cast<T>(m00), static_cast<T>(m01), static_cast<T>(m02),
+               static_cast<T>(m10), static_cast<T>(m11), static_cast<T>(m12),
+               static_cast<T>(m20), static_cast<T>(m21), static_cast<T>(m22)} {}
 
 template <typename T>
 template <typename U>
@@ -275,6 +277,19 @@ template <typename T>
 inline constexpr const T &Matrix<3, 3, T>::operator()(UInt32 row,
                                                       UInt32 col) const {
   return elements[row * 3 + col];
+}
+
+template <typename T>
+inline constexpr Matrix<3, 3, T>::RowType Matrix<3, 3, T>::row(
+    UInt32 row) const {
+  return RowType{elements[row * 3], elements[row * 3 + 1],
+                 elements[row * 3 + 2]};
+}
+
+template <typename T>
+inline constexpr Matrix<3, 3, T>::RowType Matrix<3, 3, T>::col(
+    UInt32 col) const {
+  return RowType{elements[col], elements[col + 3], elements[col + 6]};
 }
 
 // Matrix operations
