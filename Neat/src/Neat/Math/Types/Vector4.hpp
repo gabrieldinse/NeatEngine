@@ -61,8 +61,6 @@ struct Vector<4, T> {
   template <typename U>
   constexpr Vector<4, T> &operator*=(const Vector<4, U> &v);
   template <typename U>
-  constexpr Vector<4, T> &operator*=(const Vector<1, U> &v);
-  template <typename U>
   constexpr Vector<4, T> &operator*=(const U &scalar);
   template <typename U>
   constexpr Vector<4, T> &operator/=(const U &scalar);

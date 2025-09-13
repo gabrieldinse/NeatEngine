@@ -807,5 +807,36 @@ TEST_F(VectorTest, MultiplyEqualOperator) {
   EXPECT_EQ(vector2i.x(), 100);
   EXPECT_EQ(vector2i.y(), 200);
   EXPECT_EQ(vector1i.x(), 100);
+
+  vector4f *= 10.0f;
+  vector3f *= 10.0f;
+  vector2f *= 10.0f;
+  vector1f *= 10.0f;
+  vector4i *= 10;
+  vector3i *= 10;
+  vector2i *= 10;
+  vector1i *= 10;
+
+  EXPECT_EQ(vector4f.x(), 150.0f);
+  EXPECT_EQ(vector4f.y(), 250.0f);
+  EXPECT_EQ(vector4f.z(), 350.0f);
+  EXPECT_EQ(vector4f.w(), 450.0f);
+  EXPECT_EQ(vector3f.x(), 150.0f);
+  EXPECT_EQ(vector3f.y(), 250.0f);
+  EXPECT_EQ(vector3f.z(), 350.0f);
+  EXPECT_EQ(vector2f.x(), 150.0f);
+  EXPECT_EQ(vector2f.y(), 250.0f);
+  EXPECT_EQ(vector1f.x(), 150.0f);
+
+  EXPECT_EQ(vector4i.x(), 1000);
+  EXPECT_EQ(vector4i.y(), 2000);
+  EXPECT_EQ(vector4i.z(), 3000);
+  EXPECT_EQ(vector4i.w(), 4000);
+  EXPECT_EQ(vector3i.x(), 1000);
+  EXPECT_EQ(vector3i.y(), 2000);
+  EXPECT_EQ(vector3i.z(), 3000);
+  EXPECT_EQ(vector2i.x(), 1000);
+  EXPECT_EQ(vector2i.y(), 2000);
+  EXPECT_EQ(vector1i.x(), 1000);
 }
 }  // namespace Neat
