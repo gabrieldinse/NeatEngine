@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Graphics/GraphicsContext.hpp"
+#include "GraphicsContext.hpp"
 
 namespace Neat {
 class GraphicsContext {

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "Neat/Core/Types.hpp"
+#include "Types.hpp"
 
 namespace Neat {
 class EventDispatcher;

@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Utils/MemoryPool.hpp"
+#include "MemoryPool.hpp"
 
 namespace Neat {
 BaseMemoryPool::~BaseMemoryPool() {

@@ -1,11 +1,12 @@
 #include <cmath>
 
+#include "Constants.hpp"
+#include "Types/FunctorDoubleVector.hpp"
+#include "Types/FunctorVector.hpp"
+#include "Types/TypeQuaternion.hpp"
+#include "Types/TypeVectorN.hpp"
+
 #include "Neat/Core/Limits.hpp"
-#include "Neat/Math/Constants.hpp"
-#include "Neat/Math/Types/FunctorDoubleVector.hpp"
-#include "Neat/Math/Types/FunctorVector.hpp"
-#include "Neat/Math/Types/TypeQuaternion.hpp"
-#include "Neat/Math/Types/TypeVectorN.hpp"
 
 namespace Neat {
 // Scalar

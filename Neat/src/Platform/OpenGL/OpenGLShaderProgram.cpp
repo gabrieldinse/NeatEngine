@@ -1,7 +1,8 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLUtils.hpp"
-#include "Platform/OpenGL/OpenGLShaderProgram.hpp"
+#include "OpenGLUtils.hpp"
+#include "OpenGLShaderProgram.hpp"
+
 #include "Neat/Utils/ReadFile.hpp"
 
 #include <glad/glad.h>

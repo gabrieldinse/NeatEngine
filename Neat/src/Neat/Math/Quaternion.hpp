@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "Neat/Math/Types/TypeQuaternion.hpp"
+#include "Types/TypeQuaternion.hpp"
 
 namespace fmt {
 template <typename T>

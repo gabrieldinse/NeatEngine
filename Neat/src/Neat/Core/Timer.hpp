@@ -3,8 +3,9 @@
 #include <chrono>
 #include <utility>
 
-#include "Neat/Core/Exceptions.hpp"
-#include "Neat/Core/Types.hpp"
+#include "Exceptions.hpp"
+#include "Types.hpp"
+
 #include "Neat/Utils/TimeConversions.hpp"
 
 namespace Neat {

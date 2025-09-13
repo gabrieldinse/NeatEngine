@@ -1,7 +1,7 @@
 #include <cmath>
 
-#include "Neat/Math/Constants.hpp"
-#include "Neat/Math/Trigonometric.hpp"
+#include "Constants.hpp"
+#include "Trigonometric.hpp"
 #include "Transform.hpp"
 
 namespace Neat {

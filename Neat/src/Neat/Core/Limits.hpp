@@ -2,7 +2,7 @@
 
 #include <limits>
 
-#include "Neat/Core/Types.hpp"
+#include "Types.hpp"
 
 namespace Neat {
 constexpr Int8 Int8Min = INT8_MIN;

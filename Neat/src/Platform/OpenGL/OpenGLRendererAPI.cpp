@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLRendererAPI.hpp"
+#include "OpenGLRendererAPI.hpp"
 
 #include <glad/glad.h>
 

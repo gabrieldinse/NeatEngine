@@ -1,8 +1,9 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/RenderCommand.hpp"
-#include "Neat/Graphics/Renderer2D.hpp"
-#include "Neat/Graphics/ShaderDataType.hpp"
+#include "RenderCommand.hpp"
+#include "Renderer2D.hpp"
+#include "ShaderDataType.hpp"
+
 #include "Neat/Math/Transform.hpp"
 #include "Neat/Math/Trigonometric.hpp"
 #include "Neat/Math/Vector.hpp"

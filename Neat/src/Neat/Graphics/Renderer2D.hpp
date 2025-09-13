@@ -3,11 +3,12 @@
 #include <array>
 #include <memory>
 
+#include "Color.hpp"
+#include "Texture2D.hpp"
+#include "VertexArray.hpp"
+#include "ShaderProgram.hpp"
+
 #include "Neat/Core/Types.hpp"
-#include "Neat/Graphics/Color.hpp"
-#include "Neat/Graphics/Texture2D.hpp"
-#include "Neat/Graphics/VertexArray.hpp"
-#include "Neat/Graphics/ShaderProgram.hpp"
 #include "Neat/Components/RenderableSpriteComponent.hpp"
 #include "Neat/Components/CameraComponent.hpp"
 #include "Neat/Components/TransformComponent.hpp"

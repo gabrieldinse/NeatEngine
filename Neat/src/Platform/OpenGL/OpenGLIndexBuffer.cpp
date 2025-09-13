@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLIndexBuffer.hpp"
+#include "OpenGLIndexBuffer.hpp"
 
 #include <glad/glad.h>
 

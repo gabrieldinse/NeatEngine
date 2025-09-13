@@ -1,5 +1,4 @@
 
-
 namespace Neat {
 // Scalar
 template <typename T, typename U>

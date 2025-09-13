@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/Color.hpp"
+#include "Color.hpp"
 
 namespace Neat {
 namespace Color {

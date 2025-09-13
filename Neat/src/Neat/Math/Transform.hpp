@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Neat/Math/Types/TypeMatrixMxN.hpp"
-#include "Neat/Math/Types/TypeVectorN.hpp"
+#include "Types/TypeMatrixMxN.hpp"
+#include "Types/TypeVectorN.hpp"
 
 namespace Neat {
 // Vector

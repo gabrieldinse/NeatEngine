@@ -1,7 +1,7 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Core/LayerGroup.hpp"
-#include "Neat/Core/Log.hpp"
+#include "LayerGroup.hpp"
+#include "Log.hpp"
 
 namespace Neat {
 LayerGroup::LayerGroup() : m_insertIndex(0) {}

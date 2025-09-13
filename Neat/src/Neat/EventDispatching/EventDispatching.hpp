@@ -1,3 +1,3 @@
 #pragma once
 
-#include "Neat/EventDispatching/EventDispatcher.hpp"
+#include "EventDispatcher.hpp"

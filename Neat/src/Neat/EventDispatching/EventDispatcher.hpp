@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Neat/EventDispatching/QueuedEvent.hpp"
-#include "Neat/EventDispatching/EventConnections.hpp"
+#include "QueuedEvent.hpp"
+#include "EventConnections.hpp"
+
 #include "Neat/Utils/SafeQueue.hpp"
-#include <iostream>
 
 namespace Neat {
 class EventDispatcher {

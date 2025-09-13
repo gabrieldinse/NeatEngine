@@ -1,9 +1,10 @@
 #include "NeatPCH.hpp"
 
+#include "Render2DSystem.hpp"
+
 #include "Neat/ECS/EntityManager.hpp"
 #include "Neat/Graphics/RenderCommand.hpp"
 #include "Neat/Graphics/Renderer2D.hpp"
-#include "Neat/Systems/Render2DSystem.hpp"
 #include "Neat/Components/RenderableSpriteComponent.hpp"
 #include "Neat/Components/TransformComponent.hpp"
 #include "Neat/Components/CameraComponent.hpp"

@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/ShaderDataType.hpp"
+#include "ShaderDataType.hpp"
 
 #include <glad/glad.h>
 

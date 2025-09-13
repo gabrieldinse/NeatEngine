@@ -1,7 +1,8 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLTexture2D.hpp"
-#include "Platform/OpenGL/OpenGLUtils.hpp"
+#include "OpenGLTexture2D.hpp"
+#include "OpenGLUtils.hpp"
+
 #include "Neat/Graphics/Renderer.hpp"
 #include "Neat/Utils/LoadImage.hpp"
 

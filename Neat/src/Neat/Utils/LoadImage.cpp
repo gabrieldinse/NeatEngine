@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Utils/LoadImage.hpp"
+#include "LoadImage.hpp"
 
 #include <stb_image.h>
 

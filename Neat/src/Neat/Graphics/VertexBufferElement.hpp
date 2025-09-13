@@ -2,8 +2,9 @@
 
 #include <string>
 
+#include "ShaderDataType.hpp"
+
 #include "Neat/Core/Types.hpp"
-#include "Neat/Graphics/ShaderDataType.hpp"
 
 namespace Neat {
 struct VertexBufferElement {

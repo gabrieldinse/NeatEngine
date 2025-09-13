@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Neat/Graphics/RenderCommand.hpp"
-#include "Neat/Graphics/ShaderProgram.hpp"
+#include "RenderCommand.hpp"
+#include "ShaderProgram.hpp"
 
 namespace Neat {
 class Renderer {

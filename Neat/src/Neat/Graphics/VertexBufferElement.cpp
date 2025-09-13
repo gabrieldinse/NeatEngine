@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/VertexBufferElement.hpp"
+#include "VertexBufferElement.hpp"
 
 namespace Neat {
 VertexBufferElement::VertexBufferElement(ShaderDataType type,

@@ -1,6 +1,7 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/RendererAPI.hpp"
+#include "RendererAPI.hpp"
+
 #include "Platform/OpenGL/OpenGLRendererAPI.hpp"
 
 namespace Neat {

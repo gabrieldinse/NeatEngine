@@ -3,9 +3,10 @@
 #include <memory>
 #include <string>
 
-#include "Neat/Core/PlatformDetection.hpp"
-#include "Neat/Core/Types.hpp"
-#include "Neat/Core/WindowProperties.hpp"
+#include "PlatformDetection.hpp"
+#include "Types.hpp"
+#include "WindowProperties.hpp"
+
 #include "Neat/EventDispatching/EventDispatcher.hpp"
 
 namespace Neat {

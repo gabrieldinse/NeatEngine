@@ -1,9 +1,9 @@
 #include <cmath>
 
-#include "Neat/Math/Common.hpp"
-#include "Neat/Math/Types/FunctorDoubleVector.hpp"
-#include "Neat/Math/Types/FunctorVector.hpp"
+#include "Common.hpp"
 #include "Trigonometric.hpp"
+#include "Types/FunctorDoubleVector.hpp"
+#include "Types/FunctorVector.hpp"
 
 namespace Neat {
 // Utility

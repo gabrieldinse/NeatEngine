@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLGraphicsContext.hpp"
+#include "OpenGLGraphicsContext.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>

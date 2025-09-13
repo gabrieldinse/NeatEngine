@@ -2,10 +2,11 @@
 
 #include <utility>
 
-#include "Neat/Core/PlatformDetection.hpp"
-#include "Neat/Core/KeyCodes.hpp"
-#include "Neat/Core/MouseButtonCodes.hpp"
-#include "Neat/Core/Window.hpp"
+#include "PlatformDetection.hpp"
+#include "KeyCodes.hpp"
+#include "MouseButtonCodes.hpp"
+#include "Window.hpp"
+
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {

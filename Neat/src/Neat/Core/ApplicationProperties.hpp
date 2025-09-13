@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Core/WindowProperties.hpp"
+#include "WindowProperties.hpp"
 
 namespace Neat {
 struct ApplicationProperties {

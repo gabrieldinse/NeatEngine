@@ -1,7 +1,8 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLVertexArray.hpp"
-#include "Platform/OpenGL/OpenGLUtils.hpp"
+#include "OpenGLVertexArray.hpp"
+#include "OpenGLUtils.hpp"
+
 #include "Neat/Graphics/Renderer.hpp"
 
 #include <glad/glad.h>

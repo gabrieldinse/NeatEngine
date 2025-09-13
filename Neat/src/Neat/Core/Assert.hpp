@@ -1,4 +1,6 @@
-#include "Neat/Core/PlatformDetection.hpp"
+#pragma once
+
+#include "PlatformDetection.hpp"
 
 #define NT_EXPAND_MACRO(x) x
 #define NT_STRINGIFY_MACRO(x) #x

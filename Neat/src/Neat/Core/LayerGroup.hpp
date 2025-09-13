@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "Neat/Core/Layer.hpp"
+#include "Layer.hpp"
 
 namespace Neat {
 class LayerGroup {

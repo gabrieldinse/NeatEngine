@@ -3,9 +3,10 @@
 #include <memory>
 #include <string>
 
+#include "Texture.hpp"
+
 #include "Neat/Core/Types.hpp"
 #include "Neat/Math/Vector.hpp"
-#include "Neat/Graphics/Texture.hpp"
 
 namespace Neat {
 enum class Texture2DFilter {

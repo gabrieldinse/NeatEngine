@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Types/TypeVectorN.hpp"
+
 #include "Neat/Core/Types.hpp"
-#include "Neat/Math/Types/TypeVectorN.hpp"
 
 namespace Neat {
 // Scalar

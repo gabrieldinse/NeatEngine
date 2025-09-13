@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Neat/Core/PlatformDetection.hpp"
-#include "Neat/Core/LayerGroup.hpp"
-#include "Neat/Core/Window.hpp"
-#include "Neat/Core/ApplicationProperties.hpp"
+#include "PlatformDetection.hpp"
+#include "LayerGroup.hpp"
+#include "Window.hpp"
+#include "ApplicationProperties.hpp"
+
 #include "Neat/Events/WindowCloseEvent.hpp"
 #include "Neat/Events/WindowResizeEvent.hpp"
 #include "Neat/EventDispatching/EventDispatcher.hpp"

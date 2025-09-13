@@ -1,6 +1,7 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/GraphicsContext.hpp"
+#include "GraphicsContext.hpp"
+
 #include "Platform/OpenGL/OpenGLGraphicsContext.hpp"
 #include "Neat/Graphics/Renderer.hpp"
 

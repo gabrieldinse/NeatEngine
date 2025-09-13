@@ -1,10 +1,10 @@
 #include <algorithm>
 #include <cmath>
 
-#include "Neat/Math/Types/FunctorDoubleVector.hpp"
-#include "Neat/Math/Types/FunctorTripleVector.hpp"
-#include "Neat/Math/Types/FunctorVector.hpp"
-#include "Neat/Math/Types/TypeVectorN.hpp"
+#include "Types/FunctorDoubleVector.hpp"
+#include "Types/FunctorTripleVector.hpp"
+#include "Types/FunctorVector.hpp"
+#include "Types/TypeVectorN.hpp"
 
 namespace Neat {
 // Scalar

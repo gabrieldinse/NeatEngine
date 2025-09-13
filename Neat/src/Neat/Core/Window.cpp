@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Core/Window.hpp"
+#include "Window.hpp"
 
 #ifdef NT_PLATFORM_LINUX
 #include "Platform/Linux/LinuxWindow.hpp"

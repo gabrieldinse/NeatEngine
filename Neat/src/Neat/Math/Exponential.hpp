@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Neat/Math/Types/TypeQuaternion.hpp"
-#include "Neat/Math/Types/TypeVectorN.hpp"
+#include "Types/TypeQuaternion.hpp"
+#include "Types/TypeVectorN.hpp"
 
 namespace Neat {
 // Scalar

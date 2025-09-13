@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/ECS/BaseSystem.hpp"
+#include "BaseSystem.hpp"
 
 namespace Neat {
 class SystemManager;

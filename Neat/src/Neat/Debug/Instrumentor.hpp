@@ -3,10 +3,11 @@
 #include <mutex>
 #include <fstream>
 
+#include "InstrumentationSession.hpp"
+#include "ProfileResult.hpp"
+
 #include "Neat/Core/Log.hpp"
 #include "Neat/Core/Types.hpp"
-#include "Neat/Debug/InstrumentationSession.hpp"
-#include "Neat/Debug/ProfileResult.hpp"
 
 namespace Neat {
 class Instrumentor {

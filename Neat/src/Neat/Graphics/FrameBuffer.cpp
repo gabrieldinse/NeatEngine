@@ -1,6 +1,7 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/FrameBuffer.hpp"
+#include "FrameBuffer.hpp"
+
 #include "Platform/OpenGL/OpenGLFrameBuffer.hpp"
 #include "Neat/Graphics/Renderer.hpp"
 

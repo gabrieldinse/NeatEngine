@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "Neat/Core/PlatformDetection.hpp"
-#include "Neat/Core/Types.hpp"
+#include "PlatformDetection.hpp"
+#include "Types.hpp"
 
 namespace Neat {
 class Layer {

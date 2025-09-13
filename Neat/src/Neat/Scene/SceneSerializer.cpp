@@ -1,6 +1,7 @@
 #include "NeatPCH.hpp"
 
 #include "SceneSerializer.hpp"
+
 #include "Neat/Components/Components.hpp"
 
 #include <rfl/yaml.hpp>

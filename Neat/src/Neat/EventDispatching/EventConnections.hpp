@@ -4,7 +4,8 @@
 #include <memory>
 #include <list>
 
-#include "Neat/EventDispatching/QueuedEvent.hpp"
+#include "QueuedEvent.hpp"
+
 #include "Neat/Utils/TypeId.hpp"
 #include "Neat/Core/Limits.hpp"
 

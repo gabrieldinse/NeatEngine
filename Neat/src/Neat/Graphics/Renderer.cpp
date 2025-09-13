@@ -1,7 +1,7 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/Renderer.hpp"
-#include "Neat/Graphics/Renderer2D.hpp"
+#include "Renderer.hpp"
+#include "Renderer2D.hpp"
 
 namespace Neat {
 Scope<Renderer::SceneData> Renderer::m_sceneData =

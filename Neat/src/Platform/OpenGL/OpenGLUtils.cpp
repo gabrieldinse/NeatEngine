@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLUtils.hpp"
+#include "OpenGLUtils.hpp"
 
 #include <glad/glad.h>
 

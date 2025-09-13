@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Neat/Graphics/Color.hpp"
-#include "Neat/Graphics/RenderCommand.hpp"
-#include "Neat/Graphics/Renderer.hpp"
-#include "Neat/Graphics/Renderer2D.hpp"
-#include "Neat/Graphics/SubTexture2D.hpp"
-#include "Neat/Graphics/Texture.hpp"
-#include "Neat/Graphics/FrameBuffer.hpp"
+#include "Color.hpp"
+#include "RenderCommand.hpp"
+#include "Renderer.hpp"
+#include "Renderer2D.hpp"
+#include "SubTexture2D.hpp"
+#include "Texture.hpp"
+#include "FrameBuffer.hpp"

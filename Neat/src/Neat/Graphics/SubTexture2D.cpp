@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/SubTexture2D.hpp"
+#include "SubTexture2D.hpp"
 
 namespace Neat {
 SubTexture2D::SubTexture2D(const Ref<Texture2D> &texture,

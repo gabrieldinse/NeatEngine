@@ -1,5 +1,5 @@
-#include "Neat/Math/Constants.hpp"
-#include "Neat/Math/Trigonometric.hpp"
+#include "Constants.hpp"
+#include "Trigonometric.hpp"
 
 namespace Neat {
 template <typename T>

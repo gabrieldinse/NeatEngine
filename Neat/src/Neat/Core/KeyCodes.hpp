@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-#include "Neat/Core/Types.hpp"
+#include "Types.hpp"
+
 #include "Neat/Utils/TypeConversions.hpp"
 
 namespace Neat {

@@ -1,8 +1,9 @@
 #include "NeatPCH.hpp"
 
+#include "VertexBuffer.hpp"
+#include "RendererAPI.hpp"
+
 #include "Neat/Core/Assert.hpp"
-#include "Neat/Graphics/VertexBuffer.hpp"
-#include "Neat/Graphics/RendererAPI.hpp"
 #include "Platform/OpenGL/OpenGLVertexBuffer.hpp"
 
 namespace Neat {

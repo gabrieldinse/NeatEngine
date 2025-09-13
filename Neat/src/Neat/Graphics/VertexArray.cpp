@@ -1,7 +1,8 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/VertexArray.hpp"
-#include "Neat/Graphics/Renderer.hpp"
+#include "VertexArray.hpp"
+#include "Renderer.hpp"
+
 #include "Platform/OpenGL/OpenGLVertexArray.hpp"
 
 namespace Neat {

@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-#include "Neat/Math/Types/Matrix2x2.hpp"
-#include "Neat/Math/Types/Matrix3x3.hpp"
-#include "Neat/Math/Types/Matrix4x4.hpp"
+#include "Types/Matrix2x2.hpp"
+#include "Types/Matrix3x3.hpp"
+#include "Types/Matrix4x4.hpp"
 
 #include <spdlog/fmt/bundled/core.h>
 

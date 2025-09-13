@@ -1,5 +1,6 @@
-#include "Neat/Math/Trigonometric.hpp"
 #include "TypeQuaternion.hpp"
+
+#include "Neat/Math/Trigonometric.hpp"
 
 namespace Neat {
 // Quaternion/Matrix conversion

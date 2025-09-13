@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Neat/Components/RenderableSpriteComponent.hpp"
-#include "Neat/Components/TransformComponent.hpp"
-#include "Neat/Components/CameraComponent.hpp"
-#include "Neat/Components/ActiveCameraTagComponent.hpp"
-#include "Neat/Components/LabelComponent.hpp"
+#include "RenderableSpriteComponent.hpp"
+#include "TransformComponent.hpp"
+#include "CameraComponent.hpp"
+#include "ActiveCameraTagComponent.hpp"
+#include "LabelComponent.hpp"

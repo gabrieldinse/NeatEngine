@@ -2,10 +2,10 @@
 
 #include <memory>
 
-#include "Neat/Core/PlatformDetection.hpp"
-#include "Neat/Core/Types.hpp"
+#include "PlatformDetection.hpp"
+#include "Types.hpp"
 
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 #undef near
 #undef far

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Neat/Debug/Instrumentor.hpp"
-#include "Neat/Debug/InstrumentationTimer.hpp"
-#include "Neat/Debug/Utils.hpp"
+#include "Instrumentor.hpp"
+#include "InstrumentationTimer.hpp"
+#include "Utils.hpp"
 
 /*
  * This profiling tools are meant to be used with the visual analyzer

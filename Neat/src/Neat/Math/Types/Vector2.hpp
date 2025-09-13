@@ -3,7 +3,7 @@
 #include <type_traits>
 #include <array>
 
-#include "Neat/Math/Types/TypeVectorN.hpp"
+#include "TypeVectorN.hpp"
 
 namespace Neat {
 template <typename T>

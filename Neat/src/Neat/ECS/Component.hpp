@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/ECS/BaseComponent.hpp"
+#include "BaseComponent.hpp"
 
 namespace Neat {
 constexpr std::size_t maxComponents = 64;

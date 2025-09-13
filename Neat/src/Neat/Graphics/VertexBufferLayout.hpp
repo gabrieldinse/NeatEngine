@@ -3,9 +3,10 @@
 #include <initializer_list>
 #include <vector>
 
+#include "VertexBufferElement.hpp"
+
 #include "Neat/Core/PlatformDetection.hpp"
 #include "Neat/Core/Types.hpp"
-#include "Neat/Graphics/VertexBufferElement.hpp"
 
 namespace Neat {
 class VertexBufferLayout {

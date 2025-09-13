@@ -5,9 +5,10 @@
 #include <utility>
 #include <optional>
 
+#include "System.hpp"
+
 #include "Neat/Core/Exceptions.hpp"
 #include "Neat/Core/Log.hpp"
-#include "Neat/ECS/System.hpp"
 #include "Neat/Utils/NonCopyable.hpp"
 
 namespace Neat {

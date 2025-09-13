@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Neat/Core/Log.hpp"
-#include "Neat/Core/Types.hpp"
+#include "Log.hpp"
+#include "Types.hpp"
+
 #include "Neat/Debug/Debug.hpp"
 
 #ifdef NT_PLATFORM_LINUX

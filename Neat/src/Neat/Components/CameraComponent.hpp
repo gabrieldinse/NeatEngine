@@ -2,11 +2,12 @@
 
 #include <type_traits>
 
+#include "OrthographicProperties.hpp"
+#include "PerspectiveProperties.hpp"
+
 #include "Neat/Math/Matrix.hpp"
 #include "Neat/Math/Projection.hpp"
 #include "Neat/Math/Projection.hpp"
-#include "Neat/Components/OrthographicProperties.hpp"
-#include "Neat/Components/PerspectiveProperties.hpp"
 
 namespace Neat {
 enum class CameraType { Orthographic = 0, Perspective = 1 };

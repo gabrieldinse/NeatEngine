@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Components/CameraComponent.hpp"
+#include "CameraComponent.hpp"
 
 namespace Neat {
 CameraComponent::CameraComponent(

@@ -10,10 +10,11 @@
 #include <type_traits>
 #include <vector>
 
+#include "Component.hpp"
+
 #include "Neat/Core/Limits.hpp"
 #include "Neat/Core/Log.hpp"
 #include "Neat/Core/Types.hpp"
-#include "Neat/ECS/Component.hpp"
 #include "Neat/EventDispatching/EventDispatcher.hpp"
 #include "Neat/Utils/MemoryPool.hpp"
 #include "Neat/Utils/NonCopyable.hpp"

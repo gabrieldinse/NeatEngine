@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Instrumentor.hpp"
+
 #include "Neat/Core/Timer.hpp"
-#include "Neat/Debug/Instrumentor.hpp"
 
 namespace Neat {
 class InstrumentationTimer {

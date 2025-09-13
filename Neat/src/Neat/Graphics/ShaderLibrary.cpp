@@ -1,7 +1,8 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/Renderer.hpp"
-#include "Neat/Graphics/ShaderLibrary.hpp"
+#include "Renderer.hpp"
+#include "ShaderLibrary.hpp"
+
 #include "Platform/OpenGL/OpenGLShaderProgram.hpp"
 
 namespace Neat {

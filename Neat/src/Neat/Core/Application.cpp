@@ -1,9 +1,10 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Core/Application.hpp"
-#include "Neat/Core/Input.hpp"
-#include "Neat/Core/Log.hpp"
-#include "Neat/Core/Timer.hpp"
+#include "Application.hpp"
+#include "Input.hpp"
+#include "Log.hpp"
+#include "Timer.hpp"
+
 #include "Neat/Graphics/Renderer.hpp"
 
 namespace Neat {

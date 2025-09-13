@@ -1,8 +1,8 @@
 #include "NeatPCH.hpp"
 
-#include <glad/glad.h>
+#include "OpenGLFrameBuffer.hpp"
 
-#include "Platform/OpenGL/OpenGLFrameBuffer.hpp"
+#include <glad/glad.h>
 
 namespace Neat {
 OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferSpecification& spec)

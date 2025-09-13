@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Platform/OpenGL/OpenGLVertexBuffer.hpp"
+#include "OpenGLVertexBuffer.hpp"
 
 #include <glad/glad.h>
 

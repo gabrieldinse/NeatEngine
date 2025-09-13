@@ -1,12 +1,13 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/ImGui/ImGuiRender.hpp"
+#include "ImGuiRender.hpp"
+
 #include "Neat/Core/Application.hpp"
 
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
-#include <imgui.h>  // need to be before the next two includes
 
+#include <imgui.h>  // Needs to be before the next two includes
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 

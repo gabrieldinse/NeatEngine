@@ -3,8 +3,8 @@
 #include <array>
 #include <span>
 
-#include "Neat/Math/Types/TypeMatrixMxN.hpp"
-#include "Neat/Math/Types/TypeVectorN.hpp"
+#include "TypeMatrixMxN.hpp"
+#include "TypeVectorN.hpp"
 
 namespace Neat {
 template <typename T>

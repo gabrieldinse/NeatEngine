@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Core/Layer.hpp"
+#include "Layer.hpp"
 
 namespace Neat {
 Layer::~Layer() {}

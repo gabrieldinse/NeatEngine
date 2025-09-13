@@ -1,7 +1,8 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/Texture2D.hpp"
-#include "Neat/Graphics/Renderer.hpp"
+#include "Texture2D.hpp"
+#include "Renderer.hpp"
+
 #include "Platform/OpenGL/OpenGLTexture2D.hpp"
 
 namespace Neat {

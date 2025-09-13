@@ -1,7 +1,8 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/IndexBuffer.hpp"
-#include "Neat/Graphics/RendererAPI.hpp"
+#include "IndexBuffer.hpp"
+#include "RendererAPI.hpp"
+
 #include "Platform/OpenGL/OpenGLIndexBuffer.hpp"
 
 namespace Neat {

@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Graphics/VertexBufferLayout.hpp"
+#include "VertexBufferLayout.hpp"
 
 namespace Neat {
 VertexBufferLayout::VertexBufferLayout(

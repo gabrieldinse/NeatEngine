@@ -1,5 +1,5 @@
 #pragma once
 
-#include "Neat/ECS/EntityManager.hpp"
-#include "Neat/ECS/System.hpp"
-#include "Neat/ECS/SystemManager.hpp"
+#include "EntityManager.hpp"
+#include "System.hpp"
+#include "SystemManager.hpp"

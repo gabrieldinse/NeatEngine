@@ -1,7 +1,8 @@
 #pragma once
 
+#include "VertexArray.hpp"
+
 #include "Neat/Core/Types.hpp"
-#include "Neat/Graphics/VertexArray.hpp"
 #include "Neat/Math/Vector.hpp"
 
 namespace Neat {

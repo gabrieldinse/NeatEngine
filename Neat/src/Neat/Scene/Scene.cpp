@@ -1,6 +1,7 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Scene/Scene.hpp"
+#include "Scene.hpp"
+
 #include "Neat/Components/CameraComponent.hpp"
 #include "Neat/Components/TransformComponent.hpp"
 #include "Neat/Components/LabelComponent.hpp"

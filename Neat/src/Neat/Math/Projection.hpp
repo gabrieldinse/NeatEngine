@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Math/Types/TypeMatrixMxN.hpp"
+#include "Types/TypeMatrixMxN.hpp"
 
 namespace Neat {
 template <typename T>

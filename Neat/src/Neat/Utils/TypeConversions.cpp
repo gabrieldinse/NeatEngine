@@ -1,6 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Utils/TypeConversions.hpp"
+#include "TypeConversions.hpp"
 
 #include <imgui.h>
 

@@ -2,8 +2,9 @@
 
 #include <memory>
 
+#include "VertexBufferLayout.hpp"
+
 #include "Neat/Core/Types.hpp"
-#include "Neat/Graphics/VertexBufferLayout.hpp"
 
 namespace Neat {
 class VertexBuffer {

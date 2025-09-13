@@ -1,8 +1,9 @@
 #include "NeatPCH.hpp"
 
+#include "LinuxWindow.hpp"
+
 #include "Neat/Core/Application.hpp"
 #include "Neat/Core/Log.hpp"
-#include "Platform/Linux/LinuxWindow.hpp"
 #include "Neat/Events/KeyPressedEvent.hpp"
 #include "Neat/Events/KeyReleasedEvent.hpp"
 #include "Neat/Events/KeyTypedEvent.hpp"
