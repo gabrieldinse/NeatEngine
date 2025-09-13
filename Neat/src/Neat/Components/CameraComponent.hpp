@@ -24,6 +24,12 @@ class CameraComponent {
 
   void setOrthographic(const OrthographicProperties &orthographicProperties);
   void setPerspective(const PerspectiveProperties &perspectiveProperties);
+  const OrthographicProperties &getOrthographicProperties() const {
+    return m_orthographicProperties;
+  }
+  const PerspectiveProperties &getPerspectiveProperties() const {
+    return m_perspectiveProperties;
+  }
 
   void setOrthographicLeft(float left);
   void setOrthographicRight(float right);

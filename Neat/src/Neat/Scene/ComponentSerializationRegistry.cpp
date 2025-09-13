@@ -5,7 +5,10 @@
 
 namespace Neat {
 ComponentSerializationRegistry::ComponentSerializationRegistry() {
-  registerComponent<TransformComponent>("TransformComponent");
   registerComponent<LabelComponent>("LabelComponent");
+  registerComponent<TransformComponent>("TransformComponent");
+  registerComponent<RenderableSpriteComponent>("RenderableSpriteComponent");
+  registerComponent<ActiveCameraTagComponent>("ActiveCameraTagComponent");
+  registerComponent<CameraComponent>("CameraComponent");
 }
 }  // namespace Neat

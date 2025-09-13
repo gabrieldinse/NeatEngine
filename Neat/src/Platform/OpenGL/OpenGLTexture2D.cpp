@@ -29,7 +29,7 @@ OpenGLTexture2D::OpenGLTexture2D(Int32 width, Int32 height)
 }
 
 OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
-    : m_internalFormat(0), m_dataFormat(0) {
+    : m_filepath{filepath}, m_internalFormat{0}, m_dataFormat{0} {
   NT_PROFILE_FUNCTION();
   auto result = loadImage(filepath);
   if (not result) {

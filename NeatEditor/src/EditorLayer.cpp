@@ -7,9 +7,7 @@ namespace Neat {
 EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
     : m_scene{makeRef<Scene>(eventDispatcher)},
       m_sceneHierarchyPanel{m_scene},
-      m_checkerboardTexture{Texture2D::create("assets/textures/texture1.png")},
-      m_spritesheetTexture{
-          Texture2D::create("assets/textures/spritesheet1.png")} {
+      m_checkerboardTexture{Texture2D::create("Assets/Textures/texture1.png")} {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&EditorLayer::onMouseScrolled>(*this, EventPriorityHighest);
 
@@ -30,10 +28,7 @@ EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
   m_frameBuffer = FrameBuffer::create(specification);
 }
 
-EditorLayer::~EditorLayer() {
-  SceneSerializer serializer(m_scene);
-  serializer.serialize("./scene.yaml");
-}
+EditorLayer::~EditorLayer() {}
 
 void EditorLayer::onImGuiRender() {
   bool open = true;
@@ -120,44 +115,12 @@ void EditorLayer::onImGuiRender() {
       if (ImGui::MenuItem("Exit")) {
         Application::get().close();
       }
-      ImGui::EndMenu();
-    }
-    if (ImGui::BeginMenu("Options")) {
-      if (ImGui::MenuItem("Flag: NoDockingOverCentralNode", "",
-                          (dockspace_flags &
-                           ImGuiDockNodeFlags_NoDockingOverCentralNode) != 0)) {
-        dockspace_flags ^= ImGuiDockNodeFlags_NoDockingOverCentralNode;
-      }
-      if (ImGui::MenuItem(
-              "Flag: NoDockingSplit", "",
-              (dockspace_flags & ImGuiDockNodeFlags_NoDockingSplit) != 0)) {
-        dockspace_flags ^= ImGuiDockNodeFlags_NoDockingSplit;
-      }
-      if (ImGui::MenuItem(
-              "Flag: NoUndocking", "",
-              (dockspace_flags & ImGuiDockNodeFlags_NoUndocking) != 0)) {
-        dockspace_flags ^= ImGuiDockNodeFlags_NoUndocking;
-      }
-      if (ImGui::MenuItem(
-              "Flag: NoResize", "",
-              (dockspace_flags & ImGuiDockNodeFlags_NoResize) != 0)) {
-        dockspace_flags ^= ImGuiDockNodeFlags_NoResize;
-      }
-      if (ImGui::MenuItem(
-              "Flag: AutoHideTabBar", "",
-              (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) {
-        dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar;
-      }
-      if (ImGui::MenuItem(
-              "Flag: PassthruCentralNode", "",
-              (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0,
-              opt_fullscreen)) {
-        dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode;
-      }
-      ImGui::Separator();
 
-      if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
-        *p_open = false;
+      if (ImGui::MenuItem("Save Scene")) {
+        SceneSerializer serializer(m_scene);
+        serializer.serialize("./scene.yaml");
+      }
+
       ImGui::EndMenu();
     }
     ImGui::EndMenuBar();

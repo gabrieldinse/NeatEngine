@@ -9,8 +9,6 @@ struct PerspectiveProperties {
   float near = 0.1f;
   float far = 100.0f;
 
-  PerspectiveProperties() = default;
-
   void setProperties(float fov, float aspectRatio, float near, float far) {
     fov = fov;
     aspectRatio = aspectRatio;

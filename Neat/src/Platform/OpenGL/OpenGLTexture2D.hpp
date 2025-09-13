@@ -18,6 +18,7 @@ class OpenGLTexture2D : public Texture2D {
   virtual Int32 getWidth() const override { return m_width; }
   virtual Int32 getHeight() const override { return m_height; }
   virtual UInt32 getRendererID() const override { return m_id; }
+  virtual const std::string &getFilepath() const override { return m_filepath; }
 
   virtual const Vector2F *getCoordinates() const override {
     return m_coordinates;
@@ -37,6 +38,7 @@ class OpenGLTexture2D : public Texture2D {
   virtual void setWrapT(Texture2DWrapping wrapT) override;
 
  private:
+  std::string m_filepath;
   UInt32 m_id = 0;
   Int32 m_width;
   Int32 m_height;

@@ -18,5 +18,8 @@ struct RenderableSpriteComponent {
   RenderableSpriteComponent(const Vector4F &color) : color(color) {}
 
   bool hasTexture() const { return texture != nullptr; }
+  std::string getTextureFilepath() const {
+    return hasTexture() ? texture->getFilepath() : "";
+  }
 };
 }  // namespace Neat

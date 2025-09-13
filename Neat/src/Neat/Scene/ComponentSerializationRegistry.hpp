@@ -25,11 +25,7 @@ class ComponentSerializationRegistry {
           }
 
           const auto component = entity.getComponent<C>();
-          if constexpr (std::is_aggregate_v<C>) {
-            return rfl::to_generic(*component);
-          } else {
-            return rfl::to_generic(rfl::Reflector<C>::from(*component));
-          }
+          return rfl::to_generic(*component);
         },
         []([[maybe_unused]] Entity &entity,
            [[maybe_unused]] const rfl::Generic &data) {}};

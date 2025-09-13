@@ -29,10 +29,7 @@ void SceneSerializer::serialize(const std::string &filepath) {
   sceneObject["Name"] = "Scene";
   sceneObject["Entities"] = entitiesArray;
 
-  // Add component to entity1
-  NT_INFO(rfl::yaml::write(sceneObject));
-
-  // Save Scene to file
+  NT_TRACE("Serialized Scene: \n{}", rfl::yaml::write(sceneObject));
   rfl::yaml::save(filepath, sceneObject);
 }
 

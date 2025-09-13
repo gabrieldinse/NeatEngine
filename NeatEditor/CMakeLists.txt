@@ -28,4 +28,4 @@ target_compile_definitions(NeatEditor PRIVATE
     $<$<CONFIG:Dist>:NT_DIST>
 )
 
-file(COPY assets DESTINATION ${OUTPUT_DIR})
+file(COPY Assets DESTINATION ${OUTPUT_DIR})

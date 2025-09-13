@@ -10,9 +10,6 @@ struct OrthographicProperties {
   float top = 1.0f;
   float near = -1.0f;
   float far = 1.0f;
-  float size = 2.0f;
-  float aspectRatio = 1.0f;
-  float fixedAspectRatio = false;
 
   OrthographicProperties() = default;
 
