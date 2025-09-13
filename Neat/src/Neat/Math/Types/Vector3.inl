@@ -80,9 +80,9 @@ template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator=(
     const Vector<3, U> &other) {
-  x() = other.x();
-  y() = other.y();
-  z() = other.z();
+  x() = static_cast<T>(other.x());
+  y() = static_cast<T>(other.y());
+  z() = static_cast<T>(other.z());
 
   return *this;
 }
@@ -91,9 +91,9 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator=(
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator+=(const Vector<3, U> &v) {
-  x() += v.x();
-  y() += v.y();
-  z() += v.z();
+  x() += static_cast<T>(v.x());
+  y() += static_cast<T>(v.y());
+  z() += static_cast<T>(v.z());
 
   return *this;
 }
@@ -101,9 +101,9 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator+=(const Vector<3, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator-=(const Vector<3, U> &v) {
-  x() -= v.x();
-  y() -= v.y();
-  z() -= v.z();
+  x() -= static_cast<T>(v.x());
+  y() -= static_cast<T>(v.y());
+  z() -= static_cast<T>(v.z());
 
   return *this;
 }
@@ -111,9 +111,9 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator-=(const Vector<3, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator*=(const Vector<3, U> &v) {
-  x() *= v.x();
-  y() *= v.y();
-  z() *= v.z();
+  x() *= static_cast<T>(v.x());
+  y() *= static_cast<T>(v.y());
+  z() *= static_cast<T>(v.z());
 
   return *this;
 }
@@ -121,9 +121,9 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator*=(const Vector<3, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator*=(const U &scalar) {
-  x() *= scalar;
-  y() *= scalar;
-  z() *= scalar;
+  x() *= static_cast<T>(scalar);
+  y() *= static_cast<T>(scalar);
+  z() *= static_cast<T>(scalar);
 
   return *this;
 }
@@ -131,9 +131,9 @@ inline constexpr Vector<3, T> &Vector<3, T>::operator*=(const U &scalar) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<3, T> &Vector<3, T>::operator/=(const U &scalar) {
-  x() /= scalar;
-  y() /= scalar;
-  z() /= scalar;
+  x() /= static_cast<T>(scalar);
+  y() /= static_cast<T>(scalar);
+  z() /= static_cast<T>(scalar);
 
   return *this;
 }

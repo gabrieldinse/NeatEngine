@@ -109,12 +109,12 @@ void EditorLayer::onImGuiRender() {
 
       if (ImGui::MenuItem("Save Scene")) {
         SceneSerializer serializer(m_scene);
-        serializer.serialize("./scene.yaml");
+        serializer.serialize("./Assets/Scenes/scene.yaml");
       }
 
       if (ImGui::MenuItem("Load Scene")) {
         SceneSerializer serializer(m_scene);
-        serializer.deserialize("./scene.yaml");
+        serializer.deserialize("./Assets/Scenes/scene.yaml");
       }
 
       ImGui::EndMenu();

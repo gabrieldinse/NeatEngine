@@ -59,7 +59,7 @@ TEST_F(EntityManagerTest, DestroyEntity) {
   auto entity1 = entityManager->createEntity();
   EXPECT_EQ(entityManager->size(), 1);
 
-  auto entity2 = entityManager->createEntity();
+  [[maybe_unused]] auto entity2 = entityManager->createEntity();
   EXPECT_EQ(entityManager->size(), 2);
 
   entityManager->destroyEntity(entity1);

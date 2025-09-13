@@ -8,13 +8,21 @@ add_subdirectory(../Neat/vendor/GoogleTest ${CMAKE_BINARY_DIR}/GoogleTest-build)
 # Collect test files
 file(
     GLOB_RECURSE
-    TEST_SOURCES
+    NEAT_TESTS_SOURCES
     src/*.cpp
 )
 
 # Build the test executable
-add_executable(NeatTests ${TEST_SOURCES})
+add_executable(NeatTests ${NEAT_TESTS_SOURCES})
 add_dependencies(NeatTests Neat)
+
+target_compile_options(NeatTests PRIVATE
+    -Wall -Wextra -Wpedantic
+)
+
+set_source_files_properties(${NEAT_TESTS_SOURCES} PROPERTIES
+    COMPILE_OPTIONS "$<$<CONFIG:Debug>:-Werror>"
+)
 
 # Include headers
 target_include_directories(NeatTests PUBLIC

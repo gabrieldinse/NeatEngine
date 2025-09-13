@@ -56,7 +56,7 @@ template <typename T>
 template <typename U>
 inline constexpr Vector<1, T> &Vector<1, T>::operator=(
     const Vector<1, U> &other) {
-  x() = other.x();
+  x() = static_cast<T>(other.x());
 
   return *this;
 }
@@ -65,7 +65,7 @@ inline constexpr Vector<1, T> &Vector<1, T>::operator=(
 template <typename T>
 template <typename U>
 inline constexpr Vector<1, T> &Vector<1, T>::operator+=(const Vector<1, U> &v) {
-  x() += v.x();
+  x() += static_cast<T>(v.x());
 
   return *this;
 }
@@ -73,7 +73,7 @@ inline constexpr Vector<1, T> &Vector<1, T>::operator+=(const Vector<1, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<1, T> &Vector<1, T>::operator-=(const Vector<1, U> &v) {
-  x() -= v.x();
+  x() -= static_cast<T>(v.x());
 
   return *this;
 }
@@ -81,7 +81,7 @@ inline constexpr Vector<1, T> &Vector<1, T>::operator-=(const Vector<1, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<1, T> &Vector<1, T>::operator*=(const Vector<1, U> &v) {
-  x() *= v.x();
+  x() *= static_cast<T>(v.x());
 
   return *this;
 }
@@ -89,7 +89,7 @@ inline constexpr Vector<1, T> &Vector<1, T>::operator*=(const Vector<1, U> &v) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<1, T> &Vector<1, T>::operator*=(const U &scalar) {
-  x() *= scalar;
+  x() *= static_cast<T>(scalar);
 
   return *this;
 }
@@ -97,7 +97,7 @@ inline constexpr Vector<1, T> &Vector<1, T>::operator*=(const U &scalar) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<1, T> &Vector<1, T>::operator/=(const U &scalar) {
-  x() /= scalar;
+  x() /= static_cast<T>(scalar);
 
   return *this;
 }

@@ -44,8 +44,7 @@ void GameLayer::initialize() {
   m_systems->initialize();
 
   auto background = m_entityManager->createEntity();
-  background.addComponent<Neat::RenderableSpriteComponent>(
-      Neat::Color::forestBrown);
+  background.addComponent<Neat::RenderableSpriteComponent>(Neat::Color::bark);
   background.addComponent<Neat::TransformComponent>(
       Neat::Vector3F{0.0f, 0.0f, -0.5f}, Neat::Vector2F{50.0f, 50.0f});
   background.addComponent<BackgroundTag>();

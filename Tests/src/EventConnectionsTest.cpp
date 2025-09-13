@@ -137,10 +137,6 @@ TEST_F(EventConnectionsTest, ConnectWithPriority) {
   connC.connect<&ListenerB::handleEventC>(listenerB, 5);
   connA.connect<&ListenerD::handleA>(listenerD, 3);
 
-  EventA eventA{100};
-  EventB eventB{msg};
-  EventC eventC{3.14f, 2.72f};
-  EventB eventB2{msg2};
   connA.onUpdate(100);
   connB.onUpdate(msg);
   connC.onUpdate(3.33f, 2.22f);

@@ -8,6 +8,7 @@
 
 namespace Neat {
 void SceneSerializer::serialize(const std::string &filepath) {
+  NT_CORE_TRACE("Serializing scene to {}", filepath);
   auto entitiesArray = rfl::Generic::Array();
   for (Entity entity : m_scene->getEntityManager()->entities()) {
     auto entityObject = rfl::Generic::Object();
@@ -31,6 +32,7 @@ void SceneSerializer::serialize(const std::string &filepath) {
 }
 
 bool SceneSerializer::deserialize(const std::string &filepath) {
+  NT_CORE_TRACE("Deserializing scene from {}", filepath);
   auto sceneGeneric = rfl::yaml::load<rfl::Generic>(filepath);
 
   if (not sceneGeneric) {

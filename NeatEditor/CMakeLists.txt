@@ -3,6 +3,15 @@ file(GLOB_RECURSE NEAT_EDIT_SOURCES
 )
 
 add_executable(NeatEditor ${NEAT_EDIT_SOURCES})
+
+target_compile_options(NeatEditor PRIVATE
+    -Wall -Wextra -Wpedantic
+)
+
+set_source_files_properties(${NEAT_EDIT_SOURCES} PROPERTIES
+    COMPILE_OPTIONS "$<$<CONFIG:Debug>:-Werror>"
+)
+
 target_include_directories(NeatEditor PRIVATE
     ../Neat/src
     ../Neat/vendor
@@ -14,14 +23,6 @@ set_target_properties(NeatEditor PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
 )
 
-target_compile_options(NeatEditor PRIVATE
-    -Wall -Wextra -Wpedantic
-)
-
-set_source_files_properties(${NEAT_EDIT_SOURCES} PROPERTIES
-    COMPILE_OPTIONS "$<$<CONFIG:Debug>:-Werror>"
-)
-
 target_compile_definitions(NeatEditor PRIVATE
     $<$<CONFIG:Debug>:NT_DEBUG;NT_IMGUI>
     $<$<CONFIG:Release>:NT_RELEASE>
@@ -29,3 +30,4 @@ target_compile_definitions(NeatEditor PRIVATE
 )
 
 file(COPY Assets DESTINATION ${OUTPUT_DIR})
+file(COPY imgui.ini DESTINATION ${OUTPUT_DIR})
