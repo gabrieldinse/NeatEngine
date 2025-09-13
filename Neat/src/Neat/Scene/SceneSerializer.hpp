@@ -10,7 +10,7 @@ class SceneSerializer {
   ~SceneSerializer() = default;
 
   void serialize(const std::string &filepath);
-  // bool deserialize(const std::string &filepath);
+  bool deserialize(const std::string &filepath);
 
   ComponentSerializationRegistry &getComponentRegistry() {
     return m_componentRegistry;

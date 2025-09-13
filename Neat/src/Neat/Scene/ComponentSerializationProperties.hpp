@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <optional>
+#include <string>
 
 #include "Neat/ECS/EntityManager.hpp"
 
@@ -12,7 +13,7 @@ struct ComponentSerializationProperties {
   using SerializeFunction =
       std::function<std::optional<rfl::Generic>(const Entity &)>;
   using DeserializeFunction =
-      std::function<void(Entity &, const rfl::Generic &)>;
+      std::function<void(Entity &, const std::string &, const rfl::Generic &)>;
 
   SerializeFunction serialize;
   DeserializeFunction deserialize;

@@ -94,6 +94,8 @@ struct Reflector<Neat::CameraComponent> {
         return Neat::CameraComponent{reflCamera.perspectiveProperties};
         break;
     }
+
+    return Neat::CameraComponent{};
   }
 
   static ReflType from(const Neat::CameraComponent &camera) {

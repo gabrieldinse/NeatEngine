@@ -23,8 +23,6 @@ class EditorLayer : public Layer {
   Ref<Scene> m_scene;
   SceneHierarchyPanel m_sceneHierarchyPanel;
 
-  Ref<Texture2D> m_checkerboardTexture;
-
   Ref<FrameBuffer> m_frameBuffer;
   bool m_viewportFocused = false;
   bool m_viewportHovered = false;

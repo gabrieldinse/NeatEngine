@@ -12,13 +12,6 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
   m_systems = makeRef<SystemManager>(m_entityManager, eventDispatcher);
   eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
       .connect<&Scene::onActiveCameraTagComponentAdded>(*this);
-
-  auto cameraEntity = m_entityManager->createEntity();
-  cameraEntity.addComponent<CameraComponent>(OrthographicProperties{1600, 900});
-  cameraEntity.addComponent<TransformComponent>();
-  cameraEntity.addComponent<ActiveCameraTagComponent>();
-  cameraEntity.addComponent<LabelComponent>("Scene Camera");
-
   m_systems->addSystem<OrthographicCameraControllerSystem>();
   m_systems->addSystem<Render2DSystem>();
   m_systems->initialize();

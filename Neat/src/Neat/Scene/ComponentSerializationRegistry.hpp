@@ -4,6 +4,8 @@
 
 #include "ComponentSerializationProperties.hpp"
 
+#include <rfl/yaml.hpp>
+
 namespace Neat {
 class ComponentSerializationRegistry {
  public:
@@ -27,8 +29,35 @@ class ComponentSerializationRegistry {
           const auto component = entity.getComponent<C>();
           return rfl::to_generic(*component);
         },
-        []([[maybe_unused]] Entity &entity,
-           [[maybe_unused]] const rfl::Generic &data) {}};
+        [](Entity &entity, const std::string &componentName,
+           const rfl::Generic &entityGeneric) {
+          auto entityObjOpt = entityGeneric.to_object();
+          if (not entityObjOpt) {
+            NT_ERROR("Failed to deserialize entity.");
+            return;
+          }
+
+          auto entityObj = entityObjOpt.value();
+          if (entityObj.count(componentName) == 0) {
+            NT_TRACE("Reading entity component: {}", componentName);
+            return;
+          }
+
+          NT_TRACE("Reading entity component: {}", componentName);
+          auto componentObjOpt = entityObj[componentName].to_object();
+          if (not componentObjOpt) {
+            NT_ERROR("Component {} is not an object.", componentName);
+            return;
+          }
+
+          auto componentObj = componentObjOpt.value();
+          auto reflComponent =
+              rfl::yaml::read<C>(rfl::yaml::write(componentObj));
+          if (reflComponent) {
+            auto component = reflComponent.value();
+            entity.addComponent<C>(std::move(component));
+          }
+        }};
 
     m_registry[name] = properties;
   }

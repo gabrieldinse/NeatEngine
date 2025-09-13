@@ -10,18 +10,15 @@ namespace Neat {
 void SceneSerializer::serialize(const std::string &filepath) {
   auto entitiesArray = rfl::Generic::Array();
   for (Entity entity : m_scene->getEntityManager()->entities()) {
-    auto componentsArray = rfl::Generic::Array();
+    auto entityObject = rfl::Generic::Object();
+    entityObject["ID"] = entity.id().index();
     for (const auto &[name, componentProperties] : m_componentRegistry) {
       if (auto data = componentProperties.serialize(entity)) {
         auto componentObj = rfl::Generic::Object();
-        componentObj[name] = *data;
-        componentsArray.push_back(componentObj);
+        entityObject[name] = *data;
       }
     }
 
-    auto entityObject = rfl::Generic::Object();
-    entityObject["ID"] = entity.id().index();
-    entityObject["Components"] = componentsArray;
     entitiesArray.push_back(entityObject);
   }
 
@@ -33,5 +30,51 @@ void SceneSerializer::serialize(const std::string &filepath) {
   rfl::yaml::save(filepath, sceneObject);
 }
 
-// bool SceneSerializer::deserialize(const std::string &filepath) {}
+bool SceneSerializer::deserialize(const std::string &filepath) {
+  auto sceneGeneric = rfl::yaml::load<rfl::Generic>(filepath);
+
+  if (not sceneGeneric) {
+    NT_ERROR("Error reading scene.");
+    return false;
+  }
+
+  auto sceneObjOpt = sceneGeneric.value().to_object();
+  if (not sceneObjOpt) {
+    NT_ERROR("Error reading scene data.");
+    return false;
+  }
+
+  auto sceneObject = sceneObjOpt.value();
+  NT_TRACE("Deserialized Scene: \n{}", rfl::yaml::write(sceneObject));
+
+  if (sceneObject.count("Entities") == 0) {
+    NT_ERROR("No entities found in the scene.");
+    return false;
+  }
+
+  auto entitiesArrayOpt = sceneObject["Entities"].to_array();
+  if (not entitiesArrayOpt) {
+    NT_ERROR("Error rading entities data.");
+    return false;
+  }
+
+  auto entitiesArray = entitiesArrayOpt.value();
+  for (const auto &entityArrayElem : entitiesArray) {
+    NT_TRACE("Reading entity");
+    auto entityObjOpt = entityArrayElem.to_object();
+    if (not entityObjOpt) {
+      NT_ERROR("Failed to read entity data.");
+      return false;
+    }
+
+    auto entityObj = entityObjOpt.value();
+    auto entity = m_scene->getEntityManager()->createEntity();
+
+    for (const auto &[name, componentProperties] : m_componentRegistry) {
+      componentProperties.deserialize(entity, name, entityObj);
+    }
+  }
+
+  return true;
+}
 }  // namespace Neat

@@ -5,24 +5,15 @@
 
 namespace Neat {
 EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
-    : m_scene{makeRef<Scene>(eventDispatcher)},
-      m_sceneHierarchyPanel{m_scene},
-      m_checkerboardTexture{Texture2D::create("Assets/Textures/texture1.png")} {
+    : m_scene{makeRef<Scene>(eventDispatcher)}, m_sceneHierarchyPanel{m_scene} {
+  // m_checkerboardTexture{Texture2D::create("Assets/Textures/texture1.png")} {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&EditorLayer::onMouseScrolled>(*this, EventPriorityHighest);
 
-  // Set values different from the default
-  m_checkerboardTexture->setMinification(Texture2DFilter::Nearest);
-  m_checkerboardTexture->setMagnification(Texture2DFilter::Nearest);
-  m_checkerboardTexture->setWrapS(Texture2DWrapping::ClampToEdge);
-
-  auto checkerboardQuad = m_scene->createEntity();
-  checkerboardQuad.addComponent<RenderableSpriteComponent>(
-      this->m_checkerboardTexture, Vector4F{0.8f, 0.4f, 0.3f, 0.75f}, 5.0f);
-  checkerboardQuad.addComponent<TransformComponent>(
-      Vector3F{0.0f, 0.0f, 0.5f}, Vector3F{1.0f, 1.0f, 1.0f},
-      Vector3F{0.0f, 0.0f, 45.0f});
-  checkerboardQuad.addComponent<LabelComponent>("Checkerboard Quad");
+  // TODO support this on the UI
+  // m_checkerboardTexture->setMinification(Texture2DFilter::Nearest);
+  // m_checkerboardTexture->setMagnification(Texture2DFilter::Nearest);
+  // m_checkerboardTexture->setWrapS(Texture2DWrapping::ClampToEdge);
 
   FrameBufferSpecification specification{1600, 900};
   m_frameBuffer = FrameBuffer::create(specification);
@@ -121,6 +112,11 @@ void EditorLayer::onImGuiRender() {
         serializer.serialize("./scene.yaml");
       }
 
+      if (ImGui::MenuItem("Load Scene")) {
+        SceneSerializer serializer(m_scene);
+        serializer.deserialize("./scene.yaml");
+      }
+
       ImGui::EndMenu();
     }
     ImGui::EndMenuBar();
@@ -165,7 +161,6 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
   }
 
   if (m_viewportFocused) {
-    // TODO review
     m_scene->getSystems()->onUpdate<OrthographicCameraControllerSystem>(
         deltaTimeSeconds);
   }
