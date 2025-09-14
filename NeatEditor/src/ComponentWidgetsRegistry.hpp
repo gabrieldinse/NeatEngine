@@ -2,6 +2,7 @@
 
 #include <string>
 #include <functional>
+#include <vector>
 
 #include "Neat/ECS/ECS.hpp"
 
@@ -28,13 +29,13 @@ class ComponentWidgetsRegistry {
   void registerComponent(const std::string& name, WidgetFunction drawFunction);
 
  private:
-  std::map<TypeId, ComponentWidgetProperties> m_registry;
+  std::vector<ComponentWidgetProperties> m_registry;
 };
 
 template <typename Component>
 void ComponentWidgetsRegistry::registerComponent(const std::string& name,
                                                  WidgetFunction drawFunction) {
-  m_registry[getTypeId<Component>()] = ComponentWidgetProperties{
+  m_registry.push_back(ComponentWidgetProperties{
       name,
       [drawFunction](const std::string& name,
                      const Ref<EntityManager>& entityManager, Entity& entity) {
@@ -80,6 +81,6 @@ void ComponentWidgetsRegistry::registerComponent(const std::string& name,
             entity.removeComponent<Component>();
           }
         }
-      }};
+      }});
 }
 }  // namespace Neat
