@@ -23,6 +23,7 @@ class Scene {
  private:
   Ref<SystemManager> m_systems;
   Ref<EntityManager> m_entityManager;
+  Ref<EventDispatcher> m_eventDispatcher;
   UInt32 m_viewportWidth{0};
   UInt32 m_viewportHeight{0};
 };

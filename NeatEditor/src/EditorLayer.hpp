@@ -22,6 +22,7 @@ class EditorLayer : public Layer {
  private:
   Ref<Scene> m_scene;
   SceneHierarchyPanel m_sceneHierarchyPanel;
+  Ref<EventDispatcher> m_eventDispatcher;
 
   Ref<FrameBuffer> m_frameBuffer;
   bool m_viewportFocused = false;

@@ -63,7 +63,6 @@ bool SceneSerializer::deserialize(const std::string &filepath) {
 
   auto entitiesArray = entitiesArrayOpt.value();
   for (const auto &entityArrayElem : entitiesArray) {
-    NT_TRACE("Reading entity");
     auto entityObjOpt = entityArrayElem.to_object();
     if (not entityObjOpt) {
       NT_ERROR("Failed to read entity data.");
@@ -71,6 +70,7 @@ bool SceneSerializer::deserialize(const std::string &filepath) {
     }
 
     auto entityObj = entityObjOpt.value();
+    NT_TRACE("Reading entity {}.", entityObj["ID"].to_int().value_or(-1));
     auto entity = m_scene->getEntityManager()->createEntity();
 
     for (const auto &[name, componentProperties] : m_componentRegistry) {

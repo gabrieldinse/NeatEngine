@@ -285,7 +285,7 @@ class EntityManager : public NonCopyable {
     }
 
     void next() {
-      while (m_pos < m_capacity and not((IterateOverAll and IsValidEntity()) or
+      while (m_pos < m_capacity and not((IterateOverAll and isValidEntity()) or
                                         matchComponentMask())) {
         ++m_pos;
       }
@@ -302,7 +302,7 @@ class EntityManager : public NonCopyable {
               m_componentGroupMask) == m_componentGroupMask;
     }
 
-    bool IsValidEntity() {
+    bool isValidEntity() {
       if (m_freeCursor < m_entityManager->m_freeEntityIds.size() and
           m_entityManager->m_freeEntityIds[m_freeCursor] == m_pos) {
         ++m_freeCursor;

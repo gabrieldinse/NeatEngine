@@ -16,3 +16,6 @@
 [submodule "Neat/vendor/yaml-cpp"]
 	path = Neat/vendor/yaml-cpp
 	url = git@github.com:jbeder/yaml-cpp.git
+[submodule "Neat/vendor/ImGuiFileDialog"]
+	path = Neat/vendor/ImGuiFileDialog
+	url = git@github.com:aiekick/ImGuiFileDialog.git

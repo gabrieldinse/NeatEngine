@@ -16,9 +16,13 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
   m_systems->addSystem<OrthographicCameraControllerSystem>();
   m_systems->addSystem<Render2DSystem>();
   m_systems->initialize();
+  m_eventDispatcher = eventDispatcher;
 }
 
-Scene::~Scene() {}
+Scene::~Scene() {
+  m_eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
+      .disconnect<&Scene::onActiveCameraTagComponentAdded>(*this);
+}
 
 Entity Scene::createEntity() { return m_entityManager->createEntity(); }
 

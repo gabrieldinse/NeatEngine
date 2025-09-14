@@ -39,14 +39,14 @@ class ComponentSerializationRegistry {
 
           auto entityObj = entityObjOpt.value();
           if (entityObj.count(componentName) == 0) {
-            NT_TRACE("Reading entity component: {}", componentName);
+            NT_TRACE("Reading {}.", componentName);
             return;
           }
 
-          NT_TRACE("Reading entity component: {}", componentName);
+          NT_TRACE("Reading {}.", componentName);
           auto componentObjOpt = entityObj[componentName].to_object();
           if (not componentObjOpt) {
-            NT_ERROR("Component {} is not an object.", componentName);
+            NT_ERROR("{} is not an object.", componentName);
             return;
           }
 

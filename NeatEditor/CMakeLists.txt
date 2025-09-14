@@ -1,14 +1,18 @@
-file(GLOB_RECURSE NEAT_EDIT_SOURCES
+file(GLOB_RECURSE NEAT_EDITOR_SOURCES
     src/**.cpp
 )
 
-add_executable(NeatEditor ${NEAT_EDIT_SOURCES})
+# Add ImGuiFileDialog source file sepparate to not have -Werror on it
+add_executable(NeatEditor
+    ${NEAT_EDITOR_SOURCES}
+    ../Neat/vendor/ImGuiFileDialog/ImGuiFileDialog.cpp
+)
 
 target_compile_options(NeatEditor PRIVATE
     -Wall -Wextra -Wpedantic
 )
 
-set_source_files_properties(${NEAT_EDIT_SOURCES} PROPERTIES
+set_source_files_properties(${NEAT_EDITOR_SOURCES} PROPERTIES
     COMPILE_OPTIONS "$<$<CONFIG:Debug>:-Werror>"
 )
 

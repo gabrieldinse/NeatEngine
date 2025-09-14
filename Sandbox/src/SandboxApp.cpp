@@ -13,9 +13,6 @@ class Sandbox : public Neat::Application {
   }
 
   ~Sandbox() {}
-
-  // Temporary
-  virtual void run() override {}
 };
 
 Neat::Scope<Neat::Application> Neat::createApplication() {

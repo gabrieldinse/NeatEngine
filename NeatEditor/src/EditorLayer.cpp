@@ -3,10 +3,13 @@
 #include "EditorLayer.hpp"
 #include "Neat/Scene/SceneSerializer.hpp"
 
+#include <ImGuiFileDialog/ImGuiFileDialog.h>
+
 namespace Neat {
 EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
-    : m_scene{makeRef<Scene>(eventDispatcher)}, m_sceneHierarchyPanel{m_scene} {
-  // m_checkerboardTexture{Texture2D::create("Assets/Textures/texture1.png")} {
+    : m_scene{makeRef<Scene>(eventDispatcher)},
+      m_sceneHierarchyPanel{m_scene},
+      m_eventDispatcher{eventDispatcher} {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&EditorLayer::onMouseScrolled>(*this, EventPriorityHighest);
 
@@ -107,19 +110,32 @@ void EditorLayer::onImGuiRender() {
         Application::get().close();
       }
 
-      if (ImGui::MenuItem("Save Scene")) {
+      if (ImGui::MenuItem("Save As...", "Ctrl + Shift + S")) {
         SceneSerializer serializer(m_scene);
         serializer.serialize("./Assets/Scenes/scene.yaml");
       }
 
-      if (ImGui::MenuItem("Load Scene")) {
-        SceneSerializer serializer(m_scene);
-        serializer.deserialize("./Assets/Scenes/scene.yaml");
+      if (ImGui::MenuItem("Open File...", "Ctrl + O")) {
+        IGFD::FileDialogConfig config;
+        config.path = ".";
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey",
+                                                "Choose File", ".neat", config);
       }
-
       ImGui::EndMenu();
     }
     ImGui::EndMenuBar();
+  }
+
+  if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+    if (ImGuiFileDialog::Instance()->IsOk()) {
+      std::string filepath = ImGuiFileDialog::Instance()->GetFilePathName();
+      m_scene = makeRef<Scene>(m_eventDispatcher);
+      m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
+      m_sceneHierarchyPanel.setScene(m_scene);
+      SceneSerializer serializer{m_scene};
+      serializer.deserialize(filepath);
+    }
+    ImGuiFileDialog::Instance()->Close();
   }
 
   m_sceneHierarchyPanel.onUpdate();

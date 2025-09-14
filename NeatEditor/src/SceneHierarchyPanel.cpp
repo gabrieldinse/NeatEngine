@@ -9,7 +9,7 @@
 
 namespace Neat {
 SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
-    : m_scene(scene), m_componentWidgetsRegistry{m_scene->getEntityManager()} {
+    : m_scene(scene) {
   m_componentWidgetsRegistry.registerComponent<TransformComponent>(
       "Transform", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
                       Entity &entity) {
@@ -100,8 +100,7 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
 
 void SceneHierarchyPanel::setScene(const Ref<Scene> &scene) {
   m_scene = scene;
-  m_componentWidgetsRegistry =
-      ComponentWidgetsRegistry(m_scene->getEntityManager());
+  m_selectedEntity = Entity{};
 }
 
 void SceneHierarchyPanel::onUpdate() {
@@ -183,10 +182,10 @@ void SceneHierarchyPanel::drawComponentNodes(Entity &entity) {
 
   ImGui::SameLine();
   ImGui::PushItemWidth(-1);
-  drawAddComponentButton();
   ImGui::PopItemWidth();
 
-  m_componentWidgetsRegistry.drawAllComponents(entity);
+  m_componentWidgetsRegistry.drawAllComponents(m_scene->getEntityManager(),
+                                               entity);
 }
 
 void SceneHierarchyPanel::drawAddComponentButton() {

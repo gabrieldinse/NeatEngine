@@ -237,6 +237,7 @@ void ExampleLayer::onImGuiRender() {
   // ImGui::SliderInt("Number of columns", &this->numberOfColumns, 0, 500);
   // ImGui::SliderInt("Number of lines", &this->numberOfLines, 0, 500);
   // ImGui::ColorEdit4("Square Color", this->tint.raw());
+  ImGui::ShowDemoWindow();
   ImGui::End();
 }
 
