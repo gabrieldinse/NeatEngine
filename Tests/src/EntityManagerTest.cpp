@@ -13,6 +13,18 @@ class EntityManagerTest : public testing::Test {
         .connect<&EntityManagerTest::onEntityCreated>(*this);
     eventDispatcher->get<EntityDestroyedEvent>()
         .connect<&EntityManagerTest::onEntityDestroyed>(*this);
+    eventDispatcher->get<ComponentAddedEvent<SpeedComponent>>()
+        .connect<&EntityManagerTest::onSpeedComponentAdded>(*this);
+    eventDispatcher->get<ComponentAddedEvent<PlayerStatsComponent>>()
+        .connect<&EntityManagerTest::onPlayerStatsComponentAdded>(*this);
+    eventDispatcher->get<ComponentAddedEvent<InventoryComponent>>()
+        .connect<&EntityManagerTest::onInventoryComponentAdded>(*this);
+    eventDispatcher->get<ComponentRemovedEvent<SpeedComponent>>()
+        .connect<&EntityManagerTest::onSpeedComponentRemoved>(*this);
+    eventDispatcher->get<ComponentRemovedEvent<PlayerStatsComponent>>()
+        .connect<&EntityManagerTest::onPlayerStatsComponentRemoved>(*this);
+    eventDispatcher->get<ComponentRemovedEvent<InventoryComponent>>()
+        .connect<&EntityManagerTest::onInventoryComponentRemoved>(*this);
   }
 
   bool onEntityCreated(const EntityCreatedEvent &event) {
@@ -25,11 +37,52 @@ class EntityManagerTest : public testing::Test {
     return false;
   }
 
+  bool onSpeedComponentAdded(const ComponentAddedEvent<SpeedComponent> &event) {
+    lastSpeedComponentAdded = *event.component;
+    return false;
+  }
+
+  bool onPlayerStatsComponentAdded(
+      const ComponentAddedEvent<PlayerStatsComponent> &event) {
+    lastPlayerStatsComponentAdded = *event.component;
+    return false;
+  }
+
+  bool onInventoryComponentAdded(
+      const ComponentAddedEvent<InventoryComponent> &event) {
+    lastInventoryComponentAdded = *event.component;
+    return false;
+  }
+
+  bool onSpeedComponentRemoved(
+      const ComponentRemovedEvent<SpeedComponent> &event) {
+    lastSpeedComponentRemoved = *event.component;
+    return false;
+  }
+
+  bool onPlayerStatsComponentRemoved(
+      const ComponentRemovedEvent<PlayerStatsComponent> &event) {
+    lastPlayerStatsComponentRemoved = *event.component;
+    return false;
+  }
+
+  bool onInventoryComponentRemoved(
+      const ComponentRemovedEvent<InventoryComponent> &event) {
+    lastInventoryComponentRemoved = *event.component;
+    return false;
+  }
+
   Ref<EventDispatcher> eventDispatcher;
   Ref<EntityManager> entityManager;
   Entity invalidEntity;
   Entity lastEntityCreated;
   Entity lastEntityDestroyed;
+  SpeedComponent lastSpeedComponentAdded;
+  PlayerStatsComponent lastPlayerStatsComponentAdded;
+  InventoryComponent lastInventoryComponentAdded;
+  SpeedComponent lastSpeedComponentRemoved;
+  PlayerStatsComponent lastPlayerStatsComponentRemoved;
+  InventoryComponent lastInventoryComponentRemoved;
 };
 
 TEST_F(EntityManagerTest, InvalidEntity) {
@@ -166,5 +219,45 @@ TEST_F(EntityManagerTest, DoesNotHaveComponent) {
   auto entity1 = entityManager->createEntity();
   EXPECT_FALSE(entity1.hasComponent<std::string>());
   EXPECT_FALSE(entity1.hasAnyComponent());
+}
+
+TEST_F(EntityManagerTest, AddComponent) {
+  auto entity1 = entityManager->createEntity();
+
+  EXPECT_FALSE(entity1.hasComponent<SpeedComponent>());
+  EXPECT_FALSE(entity1.hasAnyComponent());
+  EXPECT_NE(lastSpeedComponentAdded.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
+
+  auto speedComponentHandle =
+      entity1.addComponent<SpeedComponent>(Vector3F{5.0f, 10.0f, 15.0f});
+
+  EXPECT_TRUE(entity1.hasComponent<SpeedComponent>());
+  EXPECT_TRUE(entity1.hasAnyComponent());
+  EXPECT_TRUE(speedComponentHandle.isValid());
+  EXPECT_EQ(entity1.getComponent<SpeedComponent>()->velocity,
+            (Vector3F{5.0f, 10.0f, 15.0f}));
+  EXPECT_EQ(speedComponentHandle->velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
+  EXPECT_NE(lastSpeedComponentAdded.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
+
+  eventDispatcher->onUpdate();
+  EXPECT_EQ(lastSpeedComponentAdded.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
+
+  EXPECT_FALSE(entity1.hasComponent<PlayerStatsComponent>());
+
+  auto playerStatsComponentHandle =
+      entity1.addComponent<PlayerStatsComponent>(100, 50, 10);
+  EXPECT_TRUE(entity1.hasComponent<PlayerStatsComponent>());
+  EXPECT_TRUE(entity1.hasAnyComponent());
+  EXPECT_TRUE(playerStatsComponentHandle.isValid());
+  EXPECT_EQ(*entity1.getComponent<PlayerStatsComponent>(),
+            (PlayerStatsComponent{100, 50, 10}));
+  EXPECT_EQ(playerStatsComponentHandle->health, 100);
+  EXPECT_EQ(playerStatsComponentHandle->mana, 50);
+  EXPECT_EQ(playerStatsComponentHandle->damage, 10);
+
+  EXPECT_NE(lastPlayerStatsComponentAdded.health, 100);
+
+  eventDispatcher->onUpdate();
+  EXPECT_EQ(lastPlayerStatsComponentAdded.health, 100);
 }
 }  // namespace Neat

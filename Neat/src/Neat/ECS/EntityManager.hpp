@@ -941,7 +941,7 @@ inline ComponentHandle<C, EM>::operator bool() const {
 // ComponentHandle methods ---------------------------------------------- //
 template <typename C, typename EM>
 inline bool ComponentHandle<C, EM>::isValid() const {
-  return m_entityManager != nullptr and not m_entityManager->hasEntity(m_id) and
+  return m_entityManager != nullptr and m_entityManager->hasEntity(m_id) and
          m_entityManager->template hasComponent<C>(m_id);
 }
 

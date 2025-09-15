@@ -4,7 +4,6 @@
 #include "Types/FunctorDoubleVector.hpp"
 #include "Types/FunctorTripleVector.hpp"
 #include "Types/FunctorVector.hpp"
-#include "Types/TypeVectorN.hpp"
 
 namespace Neat {
 // Scalar

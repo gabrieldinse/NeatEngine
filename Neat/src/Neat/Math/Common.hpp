@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Types/TypeVectorN.hpp"
+
 namespace Neat {
 // Scalar
 template <typename T>

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <Neat/ECS/ECS.hpp>
+#include <Neat/Math/Math.hpp>
 
 namespace Neat {
 struct EventA {
@@ -105,4 +106,32 @@ struct TestingSystem2 : public System<TestingSystem2> {
 
 struct TestingSystem3 : public System<TestingSystem3> {};
 struct TestingSystem4 : public System<TestingSystem4> {};
+
+struct SpeedComponent {
+  Vector3F velocity{0.0f, 0.0f, 0.0f};
+
+  bool operator==(const SpeedComponent &other) const {
+    return velocity == other.velocity;
+  }
+};
+
+struct PlayerStatsComponent {
+  int health = 0;
+  int mana = 0;
+  int damage = 0;
+
+  bool operator==(const PlayerStatsComponent &other) const {
+    return health == other.health and mana == other.mana and
+           damage == other.damage;
+  }
+};
+
+struct InventoryComponent {
+  std::vector<std::string> items{};
+
+  bool operator==(const InventoryComponent &other) const {
+    return items == other.items;
+  }
+};
+
 }  // namespace Neat
