@@ -881,4 +881,85 @@ TEST_F(VectorTest, DivideEqualOperator) {
   EXPECT_EQ(vector2i.y(), 200);
   EXPECT_EQ(vector1i.x(), 100);
 }
+
+TEST_F(VectorTest, OperatorBool) {
+  EXPECT_TRUE(vector4f);
+  EXPECT_TRUE(vector3f);
+  EXPECT_TRUE(vector2f);
+  EXPECT_TRUE(vector1f);
+
+  EXPECT_TRUE(vector4i);
+  EXPECT_TRUE(vector3i);
+  EXPECT_TRUE(vector2i);
+  EXPECT_TRUE(vector1i);
+
+  EXPECT_FALSE(vector4b);
+  EXPECT_FALSE(vector3b);
+  EXPECT_FALSE(vector2b);
+  EXPECT_TRUE(vector1b);
+
+  vector4f = Vector4F{0.0f, 0.0f, 0.0f, 0.0f};
+  vector3f = Vector3F{0.0f, 0.0f, 0.0f};
+  vector2f = Vector2F{0.0f, 0.0f};
+  vector1f = Vector1F{0.0f};
+  vector4i = Vector4I{0, 0, 0, 0};
+  vector3i = Vector3I{0, 0, 0};
+  vector2i = Vector2I{0, 0};
+  vector1i = Vector1I{0};
+  vector4b = Vector4B{false, false, false, false};
+  vector3b = Vector3B{false, false, false};
+  vector2b = Vector2B{false, false};
+  vector1b = Vector1B{false};
+
+  EXPECT_FALSE(vector4f);
+  EXPECT_FALSE(vector3f);
+  EXPECT_FALSE(vector2f);
+  EXPECT_FALSE(vector1f);
+  EXPECT_FALSE(vector4i);
+  EXPECT_FALSE(vector3i);
+  EXPECT_FALSE(vector2i);
+  EXPECT_FALSE(vector1i);
+  EXPECT_FALSE(vector4b);
+  EXPECT_FALSE(vector3b);
+  EXPECT_FALSE(vector2b);
+  EXPECT_FALSE(vector1b);
+
+  vector4f.x() = 1.0f;
+  vector3f.x() = 1.0f;
+  vector2f.x() = 1.0f;
+  vector1f.x() = 1.0f;
+  vector4i.x() = 1;
+  vector3i.x() = 1;
+  vector2i.x() = 1;
+  vector1i.x() = 1;
+  vector4b.i() = true;
+  vector3b.i() = true;
+  vector2b.i() = true;
+  vector1b.i() = true;
+
+  EXPECT_TRUE(vector4f);
+  EXPECT_TRUE(vector3f);
+  EXPECT_TRUE(vector2f);
+  EXPECT_TRUE(vector1f);
+
+  EXPECT_TRUE(vector4i);
+  EXPECT_TRUE(vector3i);
+  EXPECT_TRUE(vector2i);
+  EXPECT_TRUE(vector1i);
+
+  EXPECT_FALSE(vector4b);
+  EXPECT_FALSE(vector3b);
+  EXPECT_FALSE(vector2b);
+  EXPECT_TRUE(vector1b);
+
+  vector4b = Vector4B{true, true, true, true};
+  vector3b = Vector3B{true, true, true};
+  vector2b = Vector2B{true, true};
+  vector1b = Vector1B{false};
+
+  EXPECT_TRUE(vector4b);
+  EXPECT_TRUE(vector3b);
+  EXPECT_TRUE(vector2b);
+  EXPECT_FALSE(vector1b);
+}
 }  // namespace Neat
