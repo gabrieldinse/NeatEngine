@@ -12,6 +12,8 @@ EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
       m_eventDispatcher{eventDispatcher} {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&EditorLayer::onMouseScrolled>(*this, EventPriorityHighest);
+  eventDispatcher->get<KeyPressedEvent>().connect<&EditorLayer::onKeyPressed>(
+      *this, EventPriorityHighest);
 
   // TODO support this on the UI
   // m_checkerboardTexture->setMinification(Texture2DFilter::Nearest);
@@ -110,32 +112,28 @@ void EditorLayer::onImGuiRender() {
         Application::get().close();
       }
 
+      if (ImGui::MenuItem("New", "Ctrl + N")) {
+        newScene();
+      }
+
       if (ImGui::MenuItem("Save As...", "Ctrl + Shift + S")) {
-        SceneSerializer serializer(m_scene);
-        serializer.serialize("./Assets/Scenes/scene.yaml");
+        openSaveFileAsDialog();
       }
 
       if (ImGui::MenuItem("Open File...", "Ctrl + O")) {
-        IGFD::FileDialogConfig config;
-        config.path = ".";
-        ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey",
-                                                "Choose File", ".neat", config);
+        openOpenFileDialog();
       }
       ImGui::EndMenu();
     }
     ImGui::EndMenuBar();
   }
 
-  if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
-    if (ImGuiFileDialog::Instance()->IsOk()) {
-      std::string filepath = ImGuiFileDialog::Instance()->GetFilePathName();
-      m_scene = makeRef<Scene>(m_eventDispatcher);
-      m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
-      m_sceneHierarchyPanel.setScene(m_scene);
-      SceneSerializer serializer{m_scene};
-      serializer.deserialize(filepath);
-    }
-    ImGuiFileDialog::Instance()->Close();
+  if (ImGuiFileDialog::Instance()->Display("OpenFileDialog")) {
+    handleOpenFileDialog();
+  }
+
+  if (ImGuiFileDialog::Instance()->Display("SaveFileAsDialog")) {
+    handleSaveFileAsDialog();
   }
 
   m_sceneHierarchyPanel.onUpdate();
@@ -186,5 +184,82 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
   m_frameBuffer->unbind();
 
   onImGuiRender();
+}
+
+bool EditorLayer::onKeyPressed(const KeyPressedEvent &event) {
+  if (event.repeatCount > 0) {
+    return false;
+  }
+
+  bool controlPressed = Input::isKeyPressed(Key::LeftControl) or
+                        Input::isKeyPressed(Key::RightControl);
+  bool shiftPressed = Input::isKeyPressed(Key::LeftShift) or
+                      Input::isKeyPressed(Key::RightShift);
+
+  switch (event.key) {
+    case Key::N:
+      if (controlPressed) {
+        newScene();
+        return true;
+      }
+      break;
+    case Key::O:
+      if (controlPressed) {
+        openOpenFileDialog();
+        return true;
+      }
+      break;
+    case Key::S:
+      if (controlPressed and shiftPressed) {
+        openSaveFileAsDialog();
+        return true;
+      }
+      break;
+    default:
+      return false;
+  }
+
+  return false;
+}
+
+void EditorLayer::newScene() {
+  m_scene = makeRef<Scene>(m_eventDispatcher);
+  m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
+  m_sceneHierarchyPanel.setScene(m_scene);
+}
+
+void EditorLayer::openSaveFileAsDialog() {
+  IGFD::FileDialogConfig config;
+  config.path = ".";
+  ImGuiFileDialog::Instance()->OpenDialog("SaveFileAsDialog", "Choose File",
+                                          ".neat", config);
+}
+
+void EditorLayer::openOpenFileDialog() {
+  IGFD::FileDialogConfig config;
+  config.path = ".";
+  ImGuiFileDialog::Instance()->OpenDialog("OpenFileDialog", "Choose File",
+                                          ".neat", config);
+}
+
+void EditorLayer::handleOpenFileDialog() {
+  if (ImGuiFileDialog::Instance()->IsOk()) {
+    std::string filepath = ImGuiFileDialog::Instance()->GetFilePathName();
+    m_scene = makeRef<Scene>(m_eventDispatcher);
+    m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
+    m_sceneHierarchyPanel.setScene(m_scene);
+    SceneSerializer serializer{m_scene};
+    serializer.deserialize(filepath);
+  }
+  ImGuiFileDialog::Instance()->Close();
+}
+
+void EditorLayer::handleSaveFileAsDialog() {
+  if (ImGuiFileDialog::Instance()->IsOk()) {
+    std::string filepath = ImGuiFileDialog::Instance()->GetFilePathName();
+    SceneSerializer serializer(m_scene);
+    serializer.serialize(filepath);
+  }
+  ImGuiFileDialog::Instance()->Close();
 }
 }  // namespace Neat

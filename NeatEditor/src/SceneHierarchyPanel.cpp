@@ -171,17 +171,16 @@ void SceneHierarchyPanel::drawEntityNode(Entity &entity) {
 void SceneHierarchyPanel::drawComponentNodes(Entity &entity) {
   if (entity.hasComponent<LabelComponent>()) {
     auto label = entity.getComponent<LabelComponent>();
-    // TODO use a string instead of a buffer + copy to label string?
-    char buffer[256];
-    memset(buffer, 0, sizeof(buffer));
-    strncpy(buffer, label->getRawLabel(), sizeof(buffer));
-    if (ImGui::InputText("##Label", buffer, sizeof(buffer))) {
-      label->label = std::string(buffer);
+    std::array<char, 256> buffer{};
+    strncpy(buffer.data(), label->getRawLabel(), buffer.size());
+    if (ImGui::InputText("##Label", buffer.data(), buffer.size())) {
+      label->label = std::string{buffer.data()};
     }
   }
 
   ImGui::SameLine();
   ImGui::PushItemWidth(-1);
+  drawAddComponentButton();
   ImGui::PopItemWidth();
 
   m_componentWidgetsRegistry.drawAllComponents(m_scene->getEntityManager(),
