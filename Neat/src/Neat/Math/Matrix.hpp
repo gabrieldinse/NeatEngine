@@ -15,7 +15,7 @@ struct formatter<Neat::Matrix<M, N, T>> {
 
   template <typename Context>
   auto format(const Neat::Matrix<M, N, T>& m, Context& ctx) const {
-    std::string str = fmt::format("Matrix{}{}{{", M, N);
+    std::string str = fmt::format("Matrix{}x{}{{", M, N);
     for (Neat::UInt32 i = 0; i < M; ++i) {
       for (Neat::UInt32 j = 0; j < N; ++j) {
         str += fmt::format("{}", m(i, j));

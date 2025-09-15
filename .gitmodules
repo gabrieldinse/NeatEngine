@@ -19,3 +19,6 @@
 [submodule "Neat/vendor/ImGuiFileDialog"]
 	path = Neat/vendor/ImGuiFileDialog
 	url = git@github.com:aiekick/ImGuiFileDialog.git
+[submodule "Neat/vendor/ImGuizmo"]
+	path = Neat/vendor/ImGuizmo
+	url = git@github.com:CedricGuillemet/ImGuizmo.git

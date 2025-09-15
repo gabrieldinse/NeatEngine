@@ -1,6 +1,7 @@
 file(GLOB_RECURSE SANDBOX_SOURCES
     src/SandboxApp.cpp
     src/ExampleLayer.cpp
+    ../Neat/vendor/ImGuizmo/ImGuizmo.cpp
 )
 
 add_executable(Sandbox ${SANDBOX_SOURCES})

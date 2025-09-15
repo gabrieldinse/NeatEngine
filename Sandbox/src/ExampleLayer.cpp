@@ -7,6 +7,8 @@
 #include <rfl/yaml.hpp>
 #include <rfl.hpp>
 
+#include <ImGuizmo/ImGuizmo.h>
+
 struct Person {
   std::string first_name;
   std::string last_name;
@@ -180,6 +182,20 @@ ExampleLayer::ExampleLayer(
   }
   /*********** Reading Scene from YAML *************/
   //////////////////////// IMPORTANT! ////////////////////////////
+
+  /* ImGuizmo */
+  Neat::Matrix4F matrix{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                        0.0f, 0.0f, 1.0f, 0.0f, 2.5f, 3.5f, 4.5f, 1.0f};
+  Neat::Vector3F matrixTranslation{};
+  Neat::Vector3F matrixRotation{};
+  Neat::Vector3F matrixScale{};
+  ImGuizmo::DecomposeMatrixToComponents(matrix.data(), matrixTranslation.data(),
+                                        matrixRotation.data(),
+                                        matrixScale.data());
+  NT_TRACE("Matrix: {}", matrix);
+  NT_TRACE("Matrix Decomposed: Translation {}, Rotation {}, Scale {}",
+           matrixTranslation, matrixRotation, matrixScale);
+  /* ---------------------*/
 
   m_entityManager = Neat::makeRef<Neat::EntityManager>(eventDispatcher);
   m_systems =
