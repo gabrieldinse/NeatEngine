@@ -18,6 +18,7 @@ file(GLOB_RECURSE NEAT_SOURCES
     vendor/ImGui/imgui.cpp
     vendor/ImGui/backends/imgui_impl_glfw.cpp
     vendor/ImGui/backends/imgui_impl_opengl3.cpp
+    vendor/ImGuizmo/ImGuizmo.cpp
 )
 
 file(GLOB_RECURSE LINUX_SOURCES
@@ -61,6 +62,7 @@ target_include_directories(Neat
         vendor/stb_image
         vendor/reflect-cpp/include
         vendor/yaml-cpp/include
+        vendor/ImGuizmo
 )
 
 set(PUBLIC_LIBRARIES glfw Glad yaml-cpp reflectcpp)

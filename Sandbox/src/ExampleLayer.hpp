@@ -18,7 +18,7 @@ class ExampleLayer : public Neat::Layer {
   bool onMouseMoved(const Neat::MouseMovedEvent &event);
 
  private:
-  Neat::Ref<Neat::SystemManager> m_systems;
+  Neat::Ref<Neat::SystemManager> m_systemManager;
   Neat::Ref<Neat::EntityManager> m_entityManager;
 
   Neat::Ref<Neat::Texture2D> m_checkerboardTexture;

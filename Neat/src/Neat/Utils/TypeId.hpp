@@ -3,8 +3,6 @@
 #include "Neat/Core/Types.hpp"
 
 namespace Neat {
-using TypeId = SizeType;
-
 template <typename T>
 constexpr TypeId getTypeIDImpl() {
   static Byte type_id;

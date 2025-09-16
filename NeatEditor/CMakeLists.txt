@@ -6,7 +6,6 @@ file(GLOB_RECURSE NEAT_EDITOR_SOURCES
 add_executable(NeatEditor
     ${NEAT_EDITOR_SOURCES}
     ../Neat/vendor/ImGuiFileDialog/ImGuiFileDialog.cpp
-    ../Neat/vendor/ImGuizmo/ImGuizmo.cpp
 )
 
 target_compile_options(NeatEditor PRIVATE

@@ -11,7 +11,7 @@ class Scene {
   ~Scene();
   Entity createEntity();
   Ref<EntityManager> getEntityManager();
-  Ref<SystemManager> getSystems();
+  Ref<SystemManager> getSystemManager();
 
   void onUpdate(double deltaTimeSeconds);
   void setViewport(UInt32 width, UInt32 height);
@@ -21,7 +21,7 @@ class Scene {
       const ComponentAddedEvent<ActiveCameraTagComponent> &event);
 
  private:
-  Ref<SystemManager> m_systems;
+  Ref<SystemManager> m_systemManager;
   Ref<EntityManager> m_entityManager;
   Ref<EventDispatcher> m_eventDispatcher;
   UInt32 m_viewportWidth{0};

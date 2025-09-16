@@ -7,17 +7,16 @@
 #include <cstdint>
 
 namespace Neat {
-// Main types
-using Int8 = int8_t;
-using UInt8 = uint8_t;
+using Int8 = std::int8_t;
+using UInt8 = std::uint8_t;
 using Byte = Int8;
 using UByte = UInt8;
-using Int16 = int16_t;
-using UInt16 = uint16_t;
-using Int32 = int32_t;
-using UInt32 = uint32_t;
-using Int64 = int64_t;
-using UInt64 = uint64_t;
+using Int16 = std::int16_t;
+using UInt16 = std::uint16_t;
+using Int32 = std::int32_t;
+using UInt32 = std::uint32_t;
+using Int64 = std::int64_t;
+using UInt64 = std::uint64_t;
 
 using Int = int;
 using UInt = unsigned;
@@ -28,13 +27,13 @@ using ULong = unsigned long;
 using LLong = long long;
 using ULLong = unsigned long long;
 
-using SizeType = size_t;
+using SizeType = std::size_t;
 
-using IntMaxType = intmax_t;
-using UIntMaxType = uintmax_t;
+using IntMaxType = std::intmax_t;
+using UIntMaxType = std::uintmax_t;
 
-using IntPointerType = intptr_t;
-using UIntPointerType = uintptr_t;
+using IntPointerType = std::intptr_t;
+using UIntPointerType = std::uintptr_t;
 
 using Float = float;
 using Double = double;
@@ -42,6 +41,8 @@ using LDouble = long double;
 using Bool = bool;
 using Char = char;
 using UChar = unsigned char;
+
+using TypeId = UIntPointerType;
 
 template <typename T>
 using Scope = std::unique_ptr<T>;

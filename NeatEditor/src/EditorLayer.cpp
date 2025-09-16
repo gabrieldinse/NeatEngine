@@ -175,7 +175,7 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
   }
 
   if (m_viewportFocused) {
-    m_scene->getSystems()->onUpdate<OrthographicCameraControllerSystem>(
+    m_scene->getSystemManager()->onUpdate<OrthographicCameraControllerSystem>(
         deltaTimeSeconds);
   }
 

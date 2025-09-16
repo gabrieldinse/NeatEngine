@@ -10,12 +10,12 @@
 namespace Neat {
 Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
   m_entityManager = makeRef<EntityManager>(eventDispatcher);
-  m_systems = makeRef<SystemManager>(m_entityManager, eventDispatcher);
+  m_systemManager = makeRef<SystemManager>(m_entityManager, eventDispatcher);
   eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
       .connect<&Scene::onActiveCameraTagComponentAdded>(*this);
-  m_systems->addSystem<OrthographicCameraControllerSystem>();
-  m_systems->addSystem<Render2DSystem>();
-  m_systems->initialize();
+  m_systemManager->addSystem<OrthographicCameraControllerSystem>();
+  m_systemManager->addSystem<Render2DSystem>();
+  m_systemManager->initialize();
   m_eventDispatcher = eventDispatcher;
 }
 
@@ -28,7 +28,7 @@ Entity Scene::createEntity() { return m_entityManager->createEntity(); }
 
 Ref<EntityManager> Scene::getEntityManager() { return m_entityManager; }
 
-Ref<SystemManager> Scene::getSystems() { return m_systems; }
+Ref<SystemManager> Scene::getSystemManager() { return m_systemManager; }
 
 void Scene::setViewport(UInt32 width, UInt32 height) {
   m_viewportWidth = width;
@@ -43,7 +43,7 @@ void Scene::setViewport(UInt32 width, UInt32 height) {
 }
 
 void Scene::onUpdate(double deltaTimeSeconds) {
-  m_systems->onUpdate<Render2DSystem>(deltaTimeSeconds);
+  m_systemManager->onUpdate<Render2DSystem>(deltaTimeSeconds);
 }
 
 bool Scene::onActiveCameraTagComponentAdded(
