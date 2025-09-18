@@ -30,7 +30,6 @@ class EditorCamera {
   Vector3F getUpDirection() const;
   Vector3F getRightDirection() const;
   Vector3F getForwardDirection() const;
-  QuaternionF getOrientation() const;
 
  private:
   void updateView();

@@ -28,7 +28,7 @@ std::pair<float, float> EditorCamera::getPanSpeed() const {
   return {xFactor, yFactor};
 }
 
-float EditorCamera::getRotationSpeed() const { return 0.8f; }
+float EditorCamera::getRotationSpeed() const { return radiansToDegrees(0.8f); }
 
 float EditorCamera::getZoomSpeed() const {
   float distance = m_distance * 0.2f;
@@ -87,23 +87,18 @@ void EditorCamera::mouseZoom(float deltaPos) {
 }
 
 Vector3F EditorCamera::getUpDirection() const {
-  return rotate(getOrientation(), Vector3F(0.0f, 1.0f, 0.0f));
+  return rotate(-m_transform.getOrientation(), Vector3F(0.0f, 1.0f, 0.0f));
 }
 
 Vector3F EditorCamera::getRightDirection() const {
-  return rotate(getOrientation(), Vector3F(1.0f, 0.0f, 0.0f));
+  return rotate(-m_transform.getOrientation(), Vector3F(1.0f, 0.0f, 0.0f));
 }
 
 Vector3F EditorCamera::getForwardDirection() const {
-  return rotate(getOrientation(), Vector3F(0.0f, 0.0f, -1.0f));
+  return rotate(-m_transform.getOrientation(), Vector3F(0.0f, 0.0f, -1.0f));
 }
 
 Vector3F EditorCamera::calculatePosition() const {
   return m_focalPoint - getForwardDirection() * m_distance;
 }
-
-QuaternionF EditorCamera::getOrientation() const {
-  return QuaternionF::fromEulerAngles(-m_transform.rotation);
-}
-
 }  // namespace Neat

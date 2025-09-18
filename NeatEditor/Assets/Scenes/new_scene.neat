@@ -71,8 +71,8 @@ Entities:
           - 0.500000
       scaling:
         elements:
-          - 5.000000
-          - 5.000000
+          - 1.500000
+          - 1.500000
           - 1.000000
       rotation:
         elements:
@@ -99,8 +99,8 @@ Entities:
           - 0.000000
       scaling:
         elements:
-          - 5.000000
-          - 5.000000
+          - 1.500000
+          - 1.500000
           - 1.000000
       rotation:
         elements:

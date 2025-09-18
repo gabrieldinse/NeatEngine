@@ -30,9 +30,11 @@ struct TransformComponent {
         rotation{0.0f, 0.0f, rotation} {}
 
   Matrix4F getTransform() const {
-    Matrix4F rotationTransform =
-        QuaternionF::fromEulerAngles(degreesToRadians(rotation)).toMatrix4();
-    return translate(position) * rotationTransform * scale(scaling);
+    return translate(position) * getOrientation().toMatrix4() * scale(scaling);
+  }
+
+  QuaternionF getOrientation() const {
+    return QuaternionF::fromEulerAngles(degreesToRadians(rotation));
   }
 
   Vector2F getPosition2D() const {
