@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <tuple>
 
 #include "TypeVectorN.hpp"
 
@@ -122,6 +123,8 @@ struct Vector<4, T> {
   template <typename U>
   friend constexpr bool operator!=(const Vector<4, U> &va,
                                    const Vector<4, U> &vb);
+
+  std::tuple<T, T, T, T> toTuple() const { return {x(), y(), z(), w()}; }
 };
 
 // Predefined types

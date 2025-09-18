@@ -962,4 +962,36 @@ TEST_F(VectorTest, OperatorBool) {
   EXPECT_TRUE(vector2b);
   EXPECT_FALSE(vector1b);
 }
+
+TEST_F(VectorTest, ToTuple) {
+  EXPECT_EQ(vector4f.toTuple(), (std::make_tuple(1.0f, 2.0f, 3.0f, 4.0f)));
+  EXPECT_EQ(vector3f.toTuple(), (std::make_tuple(1.0f, 2.0f, 3.0f)));
+  EXPECT_EQ(vector2f.toTuple(), (std::make_tuple(1.0f, 2.0f)));
+  EXPECT_EQ(vector1f.toTuple(), (std::make_tuple(1.0f)));
+
+  EXPECT_EQ(vector4i.toTuple(), (std::make_tuple(1, 2, 3, 4)));
+  EXPECT_EQ(vector3i.toTuple(), (std::make_tuple(1, 2, 3)));
+  EXPECT_EQ(vector2i.toTuple(), (std::make_tuple(1, 2)));
+  EXPECT_EQ(vector1i.toTuple(), (std::make_tuple(1)));
+
+  EXPECT_EQ(vector4b.toTuple(), (std::make_tuple(true, false, true, false)));
+  EXPECT_EQ(vector3b.toTuple(), (std::make_tuple(true, false, true)));
+  EXPECT_EQ(vector2b.toTuple(), (std::make_tuple(true, false)));
+  EXPECT_EQ(vector1b.toTuple(), (std::make_tuple(true)));
+
+  EXPECT_EQ(vector4c.toTuple(), (std::make_tuple('a', 'b', 'c', 'd')));
+  EXPECT_EQ(vector3c.toTuple(), (std::make_tuple('a', 'b', 'c')));
+  EXPECT_EQ(vector2c.toTuple(), (std::make_tuple('a', 'b')));
+  EXPECT_EQ(vector1c.toTuple(), (std::make_tuple('a')));
+
+  EXPECT_EQ(vector4s.toTuple(), (std::make_tuple(1, 2, 3, 4)));
+  EXPECT_EQ(vector3s.toTuple(), (std::make_tuple(1, 2, 3)));
+  EXPECT_EQ(vector2s.toTuple(), (std::make_tuple(1, 2)));
+  EXPECT_EQ(vector1s.toTuple(), (std::make_tuple(1)));
+
+  EXPECT_EQ(vector4us.toTuple(), (std::make_tuple(1U, 2U, 3U, 4U)));
+  EXPECT_EQ(vector3us.toTuple(), (std::make_tuple(1U, 2U, 3U)));
+  EXPECT_EQ(vector2us.toTuple(), (std::make_tuple(1U, 2U)));
+  EXPECT_EQ(vector1us.toTuple(), (std::make_tuple(1U)));
+}
 }  // namespace Neat

@@ -41,7 +41,7 @@ class EditorCamera {
 
   Vector3F calculatePosition() const;
 
-  std::pair<float, float> getPanSpeed() const;
+  Vector2F getPanSpeed() const;
   float getRotationSpeed() const;
   float getZoomSpeed() const;
 

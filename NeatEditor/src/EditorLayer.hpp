@@ -26,6 +26,7 @@ class EditorLayer : public Layer {
   void newScene();
   void handleOpenFileDialog();
   void handleSaveFileAsDialog();
+  void handleGizmos();
   void openOpenFileDialog();
   void openSaveFileAsDialog();
 

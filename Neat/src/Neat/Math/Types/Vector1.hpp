@@ -3,6 +3,7 @@
 #include <cmath>
 #include <type_traits>
 #include <array>
+#include <tuple>
 
 #include "TypeVectorN.hpp"
 
@@ -86,6 +87,8 @@ struct Vector<1, T> {
   template <typename U>
   friend constexpr bool operator!=(const Vector<1, U> &va,
                                    const Vector<1, U> &vb);
+
+  std::tuple<T> toTuple() const { return {x()}; }
 };
 
 // Predefined types
