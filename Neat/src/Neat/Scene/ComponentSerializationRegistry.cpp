@@ -5,6 +5,8 @@
 
 namespace Neat {
 ComponentSerializationRegistry::ComponentSerializationRegistry() {
+  NT_PROFILE_FUNCTION();
+
   registerComponent<LabelComponent>("LabelComponent");
   registerComponent<TransformComponent>("TransformComponent");
   registerComponent<RenderableSpriteComponent>("RenderableSpriteComponent");

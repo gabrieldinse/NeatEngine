@@ -9,7 +9,8 @@ namespace Neat {
 EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
     : m_scene{makeRef<Scene>(eventDispatcher)},
       m_sceneHierarchyPanel{m_scene},
-      m_eventDispatcher{eventDispatcher} {
+      m_eventDispatcher{eventDispatcher},
+      m_editorCamera{PerspectiveProperties{30.0f}, eventDispatcher} {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&EditorLayer::onMouseScrolled>(*this, EventPriorityHighest);
   eventDispatcher->get<KeyPressedEvent>().connect<&EditorLayer::onKeyPressed>(
@@ -172,6 +173,7 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
     m_viewportSize = m_newViewportSize;
     m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
     m_frameBuffer->resize(m_viewportSize.x(), m_viewportSize.y());
+    m_editorCamera.setViewportSize(m_viewportSize.x(), m_viewportSize.y());
   }
 
   if (m_viewportFocused) {
@@ -179,8 +181,10 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
         deltaTimeSeconds);
   }
 
+  m_editorCamera.onUpdate(deltaTimeSeconds);
+
   m_frameBuffer->bind();
-  m_scene->onUpdate(deltaTimeSeconds);
+  m_scene->onEditorUpdate(deltaTimeSeconds, m_editorCamera);
   m_frameBuffer->unbind();
 
   onImGuiRender();

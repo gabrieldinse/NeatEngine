@@ -1,9 +1,11 @@
 #include <memory>
 
+#include "SceneHierarchyPanel.hpp"
+
 #include "Neat.hpp"
 #include "Neat/ImGui/ImGuiRender.hpp"
 #include "Neat/Scene/Scene.hpp"
-#include "SceneHierarchyPanel.hpp"
+#include "Neat/Scene/EditorCamera.hpp"
 
 #include <ImGui/imgui.h>
 
@@ -16,7 +18,7 @@ class EditorLayer : public Layer {
   void onImGuiRender();
   virtual void onUpdate(double deltaTimeSeconds) override;
   bool onMouseScrolled([[maybe_unused]] const MouseScrolledEvent &event) {
-    return not m_viewportFocused or not m_viewportHovered;
+    return not m_viewportFocused && not m_viewportHovered;
   }
   bool onKeyPressed(const KeyPressedEvent &event);
 
@@ -31,6 +33,7 @@ class EditorLayer : public Layer {
   Ref<Scene> m_scene;
   SceneHierarchyPanel m_sceneHierarchyPanel;
   Ref<EventDispatcher> m_eventDispatcher;
+  EditorCamera m_editorCamera;
 
   Ref<FrameBuffer> m_frameBuffer;
   bool m_viewportFocused = false;

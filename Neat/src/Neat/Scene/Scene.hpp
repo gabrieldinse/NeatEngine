@@ -1,5 +1,7 @@
 #pragma once
 
+#include "EditorCamera.hpp"
+
 #include "Neat/ECS/ECS.hpp"
 #include "Neat/Systems/Systems.hpp"
 #include "Neat/Components/ActiveCameraTagComponent.hpp"
@@ -13,7 +15,8 @@ class Scene {
   Ref<EntityManager> getEntityManager();
   Ref<SystemManager> getSystemManager();
 
-  void onUpdate(double deltaTimeSeconds);
+  void onRuntimeUpdate(double deltaTimeSeconds);
+  void onEditorUpdate(double deltaTimeSeconds, EditorCamera &editorCamera);
   void setViewport(UInt32 width, UInt32 height);
 
  private:

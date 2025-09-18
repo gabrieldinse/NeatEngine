@@ -20,6 +20,8 @@ class ComponentSerializationRegistry {
 
   template <typename C>
   void registerComponent(const std::string &name) {
+    NT_PROFILE_FUNCTION();
+
     ComponentSerializationProperties properties{
         [](const Entity &entity) -> std::optional<rfl::Generic> {
           if (not entity.hasComponent<C>()) {

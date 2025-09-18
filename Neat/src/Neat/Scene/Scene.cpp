@@ -6,9 +6,14 @@
 #include "Neat/Components/TransformComponent.hpp"
 #include "Neat/Components/LabelComponent.hpp"
 #include "Neat/Components/LabelComponent.hpp"
+#include "Neat/Graphics/RenderCommand.hpp"
+#include "Neat/Graphics/Renderer2D.hpp"
+#include "Neat/Math/Matrix.hpp"
 
 namespace Neat {
 Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
+  NT_PROFILE_FUNCTION();
+
   m_entityManager = makeRef<EntityManager>(eventDispatcher);
   m_systemManager = makeRef<SystemManager>(m_entityManager, eventDispatcher);
   eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
@@ -20,6 +25,8 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
 }
 
 Scene::~Scene() {
+  NT_PROFILE_FUNCTION();
+
   m_eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
       .disconnect<&Scene::onActiveCameraTagComponentAdded>(*this);
 }
@@ -31,6 +38,8 @@ Ref<EntityManager> Scene::getEntityManager() { return m_entityManager; }
 Ref<SystemManager> Scene::getSystemManager() { return m_systemManager; }
 
 void Scene::setViewport(UInt32 width, UInt32 height) {
+  NT_PROFILE_FUNCTION();
+
   m_viewportWidth = width;
   m_viewportHeight = height;
   for (auto cameraEntity :
@@ -42,8 +51,27 @@ void Scene::setViewport(UInt32 width, UInt32 height) {
   }
 }
 
-void Scene::onUpdate(double deltaTimeSeconds) {
+void Scene::onRuntimeUpdate(double deltaTimeSeconds) {
+  NT_PROFILE_FUNCTION();
+
   m_systemManager->onUpdate<Render2DSystem>(deltaTimeSeconds);
+}
+
+void Scene::onEditorUpdate([[maybe_unused]] double deltaTimeSeconds,
+                           EditorCamera &editorCamera) {
+  NT_PROFILE_FUNCTION();
+
+  Renderer2D::resetStats();
+  RenderCommand::clearWithColor(Color::lightSlateGray);
+  Renderer2D::beginScene(editorCamera.getCamera(), editorCamera.getTransform());
+
+  ComponentHandle<RenderableSpriteComponent> renderableSprite;
+  ComponentHandle<TransformComponent> transform;
+  for ([[maybe_unused]] auto entity :
+       m_entityManager->entitiesWithComponents(renderableSprite, transform)) {
+    Renderer2D::drawSprite(*transform, *renderableSprite);
+  }
+  Renderer2D::endScene();
 }
 
 bool Scene::onActiveCameraTagComponentAdded(

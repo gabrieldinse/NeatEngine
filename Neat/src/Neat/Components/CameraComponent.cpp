@@ -116,8 +116,9 @@ void CameraComponent::updateProjection() {
       break;
     case CameraType::Perspective:
       m_projectionMatrix = perspectiveProjection(
-          m_perspectiveProperties.fov, m_perspectiveProperties.aspectRatio,
-          m_perspectiveProperties.near, m_perspectiveProperties.far);
+          degreesToRadians(m_perspectiveProperties.fov),
+          m_perspectiveProperties.aspectRatio, m_perspectiveProperties.near,
+          m_perspectiveProperties.far);
       break;
   }
 }

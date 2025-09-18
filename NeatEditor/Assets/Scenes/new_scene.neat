@@ -32,7 +32,7 @@ Entities:
         fov: 45.000000
         aspectRatio: 1.777778
         near: 0.100000
-        far: 100.000000
+        far: 1000.000000
       projectionMatrix:
         elements:
           - 0.693811
@@ -62,7 +62,7 @@ Entities:
           - 0.400000
           - 0.300000
           - 0.750000
-      tilingFactor: 5.000000
+      tilingFactor: 1.000000
     TransformComponent:
       position:
         elements:
@@ -71,8 +71,8 @@ Entities:
           - 0.500000
       scaling:
         elements:
-          - 1.000000
-          - 1.000000
+          - 5.000000
+          - 5.000000
           - 1.000000
       rotation:
         elements:
@@ -99,8 +99,8 @@ Entities:
           - 0.000000
       scaling:
         elements:
-          - 1.000000
-          - 1.000000
+          - 5.000000
+          - 5.000000
           - 1.000000
       rotation:
         elements:

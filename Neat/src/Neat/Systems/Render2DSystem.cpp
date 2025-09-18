@@ -16,8 +16,9 @@ void Render2DSystem::onUpdate(
     [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher,
     [[maybe_unused]] double deltaTimeSeconds) {
   NT_PROFILE_FUNCTION();
-  Neat::Renderer2D::resetStats();
-  Neat::RenderCommand::clearWithColor(Color::lightSlateGray);
+
+  Renderer2D::resetStats();
+  RenderCommand::clearWithColor(Color::lightSlateGray);
 
   for (auto entity :
        entityManager->entitiesWithComponents<

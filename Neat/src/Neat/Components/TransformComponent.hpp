@@ -29,12 +29,21 @@ struct TransformComponent {
         scaling{scaling, 1.0f},
         rotation{0.0f, 0.0f, rotation} {}
 
+  Matrix4F getTransform() const {
+    Matrix4F rotationTransform =
+        QuaternionF::fromEulerAngles(degreesToRadians(rotation)).toMatrix4();
+    return translate(position) * rotationTransform * scale(scaling);
+  }
+
   Vector2F getPosition2D() const {
     return Vector2F{position.x(), position.y()};
   }
   float getRotationX() const { return rotation.x(); }
   float getRotationY() const { return rotation.y(); }
   float getRotationZ() const { return rotation.z(); }
+  float getPitch() const { return getRotationX(); }
+  float getYaw() const { return getRotationY(); }
+  float getRoll() const { return getRotationZ(); }
 
   void setPosition(const Vector3F &newPosition) { position = newPosition; }
   void setPosition(float x, float y, float z) { setPosition({x, y, z}); }
@@ -69,28 +78,35 @@ struct TransformComponent {
   void setRotationXRadians(float angleRadians) {
     rotation.x() = radiansToDegrees(angleRadians);
   }
+  void setPitch(float angleDegrees) { setRotationX(angleDegrees); }
   void incrementRotationX(float angleDegrees) { rotation.x() += angleDegrees; }
   void incrementRotationXRadians(float angleRadians) {
     rotation.x() += radiansToDegrees(angleRadians);
   }
+  void incrementPitch(float angleDegrees) { incrementRotationX(angleDegrees); }
 
   void setRotationY(float angleDegrees) { rotation.y() = angleDegrees; }
   void setRotationYRadians(float angleRadians) {
     rotation.y() = radiansToDegrees(angleRadians);
   }
+  void setYaw(float angleDegrees) { setRotationY(angleDegrees); }
   void incrementRotationY(float angleDegrees) { rotation.y() += angleDegrees; }
   void incrementRotationYRadians(float angleRadians) {
     rotation.y() += radiansToDegrees(angleRadians);
   }
+  void incrementYaw(float angleDegrees) { incrementRotationY(angleDegrees); }
 
   void setRotationZ(float angleDegrees) { rotation.z() = angleDegrees; }
   void setRotationZRadians(float angleRadians) {
     rotation.z() = radiansToDegrees(angleRadians);
   }
+  void setRoll(float angleDegrees) { setRotationZ(angleDegrees); }
   void incrementRotationZ(float angleDegrees) { rotation.z() += angleDegrees; }
   void incrementRotationZRadians(float angleRadians) {
     rotation.z() += radiansToDegrees(angleRadians);
   }
+  void incrementRoll(float angleDegrees) { incrementRotationZ(angleDegrees); }
+
   void setRotation(float angleDegrees) { setRotationZ(angleDegrees); }
   void setRotationRadians(float angleRadians) {
     setRotationZRadians(angleRadians);
@@ -100,12 +116,6 @@ struct TransformComponent {
   }
   void incrementRotationRadians(float angleRadians) {
     incrementRotationZRadians(angleRadians);
-  }
-
-  Matrix4F getTransform() const {
-    Matrix4F rotationTransform =
-        QuaternionF::fromEulerAngles(degreesToRadians(rotation)).toMatrix4();
-    return translate(position) * rotationTransform * scale(scaling);
   }
 };
 }  // namespace Neat
