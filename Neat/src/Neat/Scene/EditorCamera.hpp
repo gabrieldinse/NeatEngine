@@ -21,10 +21,13 @@ class EditorCamera {
 
   void onUpdate(double deltaTimeSeconds);
 
-  void setViewportSize(UInt32 width, UInt32 height) {
+  Matrix4F getProjection() const { return m_camera.getProjection(); }
+  Matrix4F getViewMatrix() const { return inverse(m_transform.getTransform()); }
+
+  void setViewport(UInt32 width, UInt32 height) {
     m_viewportWidth = width;
     m_viewportHeight = height;
-    m_camera.setPerspectiveAspectRatio(width / height);
+    m_camera.setAspectRatio(width, height);
   }
 
   Vector3F getUpDirection() const;

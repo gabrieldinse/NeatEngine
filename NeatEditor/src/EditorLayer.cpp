@@ -4,6 +4,7 @@
 #include "Neat/Scene/SceneSerializer.hpp"
 
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
+#include <ImGuizmo/ImGuizmo.h>
 
 namespace Neat {
 EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
@@ -160,8 +161,9 @@ void EditorLayer::onImGuiRender() {
                ImVec2{static_cast<float>(m_viewportSize.x()),
                       static_cast<float>(m_viewportSize.y())},
                ImVec2{0, 1}, ImVec2{1, 0});
-  ImGui::PopStyleVar();
+  handleGizmos();
   ImGui::End();
+  ImGui::PopStyleVar();
 
   ImGui::End();
 }
@@ -173,12 +175,7 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
     m_viewportSize = m_newViewportSize;
     m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
     m_frameBuffer->resize(m_viewportSize.x(), m_viewportSize.y());
-    m_editorCamera.setViewportSize(m_viewportSize.x(), m_viewportSize.y());
-  }
-
-  if (m_viewportFocused) {
-    m_scene->getSystemManager()->onUpdate<OrthographicCameraControllerSystem>(
-        deltaTimeSeconds);
+    m_editorCamera.setViewport(m_viewportSize.x(), m_viewportSize.y());
   }
 
   m_editorCamera.onUpdate(deltaTimeSeconds);
@@ -219,6 +216,18 @@ bool EditorLayer::onKeyPressed(const KeyPressedEvent &event) {
         return true;
       }
       break;
+    case Key::Q:
+      m_gizmoType = -1;
+      return true;
+    case Key::W:
+      m_gizmoType = ImGuizmo::OPERATION::TRANSLATE;
+      return true;
+    case Key::E:
+      m_gizmoType = ImGuizmo::OPERATION::ROTATE;
+      return true;
+    case Key::R:
+      m_gizmoType = ImGuizmo::OPERATION::SCALE;
+      return true;
     default:
       return false;
   }
@@ -230,6 +239,51 @@ void EditorLayer::newScene() {
   m_scene = makeRef<Scene>(m_eventDispatcher);
   m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
   m_sceneHierarchyPanel.setScene(m_scene);
+}
+
+void EditorLayer::handleGizmos() {
+  Entity &selectedEntity = m_sceneHierarchyPanel.getSelectedEntity();
+  if (selectedEntity.isValid() && m_gizmoType != -1) {
+    ImGuizmo::SetOrthographic(false);
+    ImGuizmo::SetDrawlist();
+
+    float windowWidth = static_cast<float>(ImGui::GetWindowWidth());
+    float windowHeight = static_cast<float>(ImGui::GetWindowHeight());
+    ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y,
+                      windowWidth, windowHeight);
+
+    Matrix4F cameraProjection{m_editorCamera.getProjection()};
+    Matrix4F cameraView{m_editorCamera.getViewMatrix()};
+
+    auto transform = selectedEntity.getComponent<TransformComponent>();
+    Matrix4F modelMatrix = transform->getTransform();
+
+    // Snapping
+    bool snap = Input::isKeyPressed(Key::LeftControl);
+    float snapValue = 0.5f;  // Snap to 0.5m for translation/scale
+    // Snap to 45 degrees for rotation
+    if (m_gizmoType == ImGuizmo::OPERATION::ROTATE) {
+      snapValue = 45.0f;
+    }
+
+    float snapValues[3] = {snapValue, snapValue, snapValue};
+
+    ImGuizmo::Manipulate(cameraView.data(), cameraProjection.data(),
+                         (ImGuizmo::OPERATION)m_gizmoType, ImGuizmo::LOCAL,
+                         modelMatrix.data(), nullptr,
+                         snap ? snapValues : nullptr);
+
+    if (ImGuizmo::IsUsing()) {
+      Vector3F position, rotation, scaling;
+      ImGuizmo::DecomposeMatrixToComponents(modelMatrix.data(), position.data(),
+                                            rotation.data(), scaling.data());
+
+      Vector3F deltaRotation = rotation - transform->rotation;
+      transform->position = position;
+      transform->rotation += deltaRotation;
+      transform->scaling = scaling;
+    }
+  }
 }
 
 void EditorLayer::openSaveFileAsDialog() {

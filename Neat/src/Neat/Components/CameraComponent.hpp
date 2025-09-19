@@ -32,6 +32,32 @@ class CameraComponent {
     return m_perspectiveProperties;
   }
 
+  void setAspectRatio(float aspectRatio) {
+    switch (m_type) {
+      case CameraType::Orthographic:
+        m_orthographicProperties.setAspectRatio(aspectRatio);
+        break;
+      case CameraType::Perspective:
+        m_perspectiveProperties.setAspectRatio(aspectRatio);
+        break;
+    }
+    updateProjection();
+  }
+
+  template <typename T, typename U>
+    requires std::is_integral_v<T> and std::is_integral_v<U>
+  void setAspectRatio(T width, U height) {
+    switch (m_type) {
+      case CameraType::Orthographic:
+        m_orthographicProperties.setAspectRatio(width, height);
+        break;
+      case CameraType::Perspective:
+        m_perspectiveProperties.setAspectRatio(width, height);
+        break;
+    }
+    updateProjection();
+  }
+
   void setOrthographicLeft(float left);
   void setOrthographicRight(float right);
   void setOrthographicBottom(float bottom);

@@ -18,7 +18,6 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
   m_systemManager = makeRef<SystemManager>(m_entityManager, eventDispatcher);
   eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
       .connect<&Scene::onActiveCameraTagComponentAdded>(*this);
-  m_systemManager->addSystem<OrthographicCameraControllerSystem>();
   m_systemManager->addSystem<Render2DSystem>();
   m_systemManager->initialize();
   m_eventDispatcher = eventDispatcher;
@@ -45,8 +44,7 @@ void Scene::setViewport(UInt32 width, UInt32 height) {
   for (auto cameraEntity :
        m_entityManager->entitiesWithComponents<ActiveCameraTagComponent,
                                                CameraComponent>()) {
-    cameraEntity.getComponent<CameraComponent>()->setOrthographicAspectRatio(
-        width, height);
+    cameraEntity.getComponent<CameraComponent>()->setAspectRatio(width, height);
     return;
   }
 }

@@ -206,13 +206,30 @@ TEST_F(EntityManagerTest, IterateOverEntities) {
   }
 }
 
-TEST_F(EntityManagerTest, EntitiesEquality) {
+TEST_F(EntityManagerTest, EntityCopyAndAssignment) {
   auto entity1 = entityManager->createEntity();
   auto entity2 = entityManager->createEntity();
   EXPECT_NE(entity1, entity2);
 
   entity1 = entity2;
   EXPECT_EQ(entity1, entity2);
+  EXPECT_TRUE(entity1.isValid());
+  EXPECT_TRUE(entity2.isValid());
+
+  auto &entity3 = entity1;
+  EXPECT_EQ(entity3, entity1);
+  EXPECT_TRUE(entity3.isValid());
+  EXPECT_TRUE(entity1.isValid());
+
+  auto entity4 = entity3;
+  EXPECT_EQ(entity4, entity3);
+  EXPECT_TRUE(entity4.isValid());
+  EXPECT_TRUE(entity3.isValid());
+
+  EXPECT_TRUE(entity1);
+  EXPECT_TRUE(entity2);
+  EXPECT_TRUE(entity3);
+  EXPECT_TRUE(entity4);
 }
 
 TEST_F(EntityManagerTest, DoesNotHaveComponent) {

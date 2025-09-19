@@ -15,5 +15,17 @@ struct PerspectiveProperties {
     near = near;
     far = far;
   }
+
+  void setAspectRatio(float aspect) { aspectRatio = aspect; }
+
+  template <typename T, typename U>
+    requires std::is_integral_v<T> and std::is_integral_v<U>
+  void setAspectRatio(T width, U height) {
+    if (height == 0) {
+      return;
+    }
+
+    setAspectRatio(static_cast<float>(width) / static_cast<float>(height));
+  }
 };
 }  // namespace Neat

@@ -13,6 +13,7 @@ class SceneHierarchyPanel {
 
   void setScene(const Ref<Scene> &scene);
   void onUpdate();
+  Entity &getSelectedEntity() { return m_selectedEntity; }
 
  private:
   void drawEntityNode(Entity &entity);
