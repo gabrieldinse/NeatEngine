@@ -151,6 +151,13 @@ void EditorLayer::onImGuiRender() {
 
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
   ImGui::Begin("Viewport");
+  auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+  auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+  auto viewportOffset = ImGui::GetWindowPos();
+  m_viewportBounds[0] = {viewportMinRegion.x + viewportOffset.x,
+                         viewportMinRegion.y + viewportOffset.y};
+  m_viewportBounds[1] = {viewportMaxRegion.x + viewportOffset.x,
+                         viewportMaxRegion.y + viewportOffset.y};
   m_viewportFocused = ImGui::IsWindowFocused();
   m_viewportHovered = ImGui::IsWindowHovered();
   ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
@@ -182,9 +189,8 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
 
   m_frameBuffer->bind();
   m_scene->onEditorUpdate(deltaTimeSeconds, m_editorCamera);
-  m_frameBuffer->unbind();
-
   onImGuiRender();
+  m_frameBuffer->unbind();
 }
 
 bool EditorLayer::onKeyPressed(const KeyPressedEvent &event) {
@@ -243,20 +249,21 @@ void EditorLayer::newScene() {
 
 void EditorLayer::handleGizmos() {
   Entity &selectedEntity = m_sceneHierarchyPanel.getSelectedEntity();
-  if (selectedEntity.isValid() && m_gizmoType != -1) {
+  if (selectedEntity.isValid() and
+      selectedEntity.hasComponent<TransformComponent>() and m_gizmoType != -1) {
     ImGuizmo::SetOrthographic(false);
+    ImGuizmo::Enable(true);
     ImGuizmo::SetDrawlist();
+    ImGuizmo::SetRect(m_viewportBounds[0].x(), m_viewportBounds[0].y(),
+                      m_viewportBounds[1].x() - m_viewportBounds[0].x(),
+                      m_viewportBounds[1].y() - m_viewportBounds[0].y());
 
-    float windowWidth = static_cast<float>(ImGui::GetWindowWidth());
-    float windowHeight = static_cast<float>(ImGui::GetWindowHeight());
-    ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y,
-                      windowWidth, windowHeight);
+    Matrix4F transposeCameraView{transpose(m_editorCamera.getViewMatrix())};
+    Matrix4F transposeCameraProjection{
+        transpose(m_editorCamera.getProjection())};
 
-    Matrix4F cameraProjection{m_editorCamera.getProjection()};
-    Matrix4F cameraView{m_editorCamera.getViewMatrix()};
-
-    auto transform = selectedEntity.getComponent<TransformComponent>();
-    Matrix4F modelMatrix = transform->getTransform();
+    auto entityTransform = selectedEntity.getComponent<TransformComponent>();
+    Matrix4F transposeEntityModel{transpose(entityTransform->getTransform())};
 
     // Snapping
     bool snap = Input::isKeyPressed(Key::LeftControl);
@@ -266,22 +273,24 @@ void EditorLayer::handleGizmos() {
       snapValue = 45.0f;
     }
 
-    float snapValues[3] = {snapValue, snapValue, snapValue};
+    std::array<float, 3> snapValues{snapValue, snapValue, snapValue};
 
-    ImGuizmo::Manipulate(cameraView.data(), cameraProjection.data(),
-                         (ImGuizmo::OPERATION)m_gizmoType, ImGuizmo::LOCAL,
-                         modelMatrix.data(), nullptr,
-                         snap ? snapValues : nullptr);
+    bool manipulate = ImGuizmo::Manipulate(
+        transposeCameraView.data(), transposeCameraProjection.data(),
+        static_cast<ImGuizmo::OPERATION>(m_gizmoType), ImGuizmo::LOCAL,
+        transposeEntityModel.data(), nullptr,
+        snap ? snapValues.data() : nullptr);
 
-    if (ImGuizmo::IsUsing()) {
+    if (manipulate && ImGuizmo::IsUsing()) {
       Vector3F position, rotation, scaling;
-      ImGuizmo::DecomposeMatrixToComponents(modelMatrix.data(), position.data(),
-                                            rotation.data(), scaling.data());
+      ImGuizmo::DecomposeMatrixToComponents(transposeEntityModel.data(),
+                                            position.data(), rotation.data(),
+                                            scaling.data());
 
-      Vector3F deltaRotation = rotation - transform->rotation;
-      transform->position = position;
-      transform->rotation += deltaRotation;
-      transform->scaling = scaling;
+      Vector3F deltaRotation = rotation - entityTransform->rotation;
+      entityTransform->position = position;
+      entityTransform->rotation += deltaRotation;
+      entityTransform->scaling = scaling;
     }
   }
 }

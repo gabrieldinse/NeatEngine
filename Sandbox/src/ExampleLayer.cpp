@@ -185,7 +185,7 @@ ExampleLayer::ExampleLayer(
 
   /* ImGuizmo */
   Neat::Matrix4F matrix{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-                        0.0f, 0.0f, 1.0f, 0.0f, 2.5f, 3.5f, 4.5f, 1.0f};
+                        0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
   Neat::Vector3F matrixTranslation{};
   Neat::Vector3F matrixRotation{};
   Neat::Vector3F matrixScale{};
@@ -209,37 +209,38 @@ ExampleLayer::ExampleLayer(
   cameraEntity.addComponent<Neat::CameraComponent>(
       Neat::OrthographicProperties{1600, 900});
   cameraEntity.addComponent<Neat::TransformComponent>(
-      Neat::Vector2F{0.0f, 0.0f});
+      Neat::Vector3F{0.0f, 0.0f, -1.0f}, Neat::Vector3F{1.0f, 1.0f, 1.0f},
+      Neat::Vector3F{0.0f, 0.0f, 0.0f});
   cameraEntity.addComponent<Neat::ActiveCameraTagComponent>();
 
   m_systemManager->addSystem<Neat::OrthographicCameraControllerSystem>();
   m_systemManager->addSystem<Neat::Render2DSystem>();
   m_systemManager->initialize();
 
-  for (std::size_t i = 0; i < this->numberOfLines; ++i) {
-    for (std::size_t j = 0; j < this->numberOfColumns; ++j) {
-      auto flatColorQuad = m_entityManager->createEntity();
-      flatColorQuad.addComponent<Neat::RenderableSpriteComponent>(
-          Neat::Vector4F{float(i) / this->numberOfLines,
-                         float(j) / this->numberOfColumns, 1.0f, 1.0f});
-      flatColorQuad.addComponent<Neat::TransformComponent>(
-          Neat::Vector3F{0.1f * j, 0.1f * i, 0.0f},
-          Neat::Vector3F{0.1f, 0.1f, 1.0f});
-    }
-  }
+  // for (std::size_t i = 0; i < this->numberOfLines; ++i) {
+  //   for (std::size_t j = 0; j < this->numberOfColumns; ++j) {
+  //     auto flatColorQuad = m_entityManager->createEntity();
+  //     flatColorQuad.addComponent<Neat::RenderableSpriteComponent>(
+  //         Neat::Vector4F{float(i) / this->numberOfLines,
+  //                        float(j) / this->numberOfColumns, 1.0f, 1.0f});
+  //     flatColorQuad.addComponent<Neat::TransformComponent>(
+  //         Neat::Vector3F{0.1f * j, 0.1f * i, 0.0f},
+  //         Neat::Vector3F{0.1f, 0.1f, 1.0f});
+  //   }
+  // }
 
   // Set values different from the default
-  m_checkerboardTexture->setMinification(Neat::Texture2DFilter::Nearest);
-  m_checkerboardTexture->setMagnification(Neat::Texture2DFilter::Nearest);
-  m_checkerboardTexture->setWrapS(Neat::Texture2DWrapping::ClampToEdge);
+  // m_checkerboardTexture->setMinification(Neat::Texture2DFilter::Nearest);
+  // m_checkerboardTexture->setMagnification(Neat::Texture2DFilter::Nearest);
+  // m_checkerboardTexture->setWrapS(Neat::Texture2DWrapping::ClampToEdge);
 
-  auto checkerboardQuad = m_entityManager->createEntity();
-  checkerboardQuad.addComponent<Neat::RenderableSpriteComponent>(
-      this->m_checkerboardTexture, Neat::Vector4F{0.8f, 0.4f, 0.3f, 0.75f},
-      5.0f);
-  checkerboardQuad.addComponent<Neat::TransformComponent>(
-      Neat::Vector3F{0.0f, 0.0f, 0.5f}, Neat::Vector3F{1.0f, 1.0f, 1.0f},
-      Neat::Vector3F{0.0f, 0.0f, 45.0f});
+  // auto checkerboardQuad = m_entityManager->createEntity();
+  // checkerboardQuad.addComponent<Neat::RenderableSpriteComponent>(
+  //     this->m_checkerboardTexture, Neat::Vector4F{0.8f, 0.4f, 0.3f, 0.75f},
+  //     5.0f);
+  // checkerboardQuad.addComponent<Neat::TransformComponent>(
+  //     Neat::Vector3F{0.0f, 0.0f, 0.5f}, Neat::Vector3F{1.0f, 1.0f, 1.0f},
+  //     Neat::Vector3F{0.0f, 0.0f, 45.0f});
 }
 
 void ExampleLayer::onImGuiRender() {
@@ -253,7 +254,34 @@ void ExampleLayer::onImGuiRender() {
   // ImGui::SliderInt("Number of columns", &this->numberOfColumns, 0, 500);
   // ImGui::SliderInt("Number of lines", &this->numberOfLines, 0, 500);
   // ImGui::ColorEdit4("Square Color", this->tint.raw());
-  ImGui::ShowDemoWindow();
+
+  // ImGui::ShowDemoWindow();
+
+  ImGuiIO &io = ImGui::GetIO();
+  // float windowWidth = (float)ImGui::GetWindowWidth();
+  // float windowHeight = (float)ImGui::GetWindowHeight();
+  //  if (!useWindow)
+  //{
+  //     ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+  //  }
+  //  else
+  //   ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y,
+  //                     windowWidth, windowHeight);
+
+  // ImGuizmo::SetDrawlist(ImGui::GetWindowDrawList());
+
+  ImGuizmo::SetOrthographic(true);
+  ImGuizmo::Enable(true);
+  ImGuizmo::SetDrawlist();
+  ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+  Neat::Matrix4F cameraView = Neat::Matrix4F::identity();
+  Neat::Matrix4F cameraProjection = Neat::Matrix4F::identity();
+  Neat::Matrix4F model = Neat::Matrix4F::identity();
+
+  ImGuizmo::Manipulate(cameraView.data(), cameraProjection.data(),
+                       ImGuizmo::ROTATE, ImGuizmo::WORLD, model.data(), NULL,
+                       NULL);
+
   ImGui::End();
 }
 

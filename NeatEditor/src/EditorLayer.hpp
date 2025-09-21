@@ -42,6 +42,7 @@ class EditorLayer : public Layer {
 
   Vector2U m_viewportSize{0, 0};
   Vector2U m_newViewportSize{0, 0};
+  Vector2U m_viewportBounds[2];
 
   int m_gizmoType = -1;
 };
