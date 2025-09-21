@@ -43,7 +43,7 @@ class VectorTest : public testing::Test {
   Vector<1, UShort> vector1us{1};
 };
 
-TEST_F(VectorTest, OperatorAt) {
+TEST_F(VectorTest, AtOperator) {
   EXPECT_EQ(vector4f[0], 1.0f);
   EXPECT_EQ(vector4f[1], 2.0f);
   EXPECT_EQ(vector4f[2], 3.0f);
@@ -131,6 +131,96 @@ TEST_F(VectorTest, OperatorAt) {
   EXPECT_EQ(vector2us[0], 1U);
   EXPECT_EQ(vector2us[1], 2U);
   EXPECT_EQ(vector1us[0], 1U);
+}
+
+TEST_F(VectorTest, CallOperator) {
+  EXPECT_EQ(vector4f(0), 1.0f);
+  EXPECT_EQ(vector4f(1), 2.0f);
+  EXPECT_EQ(vector4f(2), 3.0f);
+  EXPECT_EQ(vector4f(3), 4.0f);
+  EXPECT_EQ(vector3f(0), 1.0f);
+  EXPECT_EQ(vector3f(1), 2.0f);
+  EXPECT_EQ(vector3f(2), 3.0f);
+  EXPECT_EQ(vector2f(0), 1.0f);
+  EXPECT_EQ(vector2f(1), 2.0f);
+  EXPECT_EQ(vector1f(0), 1.0f);
+
+  EXPECT_EQ(vector4d(0), 1.0);
+  EXPECT_EQ(vector4d(1), 2.0);
+  EXPECT_EQ(vector4d(2), 3.0);
+  EXPECT_EQ(vector4d(3), 4.0);
+  EXPECT_EQ(vector3d(0), 1.0);
+  EXPECT_EQ(vector3d(1), 2.0);
+  EXPECT_EQ(vector3d(2), 3.0);
+  EXPECT_EQ(vector2d(0), 1.0);
+  EXPECT_EQ(vector2d(1), 2.0);
+  EXPECT_EQ(vector1d(0), 1.0);
+
+  EXPECT_EQ(vector4i(0), 1);
+  EXPECT_EQ(vector4i(1), 2);
+  EXPECT_EQ(vector4i(2), 3);
+  EXPECT_EQ(vector4i(3), 4);
+  EXPECT_EQ(vector3i(0), 1);
+  EXPECT_EQ(vector3i(1), 2);
+  EXPECT_EQ(vector3i(2), 3);
+  EXPECT_EQ(vector2i(0), 1);
+  EXPECT_EQ(vector2i(1), 2);
+  EXPECT_EQ(vector1i(0), 1);
+
+  EXPECT_EQ(vector4u(0), 1U);
+  EXPECT_EQ(vector4u(1), 2U);
+  EXPECT_EQ(vector4u(2), 3U);
+  EXPECT_EQ(vector4u(3), 4U);
+  EXPECT_EQ(vector3u(0), 1U);
+  EXPECT_EQ(vector3u(1), 2U);
+  EXPECT_EQ(vector3u(2), 3U);
+  EXPECT_EQ(vector2u(0), 1U);
+  EXPECT_EQ(vector2u(1), 2U);
+  EXPECT_EQ(vector1u(0), 1U);
+
+  EXPECT_TRUE(vector4b(0));
+  EXPECT_FALSE(vector4b(1));
+  EXPECT_TRUE(vector4b(2));
+  EXPECT_FALSE(vector4b(3));
+  EXPECT_TRUE(vector3b(0));
+  EXPECT_FALSE(vector3b(1));
+  EXPECT_TRUE(vector3b(2));
+  EXPECT_TRUE(vector2b(0));
+  EXPECT_FALSE(vector2b(1));
+  EXPECT_TRUE(vector1b(0));
+
+  EXPECT_EQ(vector4c(0), 'a');
+  EXPECT_EQ(vector4c(1), 'b');
+  EXPECT_EQ(vector4c(2), 'c');
+  EXPECT_EQ(vector4c(3), 'd');
+  EXPECT_EQ(vector3c(0), 'a');
+  EXPECT_EQ(vector3c(1), 'b');
+  EXPECT_EQ(vector3c(2), 'c');
+  EXPECT_EQ(vector2c(0), 'a');
+  EXPECT_EQ(vector2c(1), 'b');
+  EXPECT_EQ(vector1c(0), 'a');
+
+  EXPECT_EQ(vector4s(0), 1);
+  EXPECT_EQ(vector4s(1), 2);
+  EXPECT_EQ(vector4s(2), 3);
+  EXPECT_EQ(vector4s(3), 4);
+  EXPECT_EQ(vector3s(0), 1);
+  EXPECT_EQ(vector3s(1), 2);
+  EXPECT_EQ(vector3s(2), 3);
+  EXPECT_EQ(vector2s(0), 1);
+  EXPECT_EQ(vector2s(1), 2);
+  EXPECT_EQ(vector1s(0), 1);
+
+  EXPECT_EQ(vector4us(0), 1U);
+  EXPECT_EQ(vector4us(1), 2U);
+  EXPECT_EQ(vector4us(2), 3U);
+  EXPECT_EQ(vector4us(3), 4U);
+  EXPECT_EQ(vector3us(0), 1U);
+  EXPECT_EQ(vector3us(1), 2U);
+  EXPECT_EQ(vector3us(2), 3U);
+  EXPECT_EQ(vector2us(0), 1U);
+  EXPECT_EQ(vector2us(1), 2U);
+  EXPECT_EQ(vector1us(0), 1U);
 }
 
 TEST_F(VectorTest, CoordinatesAccessingXYZW) {
@@ -963,6 +1053,101 @@ TEST_F(VectorTest, OperatorBool) {
   EXPECT_FALSE(vector1b);
 }
 
+TEST_F(VectorTest, EqualOperator) {
+  EXPECT_TRUE((vector4f == Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_TRUE((vector3f == Vector3F{1.0f, 2.0f, 3.0f}));
+  EXPECT_TRUE((vector2f == Vector2F{1.0f, 2.0f}));
+  EXPECT_TRUE((vector1f == Vector1F{1.0f}));
+
+  EXPECT_TRUE((vector4i == Vector4I{1, 2, 3, 4}));
+  EXPECT_TRUE((vector3i == Vector3I{1, 2, 3}));
+  EXPECT_TRUE((vector2i == Vector2I{1, 2}));
+  EXPECT_TRUE((vector1i == Vector1I{1}));
+
+  EXPECT_TRUE((vector4b == Vector4B{true, false, true, false}));
+  EXPECT_TRUE((vector3b == Vector3B{true, false, true}));
+  EXPECT_TRUE((vector2b == Vector2B{true, false}));
+  EXPECT_TRUE((vector1b == Vector1B{true}));
+
+  EXPECT_TRUE((vector4c == Vector<4, char>{'a', 'b', 'c', 'd'}));
+  EXPECT_TRUE((vector3c == Vector<3, char>{'a', 'b', 'c'}));
+  EXPECT_TRUE((vector2c == Vector<2, char>{'a', 'b'}));
+  EXPECT_TRUE((vector1c == Vector<1, char>{'a'}));
+
+  EXPECT_TRUE((vector4s == Vector<4, short>{1, 2, 3, 4}));
+  EXPECT_TRUE((vector3s == Vector<3, short>{1, 2, 3}));
+  EXPECT_TRUE((vector2s == Vector<2, short>{1, 2}));
+  EXPECT_TRUE((vector1s == Vector<1, short>{1}));
+
+  EXPECT_TRUE((vector4us == Vector<4, unsigned short>{1U, 2U, 3U, 4U}));
+  EXPECT_TRUE((vector3us == Vector<3, unsigned short>{1U, 2U, 3U}));
+  EXPECT_TRUE((vector2us == Vector<2, unsigned short>{1U, 2U}));
+  EXPECT_TRUE((vector1us == Vector<1, unsigned short>{1U}));
+
+  // False cases
+  EXPECT_FALSE((vector4f == Vector4F{1.5f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_FALSE((vector3f == Vector3F{1.0f, 2.5f, 3.0f}));
+  EXPECT_FALSE((vector2f == Vector2F{1.0f, 2.5f}));
+  EXPECT_FALSE((vector1f == Vector1F{1.5f}));
+
+  EXPECT_FALSE((vector4i == Vector4I{1, 3, 3, 4}));
+  EXPECT_FALSE((vector3i == Vector3I{1, 3, 3}));
+  EXPECT_FALSE((vector2i == Vector2I{1, 3}));
+  EXPECT_FALSE((vector1i == Vector1I{2}));
+
+  EXPECT_FALSE((vector4b == Vector4B{false, false, true, false}));
+  EXPECT_FALSE((vector3b == Vector3B{false, false, true}));
+  EXPECT_FALSE((vector2b == Vector2B{false, false}));
+  EXPECT_FALSE((vector1b == Vector1B{false}));
+
+  EXPECT_FALSE((vector4c == Vector<4, char>{'b', 'b', 'c', 'd'}));
+  EXPECT_FALSE((vector3c == Vector<3, char>{'b', 'b', 'c'}));
+  EXPECT_FALSE((vector2c == Vector<2, char>{'b', 'b'}));
+  EXPECT_FALSE((vector1c == Vector<1, char>{'b'}));
+
+  EXPECT_FALSE((vector4s == Vector<4, short>{2, 2, 3, 4}));
+  EXPECT_FALSE((vector3s == Vector<3, short>{2, 2, 3}));
+  EXPECT_FALSE((vector2s == Vector<2, short>{2, 2}));
+  EXPECT_FALSE((vector1s == Vector<1, short>{2}));
+
+  EXPECT_FALSE((vector4us == Vector<4, unsigned short>{1U, 2U, 2U, 4U}));
+  EXPECT_FALSE((vector3us == Vector<3, unsigned short>{1U, 2U, 2U}));
+  EXPECT_FALSE((vector2us == Vector<2, unsigned short>{1U, 3U}));
+  EXPECT_FALSE((vector1us == Vector<1, unsigned short>{2U}));
+}
+
+TEST_F(VectorTest, NotEqualOperator) {
+  EXPECT_TRUE((vector4f != Vector4F{1.5f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_TRUE((vector3f != Vector3F{1.0f, 2.5f, 3.0f}));
+  EXPECT_TRUE((vector2f != Vector2F{1.0f, 2.5f}));
+  EXPECT_TRUE((vector1f != Vector1F{1.5f}));
+
+  EXPECT_TRUE((vector4i != Vector4I{1, 3, 3, 4}));
+  EXPECT_TRUE((vector3i != Vector3I{1, 3, 3}));
+  EXPECT_TRUE((vector2i != Vector2I{1, 3}));
+  EXPECT_TRUE((vector1i != Vector1I{2}));
+
+  EXPECT_TRUE((vector4b != Vector4B{false, false, true, false}));
+  EXPECT_TRUE((vector3b != Vector3B{false, false, true}));
+  EXPECT_TRUE((vector2b != Vector2B{false, false}));
+  EXPECT_TRUE((vector1b != Vector1B{false}));
+
+  EXPECT_TRUE((vector4c != Vector<4, char>{'b', 'b', 'c', 'd'}));
+  EXPECT_TRUE((vector3c != Vector<3, char>{'b', 'b', 'c'}));
+  EXPECT_TRUE((vector2c != Vector<2, char>{'b', 'b'}));
+  EXPECT_TRUE((vector1c != Vector<1, char>{'b'}));
+
+  EXPECT_TRUE((vector4s != Vector<4, short>{2, 2, 3, 4}));
+  EXPECT_TRUE((vector3s != Vector<3, short>{2, 2, 3}));
+  EXPECT_TRUE((vector2s != Vector<2, short>{2, 2}));
+  EXPECT_TRUE((vector1s != Vector<1, short>{2}));
+
+  EXPECT_TRUE((vector4us != Vector<4, unsigned short>{1U, 2U, 2U, 4U}));
+  EXPECT_TRUE((vector3us != Vector<3, unsigned short>{1U, 2U, 2U}));
+  EXPECT_TRUE((vector2us != Vector<2, unsigned short>{1U, 3U}));
+  EXPECT_TRUE((vector1us != Vector<1, unsigned short>{2U}));
+}
+
 TEST_F(VectorTest, ToTuple) {
   EXPECT_EQ(vector4f.toTuple(), (std::make_tuple(1.0f, 2.0f, 3.0f, 4.0f)));
   EXPECT_EQ(vector3f.toTuple(), (std::make_tuple(1.0f, 2.0f, 3.0f)));
@@ -993,5 +1178,37 @@ TEST_F(VectorTest, ToTuple) {
   EXPECT_EQ(vector3us.toTuple(), (std::make_tuple(1U, 2U, 3U)));
   EXPECT_EQ(vector2us.toTuple(), (std::make_tuple(1U, 2U)));
   EXPECT_EQ(vector1us.toTuple(), (std::make_tuple(1U)));
+}
+
+TEST_F(VectorTest, Size) {
+  EXPECT_EQ(vector4f.size(), 4);
+  EXPECT_EQ(vector3f.size(), 3);
+  EXPECT_EQ(vector2f.size(), 2);
+  EXPECT_EQ(vector1f.size(), 1);
+
+  EXPECT_EQ(vector4i.size(), 4);
+  EXPECT_EQ(vector3i.size(), 3);
+  EXPECT_EQ(vector2i.size(), 2);
+  EXPECT_EQ(vector1i.size(), 1);
+
+  EXPECT_EQ(vector4b.size(), 4);
+  EXPECT_EQ(vector3b.size(), 3);
+  EXPECT_EQ(vector2b.size(), 2);
+  EXPECT_EQ(vector1b.size(), 1);
+
+  EXPECT_EQ(vector4c.size(), 4);
+  EXPECT_EQ(vector3c.size(), 3);
+  EXPECT_EQ(vector2c.size(), 2);
+  EXPECT_EQ(vector1c.size(), 1);
+
+  EXPECT_EQ(vector4s.size(), 4);
+  EXPECT_EQ(vector3s.size(), 3);
+  EXPECT_EQ(vector2s.size(), 2);
+  EXPECT_EQ(vector1s.size(), 1);
+
+  EXPECT_EQ(vector4us.size(), 4);
+  EXPECT_EQ(vector3us.size(), 3);
+  EXPECT_EQ(vector2us.size(), 2);
+  EXPECT_EQ(vector1us.size(), 1);
 }
 }  // namespace Neat
