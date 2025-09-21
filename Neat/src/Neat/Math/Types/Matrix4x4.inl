@@ -368,6 +368,27 @@ inline constexpr Matrix<4, 4, T>::RowType Matrix<4, 4, T>::col(
                  elements[col + 12]};
 }
 
+// Relational operators
+template <typename T>
+template <typename U>
+inline constexpr bool Matrix<4, 4, T>::operator==(
+    const Matrix<4, 4, U> &m) const {
+  return elements[0] == m(0) and elements[1] == m(1) and elements[2] == m(2) and
+         elements[3] == m(3) and elements[4] == m(4) and elements[5] == m(5) and
+         elements[6] == m(6) and elements[7] == m(7) and elements[8] == m(8) and
+         elements[9] == m(9) and elements[10] == m(10) and
+         elements[11] == m(11) and elements[12] == m(12) and
+         elements[13] == m(13) and elements[14] == m(14) and
+         elements[15] == m(15);
+}
+
+template <typename T>
+template <typename U>
+inline constexpr bool Matrix<4, 4, T>::operator!=(
+    const Matrix<4, 4, U> &m) const {
+  return !(*this == m);
+}
+
 // Matrix operations
 template <typename T>
 inline T determinant(const Matrix<4, 4, T> &m) {

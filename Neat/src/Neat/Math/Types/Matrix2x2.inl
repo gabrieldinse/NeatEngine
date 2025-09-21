@@ -246,6 +246,22 @@ inline constexpr Matrix<2, 2, T>::RowType Matrix<2, 2, T>::col(
   return RowType{elements[col], elements[col + 2]};
 }
 
+// Relational operators
+template <typename T>
+template <typename U>
+inline constexpr bool Matrix<2, 2, T>::operator==(
+    const Matrix<2, 2, U> &m) const {
+  return elements[0] == m(0) and elements[1] == m(1) and elements[2] == m(2) and
+         elements[3] == m(3);
+}
+
+template <typename T>
+template <typename U>
+inline constexpr bool Matrix<2, 2, T>::operator!=(
+    const Matrix<2, 2, U> &m) const {
+  return not(*this == m);
+}
+
 // Matrix operations
 template <typename T>
 inline T determinant(const Matrix<2, 2, T> &m) {

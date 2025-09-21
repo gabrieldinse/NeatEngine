@@ -150,4 +150,33 @@ TEST_F(MatrixTest, ColOperator) {
   EXPECT_EQ(matrix2b.col(0), (Vector2B{true, true}));
   EXPECT_EQ(matrix2b.col(1), (Vector2B{false, false}));
 }
+
+TEST_F(MatrixTest, Transpose) {
+  EXPECT_EQ(transpose(matrix4f),
+            (Matrix4F{1.0f, 5.0f, 9.0f, 13.0f, 2.0f, 6.0f, 10.0f, 14.0f, 3.0f,
+                      7.0f, 11.0f, 15.0f, 4.0f, 8.0f, 12.0f, 16.0f}));
+  EXPECT_EQ(transpose(matrix4d),
+            (Matrix4D{1.0, 5.0, 9.0, 13.0, 2.0, 6.0, 10.0, 14.0, 3.0, 7.0, 11.0,
+                      15.0, 4.0, 8.0, 12.0, 16.0}));
+  EXPECT_EQ(transpose(matrix4i),
+            (Matrix4I{1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16}));
+  EXPECT_EQ(transpose(matrix4u),
+            (Matrix4U{1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16}));
+  EXPECT_EQ(transpose(matrix4b),
+            (Matrix4B{true, true, true, true, false, false, false, false, true,
+                      true, true, true, false, false, false, false}));
+  EXPECT_EQ(transpose(matrix3f),
+            (Matrix3F{1.0f, 4.0f, 7.0f, 2.0f, 5.0f, 8.0f, 3.0f, 6.0f, 9.0f}));
+  EXPECT_EQ(transpose(matrix3d),
+            (Matrix3D{1.0, 4.0, 7.0, 2.0, 5.0, 8.0, 3.0, 6.0, 9.0}));
+  EXPECT_EQ(transpose(matrix3i), (Matrix3I{1, 4, 7, 2, 5, 8, 3, 6, 9}));
+  EXPECT_EQ(transpose(matrix3u), (Matrix3U{1, 4, 7, 2, 5, 8, 3, 6, 9}));
+  EXPECT_EQ(transpose(matrix3b), (Matrix3B{true, false, true, false, true,
+                                           false, true, false, true}));
+  EXPECT_EQ(transpose(matrix2f), (Matrix2F{1.0f, 3.0f, 2.0f, 4.0f}));
+  EXPECT_EQ(transpose(matrix2d), (Matrix2D{1.0, 3.0, 2.0, 4.0}));
+  EXPECT_EQ(transpose(matrix2i), (Matrix2I{1, 3, 2, 4}));
+  EXPECT_EQ(transpose(matrix2u), (Matrix2U{1, 3, 2, 4}));
+  EXPECT_EQ(transpose(matrix2b), (Matrix2B{true, true, false, false}));
+}
 }  // namespace Neat

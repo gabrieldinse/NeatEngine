@@ -118,6 +118,10 @@ void EditorLayer::onImGuiRender() {
         newScene();
       }
 
+      if (ImGui::MenuItem("Save", "Ctrl + S")) {
+        saveFile();
+      }
+
       if (ImGui::MenuItem("Save As...", "Ctrl + Shift + S")) {
         openSaveFileAsDialog();
       }
@@ -217,8 +221,12 @@ bool EditorLayer::onKeyPressed(const KeyPressedEvent &event) {
       }
       break;
     case Key::S:
-      if (controlPressed and shiftPressed) {
-        openSaveFileAsDialog();
+      if (controlPressed) {
+        if (shiftPressed) {
+          openSaveFileAsDialog();
+        } else {
+          saveFile();
+        }
         return true;
       }
       break;
@@ -295,6 +303,15 @@ void EditorLayer::handleGizmos() {
   }
 }
 
+void EditorLayer::saveFile() {
+  if (m_openedFilepath.empty()) {
+    openSaveFileAsDialog();
+  } else {
+    SceneSerializer serializer(m_scene);
+    serializer.serialize(m_openedFilepath);
+  }
+}
+
 void EditorLayer::openSaveFileAsDialog() {
   IGFD::FileDialogConfig config;
   config.path = ".";
@@ -311,21 +328,21 @@ void EditorLayer::openOpenFileDialog() {
 
 void EditorLayer::handleOpenFileDialog() {
   if (ImGuiFileDialog::Instance()->IsOk()) {
-    std::string filepath = ImGuiFileDialog::Instance()->GetFilePathName();
+    m_openedFilepath = ImGuiFileDialog::Instance()->GetFilePathName();
     m_scene = makeRef<Scene>(m_eventDispatcher);
     m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
     m_sceneHierarchyPanel.setScene(m_scene);
     SceneSerializer serializer{m_scene};
-    serializer.deserialize(filepath);
+    serializer.deserialize(m_openedFilepath);
   }
   ImGuiFileDialog::Instance()->Close();
 }
 
 void EditorLayer::handleSaveFileAsDialog() {
   if (ImGuiFileDialog::Instance()->IsOk()) {
-    std::string filepath = ImGuiFileDialog::Instance()->GetFilePathName();
+    m_openedFilepath = ImGuiFileDialog::Instance()->GetFilePathName();
     SceneSerializer serializer(m_scene);
-    serializer.serialize(filepath);
+    serializer.serialize(m_openedFilepath);
   }
   ImGuiFileDialog::Instance()->Close();
 }

@@ -292,6 +292,23 @@ inline constexpr Matrix<3, 3, T>::RowType Matrix<3, 3, T>::col(
   return RowType{elements[col], elements[col + 3], elements[col + 6]};
 }
 
+// Relational operators
+template <typename T>
+template <typename U>
+inline constexpr bool Matrix<3, 3, T>::operator==(
+    const Matrix<3, 3, U> &m) const {
+  return elements[0] == m(0) and elements[1] == m(1) and elements[2] == m(2) and
+         elements[3] == m(3) and elements[4] == m(4) and elements[5] == m(5) and
+         elements[6] == m(6) and elements[7] == m(7) and elements[8] == m(8);
+}
+
+template <typename T>
+template <typename U>
+inline constexpr bool Matrix<3, 3, T>::operator!=(
+    const Matrix<3, 3, U> &m) const {
+  return not(*this == m);
+}
+
 // Matrix operations
 template <typename T>
 inline T determinant(const Matrix<3, 3, T> &m) {

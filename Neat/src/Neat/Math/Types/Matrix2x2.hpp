@@ -79,6 +79,12 @@ struct Matrix<2, 2, T> {
   constexpr RowType col(UInt32 col) const;
 
   constexpr UInt32 size() { return elements.size(); }
+
+  // Relational operators
+  template <typename U>
+  constexpr bool operator==(const Matrix<2, 2, U> &m) const;
+  template <typename U>
+  constexpr bool operator!=(const Matrix<2, 2, U> &m) const;
 };
 
 // Predefined types

@@ -27,6 +27,7 @@ class EditorLayer : public Layer {
   void handleOpenFileDialog();
   void handleSaveFileAsDialog();
   void handleGizmos();
+  void saveFile();
   void openOpenFileDialog();
   void openSaveFileAsDialog();
 
@@ -43,6 +44,8 @@ class EditorLayer : public Layer {
   Vector2U m_viewportSize{0, 0};
   Vector2U m_newViewportSize{0, 0};
   Vector2U m_viewportBounds[2];
+
+  std::string m_openedFilepath;
 
   int m_gizmoType = -1;
 };
