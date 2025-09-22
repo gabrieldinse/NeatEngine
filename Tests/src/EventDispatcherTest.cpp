@@ -210,4 +210,52 @@ TEST_F(EventDispatcherTest, DisconnectAndEnqueueAndUpdate) {
   EXPECT_EQ(listenerC.posY, 0.5f);
   EXPECT_EQ(listenerC.count, 1);
 }
+
+TEST_F(EventDispatcherTest, DisconnectInstance) {
+  std::string msg{"My message"};
+  std::string msg2{"My other message"};
+  dispatcher1.disconnect(listenerB);
+
+  dispatcher1.enqueue(EventA{100});
+  dispatcher1.enqueue(EventB{msg});
+  dispatcher1.enqueue<EventC>(3.14f, 2.72f);
+  dispatcher1.enqueue<EventB>(msg2);
+
+  expectDefault();
+
+  dispatcher1.onUpdate();
+
+  EXPECT_EQ(listenerA.val, 100);
+  EXPECT_EQ(listenerA.count, 1);
+  EXPECT_EQ(listenerB.posX, 0.0f);
+  EXPECT_EQ(listenerB.posY, 0.0f);
+  EXPECT_EQ(listenerB.msg, "");
+  EXPECT_EQ(listenerB.count, 0);
+  EXPECT_EQ(listenerC.posX, 3.14f);
+  EXPECT_EQ(listenerC.posY, 2.72f);
+  EXPECT_EQ(listenerC.count, 1);
+
+  dispatcher1.disconnect(listenerA);
+
+  setDefault();
+
+  dispatcher1.enqueue<EventA>(200);
+  dispatcher1.enqueue<EventB>(msg + " extended");
+  dispatcher1.enqueue(EventC{-1.0f, 0.5f});
+  dispatcher1.enqueue(EventB{msg2 + "modified"});
+
+  expectDefault();
+
+  dispatcher1.onUpdate();
+
+  EXPECT_EQ(listenerA.val, 0);
+  EXPECT_EQ(listenerA.count, 0);
+  EXPECT_EQ(listenerB.posX, 0.0f);
+  EXPECT_EQ(listenerB.posY, 0.0f);
+  EXPECT_EQ(listenerB.msg, "");
+  EXPECT_EQ(listenerB.count, 0);
+  EXPECT_EQ(listenerC.posX, -1.0f);
+  EXPECT_EQ(listenerC.posY, 0.5f);
+  EXPECT_EQ(listenerC.count, 1);
+}
 }  // namespace Neat

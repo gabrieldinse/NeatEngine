@@ -60,6 +60,13 @@ class EventDispatcher {
     get<EventType>().onUpdate(std::forward<Args>(args)...);
   }
 
+  template <typename Instance>
+  void disconnect(Instance& instance) {
+    for (auto& [_, connections] : m_eventConnectionsMap) {
+      connections->disconnect(static_cast<void*>(&instance));
+    }
+  }
+
   void onUpdate();
 
  private:

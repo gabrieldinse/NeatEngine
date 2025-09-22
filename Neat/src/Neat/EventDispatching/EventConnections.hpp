@@ -15,8 +15,9 @@ constexpr UInt16 EventPriorityLowest = UInt16Max;
 
 class BaseEventConnections {
  public:
-  virtual void onUpdate(const BaseQueuedEvent &queuedEvent) = 0;
   virtual ~BaseEventConnections() = default;
+  virtual void onUpdate(const BaseQueuedEvent &queuedEvent) = 0;
+  virtual void disconnect(void *instance) = 0;
 };
 
 template <typename EventType>
@@ -54,6 +55,12 @@ class EventConnections : public BaseEventConnections {
     m_handlers.remove_if([&](const Handler &handler) {
       return handler.instancePointer == static_cast<void *>(&instance) and
              handler.instanceMethodId == methodId;
+    });
+  }
+
+  void disconnect(void *instance) {
+    m_handlers.remove_if([&](const Handler &handler) {
+      return handler.instancePointer == instance;
     });
   }
 

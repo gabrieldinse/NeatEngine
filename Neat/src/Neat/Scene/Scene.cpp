@@ -26,8 +26,7 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
 Scene::~Scene() {
   NT_PROFILE_FUNCTION();
 
-  m_eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
-      .disconnect<&Scene::onActiveCameraTagComponentAdded>(*this);
+  m_eventDispatcher->disconnect(*this);
 }
 
 Entity Scene::createEntity() { return m_entityManager->createEntity(); }
