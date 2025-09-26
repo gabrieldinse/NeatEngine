@@ -198,10 +198,9 @@ void OpenGLFramebuffer::drawBuffers() {
   NT_PROFILE_FUNCTION();
 
   if (m_colorAttachmentIDs.size() > 1) {
-    NT_CORE_ASSERT(m_colorAttachmentIDs.size() <= 4,
-                   "Only up to 4 color attachments are supported.");
-    GLenum buffers[4] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
-                         GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
+    NT_CORE_ASSERT(m_colorAttachmentIDs.size() <= 2,
+                   "Only up to 2 color attachments are supported.");
+    constexpr UInt32 buffers[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
     glDrawBuffers(m_colorAttachmentIDs.size(), buffers);
   } else if (m_colorAttachmentIDs.empty()) {
     glDrawBuffer(GL_NONE);

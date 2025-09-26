@@ -22,8 +22,8 @@ Entities:
     CameraComponent:
       type: Orthographic
       orthographicProperties:
-        left: -1.441315
-        right: 1.441315
+        left: -1.004695
+        right: 1.004695
         bottom: -1.000000
         top: 1.000000
         near: -1.000000
@@ -35,7 +35,7 @@ Entities:
         far: 1000.000000
       projectionMatrix:
         elements:
-          - 0.693811
+          - 0.995327
           - 0.000000
           - 0.000000
           - -0.000000
@@ -86,8 +86,8 @@ Entities:
       textureFilepath: ""
       color:
         elements:
-          - 0.702703
           - 1.000000
+          - 0.671815
           - 0.000000
           - 1.000000
       tilingFactor: 1.000000

@@ -180,9 +180,7 @@ void EditorLayer::onImGuiRender() {
                          viewportMaxRegion.y + viewportOffset.y};
   m_viewportFocused = ImGui::IsWindowFocused();
   m_viewportHovered = ImGui::IsWindowHovered();
-  ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-  m_newViewportSize = Vector2U{static_cast<UInt32>(viewportPanelSize.x),
-                               static_cast<UInt32>(viewportPanelSize.y)};
+  m_newViewportSize = m_viewportBounds[1] - m_viewportBounds[0];
   UInt32 textureID = m_framebuffer->getColorAttachmentID();
   ImGui::Image(static_cast<ImTextureID>(textureID),
                ImVec2{static_cast<float>(m_viewportSize.x()),
@@ -214,18 +212,19 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
   auto [mx, my] = ImGui::GetMousePos();
   mx -= static_cast<float>(m_viewportBounds[0].x());
   my -= static_cast<float>(m_viewportBounds[0].y());
-  Vector2I viewportSize{m_viewportBounds[1] - m_viewportBounds[0]};
-  // my = static_cast<float>(viewportSize.y()) - my;
   int mouseX = static_cast<int>(mx);
   int mouseY = static_cast<int>(my);
 
-  if (mouseX >= 0 and mouseY >= 0 and mouseX < viewportSize.x() and
-      mouseY < viewportSize.y()) {
+  if (mouseX >= 0 and mouseY >= 0 and
+      mouseX < static_cast<int>(m_viewportSize.x()) and
+      mouseY < static_cast<int>(m_viewportSize.y())) {
     UInt32 entityIndex = m_framebuffer->getUInt32Pixel(
         1, Vector2U{static_cast<UInt32>(mouseX), static_cast<UInt32>(mouseY)});
 
     if (entityIndex != Entity::ID::InvalidIndex) {
       m_hoveredEntity = m_scene->getEntityManager()->getEntity(entityIndex);
+    } else {
+      m_hoveredEntity = Entity{};
     }
   }
 
