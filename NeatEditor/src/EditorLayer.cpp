@@ -153,14 +153,16 @@ void EditorLayer::onImGuiRender() {
   auto stats = Renderer2D::getStats();
   ImGui::Begin("Stats");
   std::string entityLabel{"None"};
+  std::string entityIndex{"N/A"};
   if (m_hoveredEntity) {
     if (m_hoveredEntity.hasComponent<LabelComponent>()) {
       entityLabel = m_hoveredEntity.getComponent<LabelComponent>()->label;
-    } else {
-      entityLabel = "Unnamed Entity";
+      entityIndex = std::to_string(m_hoveredEntity.id().index());
     }
   }
   ImGui::Text("Hovered Entity: %s", entityLabel.c_str());
+  ImGui::Text("Hovered Entity Index: %s", entityIndex.c_str());
+
   ImGui::Text("Number of draw calls: %d", stats.drawCalls);
   ImGui::Text("Number of quads: %d", stats.quadCount);
   ImGui::Text("Number of indexes: %d", stats.getTotalIndexCount());
@@ -209,24 +211,23 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
   m_framebuffer->clearUInt32ColorAttachment(1, Entity::ID::InvalidIndex);
   m_scene->onEditorUpdate(deltaTimeSeconds, m_editorCamera);
 
-  //auto [mx, my] = ImGui::GetMousePos();
-  //mx -= static_cast<float>(m_viewportBounds[0].x());
-  //my -= static_cast<float>(m_viewportBounds[0].y());
-  //Vector2I viewportSize{m_viewportBounds[1] - m_viewportBounds[0]};
-  //my = static_cast<float>(viewportSize.y()) - my;
-  //int mouseX = static_cast<int>(mx);
-  //int mouseY = static_cast<int>(my);
+  auto [mx, my] = ImGui::GetMousePos();
+  mx -= static_cast<float>(m_viewportBounds[0].x());
+  my -= static_cast<float>(m_viewportBounds[0].y());
+  Vector2I viewportSize{m_viewportBounds[1] - m_viewportBounds[0]};
+  // my = static_cast<float>(viewportSize.y()) - my;
+  int mouseX = static_cast<int>(mx);
+  int mouseY = static_cast<int>(my);
 
-  //if (mouseX >= 0 and mouseY >= 0 and mouseX < viewportSize.x() and
-  //    mouseY < viewportSize.y()) {
-  //  NT_CORE_TRACE("Mouse coordinates: ({}, {})", mouseX, mouseY);
-  //  NT_CORE_TRACE("Viewport size: ({}, {})", viewportSize.x(),
-  //                viewportSize.y());
-  //  UInt32 entityIndex = m_framebuffer->getUInt32Pixel(
-  //      1, Vector2U{static_cast<UInt32>(mouseX), static_cast<UInt32>(mouseY)});
-  //  NT_CORE_TRACE("Hovered entity index: {}", entityIndex);
-  //  m_hoveredEntity = m_scene->getEntityManager()->getEntity(entityIndex);
-  //}
+  if (mouseX >= 0 and mouseY >= 0 and mouseX < viewportSize.x() and
+      mouseY < viewportSize.y()) {
+    UInt32 entityIndex = m_framebuffer->getUInt32Pixel(
+        1, Vector2U{static_cast<UInt32>(mouseX), static_cast<UInt32>(mouseY)});
+
+    if (entityIndex != Entity::ID::InvalidIndex) {
+      m_hoveredEntity = m_scene->getEntityManager()->getEntity(entityIndex);
+    }
+  }
 
   onImGuiRender();
   m_framebuffer->unbind();

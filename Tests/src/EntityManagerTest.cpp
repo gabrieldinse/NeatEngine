@@ -88,6 +88,11 @@ class EntityManagerTest : public testing::Test {
 TEST_F(EntityManagerTest, InvalidEntity) {
   EXPECT_FALSE(entityManager->hasEntity(invalidEntity));
   EXPECT_FALSE(invalidEntity.isValid());
+
+  Entity emptyEntity;
+  EXPECT_FALSE(entityManager->hasEntity(emptyEntity));
+  EXPECT_FALSE(emptyEntity.isValid());
+  EXPECT_FALSE(emptyEntity);
 }
 
 TEST_F(EntityManagerTest, CreateEntity) {

@@ -20,18 +20,19 @@ void Render2DSystem::onUpdate(
   Renderer2D::resetStats();
   RenderCommand::clearWithColor(Color::lightSlateGray);
 
-  for (auto entity :
+  for (auto activeCameraEntity :
        entityManager->entitiesWithComponents<
            ActiveCameraTagComponent, CameraComponent, TransformComponent>()) {
-    auto camera = entity.getComponent<CameraComponent>();
-    auto cameraTransform = entity.getComponent<TransformComponent>();
+    auto camera = activeCameraEntity.getComponent<CameraComponent>();
+    auto cameraTransform =
+        activeCameraEntity.getComponent<TransformComponent>();
     Renderer2D::beginScene(*camera, *cameraTransform);
 
     ComponentHandle<RenderableSpriteComponent> renderableSprite;
     ComponentHandle<TransformComponent> transform;
-    for ([[maybe_unused]] auto entity :
+    for (auto entity :
          entityManager->entitiesWithComponents(renderableSprite, transform)) {
-      Renderer2D::drawSprite(*transform, *renderableSprite);
+      Renderer2D::drawSprite(*transform, *renderableSprite, entity);
     }
     Renderer2D::endScene();
     break;

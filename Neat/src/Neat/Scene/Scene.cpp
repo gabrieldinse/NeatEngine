@@ -64,9 +64,9 @@ void Scene::onEditorUpdate([[maybe_unused]] double deltaTimeSeconds,
 
   ComponentHandle<RenderableSpriteComponent> renderableSprite;
   ComponentHandle<TransformComponent> transform;
-  for ([[maybe_unused]] auto entity :
+  for (auto entity :
        m_entityManager->entitiesWithComponents(renderableSprite, transform)) {
-    Renderer2D::drawSprite(*transform, *renderableSprite);
+    Renderer2D::drawSprite(*transform, *renderableSprite, entity);
   }
   Renderer2D::endScene();
 }
