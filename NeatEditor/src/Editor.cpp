@@ -15,5 +15,8 @@ class Editor : public Application {
   ~Editor() {}
 };
 
-Scope<Application> createApplication() { return makeScope<Editor>(); }
+Scope<Application> createApplication(
+    [[maybe_unused]] const ApplicationCommandLineArguments &commandLineArgs) {
+  return makeScope<Editor>();
+}
 }  // namespace Neat

@@ -6,11 +6,16 @@
 
 class FlappySpaceshipApp : public Neat::Application {
  public:
-  FlappySpaceshipApp() { pushLayer<GameLayer>(getEventDispatcher()); }
+  FlappySpaceshipApp()
+      : Neat::Application{Neat::ApplicationProperties{
+            Neat::WindowProperties{"Neat Editor"}}} {
+    pushLayer<GameLayer>(getEventDispatcher());
+  }
 
   ~FlappySpaceshipApp() {}
 };
 
-Neat::Scope<Neat::Application> Neat::createApplication() {
+Neat::Scope<Neat::Application> Neat::createApplication(
+    [[maybe_unused]] const ApplicationCommandLineArguments &commandLineArgs) {
   return Neat::makeScope<FlappySpaceshipApp>();
 }

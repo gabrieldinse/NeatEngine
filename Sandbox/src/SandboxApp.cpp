@@ -15,6 +15,7 @@ class Sandbox : public Neat::Application {
   ~Sandbox() {}
 };
 
-Neat::Scope<Neat::Application> Neat::createApplication() {
+Neat::Scope<Neat::Application> Neat::createApplication(
+    [[maybe_unused]] const ApplicationCommandLineArguments &commandLineArgs) {
   return Neat::makeScope<Sandbox>();
 }

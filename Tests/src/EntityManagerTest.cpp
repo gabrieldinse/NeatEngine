@@ -236,6 +236,19 @@ TEST_F(EntityManagerTest, EntityCopyAndAssignment) {
   EXPECT_TRUE(entity4);
 }
 
+TEST_F(EntityManagerTest, GetEntity) {
+  auto entity1 = entityManager->createEntity();
+  auto entity2 = entityManager->getEntity(entity1.id());
+  EXPECT_EQ(entity1, entity2);
+  EXPECT_TRUE(entity2.isValid());
+  EXPECT_TRUE(entityManager->hasEntity(entity2));
+
+  auto entity3 = entityManager->getEntity(entity1.id().index());
+  EXPECT_EQ(entity1, entity3);
+  EXPECT_TRUE(entity3.isValid());
+  EXPECT_TRUE(entityManager->hasEntity(entity3));
+}
+
 TEST_F(EntityManagerTest, DoesNotHaveComponent) {
   auto entity1 = entityManager->createEntity();
   EXPECT_FALSE(entity1.hasComponent<std::string>());

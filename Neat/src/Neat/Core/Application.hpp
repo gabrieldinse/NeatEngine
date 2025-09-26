@@ -4,6 +4,7 @@
 #include "LayerGroup.hpp"
 #include "Window.hpp"
 #include "ApplicationProperties.hpp"
+#include "ApplicationCommandLineArguments.hpp"
 
 #include "Neat/Events/WindowCloseEvent.hpp"
 #include "Neat/Events/WindowResizeEvent.hpp"
@@ -14,7 +15,9 @@ namespace Neat {
 class Application {
  public:
   Application(
-      const ApplicationProperties &appProperties = ApplicationProperties{});
+      const ApplicationProperties &appProperties = ApplicationProperties{},
+      const ApplicationCommandLineArguments &commandLineArgs =
+          ApplicationCommandLineArguments{});
   virtual ~Application();
 
   virtual void run();
@@ -33,6 +36,10 @@ class Application {
   static Application &get() { return *s_instance; }
   Window &getWindow() { return *m_window; }
 
+  const ApplicationCommandLineArguments &getCommandLineArgs() const {
+    return m_commandLineArgs;
+  }
+
  protected:
   Ref<EventDispatcher> &getEventDispatcher() { return m_eventDispatcher; }
 
@@ -45,6 +52,8 @@ class Application {
  private:
   static Application *s_instance;
 
+  ApplicationCommandLineArguments m_commandLineArgs;
+
   Scope<Window> m_window;
   Ref<EventDispatcher> m_eventDispatcher;
   LayerGroup m_layerGroup;
@@ -53,7 +62,8 @@ class Application {
   bool m_initialized = false;
 };
 
-Scope<Application> createApplication();
+Scope<Application> createApplication(
+    const ApplicationCommandLineArguments &commandLineArgs);
 
 template <typename T, typename... Args>
 void Application::pushLayer(Args &&...args) {

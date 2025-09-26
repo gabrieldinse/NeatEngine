@@ -7,13 +7,15 @@
 
 #ifdef NT_PLATFORM_LINUX
 
-extern Neat::Scope<Neat::Application> Neat::createApplication();
+extern Neat::Scope<Neat::Application> Neat::createApplication(
+    const Neat::ApplicationCommandLineArguments &commandLineArgs);
 
-int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
+int main(int argc, char *argv[]) {
   Neat::Log::initialize();
 
   NT_PROFILE_BEGIN_SESSION("CreateApp", "Neat-Profile.json");
-  Neat::Scope<Neat::Application> app = Neat::createApplication();
+  Neat::Scope<Neat::Application> app =
+      Neat::createApplication({static_cast<Neat::UInt32>(argc), argv});
   NT_PROFILE_END_SESSION();
 
   NT_PROFILE_BEGIN_SESSION("Runtime", "Neat-Profile.json");

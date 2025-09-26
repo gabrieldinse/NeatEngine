@@ -10,8 +10,10 @@
 namespace Neat {
 Application *Application::s_instance = nullptr;
 
-Application::Application(const ApplicationProperties &appProperties)
-    : m_eventDispatcher(makeRef<EventDispatcher>()) {
+Application::Application(const ApplicationProperties &appProperties,
+                         const ApplicationCommandLineArguments &commandLineArgs)
+    : m_commandLineArgs{commandLineArgs},
+      m_eventDispatcher(makeRef<EventDispatcher>()) {
   NT_PROFILE_FUNCTION();
   NT_CORE_ASSERT(not s_instance, "Application already exists!");
   s_instance = this;
