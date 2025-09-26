@@ -16,14 +16,20 @@ EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
       .connect<&EditorLayer::onMouseScrolled>(*this, EventPriorityHighest);
   eventDispatcher->get<KeyPressedEvent>().connect<&EditorLayer::onKeyPressed>(
       *this, EventPriorityHighest);
+  eventDispatcher->get<MouseButtonPressedEvent>()
+      .connect<&EditorLayer::onMouseButtonPressed>(*this, EventPriorityHighest);
 
   // TODO support this on the UI
   // m_checkerboardTexture->setMinification(Texture2DFilter::Nearest);
   // m_checkerboardTexture->setMagnification(Texture2DFilter::Nearest);
   // m_checkerboardTexture->setWrapS(Texture2DWrapping::ClampToEdge);
 
-  FrameBufferSpecification specification{1600, 900};
-  m_frameBuffer = FrameBuffer::create(specification);
+  FramebufferSpecification specification{
+      1600,
+      900,
+      {FramebufferColorFormat::RGBA8, FramebufferColorFormat::OneUInt32},
+      FramebufferDepthFormat::Depth24Stencil8};
+  m_framebuffer = Framebuffer::create(specification);
 }
 
 EditorLayer::~EditorLayer() {}
@@ -145,12 +151,20 @@ void EditorLayer::onImGuiRender() {
   m_sceneHierarchyPanel.onUpdate();
 
   auto stats = Renderer2D::getStats();
-  ImGui::Begin("Example Layer");
-  ImGui::Text("Renderer2D stats:");
-  ImGui::Text("Draw calls: %d", stats.drawCalls);
-  ImGui::Text("Quads: %d", stats.quadCount);
-  ImGui::Text("Indexes: %d", stats.getTotalIndexCount());
-  ImGui::Text("Vertexes: %d\n", stats.getTotalVertexCount());
+  ImGui::Begin("Stats");
+  std::string entityLabel{"None"};
+  if (m_hoveredEntity) {
+    if (m_hoveredEntity.hasComponent<LabelComponent>()) {
+      entityLabel = m_hoveredEntity.getComponent<LabelComponent>()->label;
+    } else {
+      entityLabel = "Unnamed Entity";
+    }
+  }
+  ImGui::Text("Hovered Entity: %s", entityLabel.c_str());
+  ImGui::Text("Number of draw calls: %d", stats.drawCalls);
+  ImGui::Text("Number of quads: %d", stats.quadCount);
+  ImGui::Text("Number of indexes: %d", stats.getTotalIndexCount());
+  ImGui::Text("Number of vertexes: %d\n", stats.getTotalVertexCount());
   ImGui::End();
 
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
@@ -167,7 +181,7 @@ void EditorLayer::onImGuiRender() {
   ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
   m_newViewportSize = Vector2U{static_cast<UInt32>(viewportPanelSize.x),
                                static_cast<UInt32>(viewportPanelSize.y)};
-  UInt32 textureID = m_frameBuffer->getColorAttachmentID();
+  UInt32 textureID = m_framebuffer->getColorAttachmentID();
   ImGui::Image(static_cast<ImTextureID>(textureID),
                ImVec2{static_cast<float>(m_viewportSize.x()),
                       static_cast<float>(m_viewportSize.y())},
@@ -185,16 +199,37 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
                   m_newViewportSize.y());
     m_viewportSize = m_newViewportSize;
     m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
-    m_frameBuffer->resize(m_viewportSize.x(), m_viewportSize.y());
+    m_framebuffer->resize(m_viewportSize.x(), m_viewportSize.y());
     m_editorCamera.setViewport(m_viewportSize.x(), m_viewportSize.y());
   }
 
   m_editorCamera.onUpdate(deltaTimeSeconds);
 
-  m_frameBuffer->bind();
+  m_framebuffer->bind();
+  m_framebuffer->clearUInt32ColorAttachment(1, Entity::ID::InvalidIndex);
   m_scene->onEditorUpdate(deltaTimeSeconds, m_editorCamera);
+
+  //auto [mx, my] = ImGui::GetMousePos();
+  //mx -= static_cast<float>(m_viewportBounds[0].x());
+  //my -= static_cast<float>(m_viewportBounds[0].y());
+  //Vector2I viewportSize{m_viewportBounds[1] - m_viewportBounds[0]};
+  //my = static_cast<float>(viewportSize.y()) - my;
+  //int mouseX = static_cast<int>(mx);
+  //int mouseY = static_cast<int>(my);
+
+  //if (mouseX >= 0 and mouseY >= 0 and mouseX < viewportSize.x() and
+  //    mouseY < viewportSize.y()) {
+  //  NT_CORE_TRACE("Mouse coordinates: ({}, {})", mouseX, mouseY);
+  //  NT_CORE_TRACE("Viewport size: ({}, {})", viewportSize.x(),
+  //                viewportSize.y());
+  //  UInt32 entityIndex = m_framebuffer->getUInt32Pixel(
+  //      1, Vector2U{static_cast<UInt32>(mouseX), static_cast<UInt32>(mouseY)});
+  //  NT_CORE_TRACE("Hovered entity index: {}", entityIndex);
+  //  m_hoveredEntity = m_scene->getEntityManager()->getEntity(entityIndex);
+  //}
+
   onImGuiRender();
-  m_frameBuffer->unbind();
+  m_framebuffer->unbind();
 }
 
 bool EditorLayer::onKeyPressed(const KeyPressedEvent &event) {
@@ -231,19 +266,42 @@ bool EditorLayer::onKeyPressed(const KeyPressedEvent &event) {
       }
       break;
     case Key::Q:
-      m_gizmoType = -1;
-      return true;
+      if (not ImGuizmo::IsUsing()) {
+        m_gizmoType = -1;
+        return true;
+      }
+      break;
     case Key::W:
-      m_gizmoType = ImGuizmo::OPERATION::TRANSLATE;
-      return true;
+      if (not ImGuizmo::IsUsing()) {
+        m_gizmoType = ImGuizmo::OPERATION::TRANSLATE;
+        return true;
+      }
+      break;
     case Key::E:
-      m_gizmoType = ImGuizmo::OPERATION::ROTATE;
-      return true;
+      if (not ImGuizmo::IsUsing()) {
+        m_gizmoType = ImGuizmo::OPERATION::ROTATE;
+        return true;
+      }
+      break;
     case Key::R:
-      m_gizmoType = ImGuizmo::OPERATION::SCALE;
-      return true;
+      if (not ImGuizmo::IsUsing()) {
+        m_gizmoType = ImGuizmo::OPERATION::SCALE;
+        return true;
+      }
+      break;
     default:
       return false;
+  }
+
+  return false;
+}
+
+bool EditorLayer::onMouseButtonPressed(const MouseButtonPressedEvent &event) {
+  if (event.button == MouseButton::Left) {
+    if (m_hoveredEntity and m_viewportHovered and not ImGuizmo::IsOver() &&
+        not Input::isKeyPressed(Key::LeftAlt)) {
+      m_sceneHierarchyPanel.setSelectedEntity(m_hoveredEntity);
+    }
   }
 
   return false;

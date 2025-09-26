@@ -108,7 +108,7 @@ inline Quaternion<T> log(const Quaternion<T> &q) {
   T norm_v = norm(q.vector());
 
   // To prevent dividing by 0 later on
-  if (norm_v < epsilon<T>) {
+  if (norm_v < Limits::Epsilon<T>) {
     if (q.scalar() > zero<T>) {  // Computes log of a scalar
       return Quaternion<T>(log(q.scalar()), zero<T>, zero<T>, zero<T>);
     } else if (q.scalar() < zero<T>) {  // Computes log of a scalar
@@ -133,7 +133,7 @@ template <typename T>
 inline Quaternion<T> exp(const Quaternion<T> &q) {
   T norm_v = norm(q.vector);  // or theta
 
-  if (norm_v < epsilon<T>) return Quaternion<T>::identity();
+  if (norm_v < Limits::Epsilon<T>) return Quaternion<T>::identity();
 
   T exp_w = exp(q.scalar());
   auto vector = q.vector() * sin(norm_v) / norm_v;
@@ -144,7 +144,7 @@ inline Quaternion<T> exp(const Quaternion<T> &q) {
 template <typename T>
 inline Quaternion<T> pow(const Quaternion<T> &q, T exponent) {
   // Raising to the power of 0 should return identity
-  if (exponent > -epsilon<T> and exponent < epsilon<T>) {
+  if (exponent > -Limits::Epsilon<T> and exponent < Limits::Epsilon<T>) {
     return Quaternion<T>::identity();
   }
 
@@ -155,7 +155,7 @@ inline Quaternion<T> pow(const Quaternion<T> &q, T exponent) {
       cosOneHalf<T>) {  // Better using asin for precision
     T norm_v = norm(q.vector());
     // To prevent dividing by 0 later on
-    if (abs(norm_v) < epsilon<T>) {  // Computes pow of a scalar
+    if (abs(norm_v) < Limits::Epsilon<T>) {  // Computes pow of a scalar
       return Quaternion<T>(pow(q.scalar(), exponent), zero<T>, zero<T>,
                            zero<T>);
     }

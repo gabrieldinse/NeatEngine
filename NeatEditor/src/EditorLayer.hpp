@@ -21,6 +21,7 @@ class EditorLayer : public Layer {
     return not m_viewportFocused && not m_viewportHovered;
   }
   bool onKeyPressed(const KeyPressedEvent &event);
+  bool onMouseButtonPressed(const MouseButtonPressedEvent &event);
 
  private:
   void newScene();
@@ -37,7 +38,7 @@ class EditorLayer : public Layer {
   Ref<EventDispatcher> m_eventDispatcher;
   EditorCamera m_editorCamera;
 
-  Ref<FrameBuffer> m_frameBuffer;
+  Ref<Framebuffer> m_framebuffer;
   bool m_viewportFocused = false;
   bool m_viewportHovered = false;
 
@@ -46,6 +47,8 @@ class EditorLayer : public Layer {
   Vector2U m_viewportBounds[2];
 
   std::string m_openedFilepath;
+
+  Entity m_hoveredEntity;
 
   int m_gizmoType = -1;
 };

@@ -11,7 +11,7 @@
 
 namespace Neat {
 constexpr UInt16 EventPriorityHighest = 0;
-constexpr UInt16 EventPriorityLowest = UInt16Max;
+constexpr UInt16 EventPriorityLowest = Limits::Max<UInt16>;
 
 class BaseEventConnections {
  public:

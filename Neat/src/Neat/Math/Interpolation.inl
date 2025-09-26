@@ -49,7 +49,7 @@ constexpr Quaternion<T> mix(const Quaternion<T> &a, const Quaternion<T> &b,
 
   // Performs linear interpolation when cos_theta is close to 1 to avoid
   // sin(angle) to become a division by 0
-  if (cos_theta > one<T> - epsilon<T>)
+  if (cos_theta > one<T> - Limits::Epsilon<T>)
     return Quaternion<T>{mix(a.w, b.w), mix(a.v, b.v)};
 
   T angle = acos(cos_theta);
@@ -84,7 +84,7 @@ constexpr Quaternion<T> slerp(const Quaternion<T> &a, const Quaternion<T> &b,
 
   // Performs linear interpolation when cos_theta is close to 1 to avoid
   // sin(angle) to become a division by 0
-  if (cos_theta > one<T> - epsilon<T>)
+  if (cos_theta > one<T> - Limits::Epsilon<T>)
     return Quaternion<T>{mix(a.w, b.w), mix(a.v, b.v)};
 
   T angle = acos(cos_theta);

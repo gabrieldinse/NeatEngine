@@ -28,6 +28,14 @@ UInt32 getPrimitiveType(ShaderDataType type) {
       return GL_INT;
     case ShaderDataType::Vector4I:
       return GL_INT;
+    case ShaderDataType::UInt:
+      return GL_UNSIGNED_INT;
+    case ShaderDataType::Vector2UI:
+      return GL_UNSIGNED_INT;
+    case ShaderDataType::Vector3UI:
+      return GL_UNSIGNED_INT;
+    case ShaderDataType::Vector4UI:
+      return GL_UNSIGNED_INT;
     case ShaderDataType::Bool:
       return GL_BOOL;
     default:
@@ -58,6 +66,14 @@ UInt32 getType(ShaderDataType type) {
       return GL_INT_VEC3;
     case ShaderDataType::Vector4I:
       return GL_INT_VEC4;
+    case ShaderDataType::UInt:
+      return GL_UNSIGNED_INT;
+    case ShaderDataType::Vector2UI:
+      return GL_UNSIGNED_INT_VEC2;
+    case ShaderDataType::Vector3UI:
+      return GL_UNSIGNED_INT_VEC3;
+    case ShaderDataType::Vector4UI:
+      return GL_UNSIGNED_INT_VEC4;
     case ShaderDataType::Bool:
       return GL_BOOL;
     default:
@@ -159,6 +175,62 @@ Int getTexture2DFilter(Texture2DFilter filter) {
       return GL_LINEAR_MIPMAP_NEAREST;
     default:
       NT_CORE_ASSERT(false, "Unknown Texture2DFilter.");
+  }
+}
+
+Int getTextureTarget(bool multisampled) {
+  return multisampled ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
+}
+
+Int getFramebufferColorFormat(FramebufferColorFormat colorFormat) {
+  switch (colorFormat) {
+    case FramebufferColorFormat::RGBA8:
+      return GL_RGBA;
+
+    case FramebufferColorFormat::OneUInt32:
+      return GL_RED_INTEGER;
+
+    default:
+      NT_CORE_ERROR("Invalid framebuffer color format.");
+      NT_CORE_ASSERT(false);
+      return -1;
+  }
+}
+
+Int getFramebufferColorInternalFormat(FramebufferColorFormat colorFormat) {
+  switch (colorFormat) {
+    case FramebufferColorFormat::RGBA8:
+      return GL_RGBA8;
+    case FramebufferColorFormat::OneUInt32:
+      return GL_R32UI;
+    default:
+      NT_CORE_ERROR("Invalid framebuffer color internal format.");
+      NT_CORE_ASSERT(false);
+      return -1;
+  }
+}
+
+Int getFramebufferDepthFormat(FramebufferDepthFormat depthFormat) {
+  switch (depthFormat) {
+    case FramebufferDepthFormat::Depth24Stencil8:
+      return GL_DEPTH24_STENCIL8;
+
+    default:
+      NT_CORE_ERROR("Invalid framebuffer depth format.");
+      NT_CORE_ASSERT(false);
+      return -1;
+  }
+}
+
+Int getFramebufferDepthAttachmentType(FramebufferDepthFormat depthFormat) {
+  switch (depthFormat) {
+    case FramebufferDepthFormat::Depth24Stencil8:
+      return GL_DEPTH_STENCIL_ATTACHMENT;
+
+    default:
+      NT_CORE_ERROR("Invalid framebuffer depth attachment type.");
+      NT_CORE_ASSERT(false);
+      return -1;
   }
 }
 }  // namespace OpenGL

@@ -1,16 +1,16 @@
 #include "NeatPCH.hpp"
 
-#include "FrameBuffer.hpp"
+#include "Framebuffer.hpp"
 
-#include "Platform/OpenGL/OpenGLFrameBuffer.hpp"
+#include "Platform/OpenGL/OpenGLFramebuffer.hpp"
 #include "Neat/Graphics/Renderer.hpp"
 
 namespace Neat {
-Ref<FrameBuffer> FrameBuffer::create(const FrameBufferSpecification &spec) {
+Ref<Framebuffer> Framebuffer::create(const FramebufferSpecification &spec) {
   NT_PROFILE_FUNCTION();
   switch (RendererAPI::getAPI()) {
     case RendererAPI::API::OpenGL:
-      return makeRef<OpenGLFrameBuffer>(spec);
+      return makeRef<OpenGLFramebuffer>(spec);
     case RendererAPI::API::None:
       NT_CORE_ASSERT(false, "RendererAPI::None is not supported!");
       return nullptr;

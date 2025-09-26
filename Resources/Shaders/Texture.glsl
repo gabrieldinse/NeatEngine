@@ -6,6 +6,7 @@ layout(location = 1) in vec4 color;
 layout(location = 2) in vec2 textureCoordinate;
 layout(location = 3) in int textureIndex;
 layout(location = 4) in float tilingFactor;
+layout(location = 5) in uint entityIndex;
 
 uniform mat4 u_cameraTransform;
 
@@ -15,6 +16,7 @@ out VS_OUT
     vec4 color;
     flat int textureIndex;
     float tilingFactor;
+    flat uint entityIndex;
 } vs_out;
 
 
@@ -24,6 +26,7 @@ void main()
     vs_out.color = color;
     vs_out.textureIndex = textureIndex;
     vs_out.tilingFactor = tilingFactor;
+    vs_out.entityIndex = entityIndex;
     gl_Position = u_cameraTransform * position;
 }
 
@@ -31,6 +34,7 @@ void main()
 #version 450 core
 
 layout(location = 0) out vec4 color;
+layout(location = 1) out uint entityIndex;
 
 uniform sampler2D u_textures[32];
 
@@ -40,6 +44,7 @@ in VS_OUT
     vec4 color;
     flat int textureIndex;
     float tilingFactor;
+    flat uint entityIndex;
 } fs_in;
    
    
@@ -81,4 +86,5 @@ void main()
         case 31: texture_color *= texture(u_textures[31], fs_in.textureCoordinate * fs_in.tilingFactor); break;
     }
     color = texture_color;
+    entityIndex = fs_in.entityIndex;
 }

@@ -121,14 +121,14 @@ struct InvalidEntityError : public EntityError {
 
 struct InvalidEntityIdIndexError : public InvalidEntityError {
   InvalidEntityIdIndexError(
-      const std::string &msg = "Entity::Id outside Entity vector range.")
+      const std::string &msg = "Entity::ID outside Entity vector range.")
       : InvalidEntityError(msg) {}
 };
 
 struct InvalidEntityIdVersionError : public InvalidEntityError {
   InvalidEntityIdVersionError(const std::string &msg =
                                   "Attempt to access Entity via a stale"
-                                  " Entity::Id.")
+                                  " Entity::ID.")
       : InvalidEntityError(msg) {}
 };
 

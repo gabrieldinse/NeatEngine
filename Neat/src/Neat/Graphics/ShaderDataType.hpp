@@ -35,6 +35,11 @@ enum class ShaderDataType {
   IVector3Array,
   IVector4Array,
 
+  UInt,
+  Vector2UI,
+  Vector3UI,
+  Vector4UI,
+
   Bool
 };
 

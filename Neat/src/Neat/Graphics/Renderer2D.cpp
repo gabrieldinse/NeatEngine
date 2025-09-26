@@ -24,7 +24,8 @@ void Renderer2D::initialize() {
        {ShaderDataType::Vector4F, "color"},
        {ShaderDataType::Vector2F, "textureCoordinate"},
        {ShaderDataType::Float, "textureIndex"},
-       {ShaderDataType::Float, "tilingFactor"}});
+       {ShaderDataType::Float, "tilingFactor"},
+       {ShaderDataType::UInt, "entityIndex"}});
   s_data->quadVertexArray->addVertexBuffer(s_data->quadVertexBuffer);
 
   std::array<UInt32, QuadVextexDataBuffer::maxIndexes> quadIndexes;
@@ -113,25 +114,27 @@ void Renderer2D::flush() {
 }
 
 void Renderer2D::drawSprite(const TransformComponent &transform,
-                            const RenderableSpriteComponent &renderableSprite) {
+                            const RenderableSpriteComponent &renderableSprite,
+                            const Entity &entity) {
   NT_PROFILE_FUNCTION();
-  drawSprite(transform.getTransform(), renderableSprite);
+  drawSprite(transform.getTransform(), renderableSprite, entity);
 }
 
 void Renderer2D::drawSprite(const Matrix4F &transform,
-                            const RenderableSpriteComponent &renderableSprite) {
+                            const RenderableSpriteComponent &renderableSprite,
+                            const Entity &entity) {
   NT_PROFILE_FUNCTION();
   if (renderableSprite.hasTexture()) {
     drawQuad(transform, renderableSprite.texture, renderableSprite.color,
-             renderableSprite.tilingFactor);
+             renderableSprite.tilingFactor, entity);
   } else {
-    drawQuad(transform, renderableSprite.color);
+    drawQuad(transform, renderableSprite.color, entity);
   }
 }
 
 void Renderer2D::drawQuad(const Matrix4F &transform,
                           const Ref<Texture2D> &texture, const Vector4F &tint,
-                          float tilingFactor) {
+                          float tilingFactor, const Entity &entity) {
   if (reachedBatchDataLimit()) {
     flush();
     startNewBatch();
@@ -151,13 +154,15 @@ void Renderer2D::drawQuad(const Matrix4F &transform,
     s_data->textureSlotIndex++;
   }
 
-  s_data->quadVextexDataBuffer.addQuad(
-      transform, tint, texture->getCoordinates(), textureIndex, tilingFactor);
+  s_data->quadVextexDataBuffer.addQuad(transform, tint,
+                                       texture->getCoordinates(), textureIndex,
+                                       tilingFactor, entity);
 
   s_data->stats.quadCount++;
 }
 
-void Renderer2D::drawQuad(const Matrix4F &transform, const Vector4F &color) {
+void Renderer2D::drawQuad(const Matrix4F &transform, const Vector4F &color,
+                          const Entity &entity) {
   NT_PROFILE_FUNCTION();
   if (reachedBatchDataLimit()) {
     flush();
@@ -170,7 +175,7 @@ void Renderer2D::drawQuad(const Matrix4F &transform, const Vector4F &color) {
       {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
 
   s_data->quadVextexDataBuffer.addQuad(transform, color, textureCoordinates,
-                                       textureIndex, tilingFactor);
+                                       textureIndex, tilingFactor, entity);
 
   s_data->stats.quadCount++;
 }

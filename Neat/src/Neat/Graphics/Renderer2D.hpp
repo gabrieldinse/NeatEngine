@@ -12,6 +12,7 @@
 #include "Neat/Components/RenderableSpriteComponent.hpp"
 #include "Neat/Components/CameraComponent.hpp"
 #include "Neat/Components/TransformComponent.hpp"
+#include "Neat/ECS/EntityManager.hpp"
 
 namespace Neat {
 class Renderer2D {
@@ -26,12 +27,16 @@ class Renderer2D {
   static void endScene();
 
   static void drawSprite(const TransformComponent &transform,
-                         const RenderableSpriteComponent &renderableSprite);
+                         const RenderableSpriteComponent &renderableSprite,
+                         const Entity &entity = Entity{});
   static void drawSprite(const Matrix4F &transform,
-                         const RenderableSpriteComponent &renderableSprite);
+                         const RenderableSpriteComponent &renderableSprite,
+                         const Entity &entity = Entity{});
   static void drawQuad(const Matrix4F &transform, const Ref<Texture2D> &texture,
-                       const Vector4F &tint, float tilingFactor);
-  static void drawQuad(const Matrix4F &transform, const Vector4F &color);
+                       const Vector4F &tint, float tilingFactor,
+                       const Entity &entity = Entity{});
+  static void drawQuad(const Matrix4F &transform, const Vector4F &color,
+                       const Entity &entity = Entity{});
   static void drawQuad(const Vector2F &position, const Vector2F &size,
                        const Vector4F &color);
 
@@ -90,6 +95,7 @@ class Renderer2D {
     Vector2F textureCoordinate{0.0f, 0.0f};
     Int32 textureIndex = 0;
     float tilingFactor = 1.0f;
+    UInt32 entityIndex = Entity::ID::InvalidIndex;
   };
 
   struct QuadVextexDataBuffer {
@@ -108,13 +114,14 @@ class Renderer2D {
 
     void addQuad(const Matrix4F &modelMatrix, const Vector4F &color,
                  const Vector2F *textureCoordinates, Int32 textureIndex,
-                 float tilingFactor) {
+                 float tilingFactor, const Entity &entity = Entity{}) {
       for (std::size_t i = 0; i < 4; ++i) {
         currentPos->position = modelMatrix * centeredQuadPositions[i];
         currentPos->color = color;
         currentPos->textureCoordinate = textureCoordinates[i];
         currentPos->textureIndex = textureIndex;
         currentPos->tilingFactor = tilingFactor;
+        currentPos->entityIndex = entity.id().index();
         currentPos++;
       }
       indexCount += 6;

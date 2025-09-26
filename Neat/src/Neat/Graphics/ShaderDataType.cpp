@@ -27,6 +27,14 @@ UInt32 getShaderDataTypeSize(ShaderDataType type) {
       return 4 * 3;
     case ShaderDataType::Vector4I:
       return 4 * 4;
+    case ShaderDataType::UInt:
+      return 4;
+    case ShaderDataType::Vector2UI:
+      return 4 * 2;
+    case ShaderDataType::Vector3UI:
+      return 4 * 3;
+    case ShaderDataType::Vector4UI:
+      return 4 * 4;
     case ShaderDataType::Bool:
       return 4;
     default:
@@ -56,6 +64,14 @@ UInt32 getShaderDataTypeComponentCount(ShaderDataType type) {
     case ShaderDataType::Vector3I:
       return 3;
     case ShaderDataType::Vector4I:
+      return 4;
+    case ShaderDataType::UInt:
+      return 1;
+    case ShaderDataType::Vector2UI:
+      return 2;
+    case ShaderDataType::Vector3UI:
+      return 3;
+    case ShaderDataType::Vector4UI:
       return 4;
     case ShaderDataType::Bool:
       return 1;

@@ -309,7 +309,7 @@ bool GameLayer::pointInTriangle(const Neat::Vector2F &p,
 
 bool GameLayer::onMouseButtonPressedEvent(
     const Neat::MouseButtonPressedEvent &event) {
-  if (event.button == Neat::MouseButton::ButtonLeft) {
+  if (event.button == Neat::MouseButton::Left) {
     if (m_gameState == GameState::GameOver) {
       initialize();
     }

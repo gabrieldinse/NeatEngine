@@ -5,7 +5,8 @@
 #include "Neat/Core/Exceptions.hpp"
 
 namespace Neat {
-const Entity::Id Entity::INVALID_ID;
+const Entity::ID Entity::InvalidID{ID::InvalidIndex, ID::InvalidVersion};
+
 EntityManager::EntityManager(const Ref<EventDispatcher> &eventDispatcher)
     : m_eventDispatcher(eventDispatcher) {}
 
@@ -29,7 +30,7 @@ void EntityManager::reset() {
   m_indexCounter = 0;
 }
 
-bool EntityManager::hasAnyComponent(const Entity::Id &id) const {
+bool EntityManager::hasAnyComponent(const Entity::ID &id) const {
   checkIsValid(id);
 
   return m_entityComponentMasks[id.index()].any();
@@ -46,8 +47,8 @@ std::ostream &operator<<(std::ostream &os, const Entity &entity) {
   return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const Entity::Id &id) {
-  os << "Entity::Id(" << id.version() << "." << id.index() << ")";
+std::ostream &operator<<(std::ostream &os, const Entity::ID &id) {
+  os << "Entity::ID(" << id.version() << "." << id.index() << ")";
   return os;
 }
 }  // namespace Neat

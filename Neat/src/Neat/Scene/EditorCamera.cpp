@@ -24,11 +24,11 @@ void EditorCamera::onUpdate([[maybe_unused]] double deltaTimeSeconds) {
     Vector2F deltaPos{(mousePosition - m_initialMousePosition) * 0.003f};
     m_initialMousePosition = mousePosition;
 
-    if (Input::isMouseButtonPressed(MouseButton::ButtonMiddle)) {
+    if (Input::isMouseButtonPressed(MouseButton::Middle)) {
       mousePan(deltaPos);
-    } else if (Input::isMouseButtonPressed(MouseButton::ButtonLeft)) {
+    } else if (Input::isMouseButtonPressed(MouseButton::Left)) {
       mouseRotate(deltaPos);
-    } else if (Input::isMouseButtonPressed(MouseButton::ButtonRight)) {
+    } else if (Input::isMouseButtonPressed(MouseButton::Right)) {
       mouseZoom(deltaPos.y());
     }
   }

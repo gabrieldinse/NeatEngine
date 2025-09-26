@@ -32,14 +32,14 @@ using ComponentMask = std::bitset<maxComponents>;
 // ---------------------------------------------------------------------- //
 class Entity {
  public:
-  // Id ---------------------------------------------------------------- //
-  class Id {
+  // ID ---------------------------------------------------------------- //
+  class ID {
    public:
-    Id() : m_id(0) {}
-    Id(UInt32 index, UInt32 version)
+    constexpr ID() : m_id(0) {}
+    constexpr ID(UInt32 index, UInt32 version)
         : m_id(static_cast<UInt64>(version) << 32 |
                static_cast<UInt64>(index)) {}
-    explicit Id(UInt64 id) : m_id(id) {}
+    explicit constexpr ID(UInt64 id) : m_id(id) {}
 
     UInt64 id() const { return m_id; }
     UInt32 index() const {
@@ -49,10 +49,13 @@ class Entity {
 
     explicit operator UInt64() const { return m_id; }
 
-    bool operator==(const Id &other) const { return m_id == other.m_id; }
+    bool operator==(const ID &other) const { return m_id == other.m_id; }
     bool operator==(UInt64 other) const { return m_id == other; }
-    bool operator!=(const Id &other) const { return m_id != other.m_id; }
-    bool operator<(const Id &other) const { return m_id < other.m_id; }
+    bool operator!=(const ID &other) const { return m_id != other.m_id; }
+    bool operator<(const ID &other) const { return m_id < other.m_id; }
+
+    static constexpr UInt32 InvalidIndex{Limits::Max<UInt32>};
+    static constexpr UInt32 InvalidVersion{Limits::Max<UInt32>};
 
    private:
     friend class EntityManager;
@@ -61,12 +64,12 @@ class Entity {
     UInt64 m_id;
   };
 
-  static const Id INVALID_ID;
+  static const ID InvalidID;
   // ------------------------------------------------------------------- //
 
  public:
   Entity() = default;
-  Entity(EntityManager *entityManager, Id id)
+  Entity(EntityManager *entityManager, ID id)
       : m_entityManager(entityManager), m_id(id) {}
   Entity(const Entity &entity) = default;
 
@@ -81,7 +84,7 @@ class Entity {
   bool operator!=(const Entity &other) const { return not(other == *this); }
   bool operator<(const Entity &other) const { return m_id < other.m_id; }
 
-  Id id() const { return m_id; }
+  ID id() const { return m_id; }
 
   bool isValid() const;
   void invalidate();
@@ -131,11 +134,11 @@ class Entity {
 
  private:
   EntityManager *m_entityManager{nullptr};
-  Id m_id{INVALID_ID};
+  ID m_id{InvalidID};
 };
 
 std::ostream &operator<<(std::ostream &os, const Entity &entity);
-std::ostream &operator<<(std::ostream &os, const Entity::Id &id);
+std::ostream &operator<<(std::ostream &os, const Entity::ID &id);
 
 // ---------------------------------------------------------------------- //
 // ComponentHandle ------------------------------------------------------ //
@@ -168,14 +171,14 @@ class ComponentHandle {
  private:
   friend class EntityManager;
 
-  ComponentHandle(EM *entityManager, const Entity::Id &id)
+  ComponentHandle(EM *entityManager, const Entity::ID &id)
       : m_entityManager(entityManager), m_id(id) {}
 
   void checkIsValid() const;
 
  private:
   EM *m_entityManager;
-  Entity::Id m_id;
+  Entity::ID m_id;
 };
 
 // ---------------------------------------------------------------------- //
@@ -228,7 +231,7 @@ class EntityManager : public NonCopyable {
   class ViewIterator {
    public:
     using IteratorCategory = std::input_iterator_tag;
-    using ValueType = Entity::Id;
+    using ValueType = Entity::ID;
     using DifferenceType = std::ptrdiff_t;
     using Pointer = ValueType *;
     using Reference = ValueType &;
@@ -262,7 +265,7 @@ class EntityManager : public NonCopyable {
         : m_entityManager(entityManager),
           m_pos(index),
           m_capacity(m_entityManager->capacity()),
-          m_freeCursor(UInt32Max) {
+          m_freeCursor(Limits::Max<UInt32>) {
       if (IterateOverAll) {
         std::sort(m_entityManager->m_freeEntityIds.begin(),
                   m_entityManager->m_freeEntityIds.end());
@@ -276,7 +279,7 @@ class EntityManager : public NonCopyable {
           m_componentGroupMask(componentGroupMask),
           m_pos(index),
           m_capacity(m_entityManager->capacity()),
-          m_freeCursor(UInt32Max) {
+          m_freeCursor(Limits::Max<UInt32>) {
       if (IterateOverAll) {
         std::sort(m_entityManager->m_freeEntityIds.begin(),
                   m_entityManager->m_freeEntityIds.end());
@@ -477,7 +480,7 @@ class EntityManager : public NonCopyable {
 
   bool hasEntity(const Entity &entity) const { return hasEntity(entity.id()); }
 
-  bool hasEntity(const Entity::Id &id) const {
+  bool hasEntity(const Entity::ID &id) const {
     return isEntityIndexValid(id) and isEntityVersionValid(id);
   }
 
@@ -495,7 +498,7 @@ class EntityManager : public NonCopyable {
       version = m_entityIdsVersion[index];
     }
 
-    Entity entity(this, Entity::Id(index, version));
+    Entity entity(this, Entity::ID(index, version));
     m_eventDispatcher->enqueue<EntityCreatedEvent>(entity);
 
     return entity;
@@ -503,7 +506,7 @@ class EntityManager : public NonCopyable {
 
   void destroyEntity(const Entity &entity) { destroyEntity(entity.id()); }
 
-  void destroyEntity(const Entity::Id &id) {
+  void destroyEntity(const Entity::ID &id) {
     checkIsValid(id);
 
     UInt32 index = id.index();
@@ -523,18 +526,20 @@ class EntityManager : public NonCopyable {
     m_freeEntityIds.push_back(index);
   }
 
-  Entity getEntity(const Entity::Id &id) {
+  Entity getEntity(const Entity::ID &id) {
     checkIsValid(id);
 
     return Entity(this, id);
   }
 
-  Entity::Id createId(UInt32 index) const {
-    return Entity::Id(index, m_entityIdsVersion[index]);
+  Entity getEntity(UInt32 index) { return getEntity(createId(index)); }
+
+  Entity::ID createId(UInt32 index) const {
+    return Entity::ID(index, m_entityIdsVersion[index]);
   }
 
   template <typename C, typename... Args>
-  ComponentHandle<C> addComponent(const Entity::Id &id, Args &&...args) {
+  ComponentHandle<C> addComponent(const Entity::ID &id, Args &&...args) {
     checkIsValid(id);
 
     const BaseComponent::Family family = getComponentFamily<C>();
@@ -557,7 +562,7 @@ class EntityManager : public NonCopyable {
   }
 
   template <typename C>
-  void removeComponent(const Entity::Id &id) {
+  void removeComponent(const Entity::ID &id) {
     checkIsValid(id);
 
     const BaseComponent::Family family = getComponentFamily<C>();
@@ -572,7 +577,7 @@ class EntityManager : public NonCopyable {
     component_array->destroy(id.index());
   }
 
-  bool hasComponent(const Entity::Id &id, BaseComponent::Family family) const {
+  bool hasComponent(const Entity::ID &id, BaseComponent::Family family) const {
     checkIsValid(id);
 
     if (family >= m_componentArrays.size()) {
@@ -590,7 +595,7 @@ class EntityManager : public NonCopyable {
   }
 
   template <typename C>
-  bool hasComponent(const Entity::Id &id) const {
+  bool hasComponent(const Entity::ID &id) const {
     checkIsValid(id);
 
     std::size_t family = getComponentFamily<C>();
@@ -609,10 +614,10 @@ class EntityManager : public NonCopyable {
     return true;
   }
 
-  bool hasAnyComponent(const Entity::Id &id) const;
+  bool hasAnyComponent(const Entity::ID &id) const;
 
   template <typename C>
-  ComponentHandle<C> getComponent(const Entity::Id &id) {
+  ComponentHandle<C> getComponent(const Entity::ID &id) {
     checkIsValid(id);
 
     if (not hasComponent<C>(id)) {
@@ -624,7 +629,7 @@ class EntityManager : public NonCopyable {
 
   template <typename C>
   const ComponentHandle<C, const EntityManager> getComponent(
-      const Entity::Id &id) const {
+      const Entity::ID &id) const {
     checkIsValid(id);
 
     if (not hasComponent<C>(id)) {
@@ -636,13 +641,13 @@ class EntityManager : public NonCopyable {
 
   template <typename... Components>
   std::tuple<ComponentHandle<Components>...> getComponents(
-      const Entity::Id &id) {
+      const Entity::ID &id) {
     return std::make_tuple(getComponent<Components>(id)...);
   }
 
   template <typename... Components>
   std::tuple<ComponentHandle<const Components, const EntityManager>...>
-  getComponents(const Entity::Id &id) const {
+  getComponents(const Entity::ID &id) const {
     return std::make_tuple(getComponent<const Components>(id)...);
   }
 
@@ -664,13 +669,13 @@ class EntityManager : public NonCopyable {
   DebugView entities() { return DebugView(this); }
 
   template <typename C>
-  void unpack(const Entity::Id &id, ComponentHandle<C> &component) {
+  void unpack(const Entity::ID &id, ComponentHandle<C> &component) {
     checkIsValid(id);
     component = getComponent<C>(id);
   }
 
   template <typename C1, typename... Cn>
-  void unpack(const Entity::Id &id, ComponentHandle<C1> &component,
+  void unpack(const Entity::ID &id, ComponentHandle<C1> &component,
               ComponentHandle<Cn> &...others) {
     checkIsValid(id);
 
@@ -689,15 +694,15 @@ class EntityManager : public NonCopyable {
   template <typename C, typename EM>
   friend class ComponentHandle;
 
-  bool isEntityIndexValid(const Entity::Id &id) const {
+  bool isEntityIndexValid(const Entity::ID &id) const {
     return id.index() < m_entityIdsVersion.size();
   }
 
-  bool isEntityVersionValid(const Entity::Id &id) const {
+  bool isEntityVersionValid(const Entity::ID &id) const {
     return m_entityIdsVersion[id.index()] == id.version();
   }
 
-  void checkIsValid(const Entity::Id &id) const {
+  void checkIsValid(const Entity::ID &id) const {
     if (not isEntityIndexValid(id)) {
       throw InvalidEntityIdIndexError();
     }
@@ -708,7 +713,7 @@ class EntityManager : public NonCopyable {
   }
 
   template <typename C>
-  C *getComponentPtr(const Entity::Id &id) {
+  C *getComponentPtr(const Entity::ID &id) {
     checkIsValid(id);
 
     BaseMemoryPool *component_array =
@@ -721,7 +726,7 @@ class EntityManager : public NonCopyable {
   }
 
   template <typename C>
-  const C *getComponentPtr(const Entity::Id &id) const {
+  const C *getComponentPtr(const Entity::ID &id) const {
     checkIsValid(id);
 
     BaseMemoryPool *component_array =
@@ -733,7 +738,7 @@ class EntityManager : public NonCopyable {
     return static_cast<const C *>(component_array->get(id.index()));
   }
 
-  ComponentMask getComponentMask(const Entity::Id &id) {
+  ComponentMask getComponentMask(const Entity::ID &id) {
     checkIsValid(id);
 
     return m_entityComponentMasks.at(id.index());
@@ -823,7 +828,7 @@ inline void Entity::checkIsValid() const {
 }
 
 inline void Entity::invalidate() {
-  m_id = INVALID_ID;
+  m_id = InvalidID;
   m_entityManager = nullptr;
 }
 
