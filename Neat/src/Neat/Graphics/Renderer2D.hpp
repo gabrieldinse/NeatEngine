@@ -7,6 +7,7 @@
 #include "Texture2D.hpp"
 #include "VertexArray.hpp"
 #include "ShaderProgram.hpp"
+#include "UniformBuffer.hpp"
 
 #include "Neat/Core/Types.hpp"
 #include "Neat/Components/RenderableSpriteComponent.hpp"
@@ -145,6 +146,7 @@ class Renderer2D {
     Ref<VertexBuffer> quadVertexBuffer;
     Ref<ShaderProgram> textureShader;
     Ref<Texture2D> whiteTexture;
+    Ref<UniformBuffer> cameraUniformBuffer;
 
     QuadVextexDataBuffer quadVextexDataBuffer;
 

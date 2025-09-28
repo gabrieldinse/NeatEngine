@@ -50,19 +50,13 @@ void Renderer2D::initialize() {
   s_data->whiteTexture->setData(&white_texture_data,
                                 static_cast<UInt32>(sizeof(UInt32)));
 
-  // Assign each sampler to a texture unit (sampler2d's 0-31 to texture
-  // units 0-31)
-  Int32 samplers[Renderer2DData::maxTextureSlots];
-  for (std::size_t i = 0; i < Renderer2DData::maxTextureSlots; ++i)
-    samplers[i] = (Int32)i;
   s_data->textureShader =
       ShaderProgram::create("./Resources/Shaders/Texture.glsl");
   s_data->textureShader->bind();
-  s_data->textureShader->set(
-      "u_textures[0]", samplers,
-      static_cast<Int32>(sizeof(samplers) / sizeof(Int32)));
 
   s_data->textureSlots[0] = s_data->whiteTexture;
+
+  s_data->cameraUniformBuffer = UniformBuffer::create(sizeof(Matrix4F), 0);
 }
 
 void Renderer2D::shutdown() {
@@ -80,8 +74,7 @@ void Renderer2D::beginScene(const Matrix4F &cameraProjection,
                             const Matrix4F &cameraView) {
   NT_PROFILE_FUNCTION();
   Matrix4F cameraTransform = cameraProjection * cameraView;
-  s_data->textureShader->bind();
-  s_data->textureShader->set("u_cameraTransform", cameraTransform);
+  s_data->cameraUniformBuffer->setData(cameraTransform);
   startNewBatch();
 }
 
@@ -107,6 +100,7 @@ void Renderer2D::flush() {
     s_data->textureSlots[i]->bind(i);
   }
 
+  s_data->textureShader->bind();
   RenderCommand::drawIndexed(s_data->quadVertexArray,
                              s_data->quadVextexDataBuffer.indexCount);
 
