@@ -200,21 +200,20 @@ struct EntityDestroyedEvent {
 
 template <typename C>
 struct ComponentAddedEvent {
-  ComponentAddedEvent(const Entity &entity, const ComponentHandle<C> &component)
+  ComponentAddedEvent(const Entity &entity, const C &component)
       : entity(entity), component(component) {}
 
   Entity entity;
-  ComponentHandle<C> component;
+  C component;
 };
 
 template <typename C>
 struct ComponentRemovedEvent {
-  ComponentRemovedEvent(const Entity &entity,
-                        const ComponentHandle<C> &component)
+  ComponentRemovedEvent(const Entity &entity, const C &component)
       : entity(entity), component(component) {}
 
   Entity entity;
-  ComponentHandle<C> component;
+  C component;
 };
 
 // ---------------------------------------------------------------------- //
@@ -554,11 +553,11 @@ class EntityManager : public NonCopyable {
 
     m_entityComponentMasks[index].set(family);
 
-    ComponentHandle<C> component(this, id);
+    ComponentHandle<C> componentHandle(this, id);
     m_eventDispatcher->enqueue<ComponentAddedEvent<C>>(Entity(this, id),
-                                                       component);
+                                                       *componentHandle);
 
-    return component;
+    return componentHandle;
   }
 
   template <typename C>
@@ -568,9 +567,9 @@ class EntityManager : public NonCopyable {
     const BaseComponent::Family family = getComponentFamily<C>();
 
     BaseMemoryPool *component_array = m_componentArrays[family];
-    ComponentHandle<C> component(this, id);
+    ComponentHandle<C> componentHandle(this, id);
     m_eventDispatcher->enqueue<ComponentRemovedEvent<C>>(Entity(this, id),
-                                                         component);
+                                                         *componentHandle);
 
     m_entityComponentMasks[id.index()].reset(family);
 
@@ -669,17 +668,17 @@ class EntityManager : public NonCopyable {
   DebugView entities() { return DebugView(this); }
 
   template <typename C>
-  void unpack(const Entity::ID &id, ComponentHandle<C> &component) {
+  void unpack(const Entity::ID &id, ComponentHandle<C> &componentHandle) {
     checkIsValid(id);
-    component = getComponent<C>(id);
+    componentHandle = getComponent<C>(id);
   }
 
   template <typename C1, typename... Cn>
-  void unpack(const Entity::ID &id, ComponentHandle<C1> &component,
+  void unpack(const Entity::ID &id, ComponentHandle<C1> &componentHandle,
               ComponentHandle<Cn> &...others) {
     checkIsValid(id);
 
-    component = getComponent<C1>(id);
+    componentHandle = getComponent<C1>(id);
     unpack<Cn...>(id, others...);
   }
 
