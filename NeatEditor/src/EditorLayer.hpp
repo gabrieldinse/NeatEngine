@@ -25,6 +25,10 @@ class EditorLayer : public Layer {
   bool onMouseButtonPressed(const MouseButtonPressedEvent &event);
 
  private:
+  void setupDockspace();
+  void onMenuUpdate();
+  void onViewportUpdate();
+  void onStatsUpdate();
   void newScene();
   void handleOpenFileDialog();
   void handleSaveFileAsDialog();

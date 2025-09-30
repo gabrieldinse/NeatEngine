@@ -114,6 +114,16 @@ void EditorLayer::onImGuiRender() {
 
   style.WindowMinSize.x = minWinSizeX;
 
+  onMenuUpdate();
+  m_sceneHierarchyPanel.onUpdate();
+  m_contentBrowserPanel.onUpdate();
+  onStatsUpdate();
+  onViewportUpdate();
+
+  ImGui::End();
+}
+
+void EditorLayer::onMenuUpdate() {
   if (ImGui::BeginMenuBar()) {
     if (ImGui::BeginMenu("File")) {
       if (ImGui::MenuItem("Exit")) {
@@ -147,67 +157,6 @@ void EditorLayer::onImGuiRender() {
   if (ImGuiFileDialog::Instance()->Display("SaveFileAsDialog")) {
     handleSaveFileAsDialog();
   }
-
-  m_sceneHierarchyPanel.onUpdate();
-  m_contentBrowserPanel.onUpdate();
-
-  auto stats = Renderer2D::getStats();
-  ImGui::Begin("Stats");
-  std::string entityLabel{"None"};
-  std::string entityIndex{"N/A"};
-  if (m_hoveredEntity) {
-    if (m_hoveredEntity.hasComponent<LabelComponent>()) {
-      entityLabel = m_hoveredEntity.getComponent<LabelComponent>()->label;
-      entityIndex = std::to_string(m_hoveredEntity.id().index());
-    }
-  }
-  ImGui::Text("Hovered Entity: %s", entityLabel.c_str());
-  ImGui::Text("Hovered Entity Index: %s", entityIndex.c_str());
-
-  ImGui::Text("Number of draw calls: %d", stats.drawCalls);
-  ImGui::Text("Number of quads: %d", stats.quadCount);
-  ImGui::Text("Number of indexes: %d", stats.getTotalIndexCount());
-  ImGui::Text("Number of vertexes: %d\n", stats.getTotalVertexCount());
-  ImGui::End();
-
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
-  ImGui::Begin("Viewport");
-  auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
-  auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
-  auto viewportOffset = ImGui::GetWindowPos();
-  m_viewportBounds[0] = {viewportMinRegion.x + viewportOffset.x,
-                         viewportMinRegion.y + viewportOffset.y};
-  m_viewportBounds[1] = {viewportMaxRegion.x + viewportOffset.x,
-                         viewportMaxRegion.y + viewportOffset.y};
-  m_viewportFocused = ImGui::IsWindowFocused();
-  m_viewportHovered = ImGui::IsWindowHovered();
-  m_newViewportSize = m_viewportBounds[1] - m_viewportBounds[0];
-  UInt32 textureID = m_framebuffer->getColorAttachmentID();
-  ImGui::Image(static_cast<ImTextureID>(textureID),
-               ImVec2{static_cast<float>(m_viewportSize.x()),
-                      static_cast<float>(m_viewportSize.y())},
-               ImVec2{0, 1}, ImVec2{1, 0});
-
-  if (ImGui::BeginDragDropTarget()) {
-    const ImGuiPayload *dragDropPayload =
-        ImGui::AcceptDragDropPayload("Content Browser Item");
-    if (dragDropPayload) {
-      const char *relativePath =
-          static_cast<const char *>(dragDropPayload->Data);
-      std::filesystem::path sceneFilepath{
-          (std::filesystem::path(ContentBrowserPanel::getAssetsPath()) /
-           relativePath)};
-      std::string sceneFilepathStr{sceneFilepath.string()};
-      openScene(sceneFilepathStr);
-    }
-    ImGui::EndDragDropTarget();
-  }
-
-  handleGizmos();
-  ImGui::End();
-  ImGui::PopStyleVar();
-
-  ImGui::End();
 }
 
 void EditorLayer::onUpdate(double deltaTimeSeconds) {
@@ -247,6 +196,45 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
 
   onImGuiRender();
   m_framebuffer->unbind();
+}
+
+void EditorLayer::onViewportUpdate() {
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
+  ImGui::Begin("Viewport");
+  auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+  auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+  auto viewportOffset = ImGui::GetWindowPos();
+  m_viewportBounds[0] = {viewportMinRegion.x + viewportOffset.x,
+                         viewportMinRegion.y + viewportOffset.y};
+  m_viewportBounds[1] = {viewportMaxRegion.x + viewportOffset.x,
+                         viewportMaxRegion.y + viewportOffset.y};
+  m_viewportFocused = ImGui::IsWindowFocused();
+  m_viewportHovered = ImGui::IsWindowHovered();
+  m_newViewportSize = m_viewportBounds[1] - m_viewportBounds[0];
+  UInt32 textureID = m_framebuffer->getColorAttachmentID();
+  ImGui::Image(static_cast<ImTextureID>(textureID),
+               ImVec2{static_cast<float>(m_viewportSize.x()),
+                      static_cast<float>(m_viewportSize.y())},
+               ImVec2{0, 1}, ImVec2{1, 0});
+
+  if (ImGui::BeginDragDropTarget()) {
+    const ImGuiPayload *dragDropPayload =
+        ImGui::AcceptDragDropPayload("Content Browser Item");
+    if (dragDropPayload) {
+      const char *relativePath =
+          static_cast<const char *>(dragDropPayload->Data);
+      std::filesystem::path sceneFilepath{
+          (std::filesystem::path(ContentBrowserPanel::getAssetsPath()) /
+           relativePath)};
+      std::string sceneFilepathStr{sceneFilepath.string()};
+      openScene(sceneFilepathStr);
+    }
+    ImGui::EndDragDropTarget();
+  }
+
+  handleGizmos();
+  ImGui::End();
+  ImGui::PopStyleVar();
 }
 
 bool EditorLayer::onKeyPressed(const KeyPressedEvent &event) {
@@ -322,6 +310,27 @@ bool EditorLayer::onMouseButtonPressed(const MouseButtonPressedEvent &event) {
   }
 
   return false;
+}
+
+void EditorLayer::onStatsUpdate() {
+  auto stats = Renderer2D::getStats();
+  ImGui::Begin("Stats");
+  std::string entityLabel{"None"};
+  std::string entityIndex{"N/A"};
+  if (m_hoveredEntity) {
+    if (m_hoveredEntity.hasComponent<LabelComponent>()) {
+      entityLabel = m_hoveredEntity.getComponent<LabelComponent>()->label;
+      entityIndex = std::to_string(m_hoveredEntity.id().index());
+    }
+  }
+  ImGui::Text("Hovered Entity: %s", entityLabel.c_str());
+  ImGui::Text("Hovered Entity Index: %s", entityIndex.c_str());
+
+  ImGui::Text("Number of draw calls: %d", stats.drawCalls);
+  ImGui::Text("Number of quads: %d", stats.quadCount);
+  ImGui::Text("Number of indexes: %d", stats.getTotalIndexCount());
+  ImGui::Text("Number of vertexes: %d\n", stats.getTotalVertexCount());
+  ImGui::End();
 }
 
 void EditorLayer::newScene() {
