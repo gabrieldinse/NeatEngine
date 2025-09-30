@@ -41,27 +41,27 @@ bool SceneSerializer::deserialize(const std::string &filepath) {
   auto sceneGeneric = rfl::yaml::load<rfl::Generic>(filepath);
 
   if (not sceneGeneric) {
-    NT_ERROR("Error reading scene.");
+    NT_CORE_ERROR("Error reading scene.");
     return false;
   }
 
   auto sceneObjOpt = sceneGeneric.value().to_object();
   if (not sceneObjOpt) {
-    NT_ERROR("Error reading scene data.");
+    NT_CORE_ERROR("Error reading scene data.");
     return false;
   }
 
   auto sceneObject = sceneObjOpt.value();
-  NT_TRACE("Deserialized Scene: \n{}", rfl::yaml::write(sceneObject));
+  NT_CORE_TRACE("Deserialized Scene: \n{}", rfl::yaml::write(sceneObject));
 
   if (sceneObject.count("Entities") == 0) {
-    NT_ERROR("No entities found in the scene.");
+    NT_CORE_ERROR("No entities found in the scene.");
     return false;
   }
 
   auto entitiesArrayOpt = sceneObject["Entities"].to_array();
   if (not entitiesArrayOpt) {
-    NT_ERROR("Error rading entities data.");
+    NT_CORE_ERROR("Error reading entities data.");
     return false;
   }
 
@@ -69,16 +69,17 @@ bool SceneSerializer::deserialize(const std::string &filepath) {
   for (const auto &entityArrayElem : entitiesArray) {
     auto entityObjOpt = entityArrayElem.to_object();
     if (not entityObjOpt) {
-      NT_ERROR("Failed to read entity data.");
+      NT_CORE_ERROR("Failed to read entity data.");
       return false;
     }
 
     auto entityObj = entityObjOpt.value();
-    NT_TRACE("Reading entity {}.", entityObj["ID"].to_int().value_or(-1));
+    NT_CORE_TRACE("Reading entity {}.", entityObj["ID"].to_int().value_or(-1));
     auto entity = m_scene->getEntityManager()->createEntity();
 
-    for (const auto &[name, componentProperties] : m_componentRegistry) {
-      componentProperties.deserialize(entity, name, entityObj);
+    for (const auto &[componentName, componentProperties] :
+         m_componentRegistry) {
+      componentProperties.deserialize(entity, componentName, entityObj);
     }
   }
 

@@ -19,6 +19,7 @@ class OpenGLTexture2D : public Texture2D {
   virtual Int32 getHeight() const override { return m_height; }
   virtual UInt32 getRendererID() const override { return m_id; }
   virtual const std::string &getFilepath() const override { return m_filepath; }
+  virtual bool isLoaded() const override { return m_loaded; }
 
   virtual const Vector2F *getCoordinates() const override {
     return m_coordinates;
@@ -46,6 +47,7 @@ class OpenGLTexture2D : public Texture2D {
   UInt32 m_dataFormat;
   const Vector2F m_coordinates[4] = {
       {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f}};
+  bool m_loaded{false};
 };
 
 }  // namespace Neat

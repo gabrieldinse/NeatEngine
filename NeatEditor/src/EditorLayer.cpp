@@ -149,6 +149,7 @@ void EditorLayer::onImGuiRender() {
   }
 
   m_sceneHierarchyPanel.onUpdate();
+  m_contentBrowserPanel.onUpdate();
 
   auto stats = Renderer2D::getStats();
   ImGui::Begin("Stats");
@@ -186,6 +187,22 @@ void EditorLayer::onImGuiRender() {
                ImVec2{static_cast<float>(m_viewportSize.x()),
                       static_cast<float>(m_viewportSize.y())},
                ImVec2{0, 1}, ImVec2{1, 0});
+
+  if (ImGui::BeginDragDropTarget()) {
+    const ImGuiPayload *dragDropPayload =
+        ImGui::AcceptDragDropPayload("Content Browser Item");
+    if (dragDropPayload) {
+      const char *relativePath =
+          static_cast<const char *>(dragDropPayload->Data);
+      std::filesystem::path sceneFilepath{
+          (std::filesystem::path(ContentBrowserPanel::getAssetsPath()) /
+           relativePath)};
+      std::string sceneFilepathStr{sceneFilepath.string()};
+      openScene(sceneFilepathStr);
+    }
+    ImGui::EndDragDropTarget();
+  }
+
   handleGizmos();
   ImGui::End();
   ImGui::PopStyleVar();
@@ -386,22 +403,30 @@ void EditorLayer::openOpenFileDialog() {
 
 void EditorLayer::handleOpenFileDialog() {
   if (ImGuiFileDialog::Instance()->IsOk()) {
-    m_openedFilepath = ImGuiFileDialog::Instance()->GetFilePathName();
-    m_scene = makeRef<Scene>(m_eventDispatcher);
-    m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
-    m_sceneHierarchyPanel.setScene(m_scene);
-    SceneSerializer serializer{m_scene};
-    serializer.deserialize(m_openedFilepath);
+    openScene(ImGuiFileDialog::Instance()->GetFilePathName());
   }
   ImGuiFileDialog::Instance()->Close();
 }
 
 void EditorLayer::handleSaveFileAsDialog() {
   if (ImGuiFileDialog::Instance()->IsOk()) {
-    m_openedFilepath = ImGuiFileDialog::Instance()->GetFilePathName();
-    SceneSerializer serializer(m_scene);
-    serializer.serialize(m_openedFilepath);
+    saveScene(ImGuiFileDialog::Instance()->GetFilePathName());
   }
   ImGuiFileDialog::Instance()->Close();
+}
+
+void EditorLayer::openScene(const std::string &filepath) {
+  m_scene = makeRef<Scene>(m_eventDispatcher);
+  m_scene->setViewport(m_viewportSize.x(), m_viewportSize.y());
+  m_sceneHierarchyPanel.setScene(m_scene);
+  SceneSerializer serializer{m_scene};
+  serializer.deserialize(filepath);
+  m_openedFilepath = filepath;
+}
+
+void EditorLayer::saveScene(const std::string &filepath) {
+  SceneSerializer serializer(m_scene);
+  serializer.serialize(filepath);
+  m_openedFilepath = filepath;
 }
 }  // namespace Neat

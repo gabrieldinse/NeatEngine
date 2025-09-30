@@ -35,7 +35,7 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
   auto result = loadImage(filepath);
   if (not result) {
     NT_CORE_ERROR("Failed to load texture image: {0}", result.error().filepath);
-    NT_CORE_ASSERT(false, "");
+    return;
   }
 
   const Image &image = *result;
@@ -66,6 +66,8 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
   glTextureSubImage2D(m_id, 0, 0, 0, m_width, m_height, m_dataFormat,
                       GL_UNSIGNED_BYTE, image.getData());
   glGenerateMipmap(GL_TEXTURE_2D);
+
+  m_loaded = true;
 }
 
 OpenGLTexture2D::~OpenGLTexture2D() {

@@ -13,6 +13,7 @@ class Texture {
   virtual UInt32 getRendererID() const = 0;
   virtual const Vector2F *getCoordinates() const = 0;
   virtual const std::string &getFilepath() const = 0;
+  virtual bool isLoaded() const = 0;
 
   virtual void setData(void *data, UInt32 size) = 0;
 

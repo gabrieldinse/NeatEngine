@@ -1,6 +1,7 @@
 #include <memory>
 
 #include "SceneHierarchyPanel.hpp"
+#include "ContentBrowserPanel.hpp"
 
 #include "Neat.hpp"
 #include "Neat/ImGui/ImGuiRender.hpp"
@@ -31,10 +32,13 @@ class EditorLayer : public Layer {
   void saveFile();
   void openOpenFileDialog();
   void openSaveFileAsDialog();
+  void openScene(const std::string &filepath);
+  void saveScene(const std::string &filepath);
 
  private:
   Ref<Scene> m_scene;
   SceneHierarchyPanel m_sceneHierarchyPanel;
+  ContentBrowserPanel m_contentBrowserPanel;
   Ref<EventDispatcher> m_eventDispatcher;
   EditorCamera m_editorCamera;
 

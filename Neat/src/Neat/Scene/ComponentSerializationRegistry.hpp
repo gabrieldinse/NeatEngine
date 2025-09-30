@@ -35,7 +35,7 @@ class ComponentSerializationRegistry {
            const rfl::Generic &entityGeneric) {
           auto entityObjOpt = entityGeneric.to_object();
           if (not entityObjOpt) {
-            NT_ERROR("Failed to deserialize entity.");
+            NT_CORE_ERROR("Failed to deserialize entity.");
             return;
           }
 
@@ -44,10 +44,10 @@ class ComponentSerializationRegistry {
             return;
           }
 
-          NT_TRACE("Reading {}.", componentName);
+          NT_CORE_TRACE("Reading {}.", componentName);
           auto componentObjOpt = entityObj[componentName].to_object();
           if (not componentObjOpt) {
-            NT_ERROR("Failed to read component: {}.", componentName);
+            NT_CORE_ERROR("Failed to read component: {}.", componentName);
             return;
           }
 

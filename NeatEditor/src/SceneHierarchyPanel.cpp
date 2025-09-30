@@ -1,8 +1,11 @@
+#include <filesystem>
+
 #include "Neat/Components/Components.hpp"
 #include "Neat/Utils/TypeConversions.hpp"
 #include "Neat/Graphics/Color.hpp"
 
 #include "SceneHierarchyPanel.hpp"
+#include "ContentBrowserPanel.hpp"
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
@@ -93,8 +96,30 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
                    Entity &entity) {
         auto sprite = entity.getComponent<RenderableSpriteComponent>();
         ImGui::ColorEdit4("Color", sprite->color.data());
+
+        ImGui::Button("Texture", ImVec2{100.0f, 0.0f});
+        if (ImGui::BeginDragDropTarget()) {
+          const ImGuiPayload *dragDropPayload =
+              ImGui::AcceptDragDropPayload("Content Browser Item");
+          if (dragDropPayload) {
+            const char *relativePath =
+                static_cast<const char *>(dragDropPayload->Data);
+            std::filesystem::path textureFilepath{
+                (std::filesystem::path(ContentBrowserPanel::getAssetsPath()) /
+                 relativePath)};
+            std::string textureFilepathStr{textureFilepath.string()};
+            Ref<Texture2D> texture = Texture2D::create(textureFilepathStr);
+            if (texture->isLoaded()) {
+              sprite->texture = texture;
+            } else {
+              NT_CORE_ERROR("Could not load texture from path: {}",
+                            textureFilepathStr);
+            }
+          }
+          ImGui::EndDragDropTarget();
+        }
+
         ImGui::DragFloat("Tiling Factor", &sprite->tilingFactor, 0.1f, 0.1f);
-        // TODO texture selection
       });
 }
 
