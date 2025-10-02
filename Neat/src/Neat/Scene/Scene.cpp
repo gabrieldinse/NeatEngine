@@ -11,14 +11,15 @@
 #include "Neat/Math/Matrix.hpp"
 
 namespace Neat {
-Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
+Scene::Scene(const Ref<EventDispatcher> &eventDispatcher, LayerID layerID) {
   NT_PROFILE_FUNCTION();
 
   m_entityManager = makeRef<EntityManager>(eventDispatcher);
   m_systemManager = makeRef<SystemManager>();
   m_eventDispatcher = eventDispatcher;
   m_eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
-      .connect<&Scene::onActiveCameraTagComponentAdded>(*this);
+      .connect<&Scene::onActiveCameraTagComponentAdded>(
+          *this, EventPriorityLowest, layerID);
   m_systemManager->addSystem<Render2DSystem>();
   m_systemManager->initialize(m_entityManager, m_eventDispatcher);
 }

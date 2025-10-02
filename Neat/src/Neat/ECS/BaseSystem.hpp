@@ -14,10 +14,11 @@ class BaseSystem : public NonCopyable {
   virtual ~BaseSystem() = default;
 
   virtual void initialize(const Ref<EntityManager> &entityManager,
-                          const Ref<EventDispatcher> &eventDispatcher) = 0;
+                          const Ref<EventDispatcher> &eventDispatcher,
+                          LayerID layerID) = 0;
   virtual void onUpdate(const Ref<EntityManager> &entityManager,
                         const Ref<EventDispatcher> &eventDispatcher,
-                        double deltaTimeSeconds) = 0;
+                        double deltaTimeSeconds, LayerID layerID) = 0;
 
  protected:
   static Family s_familyCounter;

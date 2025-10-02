@@ -8,12 +8,10 @@
 
 #include "Neat/Utils/TypeId.hpp"
 #include "Neat/Core/Limits.hpp"
+#include "Neat/Core/Types.hpp"
 #include "Neat/Core/Constants.hpp"
 
 namespace Neat {
-constexpr UInt16 EventPriorityHighest = 0;
-constexpr UInt16 EventPriorityLowest = Limits::Max<UInt16>;
-
 class BaseEventConnections {
  public:
   virtual ~BaseEventConnections() = default;
@@ -33,13 +31,13 @@ class EventConnections : public BaseEventConnections {
     void *instancePointer;
     TypeId instanceMethodId;
     bool ignoreIfHandled;
-    UInt16 priority;
+    EventPriority priority;
     LayerID layerID = NoLayer;
     bool enabled = true;
   };
 
   template <auto method, typename Instance>
-  void connect(Instance &instance, UInt16 priority = EventPriorityLowest,
+  void connect(Instance &instance, EventPriority priority = EventPriorityLowest,
                LayerID layerID = NoLayer, bool ignoreIfHandled = false) {
     auto insert_it =
         std::find_if(m_eventHandlers.begin(), m_eventHandlers.end(),

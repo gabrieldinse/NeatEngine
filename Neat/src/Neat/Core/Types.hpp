@@ -44,6 +44,7 @@ using UChar = unsigned char;
 
 using TypeId = UIntPointerType;
 using LayerID = UInt32;
+using EventPriority = UInt16;
 
 template <typename T>
 using Scope = std::unique_ptr<T>;

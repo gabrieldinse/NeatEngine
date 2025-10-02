@@ -5,11 +5,12 @@
 #include "Neat/ECS/ECS.hpp"
 #include "Neat/Systems/Systems.hpp"
 #include "Neat/Components/ActiveCameraTagComponent.hpp"
+#include "Neat/Core/Constants.hpp"
 
 namespace Neat {
 class Scene {
  public:
-  Scene(const Ref<EventDispatcher> &eventDispatcher);
+  Scene(const Ref<EventDispatcher> &eventDispatcher, LayerID layerID = NoLayer);
   ~Scene();
   Entity createEntity();
   Ref<EntityManager> getEntityManager();

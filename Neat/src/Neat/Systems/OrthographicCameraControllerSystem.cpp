@@ -17,7 +17,8 @@ OrthographicCameraControllerSystem::~OrthographicCameraControllerSystem() {}
 
 void OrthographicCameraControllerSystem::initialize(
     const Ref<EntityManager> &entityManager,
-    const Ref<EventDispatcher> &eventDispatcher) {
+    const Ref<EventDispatcher> &eventDispatcher,
+    [[maybe_unused]] LayerID layerID) {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&OrthographicCameraControllerSystem::onMouseScrolled>(*this);
   m_entityManager = entityManager;
@@ -26,7 +27,7 @@ void OrthographicCameraControllerSystem::initialize(
 void OrthographicCameraControllerSystem::onUpdate(
     [[maybe_unused]] const Ref<EntityManager> &entityManager,
     [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
-    double deltaTimeSeconds) {
+    double deltaTimeSeconds, [[maybe_unused]] LayerID layerID) {
   NT_PROFILE_FUNCTION();
 
   auto mainCamera = getCamera();

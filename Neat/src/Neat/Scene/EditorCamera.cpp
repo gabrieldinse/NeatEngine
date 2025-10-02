@@ -11,10 +11,12 @@
 
 namespace Neat {
 EditorCamera::EditorCamera(const PerspectiveProperties& perspectiveProperties,
-                           const Ref<EventDispatcher>& eventDispatcher)
+                           const Ref<EventDispatcher>& eventDispatcher,
+                           LayerID layerID)
     : m_camera{perspectiveProperties} {
   eventDispatcher->get<MouseScrolledEvent>()
-      .connect<&EditorCamera::onMouseScrolled>(*this);
+      .connect<&EditorCamera::onMouseScrolled>(*this, EventPriorityLowest,
+                                               layerID);
   updateView();
 }
 

@@ -17,9 +17,10 @@ class SystemManager : public NonCopyable {
   SystemManager() = default;
 
   void initialize(const Ref<EntityManager> &entityManager,
-                  const Ref<EventDispatcher> &eventDispatcher) {
+                  const Ref<EventDispatcher> &eventDispatcher,
+                  LayerID layerID = NoLayer) {
     for (auto &&[family, system] : m_systems) {
-      system->initialize(entityManager, eventDispatcher);
+      system->initialize(entityManager, eventDispatcher, layerID);
     }
     m_initialized = true;
   }
@@ -53,9 +54,9 @@ class SystemManager : public NonCopyable {
   template <typename S>
   void onUpdate(const Ref<EntityManager> &entityManager,
                 const Ref<EventDispatcher> &eventDispatcher,
-                double deltaTimeSeconds) {
+                double deltaTimeSeconds, LayerID layerID = NoLayer) {
     if (not m_initialized) {
-      initialize(entityManager, eventDispatcher);
+      initialize(entityManager, eventDispatcher, layerID);
     }
 
     if (auto system = getSystem<S>()) {
@@ -65,13 +66,14 @@ class SystemManager : public NonCopyable {
 
   void updateAll(const Ref<EntityManager> &entityManager,
                  const Ref<EventDispatcher> &eventDispatcher,
-                 double deltaTimeSeconds) {
+                 double deltaTimeSeconds, LayerID layerID = NoLayer) {
     if (not m_initialized) {
-      initialize(entityManager, eventDispatcher);
+      initialize(entityManager, eventDispatcher, layerID);
     }
 
     for (auto &&[family, system] : m_systems) {
-      system->onUpdate(entityManager, eventDispatcher, deltaTimeSeconds);
+      system->onUpdate(entityManager, eventDispatcher, deltaTimeSeconds,
+                       layerID);
     }
   }
 

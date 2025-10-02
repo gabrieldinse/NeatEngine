@@ -14,7 +14,8 @@ namespace Neat {
 void Render2DSystem::onUpdate(
     const Ref<EntityManager> &entityManager,
     [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
-    [[maybe_unused]] double deltaTimeSeconds) {
+    [[maybe_unused]] double deltaTimeSeconds,
+    [[maybe_unused]] LayerID layerID) {
   NT_PROFILE_FUNCTION();
 
   Renderer2D::resetStats();

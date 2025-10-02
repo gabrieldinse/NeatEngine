@@ -13,11 +13,13 @@ class System : public BaseSystem {
 
   virtual void initialize(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
-      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher) override {}
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
+      [[maybe_unused]] LayerID layerID = NoLayer) override {}
   virtual void onUpdate(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
-      [[maybe_unused]] double deltaTimeSeconds) override {}
+      [[maybe_unused]] double deltaTimeSeconds,
+      [[maybe_unused]] LayerID layerID = NoLayer) override {}
 
  private:
   friend class SystemManager;
