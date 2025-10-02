@@ -35,4 +35,13 @@ Scope<Layer> LayerGroup::popOverlay(UInt32 position) {
   m_layers.erase(m_layers.begin() + position);
   return layer;
 }
+
+void LayerGroup::onUpdate(double deltaTimeSeconds) {
+  NT_PROFILE_FUNCTION();
+  for (auto &layer : m_layers) {
+    if (layer->isEnabled()) {
+      layer->onUpdate(deltaTimeSeconds);
+    }
+  }
+}
 }  // namespace Neat

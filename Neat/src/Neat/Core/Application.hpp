@@ -45,7 +45,6 @@ class Application {
 
  private:
   void stop();
-  void onUpdateLayers(double deltaTimeSeconds);
   bool onWindowClose(const WindowCloseEvent &event);
   bool onWindowResize(const WindowResizeEvent &event);
 

@@ -59,8 +59,7 @@ struct TransformComponent {
     incrementPosition({x, y, z});
   }
   void incrementPosition(const Vector2F &offset) {
-    position.x() += offset.x();
-    position.y() += offset.y();
+    position += Vector3F{offset};
   }
   void incrementPosition(float x, float y) { incrementPosition({x, y}); }
 

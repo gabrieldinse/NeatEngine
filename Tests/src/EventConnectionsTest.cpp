@@ -12,6 +12,13 @@ class EventConnectionsTest : public testing::Test {
     connC.connect<&ListenerB::handleEventC>(listenerB);
     connC.connect<&ListenerC::handle>(listenerC);
     connA.connect<&ListenerD::handleA>(listenerD);
+
+    connALayer.connect<&ListenerA::handle>(listenerALayer, 0, layerID);
+    connBLayer.connect<&ListenerB::process>(listenerBLayer, 0, layerID);
+    connCLayer.connect<&ListenerB::handleEventC>(listenerBLayer, 0, layerID);
+    connCLayer.connect<&ListenerC::handle>(listenerCLayer, 0, layerID);
+
+    connBLayer.connect<&ListenerB::process>(listenerB2Layer, 0, layerID2);
   }
   EventConnections<EventA> connA{};
   EventConnections<EventB> connB{};
@@ -23,9 +30,19 @@ class EventConnectionsTest : public testing::Test {
   ListenerB listenerB2{};
   ListenerC listenerC2{};
   ListenerD listenerD{};
+
+  EventConnections<EventA> connALayer{};
+  EventConnections<EventB> connBLayer{};
+  EventConnections<EventC> connCLayer{};
+  const LayerID layerID{100};
+  const LayerID layerID2{101};
+  ListenerA listenerALayer{};
+  ListenerB listenerBLayer{};
+  ListenerB listenerB2Layer{};
+  ListenerC listenerCLayer{};
 };
 
-TEST_F(EventConnectionsTest, SendEventsConnectingAndDisconnecting) {
+TEST_F(EventConnectionsTest, ConnectAndDisconnect) {
   connA.onUpdate(EventA{100});
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
@@ -38,6 +55,44 @@ TEST_F(EventConnectionsTest, SendEventsConnectingAndDisconnecting) {
   connA.onUpdate(EventA{300});
   EXPECT_EQ(listenerA.val, 200);
   EXPECT_EQ(listenerA.count, 2);
+}
+
+TEST_F(EventConnectionsTest, EnableAndDisable) {
+  connALayer.onUpdate(EventA{100});
+  EXPECT_EQ(listenerALayer.val, 100);
+  EXPECT_EQ(listenerALayer.count, 1);
+
+  connALayer.onUpdate(EventA{200});
+  EXPECT_EQ(listenerALayer.val, 200);
+  EXPECT_EQ(listenerALayer.count, 2);
+
+  connBLayer.disable(layerID);
+
+  std::string msg{"My message"};
+  connBLayer.onUpdate(EventB{msg});
+  EXPECT_EQ(listenerALayer.val, 200);
+  EXPECT_EQ(listenerALayer.count, 2);
+  EXPECT_EQ(listenerBLayer.posX, 0.0f);
+  EXPECT_EQ(listenerBLayer.posY, 0.0f);
+  EXPECT_EQ(listenerBLayer.msg, "");
+  EXPECT_EQ(listenerBLayer.count, 0);
+  EXPECT_EQ(listenerB2Layer.posX, 0.0f);
+  EXPECT_EQ(listenerB2Layer.posY, 0.0f);
+  EXPECT_EQ(listenerB2Layer.msg, msg);
+  EXPECT_EQ(listenerB2Layer.count, 1);
+
+  connBLayer.enable(layerID);
+  connBLayer.onUpdate(EventB{msg});
+  EXPECT_EQ(listenerALayer.val, 200);
+  EXPECT_EQ(listenerALayer.count, 2);
+  EXPECT_EQ(listenerBLayer.posX, 0.0f);
+  EXPECT_EQ(listenerBLayer.posY, 0.0f);
+  EXPECT_EQ(listenerBLayer.msg, msg);
+  EXPECT_EQ(listenerBLayer.count, 1);
+  EXPECT_EQ(listenerB2Layer.posX, 0.0f);
+  EXPECT_EQ(listenerB2Layer.posY, 0.0f);
+  EXPECT_EQ(listenerB2Layer.msg, msg);
+  EXPECT_EQ(listenerB2Layer.count, 2);
 }
 
 TEST_F(EventConnectionsTest, MultipleEventListeners) {

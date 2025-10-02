@@ -4,6 +4,7 @@
 #include "EventConnections.hpp"
 
 #include "Neat/Utils/SafeQueue.hpp"
+#include "Neat/Core/Types.hpp"
 
 namespace Neat {
 class EventDispatcher {
@@ -64,6 +65,17 @@ class EventDispatcher {
   void disconnect(Instance& instance) {
     for (auto& [_, connections] : m_eventConnectionsMap) {
       connections->disconnect(static_cast<void*>(&instance));
+    }
+  }
+
+  void enable(LayerID layerID) {
+    for (auto& [_, connections] : m_eventConnectionsMap) {
+      connections->enable(layerID);
+    }
+  }
+  void disable(LayerID layerID) {
+    for (auto& [_, connections] : m_eventConnectionsMap) {
+      connections->disable(layerID);
     }
   }
 

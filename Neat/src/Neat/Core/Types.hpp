@@ -43,6 +43,7 @@ using Char = char;
 using UChar = unsigned char;
 
 using TypeId = UIntPointerType;
+using LayerID = UInt32;
 
 template <typename T>
 using Scope = std::unique_ptr<T>;

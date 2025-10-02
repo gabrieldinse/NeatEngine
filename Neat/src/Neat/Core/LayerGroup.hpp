@@ -37,6 +37,8 @@ class LayerGroup {
   LayerVectorConstRevIt rbegin() const { return m_layers.rbegin(); }
   LayerVectorConstRevIt rend() const { return m_layers.rend(); }
 
+  void onUpdate(double deltaTimeSeconds);
+
  private:
   LayerVector m_layers;
   LayerVector::size_type m_insertIndex;

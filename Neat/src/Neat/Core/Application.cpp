@@ -50,7 +50,7 @@ void Application::run() {
 
     ImGuiRender::begin();
     onUpdate(deltaTimeSeconds);
-    onUpdateLayers(deltaTimeSeconds);
+    m_layerGroup.onUpdate(deltaTimeSeconds);
     ImGuiRender::end();
 
     m_window->onUpdate();
@@ -77,13 +77,6 @@ Scope<Layer> Application::popLayer(Int32 position) {
 Scope<Layer> Application::popOverlay(Int32 position) {
   NT_PROFILE_FUNCTION();
   return m_layerGroup.popOverlay(position);
-}
-
-void Application::onUpdateLayers(double deltaTimeSeconds) {
-  NT_PROFILE_FUNCTION();
-  for (auto &layer : m_layerGroup) {
-    layer->onUpdate(deltaTimeSeconds);
-  }
 }
 
 bool Application::onWindowClose(

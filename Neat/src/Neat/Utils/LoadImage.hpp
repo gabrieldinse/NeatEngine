@@ -20,7 +20,7 @@ class Image {
   Int32 getWidth() const { return m_width; }
   Int32 getHeight() const { return m_height; }
   Int32 getChannels() const { return m_channels; }
-  const UChar* getData() const { return m_data; }
+  const UChar* data() const { return m_data; }
 
  private:
   UChar* m_data = nullptr;

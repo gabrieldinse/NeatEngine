@@ -64,7 +64,7 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
   setWrapT(Texture2DWrapping::Repeat);
 
   glTextureSubImage2D(m_id, 0, 0, 0, m_width, m_height, m_dataFormat,
-                      GL_UNSIGNED_BYTE, image.getData());
+                      GL_UNSIGNED_BYTE, image.data());
   glGenerateMipmap(GL_TEXTURE_2D);
 
   m_loaded = true;

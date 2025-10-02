@@ -25,7 +25,7 @@ class EntityManager;
 template <typename C, typename EM = EntityManager>
 class ComponentHandle;
 
-using ComponentMask = std::bitset<maxComponents>;
+using ComponentMask = std::bitset<MaxComponents>;
 
 // ---------------------------------------------------------------------- //
 // Entity --------------------------------------------------------------- //
@@ -932,7 +932,7 @@ inline void Entity::destroy() {
   invalidate();
 }
 
-inline std::bitset<maxComponents> Entity::getComponentMask() const {
+inline std::bitset<MaxComponents> Entity::getComponentMask() const {
   return m_entityManager->getComponentMask(m_id);
 }
 // ---------------------------------------------------------------------- //

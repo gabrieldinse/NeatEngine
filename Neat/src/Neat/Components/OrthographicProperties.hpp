@@ -2,6 +2,8 @@
 
 #include <type_traits>
 
+#include "Neat/Core/Log.hpp"
+
 namespace Neat {
 struct OrthographicProperties {
   float left = -1.0f;
@@ -40,6 +42,7 @@ struct OrthographicProperties {
     requires std::is_integral_v<T> and std::is_integral_v<U>
   void setProperties(T width, U height, float size = 2.0f) {
     if (height == 0) {
+      NT_CORE_WARN("Tried to set orthographic properties with height 0.");
       return;
     }
 
@@ -68,6 +71,7 @@ struct OrthographicProperties {
     requires std::is_integral_v<T> and std::is_integral_v<U>
   void setAspectRatio(T width, U height) {
     if (height == 0) {
+      NT_CORE_WARN("Tried to set orthographic aspect ratio with height 0.");
       return;
     }
 

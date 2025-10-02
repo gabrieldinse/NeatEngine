@@ -2,9 +2,9 @@
 
 #include "BaseComponent.hpp"
 
-namespace Neat {
-constexpr std::size_t maxComponents = 64;
+#include "Neat/Core/Constants.hpp"
 
+namespace Neat {
 template <typename Derived>
 struct Component : public BaseComponent {
  private:
@@ -12,7 +12,7 @@ struct Component : public BaseComponent {
 
   static Family getFamily() {
     static Family family = s_familyCounter++;
-    if (family >= maxComponents) throw MaximumNumberOfComponentsError();
+    if (family >= MaxComponents) throw MaximumNumberOfComponentsError();
 
     return family;
   }
