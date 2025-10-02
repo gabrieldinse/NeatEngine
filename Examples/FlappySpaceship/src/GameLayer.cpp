@@ -30,8 +30,7 @@ void GameLayer::initialize() {
   m_pillarHSV = Neat::Vector3F{0.0f, 0.8f, 0.8f};
 
   m_entityManager = Neat::makeRef<Neat::EntityManager>(m_eventDispatcher);
-  m_systemManager =
-      Neat::makeRef<Neat::SystemManager>(m_entityManager, m_eventDispatcher);
+  m_systemManager = Neat::makeRef<Neat::SystemManager>();
 
   m_camera = m_entityManager->createEntity();
   m_camera.addComponent<Neat::CameraComponent>(
@@ -41,7 +40,7 @@ void GameLayer::initialize() {
 
   m_systemManager->addSystem<Neat::OrthographicCameraControllerSystem>();
   m_systemManager->addSystem<Neat::Render2DSystem>();
-  m_systemManager->initialize();
+  m_systemManager->initialize(m_entityManager, m_eventDispatcher);
 
   auto background = m_entityManager->createEntity();
   background.addComponent<Neat::RenderableSpriteComponent>(Neat::Color::bark);
@@ -118,8 +117,9 @@ void GameLayer::play(float deltaTimeSeconds) {
   m_camera.getComponent<Neat::TransformComponent>()->setPosition(
       m_player.getComponent<Neat::TransformComponent>()->getPosition2D());
   m_systemManager->onUpdate<Neat::OrthographicCameraControllerSystem>(
-      deltaTimeSeconds);
-  m_systemManager->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);
+      m_entityManager, m_eventDispatcher, deltaTimeSeconds);
+  m_systemManager->onUpdate<Neat::Render2DSystem>(
+      m_entityManager, m_eventDispatcher, deltaTimeSeconds);
   ImGui::PushFont(m_font);
   std::string scoreString = std::string{"Score: "} + std::to_string(getScore());
   ImGui::GetForegroundDrawList()->AddText(m_font, 48.0f, ImGui::GetWindowPos(),

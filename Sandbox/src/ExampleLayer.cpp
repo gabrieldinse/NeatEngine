@@ -198,11 +198,11 @@ ExampleLayer::ExampleLayer(
   /* ---------------------*/
 
   m_entityManager = Neat::makeRef<Neat::EntityManager>(eventDispatcher);
-  m_systemManager =
-      Neat::makeRef<Neat::SystemManager>(m_entityManager, eventDispatcher);
-  eventDispatcher->get<Neat::WindowResizeEvent>()
+  m_systemManager = Neat::makeRef<Neat::SystemManager>();
+  m_eventDispatcher = eventDispatcher;
+  m_eventDispatcher->get<Neat::WindowResizeEvent>()
       .connect<&ExampleLayer::onWindowResize>(*this);
-  eventDispatcher->get<Neat::MouseMovedEvent>()
+  m_eventDispatcher->get<Neat::MouseMovedEvent>()
       .connect<&ExampleLayer::onMouseMoved>(*this);
 
   auto cameraEntity = m_entityManager->createEntity();
@@ -215,7 +215,7 @@ ExampleLayer::ExampleLayer(
 
   m_systemManager->addSystem<Neat::OrthographicCameraControllerSystem>();
   m_systemManager->addSystem<Neat::Render2DSystem>();
-  m_systemManager->initialize();
+  m_systemManager->initialize(m_entityManager, m_eventDispatcher);
 
   // for (std::size_t i = 0; i < this->numberOfLines; ++i) {
   //   for (std::size_t j = 0; j < this->numberOfColumns; ++j) {
@@ -287,8 +287,9 @@ void ExampleLayer::onImGuiRender() {
 
 void ExampleLayer::onUpdate(double deltaTimeSeconds) {
   m_systemManager->onUpdate<Neat::OrthographicCameraControllerSystem>(
-      deltaTimeSeconds);
-  m_systemManager->onUpdate<Neat::Render2DSystem>(deltaTimeSeconds);
+      m_entityManager, m_eventDispatcher, deltaTimeSeconds);
+  m_systemManager->onUpdate<Neat::Render2DSystem>(
+      m_entityManager, m_eventDispatcher, deltaTimeSeconds);
   onImGuiRender();
 }
 

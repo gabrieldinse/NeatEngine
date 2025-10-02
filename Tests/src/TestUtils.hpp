@@ -71,14 +71,15 @@ struct ListenerD {
 struct TestingSystem : public System<TestingSystem> {
   TestingSystem() = default;
 
-  virtual void onUpdate([[maybe_unused]] Ref<EntityManager> &entityManager,
-                        [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher,
-                        [[maybe_unused]] double deltaTimeSeconds) override {
+  virtual void onUpdate(
+      [[maybe_unused]] const Ref<EntityManager> &entityManager,
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
+      [[maybe_unused]] double deltaTimeSeconds) override {
     onUpdateCounter++;
   }
   virtual void initialize(
-      [[maybe_unused]] Ref<EntityManager> &entityManager,
-      [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher) override {
+      [[maybe_unused]] const Ref<EntityManager> &entityManager,
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher) override {
     initCounter++;
   }
 
@@ -89,14 +90,15 @@ struct TestingSystem : public System<TestingSystem> {
 struct TestingSystem2 : public System<TestingSystem2> {
   TestingSystem2() = default;
 
-  virtual void onUpdate([[maybe_unused]] Ref<EntityManager> &entityManager,
-                        [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher,
-                        [[maybe_unused]] double deltaTimeSeconds) override {
+  virtual void onUpdate(
+      [[maybe_unused]] const Ref<EntityManager> &entityManager,
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
+      [[maybe_unused]] double deltaTimeSeconds) override {
     onUpdateCounter++;
   }
   virtual void initialize(
-      [[maybe_unused]] Ref<EntityManager> &entityManager,
-      [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher) override {
+      [[maybe_unused]] const Ref<EntityManager> &entityManager,
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher) override {
     initCounter++;
   }
 

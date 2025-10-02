@@ -17,10 +17,10 @@ class OrthographicCameraControllerSystem
   OrthographicCameraControllerSystem(bool rotationEnabled = true);
   ~OrthographicCameraControllerSystem();
 
-  virtual void initialize(Ref<EntityManager> &entityManager,
-                          Ref<EventDispatcher> &eventDispatcher) override;
-  virtual void onUpdate(Ref<EntityManager> &entityManager,
-                        Ref<EventDispatcher> &eventDispatcher,
+  virtual void initialize(const Ref<EntityManager> &entityManager,
+                          const Ref<EventDispatcher> &eventDispatcher) override;
+  virtual void onUpdate(const Ref<EntityManager> &entityManager,
+                        const Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds) override;
 
  private:

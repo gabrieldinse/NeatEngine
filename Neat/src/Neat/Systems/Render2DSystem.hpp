@@ -7,8 +7,8 @@ class Render2DSystem : public System<Render2DSystem> {
  public:
   Render2DSystem() = default;
 
-  virtual void onUpdate(Ref<EntityManager> &entityManager,
-                        Ref<EventDispatcher> &eventDispatcher,
+  virtual void onUpdate(const Ref<EntityManager> &entityManager,
+                        const Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds) override;
 };
 }  // namespace Neat

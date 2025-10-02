@@ -14,13 +14,12 @@
 namespace Neat {
 class SystemManager : public NonCopyable {
  public:
-  SystemManager(const Ref<EntityManager> &entityManager,
-                const Ref<EventDispatcher> &eventDispatcher)
-      : m_entityManager(entityManager), m_eventDispatcher(eventDispatcher) {}
+  SystemManager() = default;
 
-  void initialize() {
+  void initialize(const Ref<EntityManager> &entityManager,
+                  const Ref<EventDispatcher> &eventDispatcher) {
     for (auto &&[family, system] : m_systems) {
-      system->initialize(m_entityManager, m_eventDispatcher);
+      system->initialize(entityManager, eventDispatcher);
     }
     m_initialized = true;
   }
@@ -52,30 +51,32 @@ class SystemManager : public NonCopyable {
   }
 
   template <typename S>
-  void onUpdate(double deltaTimeSeconds) {
+  void onUpdate(const Ref<EntityManager> &entityManager,
+                const Ref<EventDispatcher> &eventDispatcher,
+                double deltaTimeSeconds) {
     if (not m_initialized) {
-      initialize();
+      initialize(entityManager, eventDispatcher);
     }
 
     if (auto system = getSystem<S>()) {
-      (*system)->onUpdate(m_entityManager, m_eventDispatcher, deltaTimeSeconds);
+      (*system)->onUpdate(entityManager, eventDispatcher, deltaTimeSeconds);
     }
   }
 
-  void updateAll(double deltaTimeSeconds) {
+  void updateAll(const Ref<EntityManager> &entityManager,
+                 const Ref<EventDispatcher> &eventDispatcher,
+                 double deltaTimeSeconds) {
     if (not m_initialized) {
-      initialize();
+      initialize(entityManager, eventDispatcher);
     }
 
     for (auto &&[family, system] : m_systems) {
-      system->onUpdate(m_entityManager, m_eventDispatcher, deltaTimeSeconds);
+      system->onUpdate(entityManager, eventDispatcher, deltaTimeSeconds);
     }
   }
 
  private:
   bool m_initialized = false;
-  Ref<EntityManager> m_entityManager;
-  Ref<EventDispatcher> m_eventDispatcher;
   std::unordered_map<BaseSystem::Family, Ref<BaseSystem>> m_systems;
 };
 }  // namespace Neat

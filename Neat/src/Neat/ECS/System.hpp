@@ -12,11 +12,12 @@ class System : public BaseSystem {
   virtual ~System() = default;
 
   virtual void initialize(
-      [[maybe_unused]] Ref<EntityManager> &entityManager,
-      [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher) override {}
-  virtual void onUpdate([[maybe_unused]] Ref<EntityManager> &entityManager,
-                        [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher,
-                        [[maybe_unused]] double deltaTimeSeconds) override {}
+      [[maybe_unused]] const Ref<EntityManager> &entityManager,
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher) override {}
+  virtual void onUpdate(
+      [[maybe_unused]] const Ref<EntityManager> &entityManager,
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
+      [[maybe_unused]] double deltaTimeSeconds) override {}
 
  private:
   friend class SystemManager;

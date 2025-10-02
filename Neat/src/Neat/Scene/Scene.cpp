@@ -15,12 +15,12 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher) {
   NT_PROFILE_FUNCTION();
 
   m_entityManager = makeRef<EntityManager>(eventDispatcher);
-  m_systemManager = makeRef<SystemManager>(m_entityManager, eventDispatcher);
-  eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
+  m_systemManager = makeRef<SystemManager>();
+  m_eventDispatcher = eventDispatcher;
+  m_eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
       .connect<&Scene::onActiveCameraTagComponentAdded>(*this);
   m_systemManager->addSystem<Render2DSystem>();
-  m_systemManager->initialize();
-  m_eventDispatcher = eventDispatcher;
+  m_systemManager->initialize(m_entityManager, m_eventDispatcher);
 }
 
 Scene::~Scene() {
@@ -51,7 +51,8 @@ void Scene::setViewport(UInt32 width, UInt32 height) {
 void Scene::onRuntimeUpdate(double deltaTimeSeconds) {
   NT_PROFILE_FUNCTION();
 
-  m_systemManager->onUpdate<Render2DSystem>(deltaTimeSeconds);
+  m_systemManager->onUpdate<Render2DSystem>(m_entityManager, m_eventDispatcher,
+                                            deltaTimeSeconds);
 }
 
 void Scene::onEditorUpdate([[maybe_unused]] double deltaTimeSeconds,

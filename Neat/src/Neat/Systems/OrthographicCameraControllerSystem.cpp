@@ -16,15 +16,16 @@ OrthographicCameraControllerSystem::OrthographicCameraControllerSystem(
 OrthographicCameraControllerSystem::~OrthographicCameraControllerSystem() {}
 
 void OrthographicCameraControllerSystem::initialize(
-    Ref<EntityManager> &entityManager, Ref<EventDispatcher> &eventDispatcher) {
+    const Ref<EntityManager> &entityManager,
+    const Ref<EventDispatcher> &eventDispatcher) {
   eventDispatcher->get<MouseScrolledEvent>()
       .connect<&OrthographicCameraControllerSystem::onMouseScrolled>(*this);
   m_entityManager = entityManager;
 }
 
 void OrthographicCameraControllerSystem::onUpdate(
-    [[maybe_unused]] Ref<EntityManager> &entityManager,
-    [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher,
+    [[maybe_unused]] const Ref<EntityManager> &entityManager,
+    [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     double deltaTimeSeconds) {
   NT_PROFILE_FUNCTION();
 

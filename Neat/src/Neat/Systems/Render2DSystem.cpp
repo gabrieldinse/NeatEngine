@@ -12,8 +12,8 @@
 
 namespace Neat {
 void Render2DSystem::onUpdate(
-    Ref<EntityManager> &entityManager,
-    [[maybe_unused]] Ref<EventDispatcher> &eventDispatcher,
+    const Ref<EntityManager> &entityManager,
+    [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     [[maybe_unused]] double deltaTimeSeconds) {
   NT_PROFILE_FUNCTION();
 
