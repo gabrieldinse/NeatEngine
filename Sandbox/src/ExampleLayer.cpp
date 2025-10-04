@@ -56,10 +56,10 @@ struct Reflector<Neat::TransformComponent> {
 
 ExampleLayer::ExampleLayer(
     const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
-    : m_checkerboardTexture(
-          Neat::Texture2D::create("assets/textures/texture1.png")),
-      m_spritesheetTexture(
-          Neat::Texture2D::create("assets/textures/spritesheet1.png")),
+    : m_checkerboardTexture(Neat::Texture2D::create(
+          "SandboxAssets/Resources/textures/texture1.png")),
+      m_spritesheetTexture(Neat::Texture2D::create(
+          "SandboxAssets/Resources/textures/spritesheet1.png")),
       m_stairsTexture(Neat::SubTexture2D::createFromIndex(m_spritesheetTexture,
                                                           {7, 6}, {64, 64})),
       stairsTexture2(Neat::SubTexture2D::createFromIndex(m_spritesheetTexture,

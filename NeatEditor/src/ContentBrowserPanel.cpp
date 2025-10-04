@@ -5,14 +5,15 @@
 #include <ImGui/imgui.h>
 
 namespace Neat {
-const std::filesystem::path ContentBrowserPanel::s_assetsPath = "Assets";
+const std::filesystem::path ContentBrowserPanel::s_assetsPath =
+    "NeatEditorAssets/Resources";
 
 ContentBrowserPanel::ContentBrowserPanel()
     : m_currentDirectory(s_assetsPath),
       m_directoryIcon(Texture2D::create(
-          "Resources/Icons/ContentBrowser/DirectoryIcon.png")),
-      m_fileIcon(
-          Texture2D::create("Resources/Icons/ContentBrowser/FileIcon.png")) {}
+          "NeatEditorAssets/Resources/Icons/ContentBrowser/DirectoryIcon.png")),
+      m_fileIcon(Texture2D::create(
+          "NeatEditorAssets/Resources/Icons/ContentBrowser/FileIcon.png")) {}
 
 void ContentBrowserPanel::onUpdate() {
   ImGui::Begin("Content Browser");

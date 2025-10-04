@@ -1,3 +1,5 @@
+set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
+
 file(GLOB_RECURSE NEAT_EDITOR_SOURCES
     src/**.cpp
 )
@@ -33,5 +35,5 @@ target_compile_definitions(NeatEditor PRIVATE
     $<$<CONFIG:Dist>:NT_DIST>
 )
 
-file(COPY Assets DESTINATION ${OUTPUT_DIR})
+file(COPY Resources DESTINATION ${OUTPUT_DIR}/NeatEditorAssets)
 file(COPY imgui.ini DESTINATION ${OUTPUT_DIR})

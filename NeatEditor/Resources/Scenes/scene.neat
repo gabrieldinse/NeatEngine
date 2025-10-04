@@ -55,7 +55,7 @@ Entities:
       label: Scene Camera
   - ID: 1
     RenderableSpriteComponent:
-      textureFilepath: Assets/Textures/texture1.png
+      textureFilepath: NeatEditorAssets/Resources/Textures/texture1.png
       color:
         elements:
           - 0.800000

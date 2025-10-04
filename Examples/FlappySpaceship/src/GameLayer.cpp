@@ -4,15 +4,15 @@
 
 GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
     : m_eventDispatcher(eventDispatcher),
-      m_spaceshipTexture(
-          Neat::Texture2D::create("Resources/Textures/Ship.png")),
-      m_pillarTexture(
-          Neat::Texture2D::create("Resources/Textures/Triangle.png")) {
+      m_spaceshipTexture(Neat::Texture2D::create(
+          "FlappySpaceshipAssets/Resources/Textures/Ship.png")),
+      m_pillarTexture(Neat::Texture2D::create(
+          "FlappySpaceshipAssets/Resources/Textures/Triangle.png")) {
   ImGuiIO io = ImGui::GetIO();
   m_fontSmall = io.Fonts->AddFontFromFileTTF(
-      "Resources/Fonts/OpenSans-Regular.ttf", 20.0f);
-  m_font = io.Fonts->AddFontFromFileTTF("Resources/Fonts/OpenSans-Regular.ttf",
-                                        120.0f);
+      "NeatAssets/Resources/Fonts/OpenSans-Regular.ttf", 20.0f);
+  m_font = io.Fonts->AddFontFromFileTTF(
+      "NeatAssets/Resources/Fonts/OpenSans-Regular.ttf", 120.0f);
   m_spaceshipTexture->setMinification(
       Neat::Texture2DFilter::LinearMipmapNearest);
   m_spaceshipTexture->setMagnification(Neat::Texture2DFilter::Nearest);

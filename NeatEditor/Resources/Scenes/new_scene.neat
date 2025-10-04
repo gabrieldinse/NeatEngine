@@ -7,7 +7,7 @@ Entities:
       position:
         elements:
           - 0.000000
-          - 0.000000
+          - -0.044574
           - 0.000000
       scaling:
         elements:
@@ -22,8 +22,8 @@ Entities:
     CameraComponent:
       type: Orthographic
       orthographicProperties:
-        left: -1.441315
-        right: 1.441315
+        left: -1.739837
+        right: 1.739837
         bottom: -1.000000
         top: 1.000000
         near: -1.000000
@@ -32,10 +32,10 @@ Entities:
         fov: 45.000000
         aspectRatio: 1.777778
         near: 0.100000
-        far: 100.000000
+        far: 1000.000000
       projectionMatrix:
         elements:
-          - 0.693811
+          - 0.574766
           - 0.000000
           - 0.000000
           - -0.000000
@@ -55,14 +55,14 @@ Entities:
       label: Scene Camera
   - ID: 1
     RenderableSpriteComponent:
-      textureFilepath: Assets/Textures/texture1.png
+      textureFilepath: NeatEditorAssets/Resources/Textures/texture1.png
       color:
         elements:
           - 0.800000
           - 0.400000
           - 0.300000
           - 0.750000
-      tilingFactor: 5.000000
+      tilingFactor: 1.000000
     TransformComponent:
       position:
         elements:
@@ -71,8 +71,8 @@ Entities:
           - 0.500000
       scaling:
         elements:
-          - 1.000000
-          - 1.000000
+          - 1.500000
+          - 1.500000
           - 1.000000
       rotation:
         elements:
@@ -81,3 +81,31 @@ Entities:
           - 45.000000
     LabelComponent:
       label: Checkerboard Quad
+  - ID: 2
+    RenderableSpriteComponent:
+      textureFilepath: NeatEditorAssets/Resources/Textures/awesomeface.png
+      color:
+        elements:
+          - 1.000000
+          - 1.000000
+          - 1.000000
+          - 1.000000
+      tilingFactor: 1.000000
+    TransformComponent:
+      position:
+        elements:
+          - -2.103130
+          - -0.000002
+          - 0.000000
+      scaling:
+        elements:
+          - 1.500000
+          - 1.500000
+          - 1.000000
+      rotation:
+        elements:
+          - 0.000000
+          - 0.000000
+          - 0.000000
+    LabelComponent:
+      label: My Entity

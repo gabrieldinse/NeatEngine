@@ -73,10 +73,10 @@ void ImGuiRender::end() {
 
 void ImGuiRender::setFontsAndColorTheme() {
   auto &io = ImGui::GetIO();
-  io.Fonts->AddFontFromFileTTF("Resources/Fonts/OpenSans/OpenSans-Bold.ttf",
-                               18.0f);
+  io.Fonts->AddFontFromFileTTF(
+      "NeatAssets/Resources/Fonts/OpenSans/OpenSans-Bold.ttf", 18.0f);
   io.FontDefault = io.Fonts->AddFontFromFileTTF(
-      "Resources/Fonts/OpenSans/OpenSans-SemiBold.ttf", 18.0f);
+      "NeatAssets/Resources/Fonts/OpenSans/OpenSans-SemiBold.ttf", 18.0f);
 
   // Setup Dear ImGui style
   ImGui::StyleColorsDark();

@@ -51,7 +51,7 @@ void Renderer2D::initialize() {
                                 static_cast<UInt32>(sizeof(UInt32)));
 
   s_data->textureShader =
-      ShaderProgram::create("./Resources/Shaders/Texture.glsl");
+      ShaderProgram::create("./NeatAssets/Resources/Shaders/Texture.glsl");
   s_data->textureShader->bind();
 
   s_data->textureSlots[0] = s_data->whiteTexture;
