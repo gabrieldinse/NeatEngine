@@ -1,7 +1,9 @@
 #include <memory>
 
 #include "EditorLayer.hpp"
+
 #include "Neat/Scene/SceneSerializer.hpp"
+#include "Neat/ImGui/ImGuiTools.hpp"
 
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
 #include <ImGuizmo/ImGuizmo.h>
@@ -120,7 +122,7 @@ void EditorLayer::onImGuiRender() {
   onMenuUpdate();
   m_sceneHierarchyPanel.onUpdate();
   m_contentBrowserPanel.onUpdate();
-  onStatsUpdate();
+  ImGuiTools::onStatsUpdate(m_hoveredEntity);
   onViewportUpdate();
   onUIToolbarUpdate();
   endDockSpace();
@@ -367,27 +369,6 @@ bool EditorLayer::onMouseButtonPressed(const MouseButtonPressedEvent &event) {
   }
 
   return false;
-}
-
-void EditorLayer::onStatsUpdate() {
-  auto stats = Renderer2D::getStats();
-  ImGui::Begin("Stats");
-  std::string entityLabel{"None"};
-  std::string entityIndex{"N/A"};
-  if (m_hoveredEntity) {
-    if (m_hoveredEntity.hasComponent<LabelComponent>()) {
-      entityLabel = m_hoveredEntity.getComponent<LabelComponent>()->label;
-      entityIndex = std::to_string(m_hoveredEntity.id().index());
-    }
-  }
-  ImGui::Text("Hovered Entity: %s", entityLabel.c_str());
-  ImGui::Text("Hovered Entity Index: %s", entityIndex.c_str());
-
-  ImGui::Text("Number of draw calls: %d", stats.drawCalls);
-  ImGui::Text("Number of quads: %d", stats.quadCount);
-  ImGui::Text("Number of indexes: %d", stats.getTotalIndexCount());
-  ImGui::Text("Number of vertexes: %d\n", stats.getTotalVertexCount());
-  ImGui::End();  // Stats
 }
 
 void EditorLayer::handleEntityHovered() {
