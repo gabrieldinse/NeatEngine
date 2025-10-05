@@ -22,3 +22,6 @@
 [submodule "Neat/vendor/ImGuizmo"]
 	path = Vendor/ImGuizmo
 	url = git@github.com:CedricGuillemet/ImGuizmo.git
+[submodule "Vendor/box2d"]
+	path = Vendor/Box2D
+	url = git@github.com:erincatto/box2d.git

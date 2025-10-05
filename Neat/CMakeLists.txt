@@ -71,9 +71,15 @@ target_include_directories(Neat
         ${VENDOR_DIR}/reflect-cpp/include
         ${VENDOR_DIR}/yaml-cpp/include
         ${VENDOR_DIR}/ImGuizmo
+        ${VENDOR_DIR}/Box2D
 )
 
-set(PUBLIC_LIBRARIES glfw Glad yaml-cpp reflectcpp)
+set(PUBLIC_LIBRARIES
+    glfw
+    Glad
+    yaml-cpp
+    reflectcpp
+    box2d)
 
 if(WIN32)
     set(PUBLIC_LIBRARIES ${PUBLIC_LIBRARIES} opengl32.lib)
