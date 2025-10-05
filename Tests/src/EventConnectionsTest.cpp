@@ -40,6 +40,9 @@ class EventConnectionsTest : public testing::Test {
   ListenerB listenerBLayer{};
   ListenerB listenerB2Layer{};
   ListenerC listenerCLayer{};
+
+  std::string msg{"My message"};
+  std::string msg2{"My message"};
 };
 
 TEST_F(EventConnectionsTest, ConnectAndDisconnect) {
@@ -68,7 +71,6 @@ TEST_F(EventConnectionsTest, EnableAndDisable) {
 
   connBLayer.disable(layerID);
 
-  std::string msg{"My message"};
   connBLayer.onUpdate(EventB{msg});
   EXPECT_EQ(listenerALayer.val, 200);
   EXPECT_EQ(listenerALayer.count, 2);
@@ -96,9 +98,6 @@ TEST_F(EventConnectionsTest, EnableAndDisable) {
 }
 
 TEST_F(EventConnectionsTest, MultipleEventListeners) {
-  std::string msg{"My message"};
-  std::string msg2{"My message"};
-
   connA.onUpdate(EventA{100});
   connB.onUpdate(EventB{msg});
   connC.onUpdate(EventC{3.14f, 2.72f});
@@ -133,9 +132,6 @@ TEST_F(EventConnectionsTest, EventHandled) {
 }
 
 TEST_F(EventConnectionsTest, MultipleEventListenersVariadicTemplate) {
-  std::string msg{"My message"};
-  std::string msg2{"My message"};
-
   connA.onUpdate(100);
   connB.onUpdate(msg);
   connC.onUpdate(3.14f, 2.72f);
@@ -153,9 +149,6 @@ TEST_F(EventConnectionsTest, MultipleEventListenersVariadicTemplate) {
 }
 
 TEST_F(EventConnectionsTest, MultipleEventListenersConstReference) {
-  std::string msg{"My message"};
-  std::string msg2{"My message"};
-
   EventA eventA{100};
   EventB eventB{msg};
   EventC eventC{3.14f, 2.72f};
@@ -177,9 +170,6 @@ TEST_F(EventConnectionsTest, MultipleEventListenersConstReference) {
 }
 
 TEST_F(EventConnectionsTest, ConnectWithPriority) {
-  std::string msg{"My message"};
-  std::string msg2{"My message"};
-
   connA.disconnect<&ListenerA::handle>(listenerA);
   connB.disconnect<&ListenerB::process>(listenerB);
   connC.disconnect<&ListenerB::handleEventC>(listenerB);
@@ -208,5 +198,71 @@ TEST_F(EventConnectionsTest, ConnectWithPriority) {
   EXPECT_EQ(listenerC.count, 1);
   EXPECT_EQ(listenerD.val, 100);
   EXPECT_EQ(listenerD.count, 1);
+}
+
+TEST_F(EventConnectionsTest, ConnectScoped) {
+  connA.disconnect<&ListenerA::handle>(listenerA);
+  connB.disconnect<&ListenerB::process>(listenerB);
+  connC.disconnect<&ListenerB::handleEventC>(listenerB);
+  connC.disconnect<&ListenerC::handle>(listenerC);
+  connA.disconnect<&ListenerD::handleA>(listenerD);
+
+  auto connAScope = connA.connectScoped<&ListenerA::handle>(listenerA);
+  auto connBScope = connB.connectScoped<&ListenerB::process>(listenerB);
+
+  {
+    auto connB2Scope = connC.connectScoped<&ListenerB::handleEventC>(listenerB);
+    auto connCScope = connC.connectScoped<&ListenerC::handle>(listenerC);
+
+    connA.onUpdate(100);
+    connB.onUpdate(msg);
+    connC.onUpdate(3.33f, 2.22f);
+    connB.onUpdate(msg2);
+
+    EXPECT_EQ(listenerA.val, 100);
+    EXPECT_EQ(listenerA.count, 1);
+    EXPECT_EQ(listenerB.posX, 3.33f);
+    EXPECT_EQ(listenerB.posY, 2.22f);
+    EXPECT_EQ(listenerB.msg, msg2);
+    EXPECT_EQ(listenerB.count, 3);
+    EXPECT_EQ(listenerC.posX, 3.33f);
+    EXPECT_EQ(listenerC.posY, 2.22f);
+    EXPECT_EQ(listenerC.count, 1);
+  }
+
+  // Here, connCScope and connB2Scope are out of scope and thus disconnected
+
+  connA.onUpdate(500);
+  connB.onUpdate(msg + " after scope");
+  connC.onUpdate(999.9f, 888.8f);
+  connB.onUpdate(msg2 + " after scope");
+
+  EXPECT_EQ(listenerA.val, 500);
+  EXPECT_EQ(listenerA.count, 2);
+  EXPECT_EQ(listenerB.posX, 3.33f);
+  EXPECT_EQ(listenerB.posY, 2.22f);
+  EXPECT_EQ(listenerB.msg, msg2 + " after scope");
+  EXPECT_EQ(listenerB.count, 5);
+  EXPECT_EQ(listenerC.posX, 3.33f);
+  EXPECT_EQ(listenerC.posY, 2.22f);
+  EXPECT_EQ(listenerC.count, 1);
+
+  connAScope.reset();
+  // Now, connAScope is disconnected
+
+  connA.onUpdate(800);
+  connB.onUpdate(msg + " after reset");
+  connC.onUpdate(123.456f, 654.321f);
+  connB.onUpdate(msg2 + " after reset");
+
+  EXPECT_EQ(listenerA.val, 500);
+  EXPECT_EQ(listenerA.count, 2);
+  EXPECT_EQ(listenerB.posX, 3.33f);
+  EXPECT_EQ(listenerB.posY, 2.22f);
+  EXPECT_EQ(listenerB.msg, msg2 + " after reset");
+  EXPECT_EQ(listenerB.count, 7);
+  EXPECT_EQ(listenerC.posX, 3.33f);
+  EXPECT_EQ(listenerC.posY, 2.22f);
+  EXPECT_EQ(listenerC.count, 1);
 }
 }  // namespace Neat

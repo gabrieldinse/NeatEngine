@@ -5,6 +5,8 @@
 #include <list>
 
 #include "QueuedEvent.hpp"
+#include "EventHandler.hpp"
+#include "EventConnectionHandle.hpp"
 
 #include "Neat/Utils/TypeId.hpp"
 #include "Neat/Core/Limits.hpp"
@@ -24,53 +26,49 @@ class BaseEventConnections {
 template <typename EventType>
 class EventConnections : public BaseEventConnections {
  public:
-  using HandlerFunction = std::function<bool(const EventType &)>;
-
-  struct EventHandler {
-    HandlerFunction function;
-    void *instancePointer;
-    TypeId instanceMethodId;
-    bool ignoreIfHandled;
-    EventPriority priority;
-    LayerID layerID = NoLayer;
-    bool enabled = true;
-  };
-
   template <auto method, typename Instance>
   void connect(Instance &instance, EventPriority priority = EventPriorityLowest,
                LayerID layerID = NoLayer, bool ignoreIfHandled = false) {
-    auto insert_it =
-        std::find_if(m_eventHandlers.begin(), m_eventHandlers.end(),
-                     [priority](const EventHandler &eventHandler) {
-                       return eventHandler.priority > priority;
-                     });
-    m_eventHandlers.emplace(
-        insert_it,
-        [&instance](const EventType &event) {
-          return (instance.*method)(event);
-        },
-        static_cast<void *>(&instance), getMethodId<method>(), ignoreIfHandled,
-        priority, layerID);
+    insertEventHandler<method>(instance, priority, layerID, ignoreIfHandled);
+  }
+
+  template <auto method, typename Instance>
+  [[nodiscard]] Ref<BaseEventConnectionHandle> connectScoped(
+      Instance &instance, EventPriority priority = EventPriorityLowest,
+      LayerID layerID = NoLayer, bool ignoreIfHandled = false) {
+    auto &eventHandler = insertEventHandler<method>(instance, priority, layerID,
+                                                    ignoreIfHandled);
+    return makeRef<EventConnectionHandle<EventType>>(*this, eventHandler);
   }
 
   template <auto method, typename Instance>
   void disconnect(Instance &instance) {
     TypeId methodId = getMethodId<method>();
-    m_eventHandlers.remove_if([&](const EventHandler &eventHandler) {
+    m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
       return eventHandler.instancePointer == static_cast<void *>(&instance) and
              eventHandler.instanceMethodId == methodId;
     });
   }
 
   void disconnect(void *instance) override {
-    m_eventHandlers.remove_if([&](const EventHandler &eventHandler) {
+    m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
       return eventHandler.instancePointer == instance;
     });
   }
 
   void disconnect(LayerID &layerID) {
-    m_eventHandlers.remove_if([&](const EventHandler &eventHandler) {
+    m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
       return eventHandler.layerID == layerID;
+    });
+  }
+
+  void disconnect(
+      const EventConnectionHandle<EventType> &eventConnectionHandle) {
+    m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
+      return eventHandler.instancePointer ==
+                 eventConnectionHandle.getEventHandler().instancePointer and
+             eventHandler.instanceMethodId ==
+                 eventConnectionHandle.getEventHandler().instanceMethodId;
     });
   }
 
@@ -110,7 +108,7 @@ class EventConnections : public BaseEventConnections {
 
   template <typename... Args>
     requires(not std::same_as<std::tuple<std::decay_t<Args>...>,
-                              std::tuple<EventType> >)
+                              std::tuple<EventType>>)
   void onUpdate(Args &&...args) {
     onUpdate(EventType(std::forward<Args>(args)...));
   }
@@ -118,12 +116,34 @@ class EventConnections : public BaseEventConnections {
  private:
   auto findEventHandler(LayerID &layerID) {
     return std::find_if(m_eventHandlers.begin(), m_eventHandlers.end(),
-                        [layerID](const EventHandler &eventHandler) {
+                        [layerID](const EventHandler<EventType> &eventHandler) {
                           return eventHandler.layerID == layerID;
                         });
   }
 
+  template <auto method, typename Instance>
+  EventHandler<EventType> &insertEventHandler(Instance &instance,
+                                              EventPriority priority,
+                                              LayerID layerID,
+                                              bool ignoreIfHandled) {
+    auto insert_it =
+        std::find_if(m_eventHandlers.begin(), m_eventHandlers.end(),
+                     [priority](const EventHandler<EventType> &eventHandler) {
+                       return eventHandler.priority > priority;
+                     });
+    EventHandler<EventType> eventHandler{[&instance](const EventType &event) {
+                                           return (instance.*method)(event);
+                                         },
+                                         static_cast<void *>(&instance),
+                                         getMethodId<method>(),
+                                         ignoreIfHandled,
+                                         priority,
+                                         layerID};
+    auto it = m_eventHandlers.insert(insert_it, std::move(eventHandler));
+    return *it;
+  }
+
  private:
-  std::list<EventHandler> m_eventHandlers;
+  std::list<EventHandler<EventType>> m_eventHandlers;
 };
 }  // namespace Neat
