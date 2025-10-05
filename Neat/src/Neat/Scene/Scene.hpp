@@ -3,6 +3,8 @@
 #include "EditorCamera.hpp"
 
 #include "Neat/ECS/ECS.hpp"
+#include "Neat/EventDispatching/EventDispatcher.hpp"
+#include "Neat/EventDispatching/EventConnectionHandles.hpp"
 #include "Neat/Systems/Systems.hpp"
 #include "Neat/Components/ActiveCameraTagComponent.hpp"
 #include "Neat/Core/Constants.hpp"
@@ -28,6 +30,8 @@ class Scene {
   Ref<SystemManager> m_systemManager;
   Ref<EntityManager> m_entityManager;
   Ref<EventDispatcher> m_eventDispatcher;
+  EventConnectionHandles m_eventConnectionHandles;
+
   UInt32 m_viewportWidth{0};
   UInt32 m_viewportHeight{0};
 };

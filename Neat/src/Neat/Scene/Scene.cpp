@@ -17,18 +17,16 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher, LayerID layerID) {
   m_entityManager = makeRef<EntityManager>(eventDispatcher);
   m_systemManager = makeRef<SystemManager>();
   m_eventDispatcher = eventDispatcher;
-  m_eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
-      .connect<&Scene::onActiveCameraTagComponentAdded>(
-          *this, EventPriorityLowest, layerID);
+  auto connectionHandle =
+      m_eventDispatcher->get<ComponentAddedEvent<ActiveCameraTagComponent>>()
+          .connectScoped<&Scene::onActiveCameraTagComponentAdded>(
+              *this, EventPriorityLowest, layerID);
+  m_eventConnectionHandles.add(connectionHandle);
   m_systemManager->addSystem<Render2DSystem>();
   m_systemManager->initialize(m_entityManager, m_eventDispatcher);
 }
 
-Scene::~Scene() {
-  NT_PROFILE_FUNCTION();
-
-  m_eventDispatcher->disconnect(*this);
-}
+Scene::~Scene() { NT_PROFILE_FUNCTION(); }
 
 Entity Scene::createEntity() { return m_entityManager->createEntity(); }
 
