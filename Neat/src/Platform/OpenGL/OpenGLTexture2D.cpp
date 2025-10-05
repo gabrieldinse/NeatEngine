@@ -59,7 +59,7 @@ OpenGLTexture2D::OpenGLTexture2D(const std::string &filepath)
   glTextureStorage2D(m_id, 1, m_internalFormat, m_width, m_height);
 
   setMinification(Texture2DFilter::LinearMipmapNearest);
-  setMagnification(Texture2DFilter::Nearest);
+  setMagnification(Texture2DFilter::Linear);
   setWrapS(Texture2DWrapping::Repeat);
   setWrapT(Texture2DWrapping::Repeat);
 

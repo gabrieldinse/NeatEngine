@@ -11,6 +11,12 @@
 #include <ImGui/imgui.h>
 
 namespace Neat {
+enum class SceneState {
+  Edit = 0,
+  Play = 1,
+  // Simulate = 2,
+};
+
 class EditorLayer : public Layer {
  public:
   EditorLayer(const Ref<EventDispatcher> &eventManager);
@@ -25,17 +31,27 @@ class EditorLayer : public Layer {
   bool onMouseButtonPressed(const MouseButtonPressedEvent &event);
 
  private:
-  void setupDockspace();
+  void startDockSpace();
+  void endDockSpace();
+
   void onMenuUpdate();
   void onViewportUpdate();
   void onStatsUpdate();
-  void newScene();
+  void onUIToolbarUpdate();
+
+  void onSceneUpdate(double deltaTimeSeconds);
+  void handleViewportResized();
+  void handleEntityHovered();
+
   void handleOpenFileDialog();
   void handleSaveFileAsDialog();
   void handleGizmos();
   void saveFile();
+
   void openOpenFileDialog();
   void openSaveFileAsDialog();
+
+  void newScene();
   void openScene(const std::string &filepath);
   void saveScene(const std::string &filepath);
 
@@ -49,10 +65,14 @@ class EditorLayer : public Layer {
   Ref<Framebuffer> m_framebuffer;
   bool m_viewportFocused = false;
   bool m_viewportHovered = false;
-
   Vector2U m_viewportSize{0, 0};
   Vector2U m_newViewportSize{0, 0};
   Vector2U m_viewportBounds[2];
+
+  SceneState m_sceneState = SceneState::Edit;
+
+  Ref<Texture2D> m_playIcon;
+  Ref<Texture2D> m_stopIcon;
 
   std::string m_openedFilepath;
 

@@ -19,22 +19,22 @@ EditorLayer::EditorLayer(const Ref<EventDispatcher> &eventDispatcher)
   eventDispatcher->get<MouseButtonPressedEvent>()
       .connect<&EditorLayer::onMouseButtonPressed>(*this, EventPriorityHighest);
 
-  // TODO support this on the UI
-  // m_checkerboardTexture->setMinification(Texture2DFilter::Nearest);
-  // m_checkerboardTexture->setMagnification(Texture2DFilter::Nearest);
-  // m_checkerboardTexture->setWrapS(Texture2DWrapping::ClampToEdge);
-
   FramebufferSpecification specification{
       1600,
       900,
       {FramebufferColorFormat::RGBA8, FramebufferColorFormat::OneUInt32},
       FramebufferDepthFormat::Depth24Stencil8};
   m_framebuffer = Framebuffer::create(specification);
+
+  m_playIcon =
+      Texture2D::create("./NeatEditorAssets/Resources/Icons/PlayButton.png");
+  m_stopIcon =
+      Texture2D::create("./NeatEditorAssets/Resources/Icons/StopButton.png");
 }
 
 EditorLayer::~EditorLayer() {}
 
-void EditorLayer::onImGuiRender() {
+void EditorLayer::startDockSpace() {
   bool open = true;
   bool *p_open = &open;
   // READ THIS !!!
@@ -113,14 +113,21 @@ void EditorLayer::onImGuiRender() {
   }
 
   style.WindowMinSize.x = minWinSizeX;
+}
 
+void EditorLayer::onImGuiRender() {
+  startDockSpace();
   onMenuUpdate();
   m_sceneHierarchyPanel.onUpdate();
   m_contentBrowserPanel.onUpdate();
   onStatsUpdate();
   onViewportUpdate();
+  onUIToolbarUpdate();
+  endDockSpace();
+}
 
-  ImGui::End();
+void EditorLayer::endDockSpace() {
+  ImGui::End();  // DockSpace
 }
 
 void EditorLayer::onMenuUpdate() {
@@ -160,6 +167,16 @@ void EditorLayer::onMenuUpdate() {
 }
 
 void EditorLayer::onUpdate(double deltaTimeSeconds) {
+  handleViewportResized();
+  m_framebuffer->bind();
+  m_framebuffer->clearUInt32ColorAttachment(1, Entity::ID::InvalidIndex);
+  onSceneUpdate(deltaTimeSeconds);
+  handleEntityHovered();
+  onImGuiRender();
+  m_framebuffer->unbind();
+}
+
+void EditorLayer::handleViewportResized() {
   if (m_viewportSize != m_newViewportSize) {
     NT_CORE_TRACE("Resizing framebuffer to ({}, {})", m_newViewportSize.x(),
                   m_newViewportSize.y());
@@ -168,39 +185,31 @@ void EditorLayer::onUpdate(double deltaTimeSeconds) {
     m_framebuffer->resize(m_viewportSize.x(), m_viewportSize.y());
     m_editorCamera.setViewport(m_viewportSize.x(), m_viewportSize.y());
   }
+}
 
-  m_editorCamera.onUpdate(deltaTimeSeconds);
-
-  m_framebuffer->bind();
-  m_framebuffer->clearUInt32ColorAttachment(1, Entity::ID::InvalidIndex);
-  m_scene->onEditorUpdate(deltaTimeSeconds, m_editorCamera);
-
-  auto [mx, my] = ImGui::GetMousePos();
-  mx -= static_cast<float>(m_viewportBounds[0].x());
-  my -= static_cast<float>(m_viewportBounds[0].y());
-  int mouseX = static_cast<int>(mx);
-  int mouseY = static_cast<int>(my);
-
-  if (mouseX >= 0 and mouseY >= 0 and
-      mouseX < static_cast<int>(m_viewportSize.x()) and
-      mouseY < static_cast<int>(m_viewportSize.y())) {
-    UInt32 entityIndex = m_framebuffer->getUInt32Pixel(
-        1, Vector2U{static_cast<UInt32>(mouseX), static_cast<UInt32>(mouseY)});
-
-    if (entityIndex != Entity::ID::InvalidIndex) {
-      m_hoveredEntity = m_scene->getEntityManager()->getEntity(entityIndex);
-    } else {
-      m_hoveredEntity = Entity{};
-    }
+void EditorLayer::onSceneUpdate(double deltaTimeSeconds) {
+  switch (m_sceneState) {
+    case SceneState::Edit:
+      m_editorCamera.onUpdate(deltaTimeSeconds);
+      m_scene->onEditorUpdate(deltaTimeSeconds, m_editorCamera);
+      break;
+    case SceneState::Play:
+      m_scene->onRuntimeUpdate(deltaTimeSeconds);
+      break;
   }
-
-  onImGuiRender();
-  m_framebuffer->unbind();
 }
 
 void EditorLayer::onViewportUpdate() {
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
-  ImGui::Begin("Viewport");
+  ImGui::Begin("Viewport", nullptr,
+               ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
+                   ImGuiWindowFlags_NoScrollbar |
+                   ImGuiWindowFlags_NoScrollWithMouse |
+                   ImGuiWindowFlags_NoDecoration);
+  if (ImGui::IsWindowDocked()) {
+    ImGuiDockNode *node = ImGui::GetWindowDockNode();
+    if (node) node->LocalFlags |= ImGuiDockNodeFlags_HiddenTabBar;
+  }
   auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
   auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
   auto viewportOffset = ImGui::GetWindowPos();
@@ -233,8 +242,56 @@ void EditorLayer::onViewportUpdate() {
   }
 
   handleGizmos();
-  ImGui::End();
   ImGui::PopStyleVar();
+  ImGui::End();  // Viewport
+}
+
+void EditorLayer::onUIToolbarUpdate() {
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 2});
+  ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2{0, 0});
+
+  const auto &imGuiColors = ImGui::GetStyle().Colors;
+  const auto &buttonHoveredColor = imGuiColors[ImGuiCol_ButtonHovered];
+  const auto &buttonActiveColor = imGuiColors[ImGuiCol_ButtonActive];
+
+  ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0, 0, 0, 0});
+  ImGui::PushStyleColor(
+      ImGuiCol_ButtonHovered,
+      ImVec4{buttonHoveredColor.x, buttonHoveredColor.y, buttonHoveredColor.z,
+             buttonHoveredColor.w * 0.5f});
+  ImGui::PushStyleColor(
+      ImGuiCol_ButtonActive,
+      ImVec4{buttonActiveColor.x, buttonActiveColor.y, buttonActiveColor.z,
+             buttonActiveColor.w * 0.5f});
+
+  ImGui::Begin("Toolbar", nullptr,
+               ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse |
+                   ImGuiWindowFlags_NoScrollbar |
+                   ImGuiWindowFlags_NoScrollWithMouse |
+                   ImGuiWindowFlags_NoDecoration);
+  if (ImGui::IsWindowDocked()) {
+    ImGuiDockNode *node = ImGui::GetWindowDockNode();
+    if (node) node->LocalFlags |= ImGuiDockNodeFlags_HiddenTabBar;
+  }
+  float size = ImGui::GetWindowHeight() - 4.0f;
+
+  Ref<Texture2D> icon =
+      m_sceneState == SceneState::Edit ? m_playIcon : m_stopIcon;
+  ImGui::SetCursorPosX((ImGui::GetWindowWidth() * 0.5f) - (size * 0.5f));
+
+  if (ImGui::ImageButton("ToolbarPlayButton",
+                         static_cast<ImTextureID>(icon->getRendererID()),
+                         ImVec2{size, size}, ImVec2{0, 0}, ImVec2{1, 1})) {
+    if (m_sceneState == SceneState::Edit) {
+      m_sceneState = SceneState::Play;
+    } else if (m_sceneState == SceneState::Play) {
+      m_sceneState = SceneState::Edit;
+    }
+  }
+
+  ImGui::PopStyleColor(3);
+  ImGui::PopStyleVar(2);
+  ImGui::End();  // Toolbar
 }
 
 bool EditorLayer::onKeyPressed(const KeyPressedEvent &event) {
@@ -330,7 +387,28 @@ void EditorLayer::onStatsUpdate() {
   ImGui::Text("Number of quads: %d", stats.quadCount);
   ImGui::Text("Number of indexes: %d", stats.getTotalIndexCount());
   ImGui::Text("Number of vertexes: %d\n", stats.getTotalVertexCount());
-  ImGui::End();
+  ImGui::End();  // Stats
+}
+
+void EditorLayer::handleEntityHovered() {
+  auto [mx, my] = ImGui::GetMousePos();
+  mx -= static_cast<float>(m_viewportBounds[0].x());
+  my -= static_cast<float>(m_viewportBounds[0].y());
+  int mouseX = static_cast<int>(mx);
+  int mouseY = static_cast<int>(my);
+
+  if (mouseX >= 0 and mouseY >= 0 and
+      mouseX < static_cast<int>(m_viewportSize.x()) and
+      mouseY < static_cast<int>(m_viewportSize.y())) {
+    UInt32 entityIndex = m_framebuffer->getUInt32Pixel(
+        1, Vector2U{static_cast<UInt32>(mouseX), static_cast<UInt32>(mouseY)});
+
+    if (entityIndex != Entity::ID::InvalidIndex) {
+      m_hoveredEntity = m_scene->getEntityManager()->getEntity(entityIndex);
+    } else {
+      m_hoveredEntity = Entity{};
+    }
+  }
 }
 
 void EditorLayer::newScene() {

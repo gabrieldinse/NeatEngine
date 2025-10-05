@@ -111,30 +111,35 @@ class Renderer2D {
 
     UInt32 indexCount = 0;
     std::array<QuadVertexData, QuadVextexDataBuffer::maxVertices> data;
-    QuadVertexData *currentPos = nullptr;
+    QuadVertexData *currentQuad = nullptr;
 
     void addQuad(const Matrix4F &modelMatrix, const Vector4F &color,
                  const Vector2F *textureCoordinates, Int32 textureIndex,
                  float tilingFactor, const Entity &entity = Entity{}) {
+      NT_CORE_ASSERT(
+          currentQuad != nullptr and currentQuad < data.data() + data.size(),
+          "QuadVertexDataBuffer overflow.");
+
       for (std::size_t i = 0; i < 4; ++i) {
-        currentPos->position = modelMatrix * centeredQuadPositions[i];
-        currentPos->color = color;
-        currentPos->textureCoordinate = textureCoordinates[i];
-        currentPos->textureIndex = textureIndex;
-        currentPos->tilingFactor = tilingFactor;
-        currentPos->entityIndex = entity.id().index();
-        currentPos++;
+        currentQuad->position = modelMatrix * centeredQuadPositions[i];
+        currentQuad->color = color;
+        currentQuad->textureCoordinate = textureCoordinates[i];
+        currentQuad->textureIndex = textureIndex;
+        currentQuad->tilingFactor = tilingFactor;
+        currentQuad->entityIndex = entity.id().index();
+        currentQuad++;
       }
       indexCount += 6;
     }
 
     UInt32 getDataSize() const {
-      return (UInt32)((Byte *)(currentPos) - (Byte *)(data.data()));
+      return static_cast<UInt32>((currentQuad - data.data()) *
+                                 sizeof(QuadVertexData));
     }
 
     void reset() {
       indexCount = 0;
-      currentPos = data.data();
+      currentQuad = data.data();
     }
   };
 
