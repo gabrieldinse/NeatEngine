@@ -3,7 +3,7 @@
 #include "OpenGLUtils.hpp"
 #include "OpenGLShaderProgram.hpp"
 
-#include "Neat/Utils/ReadFile.hpp"
+#include "Utils/ReadFile.hpp"
 
 #include <glad/glad.h>
 

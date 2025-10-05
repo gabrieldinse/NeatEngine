@@ -1,8 +1,8 @@
 #include <filesystem>
 
-#include "Neat/Components/Components.hpp"
-#include "Neat/Utils/TypeConversions.hpp"
-#include "Neat/Graphics/Color.hpp"
+#include "Components/Components.hpp"
+#include "Utils/TypeConversions.hpp"
+#include "Graphics/Color.hpp"
 
 #include "SceneHierarchyPanel.hpp"
 #include "ContentBrowserPanel.hpp"

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Neat/Utils/TypeId.hpp"
+#include "Utils/TypeId.hpp"
 
 namespace Neat {
 struct MyStruct {

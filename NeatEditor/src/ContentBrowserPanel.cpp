@@ -1,6 +1,6 @@
 #include "ContentBrowserPanel.hpp"
 
-#include "Neat/Core/Log.hpp"
+#include "Core/Log.hpp"
 
 #include <ImGui/imgui.h>
 

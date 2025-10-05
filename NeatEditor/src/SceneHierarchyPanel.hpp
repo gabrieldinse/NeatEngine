@@ -2,7 +2,7 @@
 
 #include "ComponentWidgetsRegistry.hpp"
 
-#include "Neat/Scene/Scene.hpp"
+#include "Scene/Scene.hpp"
 
 namespace Neat {
 class SceneHierarchyPanel {

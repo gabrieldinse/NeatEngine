@@ -7,7 +7,7 @@ file(GLOB_RECURSE NEAT_EDITOR_SOURCES
 # Add ImGuiFileDialog source file sepparate to not have -Werror on it
 add_executable(NeatEditor
     ${NEAT_EDITOR_SOURCES}
-    ../Neat/vendor/ImGuiFileDialog/ImGuiFileDialog.cpp
+    ${VENDOR_DIR}/ImGuiFileDialog/ImGuiFileDialog.cpp
 )
 
 target_compile_options(NeatEditor PRIVATE
@@ -19,8 +19,8 @@ set_source_files_properties(${NEAT_EDITOR_SOURCES} PROPERTIES
 )
 
 target_include_directories(NeatEditor PRIVATE
-    ../Neat/src
-    ../Neat/vendor
+    ${NEAT_DIR}/src
+    ${VENDOR_DIR}
 )
 target_link_libraries(NeatEditor PRIVATE Neat)
 set_target_properties(NeatEditor PROPERTIES

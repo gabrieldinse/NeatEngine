@@ -1,25 +1,35 @@
 set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
 
-# reflect-cpp
-set(REFLECTCPP_YAML ON)
-
-add_subdirectory(vendor)
-
 # ImGui
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DGLFW_INCLUDE_NONE)
 
 file(GLOB_RECURSE NEAT_SOURCES
-    src/Neat/**.cpp
+    src/Components/**.cpp
+    src/Core/**.cpp
+    src/Debug/**.cpp
+    src/ECS/**.cpp
+    src/Events/**.cpp
+    src/EventDispatching/**.cpp
+    src/Graphics/**.cpp
+    src/ImGui/**.cpp
+    src/Math/**.cpp
+    src/Scene/**.cpp
+    src/Systems/**.cpp
+    src/Utils/**.cpp
+
+    # Platform specific
     src/Platform/OpenGL/**.cpp
-    vendor/stb_image/stb_image.cpp
-    vendor/ImGui/imgui_demo.cpp
-    vendor/ImGui/imgui_draw.cpp
-    vendor/ImGui/imgui_widgets.cpp
-    vendor/ImGui/imgui_tables.cpp
-    vendor/ImGui/imgui.cpp
-    vendor/ImGui/backends/imgui_impl_glfw.cpp
-    vendor/ImGui/backends/imgui_impl_opengl3.cpp
-    vendor/ImGuizmo/ImGuizmo.cpp
+
+    # Vendor
+    ${VENDOR_DIR}/stb_image/stb_image.cpp
+    ${VENDOR_DIR}/ImGui/imgui_demo.cpp
+    ${VENDOR_DIR}/ImGui/imgui_draw.cpp
+    ${VENDOR_DIR}/ImGui/imgui_widgets.cpp
+    ${VENDOR_DIR}/ImGui/imgui_tables.cpp
+    ${VENDOR_DIR}/ImGui/imgui.cpp
+    ${VENDOR_DIR}/ImGui/backends/imgui_impl_glfw.cpp
+    ${VENDOR_DIR}/ImGui/backends/imgui_impl_opengl3.cpp
+    ${VENDOR_DIR}/ImGuizmo/ImGuizmo.cpp
 )
 
 file(GLOB_RECURSE LINUX_SOURCES
@@ -48,22 +58,19 @@ target_precompile_headers(Neat PRIVATE
     src/NeatPCH.hpp
 )
 
-target_include_directories(Neat
-    PUBLIC
-        src
-)
+target_include_directories(Neat PUBLIC src)
 
 # Use SYSTEM to suppress warnings from external headers to be treated as errors
 target_include_directories(Neat
     SYSTEM PUBLIC
-        vendor/GLFW/include
-        vendor/Glad/include
-        vendor/ImGui
-        vendor/spdlog/include
-        vendor/stb_image
-        vendor/reflect-cpp/include
-        vendor/yaml-cpp/include
-        vendor/ImGuizmo
+        ${VENDOR_DIR}/GLFW/include
+        ${VENDOR_DIR}/Glad/include
+        ${VENDOR_DIR}/ImGui
+        ${VENDOR_DIR}/spdlog/include
+        ${VENDOR_DIR}/stb_image
+        ${VENDOR_DIR}/reflect-cpp/include
+        ${VENDOR_DIR}/yaml-cpp/include
+        ${VENDOR_DIR}/ImGuizmo
 )
 
 set(PUBLIC_LIBRARIES glfw Glad yaml-cpp reflectcpp)

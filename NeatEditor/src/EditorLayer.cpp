@@ -2,8 +2,8 @@
 
 #include "EditorLayer.hpp"
 
-#include "Neat/Scene/SceneSerializer.hpp"
-#include "Neat/ImGui/ImGuiTools.hpp"
+#include "Scene/SceneSerializer.hpp"
+#include "ImGui/ImGuiTools.hpp"
 
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
 #include <ImGuizmo/ImGuizmo.h>

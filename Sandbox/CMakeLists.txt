@@ -3,13 +3,13 @@ set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}
 file(GLOB_RECURSE SANDBOX_SOURCES
     src/SandboxApp.cpp
     src/ExampleLayer.cpp
-    ../Neat/vendor/ImGuizmo/ImGuizmo.cpp
+    ${VENDOR_DIR}/ImGuizmo/ImGuizmo.cpp
 )
 
 add_executable(Sandbox ${SANDBOX_SOURCES})
 target_include_directories(Sandbox PRIVATE
-    ../Neat/src
-    ../Neat/vendor
+    ${NEAT_DIR}/src
+    ${VENDOR_DIR}
 )
 target_link_libraries(Sandbox PRIVATE Neat)
 set_target_properties(Sandbox PROPERTIES

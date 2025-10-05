@@ -4,10 +4,10 @@
 #include <string>
 #include <unordered_map>
 
-#include "Neat/Core/Types.hpp"
-#include "Neat/Graphics/ShaderProgram.hpp"
-#include "Neat/Math/Matrix.hpp"
-#include "Neat/Math/Vector.hpp"
+#include "Core/Types.hpp"
+#include "Graphics/ShaderProgram.hpp"
+#include "Math/Matrix.hpp"
+#include "Math/Vector.hpp"
 
 namespace Neat {
 class OpenGLShaderProgram : public ShaderProgram {

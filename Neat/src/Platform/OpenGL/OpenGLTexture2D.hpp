@@ -4,9 +4,9 @@
 #include <memory>
 #include <string>
 
-#include "Neat/Core/Types.hpp"
-#include "Neat/Math/Vector.hpp"
-#include "Neat/Graphics/Texture2D.hpp"
+#include "Core/Types.hpp"
+#include "Math/Vector.hpp"
+#include "Graphics/Texture2D.hpp"
 
 namespace Neat {
 class OpenGLTexture2D : public Texture2D {

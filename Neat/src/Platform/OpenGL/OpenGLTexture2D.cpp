@@ -3,8 +3,8 @@
 #include "OpenGLTexture2D.hpp"
 #include "OpenGLUtils.hpp"
 
-#include "Neat/Graphics/Renderer.hpp"
-#include "Neat/Utils/LoadImage.hpp"
+#include "Graphics/Renderer.hpp"
+#include "Utils/LoadImage.hpp"
 
 #include <glad/glad.h>
 

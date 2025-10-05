@@ -5,8 +5,8 @@ file(GLOB_RECURSE FLAPPY_SOURCES src/**.cpp)
 add_executable(FlappySpaceship ${FLAPPY_SOURCES})
 
 target_include_directories(FlappySpaceship PRIVATE
-    ../../Neat/src
-    ../../Neat/vendor
+    ${NEAT_DIR}/src
+    ${VENDOR_DIR}
 )
 target_link_libraries(FlappySpaceship PRIVATE Neat)
 

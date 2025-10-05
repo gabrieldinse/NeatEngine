@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Graphics/VertexBuffer.hpp"
+#include "Graphics/VertexBuffer.hpp"
 
 namespace Neat {
 class OpenGLVertexBuffer : public VertexBuffer {

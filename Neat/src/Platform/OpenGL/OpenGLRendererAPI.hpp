@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Graphics/RendererAPI.hpp"
+#include "Graphics/RendererAPI.hpp"
 
 namespace Neat {
 class OpenGLRendererAPI : public RendererAPI {

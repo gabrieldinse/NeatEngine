@@ -4,7 +4,7 @@
 #include <functional>
 #include <vector>
 
-#include "Neat/ECS/ECS.hpp"
+#include "ECS/ECS.hpp"
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>

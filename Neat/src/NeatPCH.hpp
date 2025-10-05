@@ -42,9 +42,9 @@
 #include <cctype>
 #include <cstring>
 
-#include "Neat/Core/Log.hpp"
-#include "Neat/Core/Assert.hpp"
-#include "Neat/Core/PlatformDetection.hpp"
-#include "Neat/Core/Types.hpp"
-#include "Neat/Core/Limits.hpp"
-#include "Neat/Debug/Debug.hpp"
+#include "Core/Log.hpp"
+#include "Core/Assert.hpp"
+#include "Core/PlatformDetection.hpp"
+#include "Core/Types.hpp"
+#include "Core/Limits.hpp"
+#include "Debug/Debug.hpp"

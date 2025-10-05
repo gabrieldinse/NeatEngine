@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Neat/Core/Types.hpp"
-#include "Neat/Graphics/VertexBuffer.hpp"
-#include "Neat/Graphics/IndexBuffer.hpp"
-#include "Neat/Graphics/VertexArray.hpp"
+#include "Core/Types.hpp"
+#include "Graphics/VertexBuffer.hpp"
+#include "Graphics/IndexBuffer.hpp"
+#include "Graphics/VertexArray.hpp"
 
 namespace Neat {
 class OpenGLVertexArray : public VertexArray {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Graphics/IndexBuffer.hpp"
+#include "Graphics/IndexBuffer.hpp"
 
 namespace Neat {
 class OpenGLIndexBuffer : public IndexBuffer {

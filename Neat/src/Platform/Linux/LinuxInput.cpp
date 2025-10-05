@@ -1,7 +1,7 @@
 #include "NeatPCH.hpp"
 
-#include "Neat/Core/Application.hpp"
-#include "Neat/Core/Input.hpp"
+#include "Core/Application.hpp"
+#include "Core/Input.hpp"
 
 #include <GLFW/glfw3.h>
 

@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include "Neat/Graphics/Texture2D.hpp"
+#include "Graphics/Texture2D.hpp"
 
 namespace Neat {
 class ContentBrowserPanel {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Neat/Core/Window.hpp"
-#include "Neat/Graphics/GraphicsContext.hpp"
+#include "Core/Window.hpp"
+#include "Graphics/GraphicsContext.hpp"
 
 struct GLFWwindow;
 

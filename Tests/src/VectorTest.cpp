@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 
-#include <Neat/Math/Vector.hpp>
+#include <Math/Vector.hpp>
 
 namespace Neat {
 class VectorTest : public testing::Test {

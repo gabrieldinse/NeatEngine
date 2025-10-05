@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <Neat/ECS/ECS.hpp>
-#include <Neat/Math/Math.hpp>
+#include <ECS/ECS.hpp>
+#include <Math/Math.hpp>
 
 namespace Neat {
 struct EventA {

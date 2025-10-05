@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Graphics/Framebuffer.hpp"
+#include "Graphics/Framebuffer.hpp"
 
 namespace Neat {
 class OpenGLFramebuffer : public Framebuffer {

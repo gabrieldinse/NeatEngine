@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <string>
 
-#include <Neat/Utils/SafeQueue.hpp>
+#include <Utils/SafeQueue.hpp>
 
 namespace Neat {
 class SafeQueueTest : public testing::Test {

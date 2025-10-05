@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <Neat/ECS/ECS.hpp>
+#include <ECS/ECS.hpp>
 #include <TestUtils.hpp>
 
 namespace Neat {

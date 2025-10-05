@@ -2,16 +2,16 @@
 
 #include "LinuxWindow.hpp"
 
-#include "Neat/Core/Application.hpp"
-#include "Neat/Core/Log.hpp"
-#include "Neat/Events/KeyPressedEvent.hpp"
-#include "Neat/Events/KeyReleasedEvent.hpp"
-#include "Neat/Events/KeyTypedEvent.hpp"
-#include "Neat/Events/MouseButtonPressedEvent.hpp"
-#include "Neat/Events/MouseButtonReleasedEvent.hpp"
-#include "Neat/Events/MouseMovedEvent.hpp"
-#include "Neat/Events/MouseScrolledEvent.hpp"
-#include "Neat/EventDispatching/EventDispatcher.hpp"
+#include "Core/Application.hpp"
+#include "Core/Log.hpp"
+#include "Events/KeyPressedEvent.hpp"
+#include "Events/KeyReleasedEvent.hpp"
+#include "Events/KeyTypedEvent.hpp"
+#include "Events/MouseButtonPressedEvent.hpp"
+#include "Events/MouseButtonReleasedEvent.hpp"
+#include "Events/MouseMovedEvent.hpp"
+#include "Events/MouseScrolledEvent.hpp"
+#include "EventDispatching/EventDispatcher.hpp"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>

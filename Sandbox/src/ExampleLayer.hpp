@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <Neat.hpp>
-#include "Neat/ImGui/ImGuiRender.hpp"
+#include "ImGui/ImGuiRender.hpp"
 
 #include <ImGui/imgui.h>
 

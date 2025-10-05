@@ -4,9 +4,9 @@
 #include "ContentBrowserPanel.hpp"
 
 #include "Neat.hpp"
-#include "Neat/ImGui/ImGuiRender.hpp"
-#include "Neat/Scene/Scene.hpp"
-#include "Neat/Scene/EditorCamera.hpp"
+#include "ImGui/ImGuiRender.hpp"
+#include "Scene/Scene.hpp"
+#include "Scene/EditorCamera.hpp"
 
 #include <ImGui/imgui.h>
 

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <Neat/Utils/MemoryPool.hpp>
+#include <Utils/MemoryPool.hpp>
 #include <TestUtils.hpp>
 
 namespace Neat {

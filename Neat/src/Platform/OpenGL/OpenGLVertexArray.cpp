@@ -3,7 +3,7 @@
 #include "OpenGLVertexArray.hpp"
 #include "OpenGLUtils.hpp"
 
-#include "Neat/Graphics/Renderer.hpp"
+#include "Graphics/Renderer.hpp"
 
 #include <glad/glad.h>
 

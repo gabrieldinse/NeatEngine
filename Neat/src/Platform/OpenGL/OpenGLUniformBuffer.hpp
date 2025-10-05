@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Neat/Graphics/UniformBuffer.hpp"
+#include "Graphics/UniformBuffer.hpp"
 
 namespace Neat {
 class OpenGLUniformBuffer : public UniformBuffer {

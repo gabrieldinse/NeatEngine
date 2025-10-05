@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <Neat/Utils/TimeConversions.hpp>
-#include <Neat/Core/Types.hpp>
+#include <Utils/TimeConversions.hpp>
+#include <Core/Types.hpp>
 
 namespace Neat {
 TEST(TimeConversionsTest, NanosecondsCast) {

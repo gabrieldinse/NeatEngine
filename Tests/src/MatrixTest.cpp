@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 
-#include <Neat/Math/Matrix.hpp>
+#include <Math/Matrix.hpp>
 
 namespace Neat {
 class MatrixTest : public testing::Test {

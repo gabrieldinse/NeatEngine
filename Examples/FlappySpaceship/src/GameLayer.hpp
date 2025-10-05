@@ -1,7 +1,7 @@
 #include <memory>
 #include <utility>
 
-#include "Neat/ImGui/ImGuiRender.hpp"
+#include "ImGui/ImGuiRender.hpp"
 #include <Neat.hpp>
 
 #include <ImGui/imgui.h>

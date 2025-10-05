@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Neat/Graphics/ShaderDataType.hpp"
-#include "Neat/Graphics/Texture2D.hpp"
-#include "Neat/Graphics/Framebuffer.hpp"
+#include "Graphics/ShaderDataType.hpp"
+#include "Graphics/Texture2D.hpp"
+#include "Graphics/Framebuffer.hpp"
 
 namespace Neat {
 

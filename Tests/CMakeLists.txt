@@ -1,9 +1,8 @@
 
 enable_testing()
 
-
-# Add GoogleTest (vendored)
-add_subdirectory(../Neat/vendor/GoogleTest ${CMAKE_BINARY_DIR}/GoogleTest-build)
+# Add GoogleTest
+add_subdirectory(${VENDOR_DIR}/GoogleTest ${CMAKE_BINARY_DIR}/GoogleTest-build)
 
 # Collect test files
 file(
@@ -26,7 +25,7 @@ set_source_files_properties(${NEAT_TESTS_SOURCES} PROPERTIES
 
 # Include headers
 target_include_directories(NeatTests PUBLIC
-    ../Neat/src
+    ${NEAT_DIR}/src
     src
 )
 
