@@ -13,10 +13,9 @@ class Layer {
   Layer() = default;
   virtual ~Layer() = 0;
 
-  virtual void onAttach() {}
-  virtual void onDetach() {}
-  virtual void onUpdate([[maybe_unused]] double deltaTimeSeconds) {}
-  virtual void onRender() {}
+  virtual void attach() {}
+  virtual void detach() {}
+  virtual void update([[maybe_unused]] double deltaTimeSeconds) {}
   virtual bool isEnabled() const { return m_enabled; }
   LayerID getLayerID() const { return m_layerID; }
   void enable(const Ref<EventDispatcher> &eventDispatcher = nullptr);

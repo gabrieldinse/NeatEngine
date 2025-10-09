@@ -24,8 +24,8 @@ Scene::Scene(const Ref<EventDispatcher> &eventDispatcher, LayerID layerID) {
   m_eventConnectionHandles.add(connectionHandle);
   m_systemManager->addSystem<Render2DSystem>();
   m_systemManager->addSystem<Physics2DSystem>();
-  m_systemManager->onInitialize<Render2DSystem>(m_entityManager,
-                                                m_eventDispatcher);
+  m_systemManager->initialize<Render2DSystem>(m_entityManager,
+                                              m_eventDispatcher);
 }
 
 Scene::~Scene() { NT_PROFILE_FUNCTION(); }
@@ -52,24 +52,24 @@ void Scene::setViewport(UInt32 width, UInt32 height) {
 void Scene::onRuntimeStart() {
   NT_PROFILE_FUNCTION();
 
-  m_systemManager->onInitialize<Physics2DSystem>(m_entityManager,
-                                                 m_eventDispatcher);
+  m_systemManager->initialize<Physics2DSystem>(m_entityManager,
+                                               m_eventDispatcher);
 }
 
 void Scene::onRuntimeStop() {
   NT_PROFILE_FUNCTION();
 
-  m_systemManager->onShutdown<Physics2DSystem>(m_entityManager,
-                                               m_eventDispatcher);
+  m_systemManager->shutdown<Physics2DSystem>(m_entityManager,
+                                             m_eventDispatcher);
 }
 
 void Scene::onRuntimeUpdate(double deltaTimeSeconds) {
   NT_PROFILE_FUNCTION();
 
-  m_systemManager->onUpdate<Physics2DSystem>(m_entityManager, m_eventDispatcher,
-                                             deltaTimeSeconds);
-  m_systemManager->onUpdate<Render2DSystem>(m_entityManager, m_eventDispatcher,
-                                            deltaTimeSeconds);
+  m_systemManager->update<Physics2DSystem>(m_entityManager, m_eventDispatcher,
+                                           deltaTimeSeconds);
+  m_systemManager->update<Render2DSystem>(m_entityManager, m_eventDispatcher,
+                                          deltaTimeSeconds);
 }
 
 void Scene::onEditorUpdate([[maybe_unused]] double deltaTimeSeconds,

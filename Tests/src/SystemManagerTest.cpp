@@ -42,7 +42,7 @@ TEST_F(SystemManagerTest, DoNotInitSystems) { expectDefault(); }
 
 TEST_F(SystemManagerTest, InitSystems) {
   expectDefault();
-  systemManager->onInitialize(entityManager, eventDispatcher);
+  systemManager->initialize(entityManager, eventDispatcher);
   expectInitialized();
 }
 
@@ -67,7 +67,7 @@ TEST_F(SystemManagerTest, UpdateAllSystems) {
 
 TEST_F(SystemManagerTest, UpdateOneSystem) {
   expectDefault();
-  systemManager->onUpdate<TestingSystem>(entityManager, eventDispatcher, 0.016);
+  systemManager->update<TestingSystem>(entityManager, eventDispatcher, 0.016);
   EXPECT_EQ(systemManager->getSystem<TestingSystem>().value()->onUpdateCounter,
             1);
   EXPECT_EQ(systemManager->getSystem<TestingSystem2>().value()->onUpdateCounter,
@@ -75,8 +75,7 @@ TEST_F(SystemManagerTest, UpdateOneSystem) {
   EXPECT_EQ(systemManager->getSystem<TestingSystem>().value()->initCounter, 1);
   EXPECT_EQ(systemManager->getSystem<TestingSystem2>().value()->initCounter, 0);
 
-  systemManager->onUpdate<TestingSystem2>(entityManager, eventDispatcher,
-                                          0.016);
+  systemManager->update<TestingSystem2>(entityManager, eventDispatcher, 0.016);
   EXPECT_EQ(systemManager->getSystem<TestingSystem>().value()->onUpdateCounter,
             1);
   EXPECT_EQ(systemManager->getSystem<TestingSystem2>().value()->onUpdateCounter,
@@ -84,7 +83,7 @@ TEST_F(SystemManagerTest, UpdateOneSystem) {
   EXPECT_EQ(systemManager->getSystem<TestingSystem>().value()->initCounter, 1);
   EXPECT_EQ(systemManager->getSystem<TestingSystem2>().value()->initCounter, 1);
 
-  systemManager->onUpdate<TestingSystem>(entityManager, eventDispatcher, 0.016);
+  systemManager->update<TestingSystem>(entityManager, eventDispatcher, 0.016);
   EXPECT_EQ(systemManager->getSystem<TestingSystem>().value()->onUpdateCounter,
             2);
   EXPECT_EQ(systemManager->getSystem<TestingSystem2>().value()->onUpdateCounter,
@@ -109,10 +108,8 @@ TEST_F(SystemManagerTest, GetAddedSystem) {
 
 TEST_F(SystemManagerTest, UpdateSystemNotAdded) {
   expectDefault();
-  systemManager->onUpdate<TestingSystem3>(entityManager, eventDispatcher,
-                                          0.016);
-  systemManager->onUpdate<TestingSystem4>(entityManager, eventDispatcher,
-                                          0.016);
+  systemManager->update<TestingSystem3>(entityManager, eventDispatcher, 0.016);
+  systemManager->update<TestingSystem4>(entityManager, eventDispatcher, 0.016);
   expectDefault();
 }
 }  // namespace Neat

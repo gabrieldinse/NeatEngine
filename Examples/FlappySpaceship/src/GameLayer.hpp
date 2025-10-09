@@ -24,7 +24,7 @@ class GameLayer : public Neat::Layer {
   ~GameLayer() = default;
 
   void initialize();
-  virtual void onUpdate(double deltaTimeSeconds) override;
+  virtual void update(double deltaTimeSeconds) override;
 
  private:
   void play(float deltaTimeSeconds);

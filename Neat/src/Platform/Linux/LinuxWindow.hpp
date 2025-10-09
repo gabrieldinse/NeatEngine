@@ -17,7 +17,7 @@ class LinuxWindow : public Window {
               const WindowProperties &windowProperties);
   virtual ~LinuxWindow();
 
-  virtual void onUpdate() override;
+  virtual void update() override;
 
   virtual Int32 getWidth() const override;
   virtual Int32 getHeight() const override;

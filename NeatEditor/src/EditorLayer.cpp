@@ -120,8 +120,8 @@ void EditorLayer::startDockSpace() {
 void EditorLayer::onImGuiRender() {
   startDockSpace();
   onMenuUpdate();
-  m_sceneHierarchyPanel.onUpdate();
-  m_contentBrowserPanel.onUpdate();
+  m_sceneHierarchyPanel.update();
+  m_contentBrowserPanel.update();
   ImGuiTools::onStatsUpdate(m_hoveredEntity);
   onViewportUpdate();
   onUIToolbarUpdate();
@@ -168,7 +168,7 @@ void EditorLayer::onMenuUpdate() {
   }
 }
 
-void EditorLayer::onUpdate(double deltaTimeSeconds) {
+void EditorLayer::update(double deltaTimeSeconds) {
   handleViewportResized();
   m_framebuffer->bind();
   m_framebuffer->clearUInt32ColorAttachment(1, Entity::ID::InvalidIndex);
@@ -192,7 +192,7 @@ void EditorLayer::handleViewportResized() {
 void EditorLayer::onSceneUpdate(double deltaTimeSeconds) {
   switch (m_sceneState) {
     case SceneState::Edit:
-      m_editorCamera.onUpdate(deltaTimeSeconds);
+      m_editorCamera.update(deltaTimeSeconds);
       m_scene->onEditorUpdate(deltaTimeSeconds, m_editorCamera);
       break;
     case SceneState::Play:

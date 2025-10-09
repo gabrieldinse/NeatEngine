@@ -11,7 +11,7 @@ class OpenGLGraphicsContext : public GraphicsContext {
   virtual ~OpenGLGraphicsContext() = default;
 
   virtual void initialize() override;
-  virtual void onUpdate() override;
+  virtual void update() override;
 
  private:
   GLFWwindow *m_glfwWindow;

@@ -11,16 +11,16 @@ class Physics2DSystem : public System<Physics2DSystem> {
   Physics2DSystem() = default;
   ~Physics2DSystem();
 
-  virtual void initialize(const Ref<EntityManager> &entityManager,
+  virtual void onInitialize(const Ref<EntityManager> &entityManager,
+                            const Ref<EventDispatcher> &eventDispatcher,
+                            LayerID layerID = NoLayer) override;
+  virtual void onShutdown(const Ref<EntityManager> &entityManager,
                           const Ref<EventDispatcher> &eventDispatcher,
                           LayerID layerID = NoLayer) override;
-  virtual void shutdown(const Ref<EntityManager> &entityManager,
+  virtual void onUpdate(const Ref<EntityManager> &entityManager,
                         const Ref<EventDispatcher> &eventDispatcher,
+                        double deltaTimeSeconds,
                         LayerID layerID = NoLayer) override;
-  virtual void update(const Ref<EntityManager> &entityManager,
-                      const Ref<EventDispatcher> &eventDispatcher,
-                      double deltaTimeSeconds,
-                      LayerID layerID = NoLayer) override;
 
  private:
   b2WorldId m_worldID;

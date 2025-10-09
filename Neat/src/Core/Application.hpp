@@ -22,7 +22,7 @@ class Application {
 
   virtual void run();
   virtual void close() { stop(); }
-  virtual void onUpdate([[maybe_unused]] double deltaTimeSeconds) {}
+  virtual void update([[maybe_unused]] double deltaTimeSeconds) {}
 
   template <typename T, typename... Args>
   void pushLayer(Args &&...args);

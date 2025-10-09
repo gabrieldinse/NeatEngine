@@ -99,14 +99,14 @@ TEST_F(EntityManagerTest, CreateEntity) {
   EXPECT_EQ(entityManager->size(), 0);
 
   auto entity1 = entityManager->createEntity();
-  eventDispatcher->onUpdate();
+  eventDispatcher->update();
   EXPECT_EQ(entityManager->size(), 1);
   EXPECT_TRUE(entity1.isValid());
   EXPECT_TRUE(entityManager->hasEntity(entity1));
   EXPECT_EQ(lastEntityCreated.id().index(), entity1.id().index());
 
   auto entity2 = entityManager->createEntity();
-  eventDispatcher->onUpdate();
+  eventDispatcher->update();
   EXPECT_EQ(entityManager->size(), 2);
   EXPECT_TRUE(entity2.isValid());
   EXPECT_TRUE(entityManager->hasEntity(entity2));
@@ -121,7 +121,7 @@ TEST_F(EntityManagerTest, DestroyEntity) {
   EXPECT_EQ(entityManager->size(), 2);
 
   entityManager->destroyEntity(entity1);
-  eventDispatcher->onUpdate();
+  eventDispatcher->update();
   EXPECT_EQ(entityManager->size(), 1);
 
   EXPECT_FALSE(entityManager->hasEntity(entity1));
@@ -135,7 +135,7 @@ TEST_F(EntityManagerTest, ResetEntityManager) {
 
   EXPECT_EQ(entityManager->size(), 1);
   auto entity2 = entityManager->createEntity();
-  eventDispatcher->onUpdate();
+  eventDispatcher->update();
 
   EXPECT_EQ(entityManager->size(), 2);
   EXPECT_TRUE(entity2.isValid());
@@ -150,7 +150,7 @@ TEST_F(EntityManagerTest, ResetEntityManager) {
   EXPECT_FALSE(entityManager->hasEntity(entity2));
 
   auto entity3 = entityManager->createEntity();
-  eventDispatcher->onUpdate();
+  eventDispatcher->update();
 
   EXPECT_EQ(entityManager->size(), 1);
   EXPECT_TRUE(entity3.isValid());
@@ -271,7 +271,7 @@ TEST_F(EntityManagerTest, AddComponent) {
   EXPECT_EQ(speedComponentHandle->velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
   EXPECT_NE(lastSpeedComponentAdded.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
 
-  eventDispatcher->onUpdate();
+  eventDispatcher->update();
   EXPECT_EQ(lastSpeedComponentAdded.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
   EXPECT_FALSE(entity1.hasComponent<PlayerStatsComponent>());
 
@@ -287,7 +287,7 @@ TEST_F(EntityManagerTest, AddComponent) {
   EXPECT_EQ(playerStatsComponentHandle->damage, 10);
   EXPECT_NE(lastPlayerStatsComponentAdded.health, 100);
 
-  eventDispatcher->onUpdate();
+  eventDispatcher->update();
   EXPECT_EQ(lastPlayerStatsComponentAdded.health, 100);
 }
 
@@ -305,7 +305,7 @@ TEST_F(EntityManagerTest, RemoveComponent) {
   EXPECT_FALSE(speedComponentHandle.isValid());
   EXPECT_NE(lastSpeedComponentRemoved.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
 
-  eventDispatcher->onUpdate();
+  eventDispatcher->update();
   EXPECT_EQ(lastSpeedComponentRemoved.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
 
   entity1.addComponent<SpeedComponent>(Vector3F{50.0f, 100.0f, 150.0f});
@@ -313,7 +313,7 @@ TEST_F(EntityManagerTest, RemoveComponent) {
       entity1.addComponent<PlayerStatsComponent>(100, 50, 10);
 
   entity1.removeComponent<PlayerStatsComponent>();
-  eventDispatcher->onUpdate();
+  eventDispatcher->update();
   EXPECT_FALSE(entity1.hasComponent<PlayerStatsComponent>());
   EXPECT_TRUE(entity1.hasComponent<SpeedComponent>());
   EXPECT_TRUE(entity1.hasAnyComponent());

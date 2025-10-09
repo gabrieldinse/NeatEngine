@@ -215,7 +215,7 @@ ExampleLayer::ExampleLayer(
 
   m_systemManager->addSystem<Neat::OrthographicCameraControllerSystem>();
   m_systemManager->addSystem<Neat::Render2DSystem>();
-  m_systemManager->onInitialize(m_entityManager, m_eventDispatcher);
+  m_systemManager->initialize(m_entityManager, m_eventDispatcher);
 
   // for (std::size_t i = 0; i < this->numberOfLines; ++i) {
   //   for (std::size_t j = 0; j < this->numberOfColumns; ++j) {
@@ -285,10 +285,10 @@ void ExampleLayer::onImGuiRender() {
   ImGui::End();
 }
 
-void ExampleLayer::onUpdate(double deltaTimeSeconds) {
-  m_systemManager->onUpdate<Neat::OrthographicCameraControllerSystem>(
+void ExampleLayer::update(double deltaTimeSeconds) {
+  m_systemManager->update<Neat::OrthographicCameraControllerSystem>(
       m_entityManager, m_eventDispatcher, deltaTimeSeconds);
-  m_systemManager->onUpdate<Neat::Render2DSystem>(
+  m_systemManager->update<Neat::Render2DSystem>(
       m_entityManager, m_eventDispatcher, deltaTimeSeconds);
   onImGuiRender();
 }

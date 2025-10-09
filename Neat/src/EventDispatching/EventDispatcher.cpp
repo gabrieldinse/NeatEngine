@@ -3,12 +3,11 @@
 #include "EventDispatcher.hpp"
 
 namespace Neat {
-void EventDispatcher::onUpdate() {
+void EventDispatcher::update() {
   while (auto queuedEvent = m_eventsQueue.tryPop()) {
     auto &baseQueuedEvent = queuedEvent.value();
     if (m_eventConnectionsMap.contains(baseQueuedEvent->eventId)) {
-      m_eventConnectionsMap[baseQueuedEvent->eventId]->onUpdate(
-          *baseQueuedEvent);
+      m_eventConnectionsMap[baseQueuedEvent->eventId]->update(*baseQueuedEvent);
     }
   }
 }

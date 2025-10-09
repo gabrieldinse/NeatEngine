@@ -16,37 +16,37 @@ class SystemManager : public NonCopyable {
  public:
   SystemManager() = default;
 
-  void onInitialize(const Ref<EntityManager> &entityManager,
-                    const Ref<EventDispatcher> &eventDispatcher,
-                    LayerID layerID = NoLayer) {
+  void initialize(const Ref<EntityManager> &entityManager,
+                  const Ref<EventDispatcher> &eventDispatcher,
+                  LayerID layerID = NoLayer) {
     for (auto &&[family, system] : m_systems) {
-      system->onInitialize(entityManager, eventDispatcher, layerID);
+      system->initialize(entityManager, eventDispatcher, layerID);
     }
   }
 
   template <typename S>
-  void onInitialize(const Ref<EntityManager> &entityManager,
-                    const Ref<EventDispatcher> &eventDispatcher,
-                    LayerID layerID = NoLayer) {
+  void initialize(const Ref<EntityManager> &entityManager,
+                  const Ref<EventDispatcher> &eventDispatcher,
+                  LayerID layerID = NoLayer) {
     if (auto system = getSystem<S>()) {
-      (*system)->onInitialize(entityManager, eventDispatcher, layerID);
+      (*system)->initialize(entityManager, eventDispatcher, layerID);
     }
   }
 
-  void onShutdown(const Ref<EntityManager> &entityManager,
-                  const Ref<EventDispatcher> &eventDispatcher,
-                  LayerID layerID = NoLayer) {
+  void shutdown(const Ref<EntityManager> &entityManager,
+                const Ref<EventDispatcher> &eventDispatcher,
+                LayerID layerID = NoLayer) {
     for (auto &&[family, system] : m_systems) {
-      system->onShutdown(entityManager, eventDispatcher, layerID);
+      system->shutdown(entityManager, eventDispatcher, layerID);
     }
   }
 
   template <typename S>
-  void onShutdown(const Ref<EntityManager> &entityManager,
-                  const Ref<EventDispatcher> &eventDispatcher,
-                  LayerID layerID = NoLayer) {
+  void shutdown(const Ref<EntityManager> &entityManager,
+                const Ref<EventDispatcher> &eventDispatcher,
+                LayerID layerID = NoLayer) {
     if (auto system = getSystem<S>()) {
-      (*system)->onShutdown(entityManager, eventDispatcher, layerID);
+      (*system)->shutdown(entityManager, eventDispatcher, layerID);
     }
   }
 
@@ -77,12 +77,12 @@ class SystemManager : public NonCopyable {
   }
 
   template <typename S>
-  void onUpdate(const Ref<EntityManager> &entityManager,
-                const Ref<EventDispatcher> &eventDispatcher,
-                double deltaTimeSeconds, LayerID layerID = NoLayer) {
+  void update(const Ref<EntityManager> &entityManager,
+              const Ref<EventDispatcher> &eventDispatcher,
+              double deltaTimeSeconds, LayerID layerID = NoLayer) {
     if (auto system = getSystem<S>()) {
-      (*system)->onUpdate(entityManager, eventDispatcher, deltaTimeSeconds,
-                          layerID);
+      (*system)->update(entityManager, eventDispatcher, deltaTimeSeconds,
+                        layerID);
     }
   }
 
@@ -90,8 +90,7 @@ class SystemManager : public NonCopyable {
                  const Ref<EventDispatcher> &eventDispatcher,
                  double deltaTimeSeconds, LayerID layerID = NoLayer) {
     for (auto &&[family, system] : m_systems) {
-      system->onUpdate(entityManager, eventDispatcher, deltaTimeSeconds,
-                       layerID);
+      system->update(entityManager, eventDispatcher, deltaTimeSeconds, layerID);
     }
   }
 

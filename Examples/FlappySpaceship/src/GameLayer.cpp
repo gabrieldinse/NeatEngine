@@ -40,7 +40,7 @@ void GameLayer::initialize() {
 
   m_systemManager->addSystem<Neat::OrthographicCameraControllerSystem>();
   m_systemManager->addSystem<Neat::Render2DSystem>();
-  m_systemManager->onInitialize(m_entityManager, m_eventDispatcher);
+  m_systemManager->initialize(m_entityManager, m_eventDispatcher);
 
   auto background = m_entityManager->createEntity();
   background.addComponent<Neat::RenderableSpriteComponent>(Neat::Color::bark);
@@ -89,7 +89,7 @@ void GameLayer::initialize() {
   m_player.addComponent<PlayerVelocity>();
 }
 
-void GameLayer::onUpdate(double deltaTimeSeconds) {
+void GameLayer::update(double deltaTimeSeconds) {
   switch (m_gameState) {
     case GameState::Playing:
       play(deltaTimeSeconds);
@@ -116,9 +116,9 @@ void GameLayer::play(float deltaTimeSeconds) {
   collisionTest();
   m_camera.getComponent<Neat::TransformComponent>()->setPosition(
       m_player.getComponent<Neat::TransformComponent>()->getPosition2D());
-  m_systemManager->onUpdate<Neat::OrthographicCameraControllerSystem>(
+  m_systemManager->update<Neat::OrthographicCameraControllerSystem>(
       m_entityManager, m_eventDispatcher, deltaTimeSeconds);
-  m_systemManager->onUpdate<Neat::Render2DSystem>(
+  m_systemManager->update<Neat::Render2DSystem>(
       m_entityManager, m_eventDispatcher, deltaTimeSeconds);
   ImGui::PushFont(m_font);
   std::string scoreString = std::string{"Score: "} + std::to_string(getScore());

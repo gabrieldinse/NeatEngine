@@ -17,7 +17,7 @@ namespace Neat {
 class BaseEventConnections {
  public:
   virtual ~BaseEventConnections() = default;
-  virtual void onUpdate(const BaseQueuedEvent &queuedEvent) = 0;
+  virtual void update(const BaseQueuedEvent &queuedEvent) = 0;
   virtual void disconnect(void *instance) = 0;
   virtual void enable(LayerID layerID) = 0;
   virtual void disable(LayerID layerID) = 0;
@@ -86,7 +86,7 @@ class EventConnections : public BaseEventConnections {
     }
   }
 
-  void onUpdate(const EventType &event) {
+  void update(const EventType &event) {
     bool handled = false;
     for (auto &eventHandler : m_eventHandlers) {
       if ((not eventHandler.enabled) or
@@ -100,17 +100,17 @@ class EventConnections : public BaseEventConnections {
     }
   }
 
-  void onUpdate(EventType &&event) { onUpdate(event); }
+  void update(EventType &&event) { update(event); }
 
-  void onUpdate(const BaseQueuedEvent &queuedEvent) {
-    onUpdate(static_cast<const QueuedEvent<EventType> &>(queuedEvent).event);
+  void update(const BaseQueuedEvent &queuedEvent) {
+    update(static_cast<const QueuedEvent<EventType> &>(queuedEvent).event);
   }
 
   template <typename... Args>
     requires(not std::same_as<std::tuple<std::decay_t<Args>...>,
                               std::tuple<EventType>>)
-  void onUpdate(Args &&...args) {
-    onUpdate(EventType(std::forward<Args>(args)...));
+  void update(Args &&...args) {
+    update(EventType(std::forward<Args>(args)...));
   }
 
  private:

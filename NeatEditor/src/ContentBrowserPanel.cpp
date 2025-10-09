@@ -15,7 +15,7 @@ ContentBrowserPanel::ContentBrowserPanel()
       m_fileIcon(Texture2D::create(
           "NeatEditorAssets/Resources/Icons/ContentBrowser/FileIcon.png")) {}
 
-void ContentBrowserPanel::onUpdate() {
+void ContentBrowserPanel::update() {
   ImGui::Begin("Content Browser");
 
   if (m_currentDirectory != std::filesystem::path(s_assetsPath)) {

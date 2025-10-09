@@ -46,32 +46,32 @@ class EventConnectionsTest : public testing::Test {
 };
 
 TEST_F(EventConnectionsTest, ConnectAndDisconnect) {
-  connA.onUpdate(EventA{100});
+  connA.update(EventA{100});
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
 
-  connA.onUpdate(EventA{200});
+  connA.update(EventA{200});
   EXPECT_EQ(listenerA.val, 200);
   EXPECT_EQ(listenerA.count, 2);
 
   connA.disconnect<&ListenerA::handle>(listenerA);
-  connA.onUpdate(EventA{300});
+  connA.update(EventA{300});
   EXPECT_EQ(listenerA.val, 200);
   EXPECT_EQ(listenerA.count, 2);
 }
 
 TEST_F(EventConnectionsTest, EnableAndDisable) {
-  connALayer.onUpdate(EventA{100});
+  connALayer.update(EventA{100});
   EXPECT_EQ(listenerALayer.val, 100);
   EXPECT_EQ(listenerALayer.count, 1);
 
-  connALayer.onUpdate(EventA{200});
+  connALayer.update(EventA{200});
   EXPECT_EQ(listenerALayer.val, 200);
   EXPECT_EQ(listenerALayer.count, 2);
 
   connBLayer.disable(layerID);
 
-  connBLayer.onUpdate(EventB{msg});
+  connBLayer.update(EventB{msg});
   EXPECT_EQ(listenerALayer.val, 200);
   EXPECT_EQ(listenerALayer.count, 2);
   EXPECT_EQ(listenerBLayer.posX, 0.0f);
@@ -84,7 +84,7 @@ TEST_F(EventConnectionsTest, EnableAndDisable) {
   EXPECT_EQ(listenerB2Layer.count, 1);
 
   connBLayer.enable(layerID);
-  connBLayer.onUpdate(EventB{msg});
+  connBLayer.update(EventB{msg});
   EXPECT_EQ(listenerALayer.val, 200);
   EXPECT_EQ(listenerALayer.count, 2);
   EXPECT_EQ(listenerBLayer.posX, 0.0f);
@@ -98,10 +98,10 @@ TEST_F(EventConnectionsTest, EnableAndDisable) {
 }
 
 TEST_F(EventConnectionsTest, MultipleEventListeners) {
-  connA.onUpdate(EventA{100});
-  connB.onUpdate(EventB{msg});
-  connC.onUpdate(EventC{3.14f, 2.72f});
-  connB.onUpdate(EventB{msg2});
+  connA.update(EventA{100});
+  connB.update(EventB{msg});
+  connC.update(EventC{3.14f, 2.72f});
+  connB.update(EventB{msg2});
 
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
@@ -118,7 +118,7 @@ TEST_F(EventConnectionsTest, EventHandled) {
   connC2.connect<&ListenerC::handle>(listenerC2);  // listenerC2 connects first
   connC2.connect<&ListenerB::handleEventC>(listenerB2);
 
-  connC2.onUpdate(
+  connC2.update(
       EventC{1.11f, 2.22f});  // listenerC2 handles the event (returns true)
   EXPECT_EQ(listenerC2.posX, 1.11f);
   EXPECT_EQ(listenerC2.posY, 2.22f);
@@ -132,10 +132,10 @@ TEST_F(EventConnectionsTest, EventHandled) {
 }
 
 TEST_F(EventConnectionsTest, MultipleEventListenersVariadicTemplate) {
-  connA.onUpdate(100);
-  connB.onUpdate(msg);
-  connC.onUpdate(3.14f, 2.72f);
-  connB.onUpdate(msg2);
+  connA.update(100);
+  connB.update(msg);
+  connC.update(3.14f, 2.72f);
+  connB.update(msg2);
 
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
@@ -153,10 +153,10 @@ TEST_F(EventConnectionsTest, MultipleEventListenersConstReference) {
   EventB eventB{msg};
   EventC eventC{3.14f, 2.72f};
   EventB eventB2{msg2};
-  connA.onUpdate(eventA);
-  connB.onUpdate(eventB);
-  connC.onUpdate(eventC);
-  connB.onUpdate(eventB2);
+  connA.update(eventA);
+  connB.update(eventB);
+  connC.update(eventC);
+  connB.update(eventB2);
 
   EXPECT_EQ(listenerA.val, 100);
   EXPECT_EQ(listenerA.count, 1);
@@ -182,10 +182,10 @@ TEST_F(EventConnectionsTest, ConnectWithPriority) {
   connC.connect<&ListenerB::handleEventC>(listenerB, 5);
   connA.connect<&ListenerD::handleA>(listenerD, 3);
 
-  connA.onUpdate(100);
-  connB.onUpdate(msg);
-  connC.onUpdate(3.33f, 2.22f);
-  connB.onUpdate(msg2);
+  connA.update(100);
+  connB.update(msg);
+  connC.update(3.33f, 2.22f);
+  connB.update(msg2);
 
   EXPECT_EQ(listenerA.val, 0);
   EXPECT_EQ(listenerA.count, 0);
@@ -214,10 +214,10 @@ TEST_F(EventConnectionsTest, ConnectScoped) {
     auto connB2Scope = connC.connectScoped<&ListenerB::handleEventC>(listenerB);
     auto connCScope = connC.connectScoped<&ListenerC::handle>(listenerC);
 
-    connA.onUpdate(100);
-    connB.onUpdate(msg);
-    connC.onUpdate(3.33f, 2.22f);
-    connB.onUpdate(msg2);
+    connA.update(100);
+    connB.update(msg);
+    connC.update(3.33f, 2.22f);
+    connB.update(msg2);
 
     EXPECT_EQ(listenerA.val, 100);
     EXPECT_EQ(listenerA.count, 1);
@@ -232,10 +232,10 @@ TEST_F(EventConnectionsTest, ConnectScoped) {
 
   // Here, connCScope and connB2Scope are out of scope and thus disconnected
 
-  connA.onUpdate(500);
-  connB.onUpdate(msg + " after scope");
-  connC.onUpdate(999.9f, 888.8f);
-  connB.onUpdate(msg2 + " after scope");
+  connA.update(500);
+  connB.update(msg + " after scope");
+  connC.update(999.9f, 888.8f);
+  connB.update(msg2 + " after scope");
 
   EXPECT_EQ(listenerA.val, 500);
   EXPECT_EQ(listenerA.count, 2);
@@ -250,10 +250,10 @@ TEST_F(EventConnectionsTest, ConnectScoped) {
   connAScope.reset();
   // Now, connAScope is disconnected
 
-  connA.onUpdate(800);
-  connB.onUpdate(msg + " after reset");
-  connC.onUpdate(123.456f, 654.321f);
-  connB.onUpdate(msg2 + " after reset");
+  connA.update(800);
+  connB.update(msg + " after reset");
+  connC.update(123.456f, 654.321f);
+  connB.update(msg2 + " after reset");
 
   EXPECT_EQ(listenerA.val, 500);
   EXPECT_EQ(listenerA.count, 2);

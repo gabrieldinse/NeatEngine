@@ -9,7 +9,7 @@ class ContentBrowserPanel {
  public:
   ContentBrowserPanel();
 
-  void onUpdate();
+  void update();
   static std::filesystem::path getAssetsPath() { return s_assetsPath; }
 
  private:

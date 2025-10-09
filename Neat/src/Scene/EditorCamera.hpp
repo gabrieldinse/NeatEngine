@@ -20,7 +20,7 @@ class EditorCamera {
   const CameraComponent& getCamera() const { return m_camera; }
   const TransformComponent& getTransform() const { return m_transform; }
 
-  void onUpdate(double deltaTimeSeconds);
+  void update(double deltaTimeSeconds);
 
   Matrix4F getProjection() const { return m_camera.getProjection(); }
   Matrix4F getViewMatrix() const { return inverse(m_transform.getTransform()); }

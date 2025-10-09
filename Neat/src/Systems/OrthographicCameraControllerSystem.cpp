@@ -15,7 +15,7 @@ OrthographicCameraControllerSystem::OrthographicCameraControllerSystem(
 
 OrthographicCameraControllerSystem::~OrthographicCameraControllerSystem() {}
 
-void OrthographicCameraControllerSystem::initialize(
+void OrthographicCameraControllerSystem::onInitialize(
     const Ref<EntityManager> &entityManager,
     const Ref<EventDispatcher> &eventDispatcher,
     [[maybe_unused]] LayerID layerID) {
@@ -24,7 +24,7 @@ void OrthographicCameraControllerSystem::initialize(
   m_entityManager = entityManager;
 }
 
-void OrthographicCameraControllerSystem::update(
+void OrthographicCameraControllerSystem::onUpdate(
     [[maybe_unused]] const Ref<EntityManager> &entityManager,
     [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     double deltaTimeSeconds, [[maybe_unused]] LayerID layerID) {

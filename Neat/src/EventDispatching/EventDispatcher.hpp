@@ -44,13 +44,13 @@ class EventDispatcher {
 
   template <typename EventType>
   void trigger(const EventType& event) {
-    get<EventType>().onUpdate(event);
+    get<EventType>().update(event);
   }
 
   template <typename EventType>
   void trigger(EventType&& event) {
     using DecayedEventType = std::remove_reference_t<EventType>;
-    get<DecayedEventType>().onUpdate(std::forward<EventType>(event));
+    get<DecayedEventType>().update(std::forward<EventType>(event));
   }
 
   template <typename EventType, typename... Args,
@@ -58,7 +58,7 @@ class EventDispatcher {
                                              std::tuple<EventType>>,
                              int> = 0>
   void trigger(Args&&... args) {
-    get<EventType>().onUpdate(std::forward<Args>(args)...);
+    get<EventType>().update(std::forward<Args>(args)...);
   }
 
   template <typename Instance>
@@ -79,7 +79,7 @@ class EventDispatcher {
     }
   }
 
-  void onUpdate();
+  void update();
 
  private:
   using EventConnectionsMap =

@@ -15,7 +15,7 @@ class Window {
  public:
   virtual ~Window() = default;
 
-  virtual void onUpdate() = 0;
+  virtual void update() = 0;
 
   virtual Int32 getWidth() const = 0;
   virtual Int32 getHeight() const = 0;

@@ -11,15 +11,15 @@ class System : public BaseSystem {
  public:
   virtual ~System() = default;
 
-  virtual void initialize(
+  virtual void onInitialize(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] LayerID layerID = NoLayer) override {}
-  virtual void shutdown(
+  virtual void onShutdown(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] LayerID layerID = NoLayer) override {}
-  virtual void update(
+  virtual void onUpdate(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds,

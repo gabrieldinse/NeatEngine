@@ -71,14 +71,14 @@ struct ListenerD {
 struct TestingSystem : public System<TestingSystem> {
   TestingSystem() = default;
 
-  virtual void update(
+  virtual void onUpdate(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds,
       [[maybe_unused]] LayerID layerID = NoLayer) override {
     onUpdateCounter++;
   }
-  virtual void initialize(
+  virtual void onInitialize(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] LayerID layerID = NoLayer) override {
@@ -92,14 +92,14 @@ struct TestingSystem : public System<TestingSystem> {
 struct TestingSystem2 : public System<TestingSystem2> {
   TestingSystem2() = default;
 
-  virtual void update(
+  virtual void onUpdate(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds,
       [[maybe_unused]] LayerID layerID = NoLayer) override {
     onUpdateCounter++;
   }
-  virtual void initialize(
+  virtual void onInitialize(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] LayerID layerID = NoLayer) override {

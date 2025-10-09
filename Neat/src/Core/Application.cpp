@@ -49,12 +49,12 @@ void Application::run() {
     double deltaTimeSeconds = timer.restart();
 
     ImGuiRender::begin();
-    onUpdate(deltaTimeSeconds);
-    m_layerGroup.onUpdate(deltaTimeSeconds);
+    update(deltaTimeSeconds);
+    m_layerGroup.update(deltaTimeSeconds);
     ImGuiRender::end();
 
-    m_window->onUpdate();
-    m_eventDispatcher->onUpdate();
+    m_window->update();
+    m_eventDispatcher->update();
   }
   NT_CORE_INFO("Application stopped");
 }

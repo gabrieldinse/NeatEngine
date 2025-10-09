@@ -168,7 +168,7 @@ void SceneHierarchyPanel::setScene(const Ref<Scene> &scene) {
   m_selectedEntity = Entity{};
 }
 
-void SceneHierarchyPanel::onUpdate() {
+void SceneHierarchyPanel::update() {
   ImGui::Begin("Scene Hierarchy");
   for (Entity entity : m_scene->getEntityManager()->entities()) {
     drawEntityNode(entity);

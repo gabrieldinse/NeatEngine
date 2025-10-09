@@ -18,7 +18,7 @@ Physics2DSystem::~Physics2DSystem() {
   }
 }
 
-void Physics2DSystem::initialize(
+void Physics2DSystem::onInitialize(
     const Ref<EntityManager> &entityManager,
     [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     [[maybe_unused]] LayerID layerID) {
@@ -55,7 +55,7 @@ void Physics2DSystem::initialize(
   }
 }
 
-void Physics2DSystem::shutdown(
+void Physics2DSystem::onShutdown(
     [[maybe_unused]] const Ref<EntityManager> &entityManager,
     [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     [[maybe_unused]] LayerID layerID) {
@@ -64,7 +64,7 @@ void Physics2DSystem::shutdown(
   }
 }
 
-void Physics2DSystem::update(
+void Physics2DSystem::onUpdate(
     [[maybe_unused]] const Ref<EntityManager> &entityManager,
     [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     [[maybe_unused]] double deltaTimeSeconds,

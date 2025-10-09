@@ -26,7 +26,7 @@ void OpenGLGraphicsContext::initialize() {
                reinterpret_cast<const char *>(glGetString(GL_VERSION)));
 }
 
-void OpenGLGraphicsContext::onUpdate() {
+void OpenGLGraphicsContext::update() {
   NT_PROFILE_FUNCTION();
   glfwSwapBuffers(m_glfwWindow);
 }

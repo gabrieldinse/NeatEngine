@@ -20,7 +20,7 @@ EditorCamera::EditorCamera(const PerspectiveProperties& perspectiveProperties,
   updateView();
 }
 
-void EditorCamera::onUpdate([[maybe_unused]] double deltaTimeSeconds) {
+void EditorCamera::update([[maybe_unused]] double deltaTimeSeconds) {
   if (Input::isKeyPressed(Key::LeftAlt)) {
     const Vector2F& mousePosition{Input::getMouseX(), Input::getMouseY()};
     Vector2F deltaPos{(mousePosition - m_initialMousePosition) * 0.003f};

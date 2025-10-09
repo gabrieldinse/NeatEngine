@@ -8,7 +8,7 @@ class GraphicsContext {
   virtual ~GraphicsContext() = default;
 
   virtual void initialize() = 0;
-  virtual void onUpdate() = 0;
+  virtual void update() = 0;
 
   static Scope<GraphicsContext> create(void *window);
 };

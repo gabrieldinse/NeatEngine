@@ -102,9 +102,9 @@ float LinuxWindow::getAspectRatio() const {
 
 void *LinuxWindow::getNativeWindow() const { return m_glfwWindow; }
 
-void LinuxWindow::onUpdate() {
+void LinuxWindow::update() {
   NT_PROFILE_FUNCTION();
-  m_graphicsContext->onUpdate();
+  m_graphicsContext->update();
   glfwPollEvents();
 }
 

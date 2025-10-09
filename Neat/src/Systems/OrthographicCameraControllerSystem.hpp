@@ -17,13 +17,13 @@ class OrthographicCameraControllerSystem
   OrthographicCameraControllerSystem(bool rotationEnabled = true);
   ~OrthographicCameraControllerSystem();
 
-  virtual void initialize(const Ref<EntityManager> &entityManager,
-                          const Ref<EventDispatcher> &eventDispatcher,
-                          LayerID layerID = NoLayer) override;
-  virtual void update(const Ref<EntityManager> &entityManager,
-                      const Ref<EventDispatcher> &eventDispatcher,
-                      double deltaTimeSeconds,
-                      LayerID layerID = NoLayer) override;
+  virtual void onInitialize(const Ref<EntityManager> &entityManager,
+                            const Ref<EventDispatcher> &eventDispatcher,
+                            LayerID layerID = NoLayer) override;
+  virtual void onUpdate(const Ref<EntityManager> &entityManager,
+                        const Ref<EventDispatcher> &eventDispatcher,
+                        double deltaTimeSeconds,
+                        LayerID layerID = NoLayer) override;
 
  private:
   void moveUp(TransformComponent &transform, float distance);
