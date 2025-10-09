@@ -76,7 +76,7 @@ struct TestingSystem : public System<TestingSystem> {
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds,
       [[maybe_unused]] LayerID layerID = NoLayer) override {
-    onUpdateCounter++;
+    updateCounter++;
   }
   virtual void onInitialize(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
@@ -84,9 +84,16 @@ struct TestingSystem : public System<TestingSystem> {
       [[maybe_unused]] LayerID layerID = NoLayer) override {
     initCounter++;
   }
+  virtual void onShutdown(
+      [[maybe_unused]] const Ref<EntityManager> &entityManager,
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
+      [[maybe_unused]] LayerID layerID = NoLayer) override {
+    shutdownCounter++;
+  }
 
   int initCounter = 0;
-  int onUpdateCounter = 0;
+  int updateCounter = 0;
+  int shutdownCounter = 0;
 };
 
 struct TestingSystem2 : public System<TestingSystem2> {
@@ -97,7 +104,7 @@ struct TestingSystem2 : public System<TestingSystem2> {
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds,
       [[maybe_unused]] LayerID layerID = NoLayer) override {
-    onUpdateCounter++;
+    updateCounter++;
   }
   virtual void onInitialize(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
@@ -105,9 +112,16 @@ struct TestingSystem2 : public System<TestingSystem2> {
       [[maybe_unused]] LayerID layerID = NoLayer) override {
     initCounter++;
   }
+  virtual void onShutdown(
+      [[maybe_unused]] const Ref<EntityManager> &entityManager,
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
+      [[maybe_unused]] LayerID layerID = NoLayer) override {
+    shutdownCounter++;
+  }
 
   int initCounter = 0;
-  int onUpdateCounter = 0;
+  int updateCounter = 0;
+  int shutdownCounter = 0;
 };
 
 struct TestingSystem3 : public System<TestingSystem3> {};
