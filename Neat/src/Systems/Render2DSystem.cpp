@@ -11,7 +11,7 @@
 #include "Components/ActiveCameraTagComponent.hpp"
 
 namespace Neat {
-void Render2DSystem::onUpdate(
+void Render2DSystem::update(
     const Ref<EntityManager> &entityManager,
     [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     [[maybe_unused]] double deltaTimeSeconds,

@@ -12,5 +12,7 @@ ComponentSerializationRegistry::ComponentSerializationRegistry() {
   registerComponent<RenderableSpriteComponent>("RenderableSpriteComponent");
   registerComponent<ActiveCameraTagComponent>("ActiveCameraTagComponent");
   registerComponent<CameraComponent>("CameraComponent");
+  registerComponent<BoxCollider2DComponent>("BoxCollider2DComponent");
+  registerComponent<RigidBody2DComponent>("RigidBody2DComponent");
 }
 }  // namespace Neat

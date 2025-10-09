@@ -121,6 +121,46 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
 
         ImGui::DragFloat("Tiling Factor", &sprite->tilingFactor, 0.1f, 0.1f);
       });
+
+  m_componentWidgetsRegistry.registerComponent<RigidBody2DComponent>(
+      "Rigid Body 2D",
+      []([[maybe_unused]] const Ref<EntityManager> &entityManager,
+         Entity &entity) {
+        auto rigidBody = entity.getComponent<RigidBody2DComponent>();
+        const char *bodyTypeStrings[] = {"Static", "Dynamic", "Kinematic"};
+        const char *currentBodyTypeString =
+            bodyTypeStrings[(int)rigidBody->type];
+        if (ImGui::BeginCombo("Body Type", currentBodyTypeString)) {
+          for (int i = 0; i < 3; i++) {
+            bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
+            if (ImGui::Selectable(bodyTypeStrings[i], isSelected)) {
+              currentBodyTypeString = bodyTypeStrings[i];
+              rigidBody->type = (RigidBody2DType)i;
+            }
+
+            if (isSelected) {
+              ImGui::SetItemDefaultFocus();
+            }
+          }
+
+          ImGui::EndCombo();
+        }
+
+        ImGui::Checkbox("Fixed Rotation", &rigidBody->fixedRotation);
+      });
+
+  m_componentWidgetsRegistry.registerComponent<BoxCollider2DComponent>(
+      "Box Collider 2D",
+      []([[maybe_unused]] const Ref<EntityManager> &entityManager,
+         Entity &entity) {
+        auto boxCollider = entity.getComponent<BoxCollider2DComponent>();
+        ImGui::DragFloat2("Offset", boxCollider->offset.data());
+        ImGui::DragFloat2("Size", boxCollider->size.data());
+        ImGui::DragFloat("Density", &boxCollider->density, 0.01f, 0.0f, 1.0f);
+        ImGui::DragFloat("Friction", &boxCollider->friction, 0.01f, 0.0f, 1.0f);
+        ImGui::DragFloat("Restitution", &boxCollider->bounceFactor, 0.01f, 0.0f,
+                         1.0f);
+      });
 }
 
 void SceneHierarchyPanel::setScene(const Ref<Scene> &scene) {
@@ -231,6 +271,16 @@ void SceneHierarchyPanel::drawAddComponentButton() {
 
     if (ImGui::MenuItem("Sprite")) {
       m_selectedEntity.addComponent<RenderableSpriteComponent>();
+      ImGui::CloseCurrentPopup();
+    }
+
+    if (ImGui::MenuItem("Rigid Body 2D")) {
+      m_selectedEntity.addComponent<RigidBody2DComponent>();
+      ImGui::CloseCurrentPopup();
+    }
+
+    if (ImGui::MenuItem("Box Collider 2D")) {
+      m_selectedEntity.addComponent<BoxCollider2DComponent>();
       ImGui::CloseCurrentPopup();
     }
 

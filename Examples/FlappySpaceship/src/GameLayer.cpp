@@ -40,7 +40,7 @@ void GameLayer::initialize() {
 
   m_systemManager->addSystem<Neat::OrthographicCameraControllerSystem>();
   m_systemManager->addSystem<Neat::Render2DSystem>();
-  m_systemManager->initialize(m_entityManager, m_eventDispatcher);
+  m_systemManager->onInitialize(m_entityManager, m_eventDispatcher);
 
   auto background = m_entityManager->createEntity();
   background.addComponent<Neat::RenderableSpriteComponent>(Neat::Color::bark);

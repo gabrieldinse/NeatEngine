@@ -71,7 +71,7 @@ struct ListenerD {
 struct TestingSystem : public System<TestingSystem> {
   TestingSystem() = default;
 
-  virtual void onUpdate(
+  virtual void update(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds,
@@ -92,7 +92,7 @@ struct TestingSystem : public System<TestingSystem> {
 struct TestingSystem2 : public System<TestingSystem2> {
   TestingSystem2() = default;
 
-  virtual void onUpdate(
+  virtual void update(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds,

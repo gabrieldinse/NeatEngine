@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <type_traits>
 
 #include <climits>
 #include <cstddef>
@@ -56,22 +57,18 @@ template <typename T>
 using WeakRef = std::weak_ptr<T>;
 
 template <typename T, typename... Args>
-Scope<T> makeScope(Args&&... args) {
+Scope<T> makeScope(Args &&...args) {
   return std::make_unique<T>(std::forward<Args>(args)...);
 }
 
 template <typename T, typename... Args>
-Ref<T> makeRef(Args&&... args) {
+Ref<T> makeRef(Args &&...args) {
   return std::make_shared<T>(std::forward<Args>(args)...);
 }
 
-template <typename T, typename... Args>
-Scope<T> createScope(Args&&... args) {
-  return makeScope<T>(std::forward<Args>(args)...);
-}
-
-template <typename T, typename... Args>
-Ref<T> createRef(Args&&... args) {
-  return makeRef<T>(std::forward<Args>(args)...);
+template <typename T, typename U>
+  requires std::is_base_of_v<U, T>
+Ref<T> staticCast(const Ref<U> &pointer) noexcept {
+  return std::static_pointer_cast<T>(pointer);
 }
 }  // namespace Neat

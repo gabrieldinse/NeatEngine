@@ -6,17 +6,17 @@
 
 namespace Neat {
 
-namespace OpenGL {
-UInt32 getPrimitiveType(ShaderDataType type);
-UInt32 getType(ShaderDataType type);
-ShaderDataType getShaderDataType(UInt32 type, UInt32 count);
-UInt32 getShaderDataType(const std::string &type);
-Int getTexture2DWrapping(Texture2DWrapping wrapping);
-Int getTexture2DFilter(Texture2DFilter filter);
+namespace OpenGLUtils {
+UInt32 toPrimitiveType(ShaderDataType type);
+UInt32 toType(ShaderDataType type);
+ShaderDataType toShaderDataType(UInt32 type, UInt32 count);
+UInt32 getShaderTypeFromString(const std::string &type);
+Int toTexture2DWrapping(Texture2DWrapping wrapping);
+Int toTexture2DFilter(Texture2DFilter filter);
 Int getTextureTarget(bool multisampled);
 Int getFramebufferColorFormat(FramebufferColorFormat colorFormat);
 Int getFramebufferColorInternalFormat(FramebufferColorFormat depthFormat);
 Int getFramebufferDepthFormat(FramebufferDepthFormat depthFormat);
 Int getFramebufferDepthAttachmentType(FramebufferDepthFormat depthFormat);
-}  // namespace OpenGL
+}  // namespace OpenGLUtils
 }  // namespace Neat

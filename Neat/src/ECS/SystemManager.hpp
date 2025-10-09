@@ -16,13 +16,38 @@ class SystemManager : public NonCopyable {
  public:
   SystemManager() = default;
 
-  void initialize(const Ref<EntityManager> &entityManager,
+  void onInitialize(const Ref<EntityManager> &entityManager,
+                    const Ref<EventDispatcher> &eventDispatcher,
+                    LayerID layerID = NoLayer) {
+    for (auto &&[family, system] : m_systems) {
+      system->onInitialize(entityManager, eventDispatcher, layerID);
+    }
+  }
+
+  template <typename S>
+  void onInitialize(const Ref<EntityManager> &entityManager,
+                    const Ref<EventDispatcher> &eventDispatcher,
+                    LayerID layerID = NoLayer) {
+    if (auto system = getSystem<S>()) {
+      (*system)->onInitialize(entityManager, eventDispatcher, layerID);
+    }
+  }
+
+  void onShutdown(const Ref<EntityManager> &entityManager,
                   const Ref<EventDispatcher> &eventDispatcher,
                   LayerID layerID = NoLayer) {
     for (auto &&[family, system] : m_systems) {
-      system->initialize(entityManager, eventDispatcher, layerID);
+      system->onShutdown(entityManager, eventDispatcher, layerID);
     }
-    m_initialized = true;
+  }
+
+  template <typename S>
+  void onShutdown(const Ref<EntityManager> &entityManager,
+                  const Ref<EventDispatcher> &eventDispatcher,
+                  LayerID layerID = NoLayer) {
+    if (auto system = getSystem<S>()) {
+      (*system)->onShutdown(entityManager, eventDispatcher, layerID);
+    }
   }
 
   template <typename S>
@@ -48,29 +73,22 @@ class SystemManager : public NonCopyable {
 
     auto &&[family, system] = *it;
 
-    return Ref<S>(std::static_pointer_cast<S>(system));
+    return staticCast<S>(system);
   }
 
   template <typename S>
   void onUpdate(const Ref<EntityManager> &entityManager,
                 const Ref<EventDispatcher> &eventDispatcher,
                 double deltaTimeSeconds, LayerID layerID = NoLayer) {
-    if (not m_initialized) {
-      initialize(entityManager, eventDispatcher, layerID);
-    }
-
     if (auto system = getSystem<S>()) {
-      (*system)->onUpdate(entityManager, eventDispatcher, deltaTimeSeconds);
+      (*system)->onUpdate(entityManager, eventDispatcher, deltaTimeSeconds,
+                          layerID);
     }
   }
 
   void updateAll(const Ref<EntityManager> &entityManager,
                  const Ref<EventDispatcher> &eventDispatcher,
                  double deltaTimeSeconds, LayerID layerID = NoLayer) {
-    if (not m_initialized) {
-      initialize(entityManager, eventDispatcher, layerID);
-    }
-
     for (auto &&[family, system] : m_systems) {
       system->onUpdate(entityManager, eventDispatcher, deltaTimeSeconds,
                        layerID);
@@ -78,7 +96,6 @@ class SystemManager : public NonCopyable {
   }
 
  private:
-  bool m_initialized = false;
   std::unordered_map<BaseSystem::Family, Ref<BaseSystem>> m_systems;
 };
 }  // namespace Neat

@@ -24,7 +24,7 @@ void OrthographicCameraControllerSystem::initialize(
   m_entityManager = entityManager;
 }
 
-void OrthographicCameraControllerSystem::onUpdate(
+void OrthographicCameraControllerSystem::update(
     [[maybe_unused]] const Ref<EntityManager> &entityManager,
     [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
     double deltaTimeSeconds, [[maybe_unused]] LayerID layerID) {

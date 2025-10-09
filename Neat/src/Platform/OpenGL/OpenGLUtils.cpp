@@ -5,8 +5,8 @@
 #include <glad/glad.h>
 
 namespace Neat {
-namespace OpenGL {
-UInt32 getPrimitiveType(ShaderDataType type) {
+namespace OpenGLUtils {
+UInt32 toPrimitiveType(ShaderDataType type) {
   switch (type) {
     case ShaderDataType::Float:
       return GL_FLOAT;
@@ -44,7 +44,7 @@ UInt32 getPrimitiveType(ShaderDataType type) {
   }
 }
 
-UInt32 getType(ShaderDataType type) {
+UInt32 toType(ShaderDataType type) {
   switch (type) {
     case ShaderDataType::Float:
       return GL_FLOAT;
@@ -85,7 +85,7 @@ UInt32 getType(ShaderDataType type) {
   return 0;
 }
 
-ShaderDataType getShaderDataType(UInt32 type, UInt32 count) {
+ShaderDataType toShaderDataType(UInt32 type, UInt32 count) {
   switch (type) {
     case GL_FLOAT: {
       if (count == 1) return ShaderDataType::Float;
@@ -135,7 +135,7 @@ ShaderDataType getShaderDataType(UInt32 type, UInt32 count) {
   return ShaderDataType::None;
 }
 
-UInt32 getShaderDataType(const std::string &type) {
+UInt32 getShaderTypeFromString(const std::string &type) {
   if (type == "vertex") return GL_VERTEX_SHADER;
 
   if (type == "fragment" or type == "pixel") return GL_FRAGMENT_SHADER;
@@ -144,7 +144,7 @@ UInt32 getShaderDataType(const std::string &type) {
   return 0;
 }
 
-Int getTexture2DWrapping(Texture2DWrapping wrapping) {
+Int toTexture2DWrapping(Texture2DWrapping wrapping) {
   switch (wrapping) {
     case Texture2DWrapping::Repeat:
       return GL_REPEAT;
@@ -159,7 +159,7 @@ Int getTexture2DWrapping(Texture2DWrapping wrapping) {
   }
 }
 
-Int getTexture2DFilter(Texture2DFilter filter) {
+Int toTexture2DFilter(Texture2DFilter filter) {
   switch (filter) {
     case Texture2DFilter::Nearest:
       return GL_NEAREST;
@@ -233,5 +233,5 @@ Int getFramebufferDepthAttachmentType(FramebufferDepthFormat depthFormat) {
       return -1;
   }
 }
-}  // namespace OpenGL
+}  // namespace OpenGLUtils
 }  // namespace Neat

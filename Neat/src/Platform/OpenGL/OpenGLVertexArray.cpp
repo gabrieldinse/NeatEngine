@@ -46,7 +46,7 @@ void OpenGLVertexArray::setLayouts(const Ref<VertexBuffer> &vertexBuffer) {
       case ShaderDataType::Vector4F:
         glVertexAttribPointer(
             element.index, element.componentCount,
-            OpenGL::getPrimitiveType(element.type),
+            OpenGLUtils::toPrimitiveType(element.type),
             static_cast<GLboolean>(element.normalized), layout.getOffset(),
             static_cast<void *>(static_cast<char *>(0) + element.offset));
         glEnableVertexAttribArray(element.index);
@@ -63,7 +63,7 @@ void OpenGLVertexArray::setLayouts(const Ref<VertexBuffer> &vertexBuffer) {
       case ShaderDataType::Bool:
         glVertexAttribIPointer(
             element.index, element.componentCount,
-            OpenGL::getPrimitiveType(element.type), layout.getOffset(),
+            OpenGLUtils::toPrimitiveType(element.type), layout.getOffset(),
             static_cast<void *>(static_cast<char *>(0) + element.offset));
         glEnableVertexAttribArray(element.index);
         break;
@@ -74,7 +74,7 @@ void OpenGLVertexArray::setLayouts(const Ref<VertexBuffer> &vertexBuffer) {
           glEnableVertexAttribArray(element.index + i);
           glVertexAttribPointer(
               element.index + i, element.componentCount,
-              OpenGL::getPrimitiveType(element.type),
+              OpenGLUtils::toPrimitiveType(element.type),
               static_cast<GLboolean>(element.normalized), layout.getOffset(),
               reinterpret_cast<void *>(static_cast<char *>(0) + element.offset +
                                        sizeof(float) * element.componentCount *

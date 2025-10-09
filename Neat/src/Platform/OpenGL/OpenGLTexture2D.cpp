@@ -92,24 +92,24 @@ void OpenGLTexture2D::bind(UInt32 unit) const {
 void OpenGLTexture2D::setMinification(Texture2DFilter minificationFilter) {
   NT_PROFILE_FUNCTION();
   glTextureParameteri(m_id, GL_TEXTURE_MIN_FILTER,
-                      OpenGL::getTexture2DFilter(minificationFilter));
+                      OpenGLUtils::toTexture2DFilter(minificationFilter));
 }
 
 void OpenGLTexture2D::setMagnification(Texture2DFilter magnificationFilter) {
   NT_PROFILE_FUNCTION();
   glTextureParameteri(m_id, GL_TEXTURE_MAG_FILTER,
-                      OpenGL::getTexture2DFilter(magnificationFilter));
+                      OpenGLUtils::toTexture2DFilter(magnificationFilter));
 }
 
 void OpenGLTexture2D::setWrapS(Texture2DWrapping wrapS) {
   NT_PROFILE_FUNCTION();
   glTextureParameteri(m_id, GL_TEXTURE_WRAP_S,
-                      OpenGL::getTexture2DWrapping(wrapS));
+                      OpenGLUtils::toTexture2DWrapping(wrapS));
 }
 
 void OpenGLTexture2D::setWrapT(Texture2DWrapping wrapT) {
   NT_PROFILE_FUNCTION();
   glTextureParameteri(m_id, GL_TEXTURE_WRAP_T,
-                      OpenGL::getTexture2DWrapping(wrapT));
+                      OpenGLUtils::toTexture2DWrapping(wrapT));
 }
 }  // namespace Neat

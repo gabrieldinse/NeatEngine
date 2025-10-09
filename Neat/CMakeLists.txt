@@ -71,7 +71,7 @@ target_include_directories(Neat
         ${VENDOR_DIR}/reflect-cpp/include
         ${VENDOR_DIR}/yaml-cpp/include
         ${VENDOR_DIR}/ImGuizmo
-        ${VENDOR_DIR}/Box2D
+        ${VENDOR_DIR}/Box2D/include
 )
 
 set(PUBLIC_LIBRARIES

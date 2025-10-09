@@ -20,6 +20,8 @@ class Scene {
 
   void onRuntimeUpdate(double deltaTimeSeconds);
   void onEditorUpdate(double deltaTimeSeconds, EditorCamera &editorCamera);
+  void onRuntimeStart();
+  void onRuntimeStop();
   void setViewport(UInt32 width, UInt32 height);
 
  private:

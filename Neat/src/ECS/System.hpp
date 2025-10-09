@@ -15,7 +15,11 @@ class System : public BaseSystem {
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] LayerID layerID = NoLayer) override {}
-  virtual void onUpdate(
+  virtual void shutdown(
+      [[maybe_unused]] const Ref<EntityManager> &entityManager,
+      [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
+      [[maybe_unused]] LayerID layerID = NoLayer) override {}
+  virtual void update(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds,

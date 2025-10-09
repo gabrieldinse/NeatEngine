@@ -286,8 +286,10 @@ void EditorLayer::onUIToolbarUpdate() {
                          ImVec2{size, size}, ImVec2{0, 0}, ImVec2{1, 1})) {
     if (m_sceneState == SceneState::Edit) {
       m_sceneState = SceneState::Play;
+      m_scene->onRuntimeStart();
     } else if (m_sceneState == SceneState::Play) {
       m_sceneState = SceneState::Edit;
+      m_scene->onRuntimeStop();
     }
   }
 

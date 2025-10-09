@@ -1,0 +1,149 @@
+Name: Scene
+Entities:
+  - ID: 0
+    RigidBody2DComponent:
+      type: Static
+      fixedRotation: false
+      bodyID:
+        index1: 1
+        world0: 0
+        generation: 1
+    BoxCollider2DComponent:
+      offset:
+        elements:
+          - 0.000000
+          - 0.000000
+      size:
+        elements:
+          - 1.000000
+          - 1.000000
+      density: 1.000000
+      friction: 0.500000
+      bounceFactor: 0.000000
+    RenderableSpriteComponent:
+      textureFilepath: ""
+      color:
+        elements:
+          - 0.000000
+          - 0.501931
+          - 1.000000
+          - 1.000000
+      tilingFactor: 1.000000
+    TransformComponent:
+      position:
+        elements:
+          - 0.000000
+          - -2.200000
+          - 0.000000
+      scaling:
+        elements:
+          - 7.900000
+          - 1.100000
+          - 1.000000
+      rotation:
+        elements:
+          - 0.000000
+          - 0.000000
+          - 0.000000
+    LabelComponent:
+      label: Ground
+  - ID: 1
+    ActiveCameraTagComponent:
+      {}
+    TransformComponent:
+      position:
+        elements:
+          - 0.000000
+          - 0.000000
+          - 4.810000
+      scaling:
+        elements:
+          - 1.000000
+          - 1.000000
+          - 1.000000
+      rotation:
+        elements:
+          - 0.000000
+          - 0.000000
+          - 0.000000
+    CameraComponent:
+      type: Perspective
+      orthographicProperties:
+        left: -1.378422
+        right: 1.378422
+        bottom: -1.000000
+        top: 1.000000
+        near: -4.600000
+        far: 5.200000
+      perspectiveProperties:
+        fov: 70.000000
+        aspectRatio: 1.378422
+        near: 0.100000
+        far: 1000.000000
+      projectionMatrix:
+        elements:
+          - 1.036075
+          - 0.000000
+          - 0.000000
+          - 0.000000
+          - 0.000000
+          - 1.428148
+          - 0.000000
+          - 0.000000
+          - 0.000000
+          - 0.000000
+          - -1.000200
+          - -0.200020
+          - 0.000000
+          - 0.000000
+          - -1.000000
+          - 0.000000
+    LabelComponent:
+      label: Camera
+  - ID: 2
+    RigidBody2DComponent:
+      type: Dynamic
+      fixedRotation: false
+      bodyID:
+        index1: 2
+        world0: 0
+        generation: 1
+    BoxCollider2DComponent:
+      offset:
+        elements:
+          - 0.000000
+          - 0.000000
+      size:
+        elements:
+          - 1.000000
+          - 1.000000
+      density: 1.000000
+      friction: 0.500000
+      bounceFactor: 0.000000
+    RenderableSpriteComponent:
+      textureFilepath: ""
+      color:
+        elements:
+          - 1.000000
+          - 0.509652
+          - 0.000000
+          - 1.000000
+      tilingFactor: 1.000000
+    TransformComponent:
+      position:
+        elements:
+          - -0.170511
+          - -1.200068
+          - 0.000000
+      scaling:
+        elements:
+          - 1.721380
+          - 1.000000
+          - 1.000000
+      rotation:
+        elements:
+          - 0.000000
+          - 4.700000
+          - -180.000000
+    LabelComponent:
+      label: Box

@@ -2,6 +2,7 @@
 
 #include "Types/TypeMatrixMxN.hpp"
 #include "Types/TypeVectorN.hpp"
+#include "Types/TypeQuaternion.hpp"
 
 namespace Neat {
 // Vector

@@ -42,7 +42,7 @@ TEST_F(SystemManagerTest, DoNotInitSystems) { expectDefault(); }
 
 TEST_F(SystemManagerTest, InitSystems) {
   expectDefault();
-  systemManager->initialize(entityManager, eventDispatcher);
+  systemManager->onInitialize(entityManager, eventDispatcher);
   expectInitialized();
 }
 
@@ -73,7 +73,7 @@ TEST_F(SystemManagerTest, UpdateOneSystem) {
   EXPECT_EQ(systemManager->getSystem<TestingSystem2>().value()->onUpdateCounter,
             0);
   EXPECT_EQ(systemManager->getSystem<TestingSystem>().value()->initCounter, 1);
-  EXPECT_EQ(systemManager->getSystem<TestingSystem2>().value()->initCounter, 1);
+  EXPECT_EQ(systemManager->getSystem<TestingSystem2>().value()->initCounter, 0);
 
   systemManager->onUpdate<TestingSystem2>(entityManager, eventDispatcher,
                                           0.016);
@@ -113,6 +113,6 @@ TEST_F(SystemManagerTest, UpdateSystemNotAdded) {
                                           0.016);
   systemManager->onUpdate<TestingSystem4>(entityManager, eventDispatcher,
                                           0.016);
-  expectInitialized();
+  expectDefault();
 }
 }  // namespace Neat
