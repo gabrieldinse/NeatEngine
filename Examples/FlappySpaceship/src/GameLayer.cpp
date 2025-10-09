@@ -10,9 +10,9 @@ GameLayer::GameLayer(const Neat::Ref<Neat::EventDispatcher> &eventDispatcher)
           "FlappySpaceshipAssets/Resources/Textures/Triangle.png")) {
   ImGuiIO io = ImGui::GetIO();
   m_fontSmall = io.Fonts->AddFontFromFileTTF(
-      "NeatAssets/Resources/Fonts/OpenSans-Regular.ttf", 20.0f);
+      "NeatAssets/Resources/Fonts/OpenSans/OpenSans-Regular.ttf", 20.0f);
   m_font = io.Fonts->AddFontFromFileTTF(
-      "NeatAssets/Resources/Fonts/OpenSans-Regular.ttf", 120.0f);
+      "NeatAssets/Resources/Fonts/OpenSans/OpenSans-Regular.ttf", 120.0f);
   m_spaceshipTexture->setMinification(
       Neat::Texture2DFilter::LinearMipmapNearest);
   m_spaceshipTexture->setMagnification(Neat::Texture2DFilter::Nearest);

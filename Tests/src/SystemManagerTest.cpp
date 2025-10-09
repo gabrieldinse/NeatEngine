@@ -227,9 +227,7 @@ TEST_F(SystemManagerTest, shutdownOneSystem) {
       systemManager->getSystem<TestingSystem>().value()->isInitialized());
   EXPECT_FALSE(
       systemManager->getSystem<TestingSystem2>().value()->isInitialized());
-  EXPECT_TRUE(
-      systemManager->getSystem<TestingSystem>().value()->isShutdown());
-  EXPECT_TRUE(
-      systemManager->getSystem<TestingSystem2>().value()->isShutdown());
+  EXPECT_TRUE(systemManager->getSystem<TestingSystem>().value()->isShutdown());
+  EXPECT_TRUE(systemManager->getSystem<TestingSystem2>().value()->isShutdown());
 }
 }  // namespace Neat
