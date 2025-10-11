@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "Math/Constants.hpp"
-#include "Core/Exceptions.hpp"
 #include "Core/Types.hpp"
 
 namespace Neat {

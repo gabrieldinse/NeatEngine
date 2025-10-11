@@ -7,7 +7,6 @@
 
 #include "System.hpp"
 
-#include "Core/Exceptions.hpp"
 #include "Core/Log.hpp"
 #include "Utils/NonCopyable.hpp"
 

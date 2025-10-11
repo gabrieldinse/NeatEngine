@@ -104,7 +104,7 @@ inline Vector<N, T> exp2(const Vector<N, T> &v) {
 
 // Quaternion
 template <typename T>
-inline Quaternion<T> log(const Quaternion<T> &q) {
+inline std::optional<Quaternion<T>> log(const Quaternion<T> &q) {
   T norm_v = norm(q.vector());
 
   // To prevent dividing by 0 later on
@@ -114,7 +114,7 @@ inline Quaternion<T> log(const Quaternion<T> &q) {
     } else if (q.scalar() < zero<T>) {  // Computes log of a scalar
       return Quaternion<T>(log(-q.scalar()), pi<T>, zero<T>, zero<T>);
     } else {  // Division by 0 anyway
-      throw QuaternionLogUndefined();
+      return std::nullopt;
     }
   }
 

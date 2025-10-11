@@ -114,8 +114,13 @@ void GameLayer::play(float deltaTimeSeconds) {
   onBackgroundUpdate();
   onPillarUpdate();
   collisionTest();
-  m_camera.getComponent<Neat::TransformComponent>()->setPosition(
-      m_player.getComponent<Neat::TransformComponent>()->getPosition2D());
+  auto playerTransformOpt = m_player.getComponent<Neat::TransformComponent>();
+  auto cameraTransformOpt = m_camera.getComponent<Neat::TransformComponent>();
+  if (playerTransformOpt and cameraTransformOpt) {
+    auto playerTransform{*playerTransformOpt};
+    auto cameraTransform{*cameraTransformOpt};
+    cameraTransform->setPosition(playerTransform->getPosition2D());
+  }
   m_systemManager->update<Neat::OrthographicCameraControllerSystem>(
       m_entityManager, m_eventDispatcher, deltaTimeSeconds);
   m_systemManager->update<Neat::Render2DSystem>(
@@ -151,8 +156,14 @@ void GameLayer::gameOver() {
 }
 
 void GameLayer::onPlayerUpdate(float deltaTimeSeconds) {
-  auto playerVelocity{m_player.getComponent<PlayerVelocity>()};
-  auto playerTransform{m_player.getComponent<Neat::TransformComponent>()};
+  auto playerVelocityOpt{m_player.getComponent<PlayerVelocity>()};
+  auto playerTransformOpt{m_player.getComponent<Neat::TransformComponent>()};
+  if (not playerVelocityOpt or not playerTransformOpt) {
+    return;
+  }
+
+  auto playerVelocity{*playerVelocityOpt};
+  auto playerTransform{*playerTransformOpt};
   playerTransform->incrementX(playerVelocity->value.x() * deltaTimeSeconds);
   if (Neat::Input::isKeyPressed(Neat::Key::Space)) {
     playerVelocity->value.y() += m_engineForce * deltaTimeSeconds;
@@ -168,7 +179,12 @@ void GameLayer::onPlayerUpdate(float deltaTimeSeconds) {
 }
 
 void GameLayer::onBackgroundUpdate() {
-  auto playerTransform{m_player.getComponent<Neat::TransformComponent>()};
+  auto playerTransformOpt{m_player.getComponent<Neat::TransformComponent>()};
+  if (not playerTransformOpt) {
+    return;
+  }
+
+  auto playerTransform{*playerTransformOpt};
   Neat::ComponentHandle<BackgroundTag> backgroundTag;
   Neat::ComponentHandle<Neat::TransformComponent> backgroundTransform;
   for ([[maybe_unused]] auto entity :
@@ -189,7 +205,12 @@ void GameLayer::onBackgroundUpdate() {
 }
 
 void GameLayer::onPillarUpdate() {
-  auto playerTransform{m_player.getComponent<Neat::TransformComponent>()};
+  auto playerTransformOpt{m_player.getComponent<Neat::TransformComponent>()};
+  if (not playerTransformOpt) {
+    return;
+  }
+  auto playerTransform{*playerTransformOpt};
+
   Neat::ComponentHandle<PillarTag> pillarTag;
   Neat::ComponentHandle<Neat::TransformComponent> pillarTransform;
   Neat::ComponentHandle<Neat::RenderableSpriteComponent> sprite;
@@ -244,7 +265,11 @@ std::pair<float, float> GameLayer::genPillarsYPositions() {
 }
 
 void GameLayer::collisionTest() {
-  auto playerTransform{m_player.getComponent<Neat::TransformComponent>()};
+  auto playerTransformOpt{m_player.getComponent<Neat::TransformComponent>()};
+  if (not playerTransformOpt) {
+    return;
+  }
+  auto playerTransform{*playerTransformOpt};
 
   if (Neat::abs(playerTransform->position.y()) > 8.5f) {
     m_eventDispatcher->enqueue<CollisionEvent>();

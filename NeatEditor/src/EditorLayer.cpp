@@ -387,7 +387,13 @@ void EditorLayer::handleEntityHovered() {
         1, Vector2U{static_cast<UInt32>(mouseX), static_cast<UInt32>(mouseY)});
 
     if (entityIndex != Entity::ID::InvalidIndex) {
-      m_hoveredEntity = m_scene->getEntityManager()->getEntity(entityIndex);
+      auto hoveredEntityOpt =
+          m_scene->getEntityManager()->getEntity(entityIndex);
+      if (not hoveredEntityOpt) {
+        m_hoveredEntity = Entity{};
+        return;
+      }
+      m_hoveredEntity = *hoveredEntityOpt;
     } else {
       m_hoveredEntity = Entity{};
     }
@@ -402,8 +408,8 @@ void EditorLayer::newScene() {
 
 void EditorLayer::handleGizmos() {
   Entity &selectedEntity = m_sceneHierarchyPanel.getSelectedEntity();
-  if (selectedEntity.isValid() and
-      selectedEntity.hasComponent<TransformComponent>() and m_gizmoType != -1) {
+  auto entityTransformOpt = selectedEntity.getComponent<TransformComponent>();
+  if (entityTransformOpt and m_gizmoType != -1) {
     ImGuizmo::SetOrthographic(false);
     ImGuizmo::Enable(true);
     ImGuizmo::SetDrawlist();
@@ -415,7 +421,7 @@ void EditorLayer::handleGizmos() {
     Matrix4F transposeCameraProjection{
         transpose(m_editorCamera.getProjection())};
 
-    auto entityTransform = selectedEntity.getComponent<TransformComponent>();
+    auto entityTransform = *entityTransformOpt;
     Matrix4F transposeEntityModel{transpose(entityTransform->getTransform())};
 
     // Snapping

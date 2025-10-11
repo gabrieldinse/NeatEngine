@@ -36,13 +36,23 @@ void OrthographicCameraControllerSystem::onUpdate(
   }
 
   Entity cameraEntity = *mainCamera;
-  auto camera = cameraEntity.getComponent<CameraComponent>();
+  auto cameraOpt = cameraEntity.getComponent<CameraComponent>();
+  if (not cameraOpt) {
+    return;
+  }
+
+  auto camera = *cameraOpt;
   if (camera->getType() != CameraType::Orthographic) {
     return;
   }
 
   auto distance = static_cast<float>(m_translationSpeed * deltaTimeSeconds);
-  auto transform = cameraEntity.getComponent<TransformComponent>();
+  auto transformOpt = cameraEntity.getComponent<TransformComponent>();
+  if (not transformOpt) {
+    return;
+  }
+
+  auto transform = *transformOpt;
 
   if (Input::isKeyPressed(Key::W)) {
     moveUp(*transform, distance);
@@ -131,7 +141,11 @@ bool OrthographicCameraControllerSystem::onMouseScrolled(
   }
 
   Entity cameraEntity = *mainCamera;
-  auto camera = cameraEntity.getComponent<CameraComponent>();
+  auto cameraOpt = cameraEntity.getComponent<CameraComponent>();
+  if (not cameraOpt) {
+    return false;
+  }
+  auto camera = *cameraOpt;
   incrementZoomLevel(*camera, -event.yOffset);
 
   return false;

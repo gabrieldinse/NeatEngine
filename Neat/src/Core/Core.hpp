@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Application.hpp"
-#include "Exceptions.hpp"
 #include "Input.hpp"
 #include "KeyCodes.hpp"
 #include "Layer.hpp"

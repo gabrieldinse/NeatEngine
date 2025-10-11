@@ -16,7 +16,12 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
   m_componentWidgetsRegistry.registerComponent<TransformComponent>(
       "Transform", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
                       Entity &entity) {
-        auto transform = entity.getComponent<TransformComponent>();
+        auto transformOpt = entity.getComponent<TransformComponent>();
+        if (not transformOpt) {
+          NT_CORE_ERROR("Transform component not found");
+          return;
+        }
+        auto transform = *transformOpt;
         drawVector3FControl("Position", transform->position);
         drawVector3FControl("Rotation", transform->rotation);
         drawVector3FControl("Scale", transform->scaling, 1.0f);
@@ -25,7 +30,12 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
   m_componentWidgetsRegistry.registerComponent<CameraComponent>(
       "Camera", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
                    Entity &entity) {
-        auto camera = entity.getComponent<CameraComponent>();
+        auto cameraOpt = entity.getComponent<CameraComponent>();
+        if (not cameraOpt) {
+          NT_CORE_ERROR("Camera component not found");
+          return;
+        }
+        auto camera = *cameraOpt;
         bool activeCamera = entity.hasComponent<ActiveCameraTagComponent>();
         bool activeCameraSelection = activeCamera;
         ImGui::Checkbox("Primary", &activeCameraSelection);
@@ -94,7 +104,12 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
   m_componentWidgetsRegistry.registerComponent<RenderableSpriteComponent>(
       "Sprite", []([[maybe_unused]] const Ref<EntityManager> &entityManager,
                    Entity &entity) {
-        auto sprite = entity.getComponent<RenderableSpriteComponent>();
+        auto spriteOpt = entity.getComponent<RenderableSpriteComponent>();
+        if (not spriteOpt) {
+          NT_CORE_ERROR("RenderableSpriteComponent not found");
+          return;
+        }
+        auto sprite = *spriteOpt;
         ImGui::ColorEdit4("Color", sprite->color.data());
 
         ImGui::Button("Texture", ImVec2{100.0f, 0.0f});
@@ -126,7 +141,13 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
       "Rigid Body 2D",
       []([[maybe_unused]] const Ref<EntityManager> &entityManager,
          Entity &entity) {
-        auto rigidBody = entity.getComponent<RigidBody2DComponent>();
+        auto rigidBodyOpt = entity.getComponent<RigidBody2DComponent>();
+        if (not rigidBodyOpt) {
+          NT_CORE_ERROR("RigidBody2DComponent not found");
+          return;
+        }
+
+        auto rigidBody = *rigidBodyOpt;
         const char *bodyTypeStrings[] = {"Static", "Dynamic", "Kinematic"};
         const char *currentBodyTypeString =
             bodyTypeStrings[(int)rigidBody->type];
@@ -153,7 +174,13 @@ SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene> &scene)
       "Box Collider 2D",
       []([[maybe_unused]] const Ref<EntityManager> &entityManager,
          Entity &entity) {
-        auto boxCollider = entity.getComponent<BoxCollider2DComponent>();
+        auto boxColliderOpt = entity.getComponent<BoxCollider2DComponent>();
+        if (not boxColliderOpt) {
+          NT_CORE_ERROR("BoxCollider2DComponent not found");
+          return;
+        }
+
+        auto boxCollider = *boxColliderOpt;
         ImGui::DragFloat2("Offset", boxCollider->offset.data());
         ImGui::DragFloat2("Size", boxCollider->size.data());
         ImGui::DragFloat("Density", &boxCollider->density, 0.01f, 0.0f, 1.0f);
@@ -201,7 +228,13 @@ void SceneHierarchyPanel::drawEntityNode(Entity &entity) {
     return;
   }
 
-  const auto &label = entity.getComponent<LabelComponent>();
+  auto labelOpt = entity.getComponent<LabelComponent>();
+  if (not labelOpt) {
+    return;
+  }
+
+  auto label = *labelOpt;
+
   // TODO review these flags;
   ImGuiTreeNodeFlags flags =
       ((m_selectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) |
@@ -234,8 +267,9 @@ void SceneHierarchyPanel::drawEntityNode(Entity &entity) {
 }
 
 void SceneHierarchyPanel::drawComponentNodes(Entity &entity) {
-  if (entity.hasComponent<LabelComponent>()) {
-    auto label = entity.getComponent<LabelComponent>();
+  auto labelOpt = entity.getComponent<LabelComponent>();
+  if (labelOpt) {
+    auto label = *labelOpt;
     std::array<char, 256> buffer{};
     strncpy(buffer.data(), label->getRawLabel(), buffer.size());
     if (ImGui::InputText("##Label", buffer.data(), buffer.size())) {

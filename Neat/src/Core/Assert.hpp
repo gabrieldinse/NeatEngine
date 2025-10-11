@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "PlatformDetection.hpp"
 
 #define NT_EXPAND_MACRO(x) x

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Types/TypeVectorN.hpp"
+#include "Types/TypeQuaternion.hpp"
 
 #include "Core/Types.hpp"
 

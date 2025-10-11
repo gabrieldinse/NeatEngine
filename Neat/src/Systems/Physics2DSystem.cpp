@@ -31,9 +31,14 @@ void Physics2DSystem::onInitialize(
       entityManager
           ->entitiesWithComponents<TransformComponent, RigidBody2DComponent>();
   for (auto entity : entities) {
-    auto transform = entity.getComponent<TransformComponent>();
-    auto rigidBody = entity.getComponent<RigidBody2DComponent>();
+    auto transformOpt = entity.getComponent<TransformComponent>();
+    auto rigidBodyOpt = entity.getComponent<RigidBody2DComponent>();
+    if (not transformOpt or not rigidBodyOpt) {
+      continue;
+    }
 
+    auto transform = *transformOpt;
+    auto rigidBody = *rigidBodyOpt;
     b2BodyDef bodyDefinition = b2DefaultBodyDef();
     bodyDefinition.type = Physics2DUtils::toB2BodyType(rigidBody->type);
     bodyDefinition.position =
@@ -43,7 +48,12 @@ void Physics2DSystem::onInitialize(
     rigidBody->bodyID = b2CreateBody(m_worldID, &bodyDefinition);
 
     if (entity.hasComponent<BoxCollider2DComponent>()) {
-      auto boxCollider = entity.getComponent<BoxCollider2DComponent>();
+      auto boxColliderOpt = entity.getComponent<BoxCollider2DComponent>();
+      if (not boxColliderOpt) {
+        continue;
+      }
+
+      auto boxCollider = *boxColliderOpt;
       b2Polygon box =
           b2MakeBox(boxCollider->size.x() * 0.5f, boxCollider->size.y() * 0.5f);
       b2ShapeDef shapeDefinition = b2DefaultShapeDef();
@@ -75,8 +85,14 @@ void Physics2DSystem::onUpdate(
       entityManager
           ->entitiesWithComponents<TransformComponent, RigidBody2DComponent>();
   for (auto entity : entities) {
-    auto transform = entity.getComponent<TransformComponent>();
-    auto rigidBody = entity.getComponent<RigidBody2DComponent>();
+    auto transformOpt = entity.getComponent<TransformComponent>();
+    auto rigidBodyOpt = entity.getComponent<RigidBody2DComponent>();
+    if (not transformOpt or not rigidBodyOpt) {
+      continue;
+    }
+
+    auto transform = *transformOpt;
+    auto rigidBody = *rigidBodyOpt;
     const auto &position = b2Body_GetPosition(rigidBody->bodyID);
     transform->setPosition(position.x, position.y);
     transform->setRotationZRadians(

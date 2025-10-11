@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "Core/Exceptions.hpp"
 #include "Core/Types.hpp"
 
 namespace Neat {

@@ -52,10 +52,18 @@ void ComponentWidgetsRegistry::registerComponent(const std::string& name,
               GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
           ImGui::Separator();
 
-          bool treeNodeOpened = ImGui::TreeNodeEx(
-              reinterpret_cast<void*>(
-                  entityManager->getComponentFamily<Component>()),
-              treeNodeFlags, "%s", name.c_str());
+          auto componentFamilyOpt =
+              entityManager->getComponentFamily<Component>();
+          if (not componentFamilyOpt) {
+            NT_CORE_ERROR("Component family not found");
+            return;
+          }
+
+          const auto& componentFamily = *componentFamilyOpt;
+
+          bool treeNodeOpened =
+              ImGui::TreeNodeEx(reinterpret_cast<void*>(componentFamily),
+                                treeNodeFlags, "%s", name.c_str());
           ImGui::PopStyleVar();
           ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
 

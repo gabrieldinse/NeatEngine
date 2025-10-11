@@ -2,8 +2,6 @@
 
 #include "EntityManager.hpp"
 
-#include "Core/Exceptions.hpp"
-
 namespace Neat {
 const Entity::ID Entity::InvalidID{ID::InvalidIndex, ID::InvalidVersion};
 
@@ -17,27 +15,31 @@ void EntityManager::reset() {
     entity.destroy();
   }
 
-  for (BaseMemoryPool *pool : m_componentArrays) {
+  for (BaseMemoryPool *pool : m_componentMemoryPools) {
     if (pool != nullptr) {
       delete pool;
     }
   }
 
-  m_componentArrays.clear();
+  m_componentMemoryPools.clear();
   m_entityComponentMasks.clear();
   m_entityIdsVersion.clear();
   m_freeEntityIds.clear();
   m_indexCounter = 0;
 }
 
-bool EntityManager::hasAnyComponent(const Entity::ID &id) const {
-  checkIsValid(id);
+[[nodiscard]] bool EntityManager::hasAnyComponent(const Entity::ID &id) const {
+  if (not isValid(id)) {
+    return false;
+  }
 
   return m_entityComponentMasks[id.index()].any();
 }
 
-bool Entity::hasAnyComponent() const {
-  checkIsValid();
+[[nodiscard]] bool Entity::hasAnyComponent() const {
+  if (not isValid()) {
+    return false;
+  }
 
   return m_entityManager->hasAnyComponent(m_id);
 }

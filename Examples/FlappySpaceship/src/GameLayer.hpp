@@ -43,10 +43,12 @@ class GameLayer : public Neat::Layer {
   bool onMouseButtonPressedEvent(const Neat::MouseButtonPressedEvent &event);
   bool onWindowResizeEvent(const Neat::WindowResizeEvent &event);
   unsigned getScore() {
-    return static_cast<unsigned>(
-        (m_player.getComponent<Neat::TransformComponent>()->position.x() +
-         10.f) /
-        10.0f);
+    auto transformOpt = m_player.getComponent<Neat::TransformComponent>();
+    if (not transformOpt) {
+      return 0;
+    }
+    auto transform = *transformOpt;
+    return static_cast<unsigned>((transform->position.x() + 10.f) / 10.0f);
   }
   static bool pointInTriangle(const Neat::Vector2F &p, const Neat::Vector2F &p0,
                               const Neat::Vector2F &p1,

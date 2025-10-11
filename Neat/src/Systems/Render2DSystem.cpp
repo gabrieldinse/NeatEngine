@@ -24,9 +24,15 @@ void Render2DSystem::onUpdate(
   for (auto activeCameraEntity :
        entityManager->entitiesWithComponents<
            ActiveCameraTagComponent, CameraComponent, TransformComponent>()) {
-    auto camera = activeCameraEntity.getComponent<CameraComponent>();
-    auto cameraTransform =
+    auto cameraOpt = activeCameraEntity.getComponent<CameraComponent>();
+    auto cameraTransformOpt =
         activeCameraEntity.getComponent<TransformComponent>();
+    if (not cameraOpt or not cameraTransformOpt) {
+      continue;
+    }
+
+    auto camera = *cameraOpt;
+    auto cameraTransform = *cameraTransformOpt;
     Renderer2D::beginScene(*camera, *cameraTransform);
 
     ComponentHandle<RenderableSpriteComponent> renderableSprite;

@@ -1,3 +1,4 @@
+#include <algorithm>
 
 namespace Neat {
 // Scalar
@@ -61,11 +62,8 @@ constexpr Quaternion<T> mix(const Quaternion<T> &a, const Quaternion<T> &b,
 template <typename T, typename U>
 constexpr Quaternion<T> lerp(const Quaternion<T> &a, const Quaternion<T> &b,
                              const U &t) {
-  if (t < zero<T> or t > one<T>) {
-    throw QuaternionLerpStepError();
-  }
-
-  return a * (one<T> - static_cast<T>(t)) + b * static_cast<T>(t);
+  T factor = std::clamp(static_cast<T>(t), zero<T>, one<T>);
+  return a * (one<T> - factor) + b * factor;
 }
 
 template <typename T, typename U>

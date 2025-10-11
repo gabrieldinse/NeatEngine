@@ -44,7 +44,10 @@ void Scene::setViewport(UInt32 width, UInt32 height) {
   for (auto cameraEntity :
        m_entityManager->entitiesWithComponents<ActiveCameraTagComponent,
                                                CameraComponent>()) {
-    cameraEntity.getComponent<CameraComponent>()->setAspectRatio(width, height);
+    auto cameraOpt = cameraEntity.getComponent<CameraComponent>();
+    if (cameraOpt) {
+      (*cameraOpt)->setAspectRatio(width, height);
+    }
     return;
   }
 }

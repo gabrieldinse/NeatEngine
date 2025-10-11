@@ -117,7 +117,7 @@ TEST_F(EntityManagerTest, DestroyEntity) {
   auto entity1 = entityManager->createEntity();
   EXPECT_EQ(entityManager->size(), 1);
 
-  entityManager->createEntity();
+  [[maybe_unused]] auto entity2 = entityManager->createEntity();
   EXPECT_EQ(entityManager->size(), 2);
 
   entityManager->destroyEntity(entity1);
@@ -238,12 +238,18 @@ TEST_F(EntityManagerTest, EntityCopyAndAssignment) {
 
 TEST_F(EntityManagerTest, GetEntity) {
   auto entity1 = entityManager->createEntity();
-  auto entity2 = entityManager->getEntity(entity1.id());
+  auto entity2Opt = entityManager->getEntity(entity1.id());
+  EXPECT_TRUE(entity2Opt.has_value());
+
+  auto entity2 = *entity2Opt;
   EXPECT_EQ(entity1, entity2);
   EXPECT_TRUE(entity2.isValid());
   EXPECT_TRUE(entityManager->hasEntity(entity2));
 
-  auto entity3 = entityManager->getEntity(entity1.id().index());
+  auto entity3Opt = entityManager->getEntity(entity1.id().index());
+  EXPECT_TRUE(entity3Opt.has_value());
+
+  auto entity3 = *entity3Opt;
   EXPECT_EQ(entity1, entity3);
   EXPECT_TRUE(entity3.isValid());
   EXPECT_TRUE(entityManager->hasEntity(entity3));
@@ -261,12 +267,16 @@ TEST_F(EntityManagerTest, AddComponent) {
   EXPECT_FALSE(entity1.hasAnyComponent());
   EXPECT_NE(lastSpeedComponentAdded.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
 
-  auto speedComponentHandle =
+  auto speedComponentHandleOpt =
       entity1.addComponent<SpeedComponent>(Vector3F{5.0f, 10.0f, 15.0f});
+  EXPECT_TRUE(speedComponentHandleOpt.has_value());
+
+  auto speedComponentHandle = *speedComponentHandleOpt;
   EXPECT_TRUE(entity1.hasComponent<SpeedComponent>());
   EXPECT_TRUE(entity1.hasAnyComponent());
   EXPECT_TRUE(speedComponentHandle.isValid());
-  EXPECT_EQ(entity1.getComponent<SpeedComponent>()->velocity,
+  EXPECT_TRUE(entity1.getComponent<SpeedComponent>().has_value());
+  EXPECT_EQ(entity1.getComponent<SpeedComponent>().value()->velocity,
             (Vector3F{5.0f, 10.0f, 15.0f}));
   EXPECT_EQ(speedComponentHandle->velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
   EXPECT_NE(lastSpeedComponentAdded.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
@@ -275,12 +285,15 @@ TEST_F(EntityManagerTest, AddComponent) {
   EXPECT_EQ(lastSpeedComponentAdded.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
   EXPECT_FALSE(entity1.hasComponent<PlayerStatsComponent>());
 
-  auto playerStatsComponentHandle =
+  auto playerStatsComponentHandleOpt =
       entity1.addComponent<PlayerStatsComponent>(100, 50, 10);
+  EXPECT_TRUE(playerStatsComponentHandleOpt.has_value());
+
+  auto playerStatsComponentHandle = *playerStatsComponentHandleOpt;
   EXPECT_TRUE(entity1.hasComponent<PlayerStatsComponent>());
   EXPECT_TRUE(entity1.hasAnyComponent());
   EXPECT_TRUE(playerStatsComponentHandle.isValid());
-  EXPECT_EQ(*entity1.getComponent<PlayerStatsComponent>(),
+  EXPECT_EQ(*entity1.getComponent<PlayerStatsComponent>().value(),
             (PlayerStatsComponent{100, 50, 10}));
   EXPECT_EQ(playerStatsComponentHandle->health, 100);
   EXPECT_EQ(playerStatsComponentHandle->mana, 50);
@@ -293,8 +306,11 @@ TEST_F(EntityManagerTest, AddComponent) {
 
 TEST_F(EntityManagerTest, RemoveComponent) {
   auto entity1 = entityManager->createEntity();
-  [[maybe_unused]] auto speedComponentHandle =
+  auto speedComponentHandleOpt =
       entity1.addComponent<SpeedComponent>(Vector3F{5.0f, 10.0f, 15.0f});
+  EXPECT_TRUE(speedComponentHandleOpt.has_value());
+
+  auto speedComponentHandle = *speedComponentHandleOpt;
   EXPECT_TRUE(entity1.hasComponent<SpeedComponent>());
   EXPECT_FALSE(entity1.hasComponent<PlayerStatsComponent>());
 
@@ -309,9 +325,11 @@ TEST_F(EntityManagerTest, RemoveComponent) {
   EXPECT_EQ(lastSpeedComponentRemoved.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
 
   entity1.addComponent<SpeedComponent>(Vector3F{50.0f, 100.0f, 150.0f});
-  auto playerStatsComponentHandle =
+  auto playerStatsComponentHandleOpt =
       entity1.addComponent<PlayerStatsComponent>(100, 50, 10);
+  EXPECT_TRUE(playerStatsComponentHandleOpt.has_value());
 
+  auto playerStatsComponentHandle = *playerStatsComponentHandleOpt;
   entity1.removeComponent<PlayerStatsComponent>();
   eventDispatcher->update();
   EXPECT_FALSE(entity1.hasComponent<PlayerStatsComponent>());

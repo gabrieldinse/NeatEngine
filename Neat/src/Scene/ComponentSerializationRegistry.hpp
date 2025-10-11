@@ -28,7 +28,12 @@ class ComponentSerializationRegistry {
             return std::nullopt;
           }
 
-          const auto component = entity.getComponent<C>();
+          const auto componentOpt = entity.getComponent<C>();
+          if (not componentOpt) {
+            return std::nullopt;
+          }
+
+          const auto component = *componentOpt;
           return rfl::to_generic(*component);
         },
         [](Entity &entity, const std::string &componentName,

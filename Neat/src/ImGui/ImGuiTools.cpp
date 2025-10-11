@@ -18,8 +18,10 @@ void ImGuiTools::onStatsUpdate(const Entity &hoveredEntity) {
   std::string entityLabel{"None"};
   std::string entityIndex{"N/A"};
   if (hoveredEntity) {
-    if (hoveredEntity.hasComponent<LabelComponent>()) {
-      entityLabel = hoveredEntity.getComponent<LabelComponent>()->label;
+    auto labelCompOpt = hoveredEntity.getComponent<LabelComponent>();
+    if (labelCompOpt) {
+      const auto &labelComponent = *labelCompOpt;
+      entityLabel = labelComponent->label;
       entityIndex = std::to_string(hoveredEntity.id().index());
     }
   }

@@ -298,8 +298,12 @@ bool ExampleLayer::onWindowResize(const Neat::WindowResizeEvent &event) {
   for (auto cameraEntity :
        m_entityManager->entitiesWithComponents<Neat::ActiveCameraTagComponent,
                                                Neat::CameraComponent>()) {
-    cameraEntity.getComponent<Neat::CameraComponent>()
-        ->setOrthographicAspectRatio(event.width, event.height);
+    auto cameraOpt = cameraEntity.getComponent<Neat::CameraComponent>();
+    if (not cameraOpt) {
+      return false;
+    }
+    auto camera = *cameraOpt;
+    camera->setOrthographicAspectRatio(event.width, event.height);
     return false;
   }
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Core/Exceptions.hpp"
 #include "Core/Types.hpp"
 
 namespace Neat {
