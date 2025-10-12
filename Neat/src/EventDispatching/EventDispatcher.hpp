@@ -11,7 +11,7 @@ class EventDispatcher {
  public:
   template <typename EventType>
   EventConnections<EventType>& get() {
-    TypeId eventId = getTypeId<EventType>();
+    TypeID eventId = getTypeId<EventType>();
     if (not m_eventConnectionsMap.contains(eventId)) {
       m_eventConnectionsMap[eventId] = makeScope<EventConnections<EventType>>();
     }
@@ -64,7 +64,7 @@ class EventDispatcher {
   template <typename Instance>
   void disconnect(Instance& instance) {
     for (auto& [_, connections] : m_eventConnectionsMap) {
-      connections->disconnect(static_cast<void*>(&instance));
+      connections->disconnect(getInstanceID(instance));
     }
   }
 
@@ -83,7 +83,7 @@ class EventDispatcher {
 
  private:
   using EventConnectionsMap =
-      std::unordered_map<TypeId, Scope<BaseEventConnections>>;
+      std::unordered_map<TypeID, Scope<BaseEventConnections>>;
   using EventsQueue = SafeQueue<Scope<BaseQueuedEvent>>;
 
  private:

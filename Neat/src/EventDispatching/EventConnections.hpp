@@ -8,7 +8,7 @@
 #include "EventHandler.hpp"
 #include "EventConnectionHandle.hpp"
 
-#include "Utils/TypeId.hpp"
+#include "Utils/TypeID.hpp"
 #include "Core/Limits.hpp"
 #include "Core/Types.hpp"
 #include "Core/Constants.hpp"
@@ -18,7 +18,7 @@ class BaseEventConnections {
  public:
   virtual ~BaseEventConnections() = default;
   virtual void update(const BaseQueuedEvent &queuedEvent) = 0;
-  virtual void disconnect(void *instance) = 0;
+  virtual void disconnect(InstanceID instanceID) = 0;
   virtual void enable(LayerID layerID) = 0;
   virtual void disable(LayerID layerID) = 0;
 };
@@ -43,16 +43,16 @@ class EventConnections : public BaseEventConnections {
 
   template <auto method, typename Instance>
   void disconnect(Instance &instance) {
-    TypeId methodId = getMethodId<method>();
+    TypeID methodId = getMethodId<method>();
     m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
-      return eventHandler.instancePointer == static_cast<void *>(&instance) and
+      return eventHandler.instanceID == getInstanceID(instance) and
              eventHandler.instanceMethodId == methodId;
     });
   }
 
-  void disconnect(void *instance) override {
+  void disconnect(InstanceID instanceID) override {
     m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
-      return eventHandler.instancePointer == instance;
+      return eventHandler.instanceID == instanceID;
     });
   }
 
@@ -65,8 +65,8 @@ class EventConnections : public BaseEventConnections {
   void disconnect(
       const EventConnectionHandle<EventType> &eventConnectionHandle) {
     m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
-      return eventHandler.instancePointer ==
-                 eventConnectionHandle.getEventHandler().instancePointer and
+      return eventHandler.instanceID ==
+                 eventConnectionHandle.getEventHandler().instanceID and
              eventHandler.instanceMethodId ==
                  eventConnectionHandle.getEventHandler().instanceMethodId;
     });
@@ -134,7 +134,7 @@ class EventConnections : public BaseEventConnections {
     EventHandler<EventType> eventHandler{[&instance](const EventType &event) {
                                            return (instance.*method)(event);
                                          },
-                                         static_cast<void *>(&instance),
+                                         getInstanceID(instance),
                                          getMethodId<method>(),
                                          ignoreIfHandled,
                                          priority,

@@ -5,14 +5,14 @@
 #include "Core/Constants.hpp"
 
 namespace Neat {
-template <typename EventType>
-using HandlerFunction = std::function<bool(const EventType &)>;
 
 template <typename EventType>
 struct EventHandler {
-  HandlerFunction<EventType> function;
-  void *instancePointer;
-  TypeId instanceMethodId;
+  using HandlerFunction = std::function<bool(const EventType &)>;
+
+  HandlerFunction function;
+  InstanceID instanceID;
+  TypeID instanceMethodId;
   bool ignoreIfHandled;
   EventPriority priority;
   LayerID layerID = NoLayer;

@@ -43,7 +43,8 @@ using Bool = bool;
 using Char = char;
 using UChar = unsigned char;
 
-using TypeId = UIntPointerType;
+using TypeID = UIntPointerType;
+using InstanceID = UIntPointerType;
 using LayerID = UInt32;
 using EventPriority = UInt16;
 
