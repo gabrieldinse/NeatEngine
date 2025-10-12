@@ -4,10 +4,10 @@
 
 namespace Neat {
 void EventDispatcher::update() {
-  while (auto queuedEvent = m_eventsQueue.tryPop()) {
-    auto &baseQueuedEvent = queuedEvent.value();
-    if (m_eventConnectionsMap.contains(baseQueuedEvent->eventId)) {
-      m_eventConnectionsMap[baseQueuedEvent->eventId]->update(*baseQueuedEvent);
+  while (auto queuedEventOpt = m_eventsQueue.tryPop()) {
+    auto &queuedEvent = queuedEventOpt.value();
+    if (m_eventConnectionsMap.contains(queuedEvent->eventId)) {
+      m_eventConnectionsMap[queuedEvent->eventId]->update(*queuedEvent);
     }
   }
 }

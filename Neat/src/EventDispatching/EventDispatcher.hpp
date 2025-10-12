@@ -11,7 +11,7 @@ class EventDispatcher {
  public:
   template <typename EventType>
   EventConnections<EventType>& get() {
-    TypeID eventId = getTypeId<EventType>();
+    TypeID eventId = getTypeID<EventType>();
     if (not m_eventConnectionsMap.contains(eventId)) {
       m_eventConnectionsMap[eventId] = makeScope<EventConnections<EventType>>();
     }
@@ -23,14 +23,14 @@ class EventDispatcher {
   template <typename EventType>
   void enqueue(const EventType& event) {
     m_eventsQueue.push(
-        makeScope<QueuedEvent<EventType>>(getTypeId<EventType>(), event));
+        makeScope<QueuedEvent<EventType>>(getTypeID<EventType>(), event));
   }
 
   template <typename EventType>
   void enqueue(EventType&& event) {
     using DecayedEventType = std::remove_reference_t<EventType>;
     m_eventsQueue.push(makeScope<QueuedEvent<DecayedEventType>>(
-        getTypeId<DecayedEventType>(), event));
+        getTypeID<DecayedEventType>(), event));
   }
 
   template <typename EventType, typename... Args,
@@ -39,7 +39,7 @@ class EventDispatcher {
                              int> = 0>
   void enqueue(Args&&... args) {
     m_eventsQueue.push(makeScope<QueuedEvent<EventType>>(
-        getTypeId<EventType>(), EventType(std::forward<Args>(args)...)));
+        getTypeID<EventType>(), EventType(std::forward<Args>(args)...)));
   }
 
   template <typename EventType>

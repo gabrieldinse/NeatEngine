@@ -10,14 +10,14 @@ constexpr TypeID getTypeIDImpl() {
 }
 
 template <typename T>
-constexpr TypeID getTypeId() {
+constexpr TypeID getTypeID() {
   using DecayedType = typename std::decay_t<T>;
   return getTypeIDImpl<DecayedType>();
 }
 
 template <auto method>
-constexpr TypeID getMethodId() {
-  return reinterpret_cast<TypeID>(&getMethodId<method>);
+constexpr TypeID getMethodID() {
+  return reinterpret_cast<TypeID>(&getMethodID<method>);
 }
 
 template <typename Instance>

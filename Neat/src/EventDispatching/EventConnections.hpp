@@ -43,7 +43,7 @@ class EventConnections : public BaseEventConnections {
 
   template <auto method, typename Instance>
   void disconnect(Instance &instance) {
-    TypeID methodId = getMethodId<method>();
+    TypeID methodId = getMethodID<method>();
     m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
       return eventHandler.instanceID == getInstanceID(instance) and
              eventHandler.instanceMethodId == methodId;
@@ -135,7 +135,7 @@ class EventConnections : public BaseEventConnections {
                                            return (instance.*method)(event);
                                          },
                                          getInstanceID(instance),
-                                         getMethodId<method>(),
+                                         getMethodID<method>(),
                                          ignoreIfHandled,
                                          priority,
                                          layerID};

@@ -11,26 +11,26 @@ struct MyOtherStruct {
 };
 struct ThirdStruct : public MyStruct {};
 
-TEST(TypeIdTest, GetTypeIdTest) {
-  auto id1 = getTypeId<MyStruct>();
-  auto id2 = getTypeId<MyOtherStruct>();
-  auto id3 = getTypeId<MyStruct>();
-  auto id4 = getTypeId<ThirdStruct>();
+TEST(TypeIdTest, GetTypeId) {
+  auto id1 = getTypeID<MyStruct>();
+  auto id2 = getTypeID<MyOtherStruct>();
+  auto id3 = getTypeID<MyStruct>();
+  auto id4 = getTypeID<ThirdStruct>();
   EXPECT_EQ(id1, id3);
   EXPECT_NE(id1, id2);
   EXPECT_NE(id2, id3);
   EXPECT_NE(id4, id3);
   EXPECT_NE(id4, id2);
-  EXPECT_EQ(getTypeId<int>(), getTypeId<int>());
-  EXPECT_NE(getTypeId<float>(), getTypeId<int>());
-  EXPECT_NE(getTypeId<double>(), getTypeId<float>());
+  EXPECT_EQ(getTypeID<int>(), getTypeID<int>());
+  EXPECT_NE(getTypeID<float>(), getTypeID<int>());
+  EXPECT_NE(getTypeID<double>(), getTypeID<float>());
 }
 
-TEST(TypeIdTest, GetTypeIdConstTest) {
-  auto id1 = getTypeId<const MyStruct>();
-  auto id2 = getTypeId<MyStruct>();
-  auto id3 = getTypeId<const MyOtherStruct>();
-  auto id4 = getTypeId<MyOtherStruct>();
+TEST(TypeIdTest, GetTypeIdConst) {
+  auto id1 = getTypeID<const MyStruct>();
+  auto id2 = getTypeID<MyStruct>();
+  auto id3 = getTypeID<const MyOtherStruct>();
+  auto id4 = getTypeID<MyOtherStruct>();
   EXPECT_EQ(id1, id2);
   EXPECT_NE(id1, id3);
   EXPECT_NE(id1, id4);
@@ -38,21 +38,21 @@ TEST(TypeIdTest, GetTypeIdConstTest) {
   EXPECT_EQ(id3, id4);
 }
 
-TEST(TypeIdTest, GetTypeIdReferenceTest) {
-  auto id1 = getTypeId<MyStruct &>();
-  auto id2 = getTypeId<MyStruct>();
-  auto id3 = getTypeId<MyStruct &&>();
+TEST(TypeIdTest, GetTypeIdReference) {
+  auto id1 = getTypeID<MyStruct &>();
+  auto id2 = getTypeID<MyStruct>();
+  auto id3 = getTypeID<MyStruct &&>();
   EXPECT_EQ(id1, id2);
   EXPECT_EQ(id1, id3);
   EXPECT_EQ(id2, id3);
 }
 
 TEST(TypeIdTest, GetTypeIdConstReferenceTest) {
-  auto id1 = getTypeId<MyStruct &>();
-  auto id2 = getTypeId<MyStruct>();
-  auto id3 = getTypeId<MyStruct &&>();
-  auto id4 = getTypeId<const MyStruct &>();
-  auto id5 = getTypeId<const MyStruct>();
+  auto id1 = getTypeID<MyStruct &>();
+  auto id2 = getTypeID<MyStruct>();
+  auto id3 = getTypeID<MyStruct &&>();
+  auto id4 = getTypeID<const MyStruct &>();
+  auto id5 = getTypeID<const MyStruct>();
   EXPECT_EQ(id1, id2);
   EXPECT_EQ(id1, id3);
   EXPECT_EQ(id1, id4);
@@ -66,12 +66,27 @@ TEST(TypeIdTest, GetTypeIdConstReferenceTest) {
 }
 
 TEST(TypeIdTest, GetMethodIdTest) {
-  auto id1 = getMethodId<&MyOtherStruct::method>();
-  auto id2 = getMethodId<&MyStruct::foo>();
-  auto id3 = getMethodId<&MyOtherStruct::method>();
+  auto id1 = getMethodID<&MyOtherStruct::method>();
+  auto id2 = getMethodID<&MyStruct::foo>();
+  auto id3 = getMethodID<&MyOtherStruct::method>();
   EXPECT_EQ(id1, id3);
   EXPECT_NE(id1, id2);
   EXPECT_NE(id2, id3);
-  EXPECT_EQ(getMethodId<&printf>(), getMethodId<&printf>());
+  EXPECT_EQ(getMethodID<&printf>(), getMethodID<&printf>());
+}
+
+TEST(TypeIdTest, GetInstanceID) {
+  MyStruct a, b;
+  MyStruct &refA = a;
+  MyStruct *ptrA = &a;
+  MyOtherStruct c;
+  EXPECT_NE(getInstanceID(a), getInstanceID(b));
+  EXPECT_NE(getInstanceID(a), getInstanceID(c));
+  EXPECT_NE(getInstanceID(b), getInstanceID(c));
+  EXPECT_EQ(getInstanceID(a), getInstanceID(a));
+  EXPECT_EQ(getInstanceID(b), getInstanceID(b));
+  EXPECT_EQ(getInstanceID(c), getInstanceID(c));
+  EXPECT_EQ(getInstanceID(a), getInstanceID(refA));
+  EXPECT_EQ(getInstanceID(a), getInstanceID(*ptrA));
 }
 }  // namespace Neat
