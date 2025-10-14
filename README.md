@@ -1,8 +1,15 @@
 # Neat Engine
+![C++](https://img.shields.io/badge/C%2B%2B-23-blue.svg)
+![CMake](https://img.shields.io/badge/CMake-3.28%2B-blue)
+![Platform: Linux](https://img.shields.io/badge/platform-Linux-lightgrey)
+![Platform: Windows](https://img.shields.io/badge/platform-Windows-lightgrey)
+![Compiler: GCC](https://img.shields.io/badge/GCC-13%2B-yellowgreen)
+![Compiler: MSVC](https://img.shields.io/badge/MSVC-2022%2B-blueviolet)
+![License](https://img.shields.io/badge/license-Apache%202.0-green)
 
 Neat Engine is a in-progress, for learning puposes, game engine.
 
-Currently, it only supports Linux and OpenGL. Other platforms should be added once the project is more mature.
+Currently, it only supports OpenGL. Other Graphics APIs, like Vulkan, should be added in the future.
 
 ## Building Neat
 ### Linux
