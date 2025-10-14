@@ -41,7 +41,7 @@ void Renderer2D::initialize() {
     quadIndexes[(std::size_t)i + 5] = offset + 0;
   }
 
-  auto squareIB = IndexBuffer::create(quadIndexes.data(), quadIndexes.size());
+  auto squareIB = IndexBuffer::create(quadIndexes.data(), static_cast<UInt32>(quadIndexes.size()));
 
   s_data->quadVertexArray->setIndexBuffer(squareIB);
 

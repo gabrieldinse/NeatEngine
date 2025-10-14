@@ -44,8 +44,8 @@ if(MSVC)
         /W4
         /permissive-
     )
-    # TODO uncomment
-    #set_source_files_properties(${NEAT_EDITOR_SOURCES} PROPERTIES
+    # Warnings as errors
+    #set_source_files_properties(${NEAT_SOURCES} PROPERTIES
     #    COMPILE_OPTIONS "$<$<CONFIG:Debug>:/WX>"
     #)
 else()

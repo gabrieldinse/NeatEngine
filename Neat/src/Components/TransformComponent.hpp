@@ -70,7 +70,7 @@ struct TransformComponent {
   void incrementY(float offset) { position.y() += offset; }
   void incrementZ(float offset) { position.z() += offset; }
 
-  void setRotation(const Vector3F &rotation) { this->rotation = rotation; }
+  void setRotation(const Vector3F &rotationVal) { this->rotation = rotationVal; }
   void incrementRotation(const Vector3F &rotationIncrement) {
     rotation += rotationIncrement;
   }

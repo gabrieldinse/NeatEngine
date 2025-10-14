@@ -98,7 +98,7 @@ void OpenGLFramebuffer::destroyFramebuffer() {
   }
 
   if (not m_colorAttachmentIDs.empty()) {
-    glDeleteTextures(m_colorAttachmentIDs.size(), m_colorAttachmentIDs.data());
+    glDeleteTextures(static_cast<GLsizei>(m_colorAttachmentIDs.size()), m_colorAttachmentIDs.data());
     m_colorAttachmentIDs.clear();
   }
 
@@ -119,7 +119,7 @@ void OpenGLFramebuffer::createColorAttachmentTextures() {
   NT_PROFILE_FUNCTION();
 
   m_colorAttachmentIDs =
-      createTextures(m_specification.colorAttachments.attachments.size());
+      createTextures(static_cast<GLsizei>(m_specification.colorAttachments.attachments.size()));
   for (UInt32 i = 0; i < m_colorAttachmentIDs.size(); ++i) {
     bindTexture(m_colorAttachmentIDs[i]);
     attachColorTexture(i);
@@ -157,7 +157,7 @@ std::vector<UInt32> OpenGLFramebuffer::createTextures(UInt32 count) {
 
   std::vector<UInt32> attachmentIDs;
   attachmentIDs.resize(count);
-  glCreateTextures(GL_TEXTURE_2D, attachmentIDs.size(), attachmentIDs.data());
+  glCreateTextures(GL_TEXTURE_2D, static_cast<GLsizei>(attachmentIDs.size()), attachmentIDs.data());
   return attachmentIDs;
 }
 
@@ -203,7 +203,7 @@ void OpenGLFramebuffer::drawBuffers() {
     NT_CORE_ASSERT(m_colorAttachmentIDs.size() <= 2,
                    "Only up to 2 color attachments are supported.");
     constexpr UInt32 buffers[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
-    glDrawBuffers(m_colorAttachmentIDs.size(), buffers);
+    glDrawBuffers(static_cast<GLsizei>(m_colorAttachmentIDs.size()), buffers);
   } else if (m_colorAttachmentIDs.empty()) {
     glDrawBuffer(GL_NONE);
   }

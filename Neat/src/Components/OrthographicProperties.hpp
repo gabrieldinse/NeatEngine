@@ -49,14 +49,14 @@ struct OrthographicProperties {
     setProperties(static_cast<float>(width) / static_cast<float>(height), size);
   }
 
-  void setProperties(float left, float right, float bottom, float top,
-                     float near = -1.0f, float far = 1.0f) {
-    left = left;
-    right = right;
-    bottom = bottom;
-    top = top;
-    near = near;
-    far = far;
+  void setProperties(float leftVal, float rightVal, float bottomVal, float topVal,
+                     float nearVal = -1.0f, float farVal = 1.0f) {
+    left = leftVal;
+    right = rightVal;
+    bottom = bottomVal;
+    top = topVal;
+    near = nearVal;
+    far = farVal;
   }
 
   float getAspectRatio() const { return (right - left) / (top - bottom); }
