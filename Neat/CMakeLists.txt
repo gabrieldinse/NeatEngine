@@ -30,9 +30,6 @@ file(GLOB_RECURSE NEAT_SOURCES
     ${VENDOR_DIR}/ImGui/backends/imgui_impl_glfw.cpp
     ${VENDOR_DIR}/ImGui/backends/imgui_impl_opengl3.cpp
     ${VENDOR_DIR}/ImGuizmo/ImGuizmo.cpp
-
-    # TODO do it properly for Windows
-    src/Platform/Linux/**.cpp
 )
 
 message(STATUS "NEAT_SOURCES: ${NEAT_SOURCES}")
@@ -40,7 +37,6 @@ message(STATUS "NEAT_SOURCES: ${NEAT_SOURCES}")
 add_library(Neat STATIC ${NEAT_SOURCES})
 
 if(MSVC)
-    # TODO set MSVC specific warnings
     target_compile_options(Neat PUBLIC
         /utf-8
     )

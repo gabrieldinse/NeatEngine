@@ -53,7 +53,7 @@ add_custom_command(TARGET NeatEditor POST_BUILD
         "$<TARGET_FILE_DIR:NeatEditor>/NeatEditorAssets/Resources"
 )
 add_custom_command(TARGET NeatEditor POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        imgui.ini
+    COMMAND ${CMAKE_COMMAND} -E copy
+        "${CMAKE_CURRENT_SOURCE_DIR}/imgui.ini"
         "$<TARGET_FILE_DIR:NeatEditor>/imgui.ini"
 )

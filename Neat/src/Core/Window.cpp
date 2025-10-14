@@ -38,7 +38,7 @@ void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos);
 Int32 Window::s_windowCount = 0;
 
 Window::Window(const Ref<EventDispatcher> &eventDispatcher,
-                         const WindowProperties &windowProperties)
+               const WindowProperties &windowProperties)
     : m_windowData{windowProperties, eventDispatcher} {
   NT_PROFILE_FUNCTION();
   if (s_windowCount == 0) {
@@ -87,13 +87,9 @@ Window::~Window() {
   }
 }
 
-Int32 Window::getWidth() const {
-  return m_windowData.windowProperties.width;
-}
+Int32 Window::getWidth() const { return m_windowData.windowProperties.width; }
 
-Int32 Window::getHeight() const {
-  return m_windowData.windowProperties.height;
-}
+Int32 Window::getHeight() const { return m_windowData.windowProperties.height; }
 
 float Window::getAspectRatio() const {
   return static_cast<float>(m_windowData.windowProperties.width) /
@@ -121,9 +117,7 @@ void Window::setVSync(bool enabled) {
   m_windowData.windowProperties.vSync = enabled;
 }
 
-bool Window::isVSync() const {
-  return m_windowData.windowProperties.vSync;
-}
+bool Window::isVSync() const { return m_windowData.windowProperties.vSync; }
 
 // ---------------------------------------------------------------------- //
 // GLFW callbacks ------------------------------------------------------- //

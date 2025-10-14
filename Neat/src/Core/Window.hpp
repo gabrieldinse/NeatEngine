@@ -22,7 +22,7 @@ struct WindowData {
 class Window {
  public:
   Window(const Ref<EventDispatcher> &eventDispatcher,
-              const WindowProperties &windowProperties);
+         const WindowProperties &windowProperties);
   ~Window();
 
   void update();

@@ -8,9 +8,7 @@
 namespace Neat {
 GLFWwindow *Input::s_window;
 
-void Input::setWindow(Window &window) {
-  s_window = window.getNativeWindow();
-}
+void Input::setWindow(Window &window) { s_window = window.getNativeWindow(); }
 
 bool Input::isKeyPressed(Key key) {
   auto state = glfwGetKey(s_window, enumToInt(key));

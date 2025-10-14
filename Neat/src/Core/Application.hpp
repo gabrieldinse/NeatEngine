@@ -53,8 +53,8 @@ class Application {
 
   ApplicationCommandLineArguments m_commandLineArgs;
 
-  Window m_window;
   Ref<EventDispatcher> m_eventDispatcher;
+  Window m_window;
   LayerGroup m_layerGroup;
 
   bool m_running = false;
