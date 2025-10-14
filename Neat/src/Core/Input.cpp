@@ -6,34 +6,27 @@
 #include <GLFW/glfw3.h>
 
 namespace Neat {
-Scope<Input::InputImpl> Input::s_impl;
-
-struct Input::InputImpl {
-  InputImpl(GLFWwindow *window) : window(window) {}
-
-  GLFWwindow *window;
-};
+GLFWwindow *Input::s_window;
 
 void Input::setWindow(Window &window) {
-  s_impl =
-      makeScope<InputImpl>(static_cast<GLFWwindow *>(window.getNativeWindow()));
+  s_window = window.getNativeWindow();
 }
 
 bool Input::isKeyPressed(Key key) {
-  auto state = glfwGetKey(s_impl->window, enumToInt(key));
+  auto state = glfwGetKey(s_window, enumToInt(key));
 
   return (state == GLFW_PRESS or state == GLFW_REPEAT);
 }
 
 bool Input::isMouseButtonPressed(MouseButton button) {
-  auto state = glfwGetMouseButton(s_impl->window, enumToInt(button));
+  auto state = glfwGetMouseButton(s_window, enumToInt(button));
 
   return (state == GLFW_PRESS);
 }
 
 Vector2F Input::getMousePosition() {
   double xPos, yPos;
-  glfwGetCursorPos(s_impl->window, &xPos, &yPos);
+  glfwGetCursorPos(s_window, &xPos, &yPos);
 
   return {(float)xPos, (float)yPos};
 }

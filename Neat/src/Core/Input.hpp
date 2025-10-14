@@ -12,9 +12,6 @@
 namespace Neat {
 class Input {
  public:
-  struct InputImpl;
-
- public:
   static void setWindow(Window &window);
   static bool isKeyPressed(Key key);
   static bool isMouseButtonPressed(MouseButton button);
@@ -23,7 +20,7 @@ class Input {
   static float getMouseY();
 
  private:
-  static Scope<InputImpl> s_impl;
+  static GLFWwindow *s_window;
 };
 
 }  // namespace Neat

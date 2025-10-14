@@ -1,4 +1,4 @@
-set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
+set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
 
 # ImGui
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DGLFW_INCLUDE_NONE)
@@ -30,29 +30,38 @@ file(GLOB_RECURSE NEAT_SOURCES
     ${VENDOR_DIR}/ImGui/backends/imgui_impl_glfw.cpp
     ${VENDOR_DIR}/ImGui/backends/imgui_impl_opengl3.cpp
     ${VENDOR_DIR}/ImGuizmo/ImGuizmo.cpp
-)
 
-file(GLOB_RECURSE LINUX_SOURCES
+    # TODO do it properly for Windows
     src/Platform/Linux/**.cpp
 )
-
-if(WIN32)
-
-elseif(UNIX AND NOT APPLE)
-    set(NEAT_SOURCES ${NEAT_SOURCES} ${LINUX_SOURCES})
-endif()
 
 message(STATUS "NEAT_SOURCES: ${NEAT_SOURCES}")
 
 add_library(Neat STATIC ${NEAT_SOURCES})
 
-target_compile_options(Neat PRIVATE
-    -Wall -Wextra -Wpedantic
-)
-
-set_source_files_properties(${NEAT_SOURCES} PROPERTIES
-    COMPILE_OPTIONS "$<$<CONFIG:Debug>:-Werror>"
-)
+if(MSVC)
+    # TODO set MSVC specific warnings
+    target_compile_options(Neat PUBLIC
+        /utf-8
+    )
+    target_compile_options(Neat PRIVATE
+        /W4
+        /permissive-
+    )
+    # TODO uncomment
+    #set_source_files_properties(${NEAT_EDITOR_SOURCES} PROPERTIES
+    #    COMPILE_OPTIONS "$<$<CONFIG:Debug>:/WX>"
+    #)
+else()
+    target_compile_options(Neat PRIVATE
+        -Wall
+        -Wextra
+        -Wpedantic
+    )
+    set_source_files_properties(${NEAT_SOURCES} PROPERTIES
+        COMPILE_OPTIONS "$<$<CONFIG:Debug>:-Werror>"
+    )
+endif()
 
 target_precompile_headers(Neat PRIVATE
     src/NeatPCH.hpp
@@ -99,9 +108,13 @@ target_compile_definitions(Neat PRIVATE
 )
 
 set_target_properties(Neat PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}/$<0:>
+    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}/$<0:>
+    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}/$<0:>
 )
 
-file(COPY Resources DESTINATION ${OUTPUT_DIR}/NeatAssets)
+add_custom_command(TARGET Neat POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/Resources"
+        "$<TARGET_FILE_DIR:Neat>/NeatAssets/Resources"
+)

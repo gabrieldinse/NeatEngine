@@ -5,8 +5,6 @@
 
 #include "Debug/Debug.hpp"
 
-#ifdef NT_PLATFORM_LINUX
-
 extern Neat::Scope<Neat::Application> Neat::createApplication(
     const Neat::ApplicationCommandLineArguments &commandLineArgs);
 
@@ -22,5 +20,3 @@ int main(int argc, char *argv[]) {
   app->run();
   NT_PROFILE_END_SESSION();
 }
-
-#endif

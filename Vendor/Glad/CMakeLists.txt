@@ -3,8 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 project(Glad LANGUAGES C)
 
 # Set output directories similar to premake
-set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
-set(OUTPUT_INT_DIR "${CMAKE_BINARY_DIR}/bin-int/${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
+set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
 
 # Source files
 set(GLAD_SOURCES
@@ -34,10 +33,9 @@ endif()
 
 # Configuration-specific settings
 set_target_properties(Glad PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-    DEBUG_POSTFIX "_d"  # For debug builds
+    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}/$<0:>
+    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}/$<0:>
+    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}/$<0:>
 )
 
 # Installation (optional)

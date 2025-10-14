@@ -13,19 +13,19 @@ Application *Application::s_instance = nullptr;
 Application::Application(const ApplicationProperties &appProperties,
                          const ApplicationCommandLineArguments &commandLineArgs)
     : m_commandLineArgs{commandLineArgs},
-      m_eventDispatcher(makeRef<EventDispatcher>()) {
+      m_eventDispatcher(makeRef<EventDispatcher>()),
+      m_window(m_eventDispatcher, appProperties.windowProperties) {
   NT_PROFILE_FUNCTION();
   NT_CORE_ASSERT(not s_instance, "Application already exists!");
   s_instance = this;
 
-  m_window = Window::create(m_eventDispatcher, appProperties.windowProperties);
   m_eventDispatcher->get<WindowCloseEvent>()
       .connect<&Application::onWindowClose>(*this, EventPriorityHighest);
   m_eventDispatcher->get<WindowResizeEvent>()
       .connect<&Application::onWindowResize>(*this, EventPriorityHighest);
 
   Renderer::initialize();
-  Input::setWindow(*m_window);
+  Input::setWindow(m_window);
   ImGuiRender::initialize();
 }
 
@@ -53,7 +53,7 @@ void Application::run() {
     m_layerGroup.update(deltaTimeSeconds);
     ImGuiRender::end();
 
-    m_window->update();
+    m_window.update();
     m_eventDispatcher->update();
   }
   NT_CORE_INFO("Application stopped");
@@ -88,7 +88,7 @@ bool Application::onWindowClose(
 
 bool Application::onWindowResize(const WindowResizeEvent &event) {
   NT_PROFILE_FUNCTION();
-  if (not m_window->isMinimized())
+  if (not m_window.isMinimized())
     Renderer::onWindowResize(event.width, event.height);
 
   return false;

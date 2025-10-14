@@ -34,7 +34,7 @@ class Application {
   Scope<Layer> popOverlay(Int32 position);
 
   static Application &get() { return *s_instance; }
-  Window &getWindow() { return *m_window; }
+  Window &getWindow() { return m_window; }
 
   const ApplicationCommandLineArguments &getCommandLineArgs() const {
     return m_commandLineArgs;
@@ -53,7 +53,7 @@ class Application {
 
   ApplicationCommandLineArguments m_commandLineArgs;
 
-  Scope<Window> m_window;
+  Window m_window;
   Ref<EventDispatcher> m_eventDispatcher;
   LayerGroup m_layerGroup;
 

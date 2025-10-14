@@ -10,13 +10,13 @@ struct PerspectiveProperties {
   float far = 1000.0f;
 
   void setProperties(float fov, float aspectRatio, float near, float far) {
-    fov = fov;
-    aspectRatio = aspectRatio;
-    near = near;
-    far = far;
+    this->fov = fov;
+    this->aspectRatio = aspectRatio;
+    this->near = near;
+    this->far = far;
   }
 
-  void setAspectRatio(float aspect) { aspectRatio = aspect; }
+  void setAspectRatio(float aspectRatio) { this->aspectRatio = aspectRatio; }
 
   template <typename T, typename U>
     requires std::is_integral_v<T> and std::is_integral_v<U>

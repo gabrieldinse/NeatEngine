@@ -8,27 +8,40 @@
 #include "WindowProperties.hpp"
 
 #include "EventDispatching/EventDispatcher.hpp"
+#include "Core/Window.hpp"
+#include "Graphics/GraphicsContext.hpp"
+
+struct GLFWwindow;
 
 namespace Neat {
-class EventDispatcher;
+struct WindowData {
+  WindowProperties windowProperties;
+  Ref<EventDispatcher> eventDispatcher;
+};
+
 class Window {
  public:
-  virtual ~Window() = default;
+  Window(const Ref<EventDispatcher> &eventDispatcher,
+              const WindowProperties &windowProperties);
+  ~Window();
 
-  virtual void update() = 0;
+  void update();
 
-  virtual Int32 getWidth() const = 0;
-  virtual Int32 getHeight() const = 0;
-  virtual float getAspectRatio() const = 0;
+  Int32 getWidth() const;
+  Int32 getHeight() const;
+  float getAspectRatio() const;
 
-  virtual void *getNativeWindow() const = 0;
+  GLFWwindow *getNativeWindow() const;
 
-  virtual bool isMinimized() const = 0;
+  bool isMinimized() const;
 
-  virtual void setVSync(bool enabled) = 0;
-  virtual bool isVSync() const = 0;
+  void setVSync(bool enabled);
+  bool isVSync() const;
 
-  static Scope<Window> create(const Ref<EventDispatcher> &eventDispatcher,
-                              const WindowProperties &windowProperties);
+ private:
+  WindowData m_windowData;
+  Scope<GraphicsContext> m_graphicsContext;
+  GLFWwindow *m_glfwWindow = nullptr;
+  static Int32 s_windowCount;
 };
 }  // namespace Neat

@@ -15,13 +15,25 @@ file(
 add_executable(NeatTests ${NEAT_TESTS_SOURCES})
 add_dependencies(NeatTests Neat)
 
-target_compile_options(NeatTests PRIVATE
-    -Wall -Wextra -Wpedantic
-)
-
-set_source_files_properties(${NEAT_TESTS_SOURCES} PROPERTIES
-    COMPILE_OPTIONS "$<$<CONFIG:Debug>:-Werror>"
-)
+if(MSVC)
+    target_compile_options(NeatTests PRIVATE
+        /W4
+        /permissive-
+    )
+    # TODO uncomment
+    #set_source_files_properties(${NEAT_EDITOR_SOURCES} PROPERTIES
+    #    COMPILE_OPTIONS "$<$<CONFIG:Debug>:/WX>"
+    #)
+else()
+    target_compile_options(NeatTests PRIVATE
+        -Wall
+        -Wextra
+        -Wpedantic
+    )
+    set_source_files_properties(${NEAT_TESTS_SOURCES} PROPERTIES
+        COMPILE_OPTIONS "$<$<CONFIG:Debug>:-Werror>"
+    )
+endif()
 
 # Include headers
 target_include_directories(NeatTests PUBLIC

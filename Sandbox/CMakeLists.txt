@@ -1,4 +1,4 @@
-set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
+set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/bin/$<CONFIG>-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}")
 
 file(GLOB_RECURSE SANDBOX_SOURCES
     src/SandboxApp.cpp
@@ -13,9 +13,9 @@ target_include_directories(Sandbox PRIVATE
 )
 target_link_libraries(Sandbox PRIVATE Neat)
 set_target_properties(Sandbox PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}/$<0:>
+    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}/$<0:>
+    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}/$<0:>
 )
 
 target_compile_definitions(Sandbox PRIVATE
@@ -24,4 +24,8 @@ target_compile_definitions(Sandbox PRIVATE
     $<$<CONFIG:Dist>:NT_DIST>
 )
 
-file(COPY Resources DESTINATION ${OUTPUT_DIR}/SandboxAssets)
+add_custom_command(TARGET Sandbox POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/Resources"
+        "$<TARGET_FILE_DIR:Sandbox>/SandboxAssets/Resources"
+)
