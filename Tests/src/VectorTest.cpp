@@ -1211,4 +1211,224 @@ TEST_F(VectorTest, Size) {
   EXPECT_EQ(vector2us.size(), 2);
   EXPECT_EQ(vector1us.size(), 1);
 }
+
+TEST_F(VectorTest, NonMemberPlusOperator) {
+  Vector4F result4f = vector4f + Vector4F{1.0f, 1.0f, 1.0f, 1.0f};
+  Vector3F result3f = vector3f + Vector3F{1.0f, 1.0f, 1.0f};
+  Vector2F result2f = vector2f + Vector2F{1.0f, 1.0f};
+  Vector1F result1f = vector1f + Vector1F{1.0f};
+
+  Vector4I result4i = vector4i + Vector4I{1, 1, 1, 1};
+  Vector3I result3i = vector3i + Vector3I{1, 1, 1};
+  Vector2I result2i = vector2i + Vector2I{1, 1};
+  Vector1I result1i = vector1i + Vector1I{1};
+
+  EXPECT_EQ(result4f, (Vector4F{2.0f, 3.0f, 4.0f, 5.0f}));
+  EXPECT_EQ(result3f, (Vector3F{2.0f, 3.0f, 4.0f}));
+  EXPECT_EQ(result2f, (Vector2F{2.0f, 3.0f}));
+  EXPECT_EQ(result1f, (Vector1F{2.0f}));
+
+  EXPECT_EQ(result4i, (Vector4I{2, 3, 4, 5}));
+  EXPECT_EQ(result3i, (Vector3I{2, 3, 4}));
+  EXPECT_EQ(result2i, (Vector2I{2, 3}));
+  EXPECT_EQ(result1i, (Vector1I{2}));
+}
+
+TEST_F(VectorTest, NonMemberMinusOperator) {
+  Vector4F result4f = vector4f - Vector4F{1.0f, 1.0f, 1.0f, 1.0f};
+  Vector3F result3f = vector3f - Vector3F{1.0f, 1.0f, 1.0f};
+  Vector2F result2f = vector2f - Vector2F{1.0f, 1.0f};
+  Vector1F result1f = vector1f - Vector1F{1.0f};
+
+  Vector4I result4i = vector4i - Vector4I{1, 1, 1, 1};
+  Vector3I result3i = vector3i - Vector3I{1, 1, 1};
+  Vector2I result2i = vector2i - Vector2I{1, 1};
+  Vector1I result1i = vector1i - Vector1I{1};
+
+  EXPECT_EQ(result4f, (Vector4F{0.0f, 1.0f, 2.0f, 3.0f}));
+  EXPECT_EQ(result3f, (Vector3F{0.0f, 1.0f, 2.0f}));
+  EXPECT_EQ(result2f, (Vector2F{0.0f, 1.0f}));
+  EXPECT_EQ(result1f, (Vector1F{0.0f}));
+
+  EXPECT_EQ(result4i, (Vector4I{0, 1, 2, 3}));
+  EXPECT_EQ(result3i, (Vector3I{0, 1, 2}));
+  EXPECT_EQ(result2i, (Vector2I{0, 1}));
+  EXPECT_EQ(result1i, (Vector1I{0}));
+}
+
+TEST_F(VectorTest, NonMemberMinusSingleOperator) {
+  Vector4F result4f = -vector4f;
+  Vector3F result3f = -vector3f;
+  Vector2F result2f = -vector2f;
+  Vector1F result1f = -vector1f;
+
+  Vector4I result4i = -vector4i;
+  Vector3I result3i = -vector3i;
+  Vector2I result2i = -vector2i;
+  Vector1I result1i = -vector1i;
+
+  EXPECT_EQ(result4f, (Vector4F{-1.0f, -2.0f, -3.0f, -4.0f}));
+  EXPECT_EQ(result3f, (Vector3F{-1.0f, -2.0f, -3.0f}));
+  EXPECT_EQ(result2f, (Vector2F{-1.0f, -2.0f}));
+  EXPECT_EQ(result1f, (Vector1F{-1.0f}));
+
+  EXPECT_EQ(result4i, (Vector4I{-1, -2, -3, -4}));
+  EXPECT_EQ(result3i, (Vector3I{-1, -2, -3}));
+  EXPECT_EQ(result2i, (Vector2I{-1, -2}));
+  EXPECT_EQ(result1i, (Vector1I{-1}));
+}
+
+TEST_F(VectorTest, NonMemberMultiplyOperator) {
+  Vector4F result4f = vector4f * Vector4F{2.0f, 2.0f, 2.0f, 2.0f};
+  Vector3F result3f = vector3f * Vector3F{2.0f, 2.0f, 2.0f};
+  Vector2F result2f = vector2f * Vector2F{2.0f, 2.0f};
+  Vector1F result1f = vector1f * Vector1F{2.0f};
+
+  Vector4I result4i = vector4i * Vector4I{2, 2, 2, 2};
+  Vector3I result3i = vector3i * Vector3I{2, 2, 2};
+  Vector2I result2i = vector2i * Vector2I{2, 2};
+  Vector1I result1i = vector1i * Vector1I{2};
+
+  EXPECT_EQ(result4f, (Vector4F{2.0f, 4.0f, 6.0f, 8.0f}));
+  EXPECT_EQ(result3f, (Vector3F{2.0f, 4.0f, 6.0f}));
+  EXPECT_EQ(result2f, (Vector2F{2.0f, 4.0f}));
+  EXPECT_EQ(result1f, (Vector1F{2.0f}));
+
+  EXPECT_EQ(result4i, (Vector4I{2, 4, 6, 8}));
+  EXPECT_EQ(result3i, (Vector3I{2, 4, 6}));
+  EXPECT_EQ(result2i, (Vector2I{2, 4}));
+  EXPECT_EQ(result1i, (Vector1I{2}));
+}
+
+TEST_F(VectorTest, NonMemberMultiplyVector1Operator) {
+  Vector4F result4f = vector4f * Vector1F{2.0f};
+  Vector3F result3f = vector3f * Vector1F{2.0f};
+  Vector2F result2f = vector2f * Vector1F{2.0f};
+  Vector1F result1f = vector1f * Vector1F{2.0f};
+  Vector4I result4i = vector4i * Vector1I{2};
+  Vector3I result3i = vector3i * Vector1I{2};
+  Vector2I result2i = vector2i * Vector1I{2};
+  Vector1I result1i = vector1i * Vector1I{2};
+
+  EXPECT_EQ(result4f, (Vector4F{2.0f, 4.0f, 6.0f, 8.0f}));
+  EXPECT_EQ(result3f, (Vector3F{2.0f, 4.0f, 6.0f}));
+  EXPECT_EQ(result2f, (Vector2F{2.0f, 4.0f}));
+  EXPECT_EQ(result1f, (Vector1F{2.0f}));
+
+  EXPECT_EQ(result4i, (Vector4I{2, 4, 6, 8}));
+  EXPECT_EQ(result3i, (Vector3I{2, 4, 6}));
+  EXPECT_EQ(result2i, (Vector2I{2, 4}));
+  EXPECT_EQ(result1i, (Vector1I{2}));
+}
+
+TEST_F(VectorTest, NonMemberMultiplyVector1Operator2) {
+  Vector4F result4f = Vector1F{2.0f} * vector4f;
+  Vector3F result3f = Vector1F{2.0f} * vector3f;
+  Vector2F result2f = Vector1F{2.0f} * vector2f;
+  Vector1F result1f = Vector1F{2.0f} * vector1f;
+
+  Vector4I result4i = Vector1I{2} * vector4i;
+  Vector3I result3i = Vector1I{2} * vector3i;
+  Vector2I result2i = Vector1I{2} * vector2i;
+  Vector1I result1i = Vector1I{2} * vector1i;
+
+  EXPECT_EQ(result4f, (Vector4F{2.0f, 4.0f, 6.0f, 8.0f}));
+  EXPECT_EQ(result3f, (Vector3F{2.0f, 4.0f, 6.0f}));
+  EXPECT_EQ(result2f, (Vector2F{2.0f, 4.0f}));
+  EXPECT_EQ(result1f, (Vector1F{2.0f}));
+
+  EXPECT_EQ(result4i, (Vector4I{2, 4, 6, 8}));
+  EXPECT_EQ(result3i, (Vector3I{2, 4, 6}));
+  EXPECT_EQ(result2i, (Vector2I{2, 4}));
+  EXPECT_EQ(result1i, (Vector1I{2}));
+}
+
+TEST_F(VectorTest, NonMemberMultiplyScalarOperator) {
+  Vector4F result4f = vector4f * 2.0f;
+  Vector3F result3f = vector3f * 2.0f;
+  Vector2F result2f = vector2f * 2.0f;
+  Vector1F result1f = vector1f * 2.0f;
+
+  Vector4I result4i = vector4i * 2;
+  Vector3I result3i = vector3i * 2;
+  Vector2I result2i = vector2i * 2;
+  Vector1I result1i = vector1i * 2;
+
+  EXPECT_EQ(result4f, (Vector4F{2.0f, 4.0f, 6.0f, 8.0f}));
+  EXPECT_EQ(result3f, (Vector3F{2.0f, 4.0f, 6.0f}));
+  EXPECT_EQ(result2f, (Vector2F{2.0f, 4.0f}));
+  EXPECT_EQ(result1f, (Vector1F{2.0f}));
+
+  EXPECT_EQ(result4i, (Vector4I{2, 4, 6, 8}));
+  EXPECT_EQ(result3i, (Vector3I{2, 4, 6}));
+  EXPECT_EQ(result2i, (Vector2I{2, 4}));
+  EXPECT_EQ(result1i, (Vector1I{2}));
+}
+
+TEST_F(VectorTest, NonMemberMultiplyScalarOperator2) {
+  Vector4F result4f = 2.0f * vector4f;
+  Vector3F result3f = 2.0f * vector3f;
+  Vector2F result2f = 2.0f * vector2f;
+  Vector1F result1f = 2.0f * vector1f;
+
+  Vector4I result4i = 2 * vector4i;
+  Vector3I result3i = 2 * vector3i;
+  Vector2I result2i = 2 * vector2i;
+  Vector1I result1i = 2 * vector1i;
+
+  EXPECT_EQ(result4f, (Vector4F{2.0f, 4.0f, 6.0f, 8.0f}));
+  EXPECT_EQ(result3f, (Vector3F{2.0f, 4.0f, 6.0f}));
+  EXPECT_EQ(result2f, (Vector2F{2.0f, 4.0f}));
+  EXPECT_EQ(result1f, (Vector1F{2.0f}));
+
+  EXPECT_EQ(result4i, (Vector4I{2, 4, 6, 8}));
+  EXPECT_EQ(result3i, (Vector3I{2, 4, 6}));
+  EXPECT_EQ(result2i, (Vector2I{2, 4}));
+  EXPECT_EQ(result1i, (Vector1I{2}));
+}
+
+TEST_F(VectorTest, NonMemberDivideOperator) {
+  Vector4F result4f = vector4f / 2.0f;
+  Vector3F result3f = vector3f / 2.0f;
+  Vector2F result2f = vector2f / 2.0f;
+  Vector1F result1f = vector1f / 2.0f;
+
+  Vector4I result4i = vector4i / 2;
+  Vector3I result3i = vector3i / 2;
+  Vector2I result2i = vector2i / 2;
+  Vector1I result1i = vector1i / 2;
+
+  EXPECT_EQ(result4f, (Vector4F{0.5f, 1.0f, 1.5f, 2.0f}));
+  EXPECT_EQ(result3f, (Vector3F{0.5f, 1.0f, 1.5f}));
+  EXPECT_EQ(result2f, (Vector2F{0.5f, 1.0f}));
+  EXPECT_EQ(result1f, (Vector1F{0.5f}));
+
+  EXPECT_EQ(result4i, (Vector4I{0, 1, 1, 2}));
+  EXPECT_EQ(result3i, (Vector3I{0, 1, 1}));
+  EXPECT_EQ(result2i, (Vector2I{0, 1}));
+  EXPECT_EQ(result1i, (Vector1I{0}));
+}
+
+TEST_F(VectorTest, Norm) {
+  EXPECT_FLOAT_EQ(norm(vector4f), std::sqrt(30.0f));
+  EXPECT_FLOAT_EQ(norm(vector3f), std::sqrt(14.0f));
+  EXPECT_FLOAT_EQ(norm(vector2f), std::sqrt(5.0f));
+  EXPECT_FLOAT_EQ(norm(vector1f), 1.0f);
+  EXPECT_EQ(norm(vector4i), static_cast<Int>(std::sqrt(30)));
+  EXPECT_EQ(norm(vector3i), static_cast<Int>(std::sqrt(14)));
+  EXPECT_EQ(norm(vector2i), static_cast<Int>(std::sqrt(5)));
+  EXPECT_EQ(norm(vector1i), 1);
+}
+
+TEST_F(VectorTest, DotProduct) {
+  EXPECT_FLOAT_EQ(dot(vector4f, Vector4F{1.0f, 1.0f, 1.0f, 1.0f}), 10.0f);
+  EXPECT_FLOAT_EQ(dot(vector3f, Vector3F{1.0f, 1.0f, 1.0f}), 6.0f);
+  EXPECT_FLOAT_EQ(dot(vector2f, Vector2F{1.0f, 1.0f}), 3.0f);
+  EXPECT_FLOAT_EQ(dot(vector1f, Vector1F{1.0f}), 1.0f);
+
+  EXPECT_EQ(dot(vector4i, Vector4I{1, 1, 1, 1}), 10);
+  EXPECT_EQ(dot(vector3i, Vector3I{1, 1, 1}), 6);
+  EXPECT_EQ(dot(vector2i, Vector2I{1, 1}), 3);
+  EXPECT_EQ(dot(vector1i, Vector1I{1}), 1);
+}
 }  // namespace Neat

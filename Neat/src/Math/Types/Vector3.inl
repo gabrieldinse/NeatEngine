@@ -184,7 +184,7 @@ inline constexpr Vector<3, T> operator*(const Vector<3, T> &va,
 template <typename T>
 inline constexpr Vector<3, T> operator*(const Vector<3, T> &va,
                                         const Vector<1, T> &vb) {
-  return Vector<3, T>{va} *= vb.x;
+  return Vector<3, T>{va} *= vb.x();
 }
 
 template <typename T>

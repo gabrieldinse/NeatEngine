@@ -98,7 +98,8 @@ void OpenGLFramebuffer::destroyFramebuffer() {
   }
 
   if (not m_colorAttachmentIDs.empty()) {
-    glDeleteTextures(static_cast<GLsizei>(m_colorAttachmentIDs.size()), m_colorAttachmentIDs.data());
+    glDeleteTextures(static_cast<GLsizei>(m_colorAttachmentIDs.size()),
+                     m_colorAttachmentIDs.data());
     m_colorAttachmentIDs.clear();
   }
 
@@ -118,8 +119,8 @@ void OpenGLFramebuffer::createFramebuffer() {
 void OpenGLFramebuffer::createColorAttachmentTextures() {
   NT_PROFILE_FUNCTION();
 
-  m_colorAttachmentIDs =
-      createTextures(static_cast<GLsizei>(m_specification.colorAttachments.attachments.size()));
+  m_colorAttachmentIDs = createTextures(static_cast<GLsizei>(
+      m_specification.colorAttachments.attachments.size()));
   for (UInt32 i = 0; i < m_colorAttachmentIDs.size(); ++i) {
     bindTexture(m_colorAttachmentIDs[i]);
     attachColorTexture(i);
@@ -157,7 +158,8 @@ std::vector<UInt32> OpenGLFramebuffer::createTextures(UInt32 count) {
 
   std::vector<UInt32> attachmentIDs;
   attachmentIDs.resize(count);
-  glCreateTextures(GL_TEXTURE_2D, static_cast<GLsizei>(attachmentIDs.size()), attachmentIDs.data());
+  glCreateTextures(GL_TEXTURE_2D, static_cast<GLsizei>(attachmentIDs.size()),
+                   attachmentIDs.data());
   return attachmentIDs;
 }
 

@@ -49,8 +49,8 @@ struct OrthographicProperties {
     setProperties(static_cast<float>(width) / static_cast<float>(height), size);
   }
 
-  void setProperties(float leftVal, float rightVal, float bottomVal, float topVal,
-                     float nearVal = -1.0f, float farVal = 1.0f) {
+  void setProperties(float leftVal, float rightVal, float bottomVal,
+                     float topVal, float nearVal = -1.0f, float farVal = 1.0f) {
     left = leftVal;
     right = rightVal;
     bottom = bottomVal;
