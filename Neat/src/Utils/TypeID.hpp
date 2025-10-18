@@ -4,15 +4,9 @@
 
 namespace Neat {
 template <typename T>
-constexpr TypeID getTypeIDImpl() {
-  static Byte type_id;
-  return reinterpret_cast<TypeID>(&type_id);
-}
-
-template <typename T>
 constexpr TypeID getTypeID() {
   using DecayedType = typename std::decay_t<T>;
-  return getTypeIDImpl<DecayedType>();
+  return reinterpret_cast<TypeID>(&getTypeID<DecayedType>);
 }
 
 template <auto method>
