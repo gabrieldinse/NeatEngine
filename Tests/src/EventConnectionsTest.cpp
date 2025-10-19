@@ -298,4 +298,38 @@ TEST_F(EventConnectionsTest, NonMemberFunctionConnectAndDisconnect) {
   calledNonMember = false;
   connNonMember.disconnect<nonMemberFunc>();
 }
+
+TEST_F(EventConnectionsTest, NonMemberFunctionConnectScoped) {
+  EventConnections<EventA> connNonMember{};
+
+  auto nonMemberFunc = [](const EventA &event) {
+    EXPECT_EQ(event.val, 1234);
+    calledNonMember = true;
+    return false;
+  };
+
+  calledNonMember = false;
+  auto connScope = connNonMember.connectScoped<nonMemberFunc>();
+
+  connNonMember.update(EventA{1234});
+  EXPECT_TRUE(calledNonMember);
+
+  calledNonMember = false;
+  connScope.reset();
+
+  connNonMember.update(EventA{1234});
+  EXPECT_FALSE(calledNonMember);
+
+  {
+    auto connScope2 = connNonMember.connectScoped<nonMemberFunc>();
+    calledNonMember = false;
+    connNonMember.update(EventA{1234});
+    EXPECT_TRUE(calledNonMember);
+    calledNonMember = false;
+  }
+
+  // Here, connScope2 is out of scope and thus disconnected
+  connNonMember.update(EventA{1234});
+  EXPECT_FALSE(calledNonMember);
+}
 }  // namespace Neat

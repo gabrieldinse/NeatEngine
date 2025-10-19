@@ -47,6 +47,15 @@ class EventConnections : public BaseEventConnections {
     return makeRef<EventConnectionHandle<EventType>>(*this, eventHandler);
   }
 
+  template <auto method>
+  [[nodiscard]] Ref<BaseEventConnectionHandle> connectScoped(
+      EventPriority priority = EventPriorityLowest, LayerID layerID = NoneLayer,
+      bool ignoreIfHandled = false) {
+    auto &eventHandler =
+        insertEventHandler<method>(priority, layerID, ignoreIfHandled);
+    return makeRef<EventConnectionHandle<EventType>>(*this, eventHandler);
+  }
+
   template <auto method, typename Instance>
   void disconnect(Instance &instance) {
     TypeID methodId = getMethodID<method>();
