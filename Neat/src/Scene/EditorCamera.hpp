@@ -15,7 +15,7 @@ class EditorCamera {
   EditorCamera() = default;
   EditorCamera(const PerspectiveProperties& perspectiveProperties,
                const Ref<EventDispatcher>& eventDispatcher,
-               LayerID layerID = NoLayer);
+               LayerID layerID = NoneLayer);
 
   const CameraComponent& getCamera() const { return m_camera; }
   const TransformComponent& getTransform() const { return m_transform; }

@@ -19,11 +19,11 @@ class OrthographicCameraControllerSystem
 
   virtual void onInitialize(const Ref<EntityManager> &entityManager,
                             const Ref<EventDispatcher> &eventDispatcher,
-                            LayerID layerID = NoLayer) override;
+                            LayerID layerID = NoneLayer) override;
   virtual void onUpdate(const Ref<EntityManager> &entityManager,
                         const Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds,
-                        LayerID layerID = NoLayer) override;
+                        LayerID layerID = NoneLayer) override;
 
  private:
   void moveUp(TransformComponent &transform, float distance);

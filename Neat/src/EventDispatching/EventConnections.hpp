@@ -28,14 +28,20 @@ class EventConnections : public BaseEventConnections {
  public:
   template <auto method, typename Instance>
   void connect(Instance &instance, EventPriority priority = EventPriorityLowest,
-               LayerID layerID = NoLayer, bool ignoreIfHandled = false) {
+               LayerID layerID = NoneLayer, bool ignoreIfHandled = false) {
     insertEventHandler<method>(instance, priority, layerID, ignoreIfHandled);
+  }
+
+  template <auto method>
+  void connect(EventPriority priority = EventPriorityLowest,
+               LayerID layerID = NoneLayer, bool ignoreIfHandled = false) {
+    insertEventHandler<method>(priority, layerID, ignoreIfHandled);
   }
 
   template <auto method, typename Instance>
   [[nodiscard]] Ref<BaseEventConnectionHandle> connectScoped(
       Instance &instance, EventPriority priority = EventPriorityLowest,
-      LayerID layerID = NoLayer, bool ignoreIfHandled = false) {
+      LayerID layerID = NoneLayer, bool ignoreIfHandled = false) {
     auto &eventHandler = insertEventHandler<method>(instance, priority, layerID,
                                                     ignoreIfHandled);
     return makeRef<EventConnectionHandle<EventType>>(*this, eventHandler);
@@ -46,7 +52,15 @@ class EventConnections : public BaseEventConnections {
     TypeID methodId = getMethodID<method>();
     m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
       return eventHandler.instanceID == getInstanceID(instance) and
-             eventHandler.instanceMethodId == methodId;
+             eventHandler.methodID == methodId;
+    });
+  }
+
+  template <auto method>
+  void disconnect() {
+    TypeID methodId = getMethodID<method>();
+    m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
+      return eventHandler.methodID == methodId;
     });
   }
 
@@ -67,8 +81,8 @@ class EventConnections : public BaseEventConnections {
     m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
       return eventHandler.instanceID ==
                  eventConnectionHandle.getEventHandler().instanceID and
-             eventHandler.instanceMethodId ==
-                 eventConnectionHandle.getEventHandler().instanceMethodId;
+             eventHandler.methodID ==
+                 eventConnectionHandle.getEventHandler().methodID;
     });
   }
 
@@ -131,14 +145,39 @@ class EventConnections : public BaseEventConnections {
                      [priority](const EventHandler<EventType> &eventHandler) {
                        return eventHandler.priority > priority;
                      });
-    EventHandler<EventType> eventHandler{[&instance](const EventType &event) {
-                                           return (instance.*method)(event);
-                                         },
-                                         getInstanceID(instance),
-                                         getMethodID<method>(),
-                                         ignoreIfHandled,
-                                         priority,
-                                         layerID};
+
+    EventHandler<EventType> eventHandler{};
+    eventHandler.methodID = getMethodID<method>();
+    eventHandler.ignoreIfHandled = ignoreIfHandled;
+    eventHandler.priority = priority;
+    eventHandler.layerID = layerID;
+    eventHandler.instanceID = getInstanceID(instance);
+    eventHandler.function = [&instance](const EventType &event) {
+      return (instance.*method)(event);
+    };
+
+    auto it = m_eventHandlers.insert(insert_it, std::move(eventHandler));
+    return *it;
+  }
+
+  template <auto method>
+  EventHandler<EventType> &insertEventHandler(EventPriority priority,
+                                              LayerID layerID,
+                                              bool ignoreIfHandled) {
+    auto insert_it =
+        std::find_if(m_eventHandlers.begin(), m_eventHandlers.end(),
+                     [priority](const EventHandler<EventType> &eventHandler) {
+                       return eventHandler.priority > priority;
+                     });
+
+    EventHandler<EventType> eventHandler{};
+    eventHandler.methodID = getMethodID<method>();
+    eventHandler.ignoreIfHandled = ignoreIfHandled;
+    eventHandler.priority = priority;
+    eventHandler.layerID = layerID;
+    eventHandler.instanceID = NoneInstance;
+    eventHandler.function = method;
+
     auto it = m_eventHandlers.insert(insert_it, std::move(eventHandler));
     return *it;
   }

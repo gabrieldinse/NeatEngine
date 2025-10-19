@@ -13,14 +13,14 @@ class Physics2DSystem : public System<Physics2DSystem> {
 
   virtual void onInitialize(const Ref<EntityManager> &entityManager,
                             const Ref<EventDispatcher> &eventDispatcher,
-                            LayerID layerID = NoLayer) override;
+                            LayerID layerID = NoneLayer) override;
   virtual void onShutdown(const Ref<EntityManager> &entityManager,
                           const Ref<EventDispatcher> &eventDispatcher,
-                          LayerID layerID = NoLayer) override;
+                          LayerID layerID = NoneLayer) override;
   virtual void onUpdate(const Ref<EntityManager> &entityManager,
                         const Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds,
-                        LayerID layerID = NoLayer) override;
+                        LayerID layerID = NoneLayer) override;
 
  private:
   b2WorldId m_worldID;

@@ -4,6 +4,8 @@
 #include <TestUtils.hpp>
 
 namespace Neat {
+bool calledNonMember = false;
+
 class EventConnectionsTest : public testing::Test {
  protected:
   EventConnectionsTest() {
@@ -264,5 +266,36 @@ TEST_F(EventConnectionsTest, ConnectScoped) {
   EXPECT_EQ(listenerC.posX, 3.33f);
   EXPECT_EQ(listenerC.posY, 2.22f);
   EXPECT_EQ(listenerC.count, 1);
+}
+
+TEST_F(EventConnectionsTest, NonMemberFunctionUpdate) {
+  EventConnections<EventA> connNonMember{};
+
+  connNonMember.connect<[](const EventA &event) {
+    EXPECT_EQ(event.val, 1234);
+    calledNonMember = true;
+    return false;
+  }>();
+
+  connNonMember.update(EventA{1234});
+  EXPECT_TRUE(calledNonMember);
+}
+
+TEST_F(EventConnectionsTest, NonMemberFunctionConnectAndDisconnect) {
+  EventConnections<EventA> connNonMember{};
+
+  auto nonMemberFunc = [](const EventA &event) {
+    EXPECT_EQ(event.val, 1234);
+    calledNonMember = true;
+    return false;
+  };
+
+  connNonMember.connect<nonMemberFunc>();
+
+  connNonMember.update(EventA{1234});
+  EXPECT_TRUE(calledNonMember);
+
+  calledNonMember = false;
+  connNonMember.disconnect<nonMemberFunc>();
 }
 }  // namespace Neat

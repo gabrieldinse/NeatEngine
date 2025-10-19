@@ -17,7 +17,7 @@ class SystemManager : public NonCopyable {
 
   void initialize(const Ref<EntityManager> &entityManager,
                   const Ref<EventDispatcher> &eventDispatcher,
-                  LayerID layerID = NoLayer) {
+                  LayerID layerID = NoneLayer) {
     for (auto &&[family, system] : m_systems) {
       system->initialize(entityManager, eventDispatcher, layerID);
     }
@@ -26,7 +26,7 @@ class SystemManager : public NonCopyable {
   template <typename S>
   void initialize(const Ref<EntityManager> &entityManager,
                   const Ref<EventDispatcher> &eventDispatcher,
-                  LayerID layerID = NoLayer) {
+                  LayerID layerID = NoneLayer) {
     if (auto system = getSystem<S>()) {
       (*system)->initialize(entityManager, eventDispatcher, layerID);
     }
@@ -34,7 +34,7 @@ class SystemManager : public NonCopyable {
 
   void shutdown(const Ref<EntityManager> &entityManager,
                 const Ref<EventDispatcher> &eventDispatcher,
-                LayerID layerID = NoLayer) {
+                LayerID layerID = NoneLayer) {
     for (auto &&[family, system] : m_systems) {
       system->shutdown(entityManager, eventDispatcher, layerID);
     }
@@ -43,7 +43,7 @@ class SystemManager : public NonCopyable {
   template <typename S>
   void shutdown(const Ref<EntityManager> &entityManager,
                 const Ref<EventDispatcher> &eventDispatcher,
-                LayerID layerID = NoLayer) {
+                LayerID layerID = NoneLayer) {
     if (auto system = getSystem<S>()) {
       (*system)->shutdown(entityManager, eventDispatcher, layerID);
     }
@@ -78,7 +78,7 @@ class SystemManager : public NonCopyable {
   template <typename S>
   void update(const Ref<EntityManager> &entityManager,
               const Ref<EventDispatcher> &eventDispatcher,
-              double deltaTimeSeconds, LayerID layerID = NoLayer) {
+              double deltaTimeSeconds, LayerID layerID = NoneLayer) {
     if (auto system = getSystem<S>()) {
       (*system)->update(entityManager, eventDispatcher, deltaTimeSeconds,
                         layerID);
@@ -87,7 +87,7 @@ class SystemManager : public NonCopyable {
 
   void updateAll(const Ref<EntityManager> &entityManager,
                  const Ref<EventDispatcher> &eventDispatcher,
-                 double deltaTimeSeconds, LayerID layerID = NoLayer) {
+                 double deltaTimeSeconds, LayerID layerID = NoneLayer) {
     for (auto &&[family, system] : m_systems) {
       system->update(entityManager, eventDispatcher, deltaTimeSeconds, layerID);
     }

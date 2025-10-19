@@ -12,7 +12,8 @@
 namespace Neat {
 class Scene {
  public:
-  Scene(const Ref<EventDispatcher> &eventDispatcher, LayerID layerID = NoLayer);
+  Scene(const Ref<EventDispatcher> &eventDispatcher,
+        LayerID layerID = NoneLayer);
   ~Scene();
   Entity createEntity();
   Ref<EntityManager> getEntityManager();

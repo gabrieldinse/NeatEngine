@@ -14,13 +14,13 @@ class BaseSystem : public NonCopyable {
   virtual ~BaseSystem() = default;
   void initialize(const Ref<EntityManager> &entityManager,
                   const Ref<EventDispatcher> &eventDispatcher,
-                  LayerID layerID = NoLayer);
+                  LayerID layerID = NoneLayer);
   void shutdown(const Ref<EntityManager> &entityManager,
                 const Ref<EventDispatcher> &eventDispatcher,
-                LayerID layerID = NoLayer);
+                LayerID layerID = NoneLayer);
   void update(const Ref<EntityManager> &entityManager,
               const Ref<EventDispatcher> &eventDispatcher,
-              double deltaTimeSeconds, LayerID layerID = NoLayer);
+              double deltaTimeSeconds, LayerID layerID = NoneLayer);
   bool isInitialized() const { return m_initialized; }
   bool isShutdown() const { return not m_initialized; }
 

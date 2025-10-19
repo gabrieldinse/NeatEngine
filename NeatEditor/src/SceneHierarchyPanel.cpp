@@ -242,7 +242,7 @@ void SceneHierarchyPanel::drawEntityNode(Entity &entity) {
   flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 
   if (ImGui::TreeNodeEx(reinterpret_cast<void *>(static_cast<UInt64>(entity)),
-                        flags, "%s", label->getRawLabel())) {
+                        flags, "%s", label->data())) {
     if (ImGui::IsItemClicked()) {
       m_selectedEntity = entity;
     }
@@ -271,7 +271,7 @@ void SceneHierarchyPanel::drawComponentNodes(Entity &entity) {
   if (labelOpt) {
     auto label = *labelOpt;
     std::array<char, 256> buffer{};
-    strncpy(buffer.data(), label->getRawLabel(), buffer.size());
+    strncpy(buffer.data(), label->data(), buffer.size());
     if (ImGui::InputText("##Label", buffer.data(), buffer.size())) {
       label->label = std::string{buffer.data()};
     }

@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "TestUtils.hpp"
 #include "Utils/TypeID.hpp"
 
 namespace Neat {
@@ -47,7 +48,7 @@ TEST(TypeIdTest, GetTypeIdReference) {
   EXPECT_EQ(id2, id3);
 }
 
-TEST(TypeIdTest, GetTypeIdConstReferenceTest) {
+TEST(TypeIdTest, GetTypeIdConstReference) {
   auto id1 = getTypeID<MyStruct &>();
   auto id2 = getTypeID<MyStruct>();
   auto id3 = getTypeID<MyStruct &&>();
@@ -65,7 +66,7 @@ TEST(TypeIdTest, GetTypeIdConstReferenceTest) {
   EXPECT_EQ(id4, id5);
 }
 
-TEST(TypeIdTest, GetMethodIdTest) {
+TEST(TypeIdTest, GetMethodId) {
   auto id1 = getMethodID<&MyOtherStruct::method>();
   auto id2 = getMethodID<&MyStruct::foo>();
   auto id3 = getMethodID<&MyOtherStruct::method>();
@@ -88,5 +89,30 @@ TEST(TypeIdTest, GetInstanceID) {
   EXPECT_EQ(getInstanceID(c), getInstanceID(c));
   EXPECT_EQ(getInstanceID(a), getInstanceID(refA));
   EXPECT_EQ(getInstanceID(a), getInstanceID(*ptrA));
+}
+
+TEST(TypeIdTest, GetMethodIdWithCallable) {
+  auto lambda = [](int x) { return x * 2; };
+  auto lambda2 = [](int x) { return x * 2; };
+
+  auto id1 = getMethodID<&MyOtherStruct::method>();
+  auto id2 = getMethodID<lambda>();
+  auto id3 = getMethodID<lambda>();
+  auto id4 = getMethodID<lambda2>();
+
+  EXPECT_EQ(id2, id3);
+  EXPECT_NE(id1, id2);
+  EXPECT_NE(id1, id3);
+  EXPECT_NE(id1, id4);
+  EXPECT_NE(id2, id4);
+}
+
+TEST(TypeIdTest, GetMethodIdPlainFunction) {
+  auto id1 = getMethodID<&func1>();
+  auto id2 = getMethodID<&func1>();
+  auto id3 = getMethodID<&func2>();
+
+  EXPECT_EQ(id1, id2);
+  EXPECT_NE(id1, id3);
 }
 }  // namespace Neat

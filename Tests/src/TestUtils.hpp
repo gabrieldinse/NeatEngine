@@ -68,6 +68,9 @@ struct ListenerD {
   int count = 0;
 };
 
+int func1(int x);
+int func2(int x);
+
 struct TestingSystem : public System<TestingSystem> {
   TestingSystem() = default;
 
@@ -75,19 +78,19 @@ struct TestingSystem : public System<TestingSystem> {
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds,
-      [[maybe_unused]] LayerID layerID = NoLayer) override {
+      [[maybe_unused]] LayerID layerID = NoneLayer) override {
     updateCounter++;
   }
   virtual void onInitialize(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
-      [[maybe_unused]] LayerID layerID = NoLayer) override {
+      [[maybe_unused]] LayerID layerID = NoneLayer) override {
     initCounter++;
   }
   virtual void onShutdown(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
-      [[maybe_unused]] LayerID layerID = NoLayer) override {
+      [[maybe_unused]] LayerID layerID = NoneLayer) override {
     shutdownCounter++;
   }
 
@@ -103,19 +106,19 @@ struct TestingSystem2 : public System<TestingSystem2> {
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
       [[maybe_unused]] double deltaTimeSeconds,
-      [[maybe_unused]] LayerID layerID = NoLayer) override {
+      [[maybe_unused]] LayerID layerID = NoneLayer) override {
     updateCounter++;
   }
   virtual void onInitialize(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
-      [[maybe_unused]] LayerID layerID = NoLayer) override {
+      [[maybe_unused]] LayerID layerID = NoneLayer) override {
     initCounter++;
   }
   virtual void onShutdown(
       [[maybe_unused]] const Ref<EntityManager> &entityManager,
       [[maybe_unused]] const Ref<EventDispatcher> &eventDispatcher,
-      [[maybe_unused]] LayerID layerID = NoLayer) override {
+      [[maybe_unused]] LayerID layerID = NoneLayer) override {
     shutdownCounter++;
   }
 

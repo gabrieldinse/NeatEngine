@@ -10,6 +10,6 @@ class Render2DSystem : public System<Render2DSystem> {
   virtual void onUpdate(const Ref<EntityManager> &entityManager,
                         const Ref<EventDispatcher> &eventDispatcher,
                         double deltaTimeSeconds,
-                        LayerID layerID = NoLayer) override;
+                        LayerID layerID = NoneLayer) override;
 };
 }  // namespace Neat
