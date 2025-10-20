@@ -9,6 +9,7 @@
 #include "EventConnectionHandle.hpp"
 
 #include "Utils/TypeID.hpp"
+#include "Core/Assert.hpp"
 #include "Core/Limits.hpp"
 #include "Core/Types.hpp"
 #include "Core/Constants.hpp"
@@ -38,6 +39,13 @@ class EventConnections : public BaseEventConnections {
     insertEventHandler<method>(priority, layerID, ignoreIfHandled);
   }
 
+  template <typename Callable>
+  void connect(Callable &&callable,
+               EventPriority priority = EventPriorityLowest,
+               LayerID layerID = NoneLayer, bool ignoreIfHandled = false) {
+    insertEventHandler(callable, priority, layerID, ignoreIfHandled);
+  }
+
   template <auto method, typename Instance>
   [[nodiscard]] Ref<BaseEventConnectionHandle> connectScoped(
       Instance &instance, EventPriority priority = EventPriorityLowest,
@@ -56,6 +64,15 @@ class EventConnections : public BaseEventConnections {
     return makeRef<EventConnectionHandle<EventType>>(*this, eventHandler);
   }
 
+  template <typename Callable>
+  [[nodiscard]] Ref<BaseEventConnectionHandle> connectScoped(
+      Callable &&callable, EventPriority priority = EventPriorityLowest,
+      LayerID layerID = NoneLayer, bool ignoreIfHandled = false) {
+    auto &eventHandler =
+        insertEventHandler(callable, priority, layerID, ignoreIfHandled);
+    return makeRef<EventConnectionHandle<EventType>>(*this, eventHandler);
+  }
+
   template <auto method, typename Instance>
   void disconnect(Instance &instance) {
     TypeID methodId = getMethodID<method>();
@@ -67,10 +84,7 @@ class EventConnections : public BaseEventConnections {
 
   template <auto method>
   void disconnect() {
-    TypeID methodId = getMethodID<method>();
-    m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
-      return eventHandler.methodID == methodId;
-    });
+    disconnectMethod(getMethodID<method>());
   }
 
   void disconnect(InstanceID instanceID) override {
@@ -85,14 +99,10 @@ class EventConnections : public BaseEventConnections {
     });
   }
 
-  void disconnect(
-      const EventConnectionHandle<EventType> &eventConnectionHandle) {
-    m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
-      return eventHandler.instanceID ==
-                 eventConnectionHandle.getEventHandler().instanceID and
-             eventHandler.methodID ==
-                 eventConnectionHandle.getEventHandler().methodID;
-    });
+  template <typename Callable>
+  void disconnect([[maybe_unused]] Callable &&callable) {
+    using DecayedCallable = std::decay_t<Callable>;
+    disconnectMethod(getMethodID<DecayedCallable>());
   }
 
   void enable(LayerID layerID) override {
@@ -126,6 +136,8 @@ class EventConnections : public BaseEventConnections {
   void update(EventType &&event) { update(event); }
 
   void update(const BaseQueuedEvent &queuedEvent) {
+    NT_CORE_ASSERT(queuedEvent.eventId == getTypeID<EventType>());
+
     update(static_cast<const QueuedEvent<EventType> &>(queuedEvent).event);
   }
 
@@ -190,6 +202,49 @@ class EventConnections : public BaseEventConnections {
     auto it = m_eventHandlers.insert(insert_it, std::move(eventHandler));
     return *it;
   }
+
+  template <typename Callable>
+  EventHandler<EventType> &insertEventHandler(Callable &&callable,
+                                              EventPriority priority,
+                                              LayerID layerID,
+                                              bool ignoreIfHandled) {
+    auto insert_it =
+        std::find_if(m_eventHandlers.begin(), m_eventHandlers.end(),
+                     [priority](const EventHandler<EventType> &eventHandler) {
+                       return eventHandler.priority > priority;
+                     });
+
+    using DecayedCallable = std::decay_t<Callable>;
+    EventHandler<EventType> eventHandler{};
+    eventHandler.methodID = getMethodID<DecayedCallable>();
+    eventHandler.ignoreIfHandled = ignoreIfHandled;
+    eventHandler.priority = priority;
+    eventHandler.layerID = layerID;
+    eventHandler.instanceID = NoneInstance;
+    eventHandler.function = std::forward<Callable>(callable);
+
+    auto it = m_eventHandlers.insert(insert_it, std::move(eventHandler));
+    return *it;
+  }
+
+  void disconnectMethod(TypeID methodID) {
+    m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
+      return eventHandler.methodID == methodID;
+    });
+  }
+
+  void disconnectHandle(
+      const EventConnectionHandle<EventType> &eventConnectionHandle) {
+    m_eventHandlers.remove_if([&](const EventHandler<EventType> &eventHandler) {
+      return eventHandler.instanceID ==
+                 eventConnectionHandle.getEventHandler().instanceID and
+             eventHandler.methodID ==
+                 eventConnectionHandle.getEventHandler().methodID;
+    });
+  }
+
+ private:
+  friend class EventConnectionHandle<EventType>;
 
  private:
   std::list<EventHandler<EventType>> m_eventHandlers;

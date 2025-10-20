@@ -332,4 +332,72 @@ TEST_F(EventConnectionsTest, NonMemberFunctionConnectScoped) {
   connNonMember.update(EventA{1234});
   EXPECT_FALSE(calledNonMember);
 }
+
+TEST_F(EventConnectionsTest, LambdaWithCaptureUpdate) {
+  EventConnections<EventA> connLambdaWithCapture{};
+  bool localCalled = false;
+
+  connLambdaWithCapture.connect([&](const EventA &event) {
+    EXPECT_EQ(event.val, 1234);
+    localCalled = true;
+    return false;
+  });
+
+  connLambdaWithCapture.update(EventA{1234});
+  EXPECT_TRUE(localCalled);
+}
+
+TEST_F(EventConnectionsTest, LambdaWithCaptureConnectAndDisconnect) {
+  EventConnections<EventA> connLambdaWithCapture{};
+  bool localCalled = false;
+
+  auto lambdaWithCapture = [&](const EventA &event) {
+    EXPECT_EQ(event.val, 1234);
+    localCalled = true;
+    return false;
+  };
+
+  connLambdaWithCapture.connect(lambdaWithCapture);
+
+  connLambdaWithCapture.update(EventA{1234});
+  EXPECT_TRUE(localCalled);
+
+  localCalled = false;
+  connLambdaWithCapture.disconnect(lambdaWithCapture);
+}
+
+TEST_F(EventConnectionsTest, LambdaWithCaptureConnectScoped) {
+  EventConnections<EventA> connLambdaWithCapture{};
+  bool localCalled = false;
+
+  auto lambdaWithCapture = [&](const EventA &event) {
+    EXPECT_EQ(event.val, 1234);
+    localCalled = true;
+    return false;
+  };
+
+  localCalled = false;
+  auto connScope = connLambdaWithCapture.connectScoped(lambdaWithCapture);
+
+  connLambdaWithCapture.update(EventA{1234});
+  EXPECT_TRUE(localCalled);
+
+  localCalled = false;
+  connScope.reset();
+
+  connLambdaWithCapture.update(EventA{1234});
+  EXPECT_FALSE(localCalled);
+
+  {
+    auto connScope2 = connLambdaWithCapture.connectScoped(lambdaWithCapture);
+    localCalled = false;
+    connLambdaWithCapture.update(EventA{1234});
+    EXPECT_TRUE(localCalled);
+    localCalled = false;
+  }
+
+  // Here, connScope2 is out of scope and thus disconnected
+  connLambdaWithCapture.update(EventA{1234});
+  EXPECT_FALSE(localCalled);
+}
 }  // namespace Neat

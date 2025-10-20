@@ -32,7 +32,7 @@ class EventConnectionHandle : public BaseEventConnectionHandle {
 
 template <typename EventType>
 void EventConnectionHandle<EventType>::disconnect() {
-  m_eventConnections.disconnect(*this);
+  m_eventConnections.disconnectHandle(*this);
 }
 
 template <typename EventType>
