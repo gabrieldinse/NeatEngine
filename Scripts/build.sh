@@ -43,4 +43,4 @@ do_log "Building target: ${build_target}."
 cmake --build "${build_dir}" --verbose --config "${build_configuration}" --target "${build_target}" -j "$(nproc)" --
 
 do_log "Running tests."
-cd "${build_dir}/Tests" && ctest --verbose --stop-on-failure
+cd "${build_dir}/Tests" && ctest --verbose
