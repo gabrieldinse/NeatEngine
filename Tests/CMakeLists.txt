@@ -48,9 +48,4 @@ target_link_libraries(
     Neat
 )
 
-# Automatically run tests when building
 add_test(NAME AllTests COMMAND NeatTests)
-
-add_custom_command(TARGET NeatTests POST_BUILD
-    COMMAND ${CMAKE_CTEST_COMMAND} --verbose
-)

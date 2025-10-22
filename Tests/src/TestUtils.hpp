@@ -6,16 +6,16 @@
 
 namespace Neat {
 struct EventA {
-  int val;
+  int val = 0;
 };
 
 struct EventB {
-  std::string msg;
+  std::string msg{};
 };
 
 struct EventC {
-  float posX;
-  float posY;
+  float posX = 0.0f;
+  float posY = 0.0f;
 };
 
 struct ListenerA {
