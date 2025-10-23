@@ -18,7 +18,7 @@ namespace Neat {
 class BaseEventConnections {
  public:
   virtual ~BaseEventConnections() = default;
-  virtual void update(const BaseQueuedEvent &queuedEvent) = 0;
+  virtual void update(const QueuedEvent &queuedEvent) = 0;
   virtual void disconnect(InstanceID instanceID) = 0;
   virtual void enable(LayerID layerID) = 0;
   virtual void disable(LayerID layerID) = 0;
@@ -135,10 +135,10 @@ class EventConnections : public BaseEventConnections {
 
   void update(EventType &&event) { update(event); }
 
-  void update(const BaseQueuedEvent &queuedEvent) {
+  void update(const QueuedEvent &queuedEvent) {
     NT_CORE_ASSERT(queuedEvent.eventId == getTypeID<EventType>());
 
-    update(static_cast<const QueuedEvent<EventType> &>(queuedEvent).event);
+    update(std::any_cast<const EventType &>(queuedEvent.event));
   }
 
   template <typename... Args>
@@ -173,9 +173,7 @@ class EventConnections : public BaseEventConnections {
     eventHandler.priority = priority;
     eventHandler.layerID = layerID;
     eventHandler.instanceID = getInstanceID(instance);
-    eventHandler.function = [&instance](const EventType &event) {
-      return (instance.*method)(event);
-    };
+    eventHandler.function = std::bind_front(method, &instance);
 
     auto it = m_eventHandlers.insert(insert_it, std::move(eventHandler));
     return *it;

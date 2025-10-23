@@ -6,8 +6,9 @@ namespace Neat {
 void EventDispatcher::update() {
   while (auto queuedEventOpt = m_eventsQueue.tryPop()) {
     auto &queuedEvent = queuedEventOpt.value();
-    if (m_eventConnectionsMap.contains(queuedEvent->eventId)) {
-      m_eventConnectionsMap[queuedEvent->eventId]->update(*queuedEvent);
+    auto it = m_eventConnectionsMap.find(queuedEvent.eventId);
+    if (it != m_eventConnectionsMap.end()) {
+      it->second->update(queuedEvent);
     }
   }
 }

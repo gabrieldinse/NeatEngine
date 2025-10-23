@@ -40,7 +40,13 @@ do_log "Configuring build: ${build_configuration}."
 cmake -S "${root_dir}" -B "${build_dir}" -DCMAKE_BUILD_TYPE="${build_configuration}"
 
 do_log "Building target: ${build_target}."
-cmake --build "${build_dir}" --verbose --config "${build_configuration}" --target "${build_target}" -j "$(nproc)" --
+if cmake --build "${build_dir}" --verbose --config "${build_configuration}" --target "${build_target}" -j "$(nproc)" -- ; then
+    do_log "Build succeeded."
+    do_log "Running tests."
+    cd "${build_dir}/Tests" && ctest --verbose
+else
+    do_log "Build failed."
+    do_log "Skipping tests."
+    exit 1
+fi
 
-do_log "Running tests."
-cd "${build_dir}/Tests" && ctest --verbose

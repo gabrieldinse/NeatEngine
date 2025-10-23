@@ -1,22 +1,14 @@
 
 #pragma once
 
+#include <any>
+
 #include "Utils/TypeID.hpp"
 #include "Core/Types.hpp"
 
 namespace Neat {
-struct BaseQueuedEvent {
+struct QueuedEvent {
   TypeID eventId;
-
-  BaseQueuedEvent(TypeID eventId) : eventId{eventId} {}
-  virtual ~BaseQueuedEvent() = default;
-};
-
-template <typename EventType>
-struct QueuedEvent : BaseQueuedEvent {
-  EventType event;
-
-  QueuedEvent(TypeID eventId, EventType event)
-      : BaseQueuedEvent{eventId}, event{event} {}
+  std::any event;
 };
 }  // namespace Neat

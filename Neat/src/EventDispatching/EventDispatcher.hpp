@@ -22,15 +22,14 @@ class EventDispatcher {
 
   template <typename EventType>
   void enqueue(const EventType& event) {
-    m_eventsQueue.push(
-        makeScope<QueuedEvent<EventType>>(getTypeID<EventType>(), event));
+    m_eventsQueue.push(QueuedEvent{getTypeID<EventType>(), event});
   }
 
   template <typename EventType>
   void enqueue(EventType&& event) {
     using DecayedEventType = std::remove_reference_t<EventType>;
-    m_eventsQueue.push(makeScope<QueuedEvent<DecayedEventType>>(
-        getTypeID<DecayedEventType>(), event));
+    m_eventsQueue.push(
+        QueuedEvent{getTypeID<DecayedEventType>(), std::move(event)});
   }
 
   template <typename EventType, typename... Args,
@@ -38,8 +37,9 @@ class EventDispatcher {
                                              std::tuple<EventType>>,
                              int> = 0>
   void enqueue(Args&&... args) {
-    m_eventsQueue.push(makeScope<QueuedEvent<EventType>>(
-        getTypeID<EventType>(), EventType(std::forward<Args>(args)...)));
+    m_eventsQueue.push(QueuedEvent{
+        getTypeID<EventType>(),
+        std::any{std::in_place_type<EventType>, std::forward<Args>(args)...}});
   }
 
   template <typename EventType>
@@ -84,7 +84,7 @@ class EventDispatcher {
  private:
   using EventConnectionsMap =
       std::unordered_map<TypeID, Scope<BaseEventConnections>>;
-  using EventsQueue = SafeQueue<Scope<BaseQueuedEvent>>;
+  using EventsQueue = SafeQueue<QueuedEvent>;
 
  private:
   EventConnectionsMap m_eventConnectionsMap;

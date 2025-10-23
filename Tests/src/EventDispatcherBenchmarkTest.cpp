@@ -117,8 +117,9 @@ TEST_F(EventDispatcherBenchmarkTest,
   }
   dispatcher1.update();
   auto duration = timer.stop();
-  std::cout << "EventA enqueued to " << listenersA.size() << " listeners "
-            << count << " times in " << duration << " seconds.\n";
+  std::cout << "EventA enqueued and updated to " << listenersA.size()
+            << " listeners " << count << " times in " << duration
+            << " seconds.\n";
 
   std::vector<ListenerB> listenersB(100);
   for (int i = 0; i < 100; ++i) {
@@ -132,7 +133,8 @@ TEST_F(EventDispatcherBenchmarkTest,
   }
   dispatcher1.update();
   duration = timer.stop();
-  std::cout << "EventB enqueued to " << listenersB.size() << " listeners "
-            << count2 << " times in " << duration << " seconds.\n";
+  std::cout << "EventB enqueued and updated to " << listenersB.size()
+            << " listeners " << count2 << " times in " << duration
+            << " seconds.\n";
 }
 }  // namespace Neat
