@@ -121,4 +121,53 @@ TEST_F(EntityManagerBenchmarkTest, DestroyEntitiesBenchmark) {
   std::cout << "Destroyed " << numEntities << " entities in " << duration
             << " seconds.\n";
 }
+
+TEST_F(EntityManagerBenchmarkTest, AddComponentsBenchmark) {
+  const int numEntities = 100000;
+  std::vector<Entity> entities;
+  entities.reserve(numEntities);
+  for (int i = 0; i < numEntities; ++i) {
+    entities.push_back(entityManager->createEntity());
+  }
+
+  Timer timer;
+  timer.start();
+  for (auto &entity : entities) {
+    entity.addComponent<SpeedComponent>();
+    entity.addComponent<PlayerStatsComponent>();
+    entity.addComponent<InventoryComponent>();
+  }
+  eventDispatcher->update();
+
+  double duration = timer.stop();
+  std::cout << "Added components to " << numEntities << " entities in "
+            << duration << " seconds.\n";
+}
+
+TEST_F(EntityManagerBenchmarkTest, RemoveComponentsBenchmark) {
+  const int numEntities = 100000;
+  std::vector<Entity> entities;
+  entities.reserve(numEntities);
+  for (int i = 0; i < numEntities; ++i) {
+    auto entity = entityManager->createEntity();
+    entity.addComponent<SpeedComponent>();
+    entity.addComponent<PlayerStatsComponent>();
+    entity.addComponent<InventoryComponent>();
+    entities.push_back(entity);
+  }
+  eventDispatcher->update();
+
+  Timer timer;
+  timer.start();
+  for (auto &entity : entities) {
+    entity.removeComponent<SpeedComponent>();
+    entity.removeComponent<PlayerStatsComponent>();
+    entity.removeComponent<InventoryComponent>();
+  }
+  eventDispatcher->update();
+
+  double duration = timer.stop();
+  std::cout << "Removed components from " << numEntities << " entities in "
+            << duration << " seconds.\n";
+}
 }  // namespace Neat
