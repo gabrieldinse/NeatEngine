@@ -7,6 +7,8 @@
 #include "TypeVectorN.hpp"
 #include "Vector4.hpp"
 
+#include "Core/Assert.hpp"
+
 namespace Neat {
 template <typename T>
 struct Matrix<4, 4, T> {
@@ -85,6 +87,8 @@ struct Matrix<4, 4, T> {
   constexpr const T &operator()(UInt32 pos) const;
   constexpr T &operator()(UInt32 row, UInt32 col);
   constexpr const T &operator()(UInt32 row, UInt32 col) const;
+  constexpr T &operator[](UInt32 row, UInt32 col);
+  constexpr const T &operator[](UInt32 row, UInt32 col) const;
   constexpr RowType row(UInt32 row) const;
   constexpr RowType col(UInt32 col) const;
 

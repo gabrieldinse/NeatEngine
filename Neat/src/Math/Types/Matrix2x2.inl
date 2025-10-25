@@ -215,23 +215,38 @@ inline constexpr std::span<T, 2> Matrix<2, 2, T>::operator[](UInt32 row) const {
 
 template <typename T>
 inline constexpr T &Matrix<2, 2, T>::operator()(UInt32 pos) {
+  NT_CORE_ASSERT(pos < 4);
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Matrix<2, 2, T>::operator()(UInt32 pos) const {
+  NT_CORE_ASSERT(pos < 4);
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr T &Matrix<2, 2, T>::operator()(UInt32 row, UInt32 col) {
+  NT_CORE_ASSERT(row < 2 and col < 2);
   return elements[row * 2 + col];
 }
 
 template <typename T>
 inline constexpr const T &Matrix<2, 2, T>::operator()(UInt32 row,
                                                       UInt32 col) const {
+  NT_CORE_ASSERT(row < 2 and col < 2);
   return elements[row * 2 + col];
+}
+
+template <typename T>
+inline constexpr T &Matrix<2, 2, T>::operator[](UInt32 row, UInt32 col) {
+  return operator()(row, col);
+}
+
+template <typename T>
+inline constexpr const T &Matrix<2, 2, T>::operator[](UInt32 row,
+                                                      UInt32 col) const {
+  return operator()(row, col);
 }
 
 template <typename T>

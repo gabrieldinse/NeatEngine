@@ -260,28 +260,44 @@ inline constexpr std::span<T, 3> Matrix<3, 3, T>::operator[](UInt32 row) const {
 
 template <typename T>
 inline constexpr T &Matrix<3, 3, T>::operator()(UInt32 pos) {
+  NT_CORE_ASSERT(pos < 9);
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Matrix<3, 3, T>::operator()(UInt32 pos) const {
+  NT_CORE_ASSERT(pos < 9);
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr T &Matrix<3, 3, T>::operator()(UInt32 row, UInt32 col) {
+  NT_CORE_ASSERT(row < 3 and col < 3);
   return elements[row * 3 + col];
 }
 
 template <typename T>
 inline constexpr const T &Matrix<3, 3, T>::operator()(UInt32 row,
                                                       UInt32 col) const {
+  NT_CORE_ASSERT(row < 3 and col < 3);
   return elements[row * 3 + col];
+}
+
+template <typename T>
+inline constexpr T &Matrix<3, 3, T>::operator[](UInt32 row, UInt32 col) {
+  return operator()(row, col);
+}
+
+template <typename T>
+inline constexpr const T &Matrix<3, 3, T>::operator[](UInt32 row,
+                                                      UInt32 col) const {
+  return operator()(row, col);
 }
 
 template <typename T>
 inline constexpr Matrix<3, 3, T>::RowType Matrix<3, 3, T>::row(
     UInt32 row) const {
+  NT_CORE_ASSERT(row < 3);
   return RowType{elements[row * 3], elements[row * 3 + 1],
                  elements[row * 3 + 2]};
 }
@@ -289,6 +305,7 @@ inline constexpr Matrix<3, 3, T>::RowType Matrix<3, 3, T>::row(
 template <typename T>
 inline constexpr Matrix<3, 3, T>::RowType Matrix<3, 3, T>::col(
     UInt32 col) const {
+  NT_CORE_ASSERT(col < 3);
   return RowType{elements[col], elements[col + 3], elements[col + 6]};
 }
 

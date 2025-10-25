@@ -328,38 +328,61 @@ inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator/=(const U &scalar) {
 // Element accessing
 template <typename T>
 inline constexpr std::span<T, 4> Matrix<4, 4, T>::operator[](UInt32 row) {
+  NT_CORE_ASSERT(row < 4);
+
   return std::span<T, 4>{elements.data() + row * 4, 4};
 }
 
 template <typename T>
 inline constexpr std::span<T, 4> Matrix<4, 4, T>::operator[](UInt32 row) const {
+  NT_CORE_ASSERT(row < 4);
+
   return std::span<T, 4>{elements.data() + row * 4, 4};
 }
 
 template <typename T>
 inline constexpr T &Matrix<4, 4, T>::operator()(UInt32 pos) {
+  NT_CORE_ASSERT(pos < 16);
+
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Matrix<4, 4, T>::operator()(UInt32 pos) const {
+  NT_CORE_ASSERT(pos < 16);
+
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr T &Matrix<4, 4, T>::operator()(UInt32 row, UInt32 col) {
+  NT_CORE_ASSERT(row < 4 and col < 4);
   return elements[row * 4 + col];
 }
 
 template <typename T>
 inline constexpr const T &Matrix<4, 4, T>::operator()(UInt32 row,
                                                       UInt32 col) const {
+  NT_CORE_ASSERT(row < 4 and col < 4);
   return elements[row * 4 + col];
+}
+
+template <typename T>
+inline constexpr T &Matrix<4, 4, T>::operator[](UInt32 row, UInt32 col) {
+  return operator()(row, col);
+}
+
+template <typename T>
+inline constexpr const T &Matrix<4, 4, T>::operator[](UInt32 row,
+                                                      UInt32 col) const {
+  return operator()(row, col);
 }
 
 template <typename T>
 inline constexpr Matrix<4, 4, T>::RowType Matrix<4, 4, T>::row(
     UInt32 row) const {
+  NT_CORE_ASSERT(row < 4);
+
   return RowType{elements[row * 4], elements[row * 4 + 1],
                  elements[row * 4 + 2], elements[row * 4 + 3]};
 }
@@ -367,6 +390,8 @@ inline constexpr Matrix<4, 4, T>::RowType Matrix<4, 4, T>::row(
 template <typename T>
 inline constexpr Matrix<4, 4, T>::RowType Matrix<4, 4, T>::col(
     UInt32 col) const {
+  NT_CORE_ASSERT(col < 4);
+
   return RowType{elements[col], elements[col + 4], elements[col + 8],
                  elements[col + 12]};
 }

@@ -131,6 +131,16 @@ TEST_F(VectorTest, AtOperator) {
   EXPECT_EQ(vector2us[0], 1U);
   EXPECT_EQ(vector2us[1], 2U);
   EXPECT_EQ(vector1us[0], 1U);
+
+  // Assignment tests
+  vector4f[0] = 10.0f;
+  vector3f[1] = 20.0f;
+  vector2f[0] = 30.0f;
+  vector1f[0] = 40.0f;
+  EXPECT_EQ(vector4f[0], 10.0f);
+  EXPECT_EQ(vector3f[1], 20.0f);
+  EXPECT_EQ(vector2f[0], 30.0f);
+  EXPECT_EQ(vector1f[0], 40.0f);
 }
 
 TEST_F(VectorTest, CallOperator) {
@@ -221,6 +231,28 @@ TEST_F(VectorTest, CallOperator) {
   EXPECT_EQ(vector2us(0), 1U);
   EXPECT_EQ(vector2us(1), 2U);
   EXPECT_EQ(vector1us(0), 1U);
+
+  // Assignment tests
+  vector4f(0) = 10.0f;
+  vector4f(1) = 20.0f;
+  vector4f(2) = 30.0f;
+  vector4f(3) = 40.0f;
+  vector3f(0) = 50.0f;
+  vector3f(1) = 60.0f;
+  vector3f(2) = 70.0f;
+  vector2f(0) = 80.0f;
+  vector2f(1) = 90.0f;
+  vector1f(0) = 100.0f;
+  EXPECT_EQ(vector4f(0), 10.0f);
+  EXPECT_EQ(vector4f(1), 20.0f);
+  EXPECT_EQ(vector4f(2), 30.0f);
+  EXPECT_EQ(vector4f(3), 40.0f);
+  EXPECT_EQ(vector3f(0), 50.0f);
+  EXPECT_EQ(vector3f(1), 60.0f);
+  EXPECT_EQ(vector3f(2), 70.0f);
+  EXPECT_EQ(vector2f(0), 80.0f);
+  EXPECT_EQ(vector2f(1), 90.0f);
+  EXPECT_EQ(vector1f(0), 100.0f);
 }
 
 TEST_F(VectorTest, CoordinatesAccessingXYZW) {
@@ -311,6 +343,28 @@ TEST_F(VectorTest, CoordinatesAccessingXYZW) {
   EXPECT_EQ(vector2us.x(), 1U);
   EXPECT_EQ(vector2us.y(), 2U);
   EXPECT_EQ(vector1us.x(), 1U);
+
+  // Assignment tests
+  vector4f.x() = 10.0f;
+  vector4f.y() = 20.0f;
+  vector4f.z() = 30.0f;
+  vector4f.w() = 40.0f;
+  vector3f.x() = 50.0f;
+  vector3f.y() = 60.0f;
+  vector3f.z() = 70.0f;
+  vector2f.x() = 80.0f;
+  vector2f.y() = 90.0f;
+  vector1f.x() = 100.0f;
+  EXPECT_EQ(vector4f.x(), 10.0f);
+  EXPECT_EQ(vector4f.y(), 20.0f);
+  EXPECT_EQ(vector4f.z(), 30.0f);
+  EXPECT_EQ(vector4f.w(), 40.0f);
+  EXPECT_EQ(vector3f.x(), 50.0f);
+  EXPECT_EQ(vector3f.y(), 60.0f);
+  EXPECT_EQ(vector3f.z(), 70.0f);
+  EXPECT_EQ(vector2f.x(), 80.0f);
+  EXPECT_EQ(vector2f.y(), 90.0f);
+  EXPECT_EQ(vector1f.x(), 100.0f);
 }
 
 TEST_F(VectorTest, CoordinatesAccessingRGBA) {
@@ -401,6 +455,28 @@ TEST_F(VectorTest, CoordinatesAccessingRGBA) {
   EXPECT_EQ(vector2us.r(), 1U);
   EXPECT_EQ(vector2us.g(), 2U);
   EXPECT_EQ(vector1us.r(), 1U);
+
+  // Assignment tests
+  vector4f.r() = 10.0f;
+  vector4f.g() = 20.0f;
+  vector4f.b() = 30.0f;
+  vector4f.a() = 40.0f;
+  vector3f.r() = 50.0f;
+  vector3f.g() = 60.0f;
+  vector3f.b() = 70.0f;
+  vector2f.r() = 80.0f;
+  vector2f.g() = 90.0f;
+  vector1f.r() = 100.0f;
+  EXPECT_EQ(vector4f.r(), 10.0f);
+  EXPECT_EQ(vector4f.g(), 20.0f);
+  EXPECT_EQ(vector4f.b(), 30.0f);
+  EXPECT_EQ(vector4f.a(), 40.0f);
+  EXPECT_EQ(vector3f.r(), 50.0f);
+  EXPECT_EQ(vector3f.g(), 60.0f);
+  EXPECT_EQ(vector3f.b(), 70.0f);
+  EXPECT_EQ(vector2f.r(), 80.0f);
+  EXPECT_EQ(vector2f.g(), 90.0f);
+  EXPECT_EQ(vector1f.r(), 100.0f);
 }
 
 TEST_F(VectorTest, CoordinatesAccessingIJKL) {
@@ -491,6 +567,28 @@ TEST_F(VectorTest, CoordinatesAccessingIJKL) {
   EXPECT_EQ(vector2us.i(), 1U);
   EXPECT_EQ(vector2us.j(), 2U);
   EXPECT_EQ(vector1us.i(), 1U);
+
+  // Assignment tests
+  vector4f.i() = 10.0f;
+  vector4f.j() = 20.0f;
+  vector4f.k() = 30.0f;
+  vector4f.l() = 40.0f;
+  vector3f.i() = 50.0f;
+  vector3f.j() = 60.0f;
+  vector3f.k() = 70.0f;
+  vector2f.i() = 80.0f;
+  vector2f.j() = 90.0f;
+  vector1f.i() = 100.0f;
+  EXPECT_EQ(vector4f.i(), 10.0f);
+  EXPECT_EQ(vector4f.j(), 20.0f);
+  EXPECT_EQ(vector4f.k(), 30.0f);
+  EXPECT_EQ(vector4f.l(), 40.0f);
+  EXPECT_EQ(vector3f.i(), 50.0f);
+  EXPECT_EQ(vector3f.j(), 60.0f);
+  EXPECT_EQ(vector3f.k(), 70.0f);
+  EXPECT_EQ(vector2f.i(), 80.0f);
+  EXPECT_EQ(vector2f.j(), 90.0f);
+  EXPECT_EQ(vector1f.i(), 100.0f);
 }
 
 TEST_F(VectorTest, CoordinatesAccessingSTPQ) {
@@ -581,6 +679,28 @@ TEST_F(VectorTest, CoordinatesAccessingSTPQ) {
   EXPECT_EQ(vector2us.s(), 1U);
   EXPECT_EQ(vector2us.t(), 2U);
   EXPECT_EQ(vector1us.s(), 1U);
+
+  // Assignment tests
+  vector4f.s() = 10.0f;
+  vector4f.t() = 20.0f;
+  vector4f.p() = 30.0f;
+  vector4f.q() = 40.0f;
+  vector3f.s() = 50.0f;
+  vector3f.t() = 60.0f;
+  vector3f.p() = 70.0f;
+  vector2f.s() = 80.0f;
+  vector2f.t() = 90.0f;
+  vector1f.s() = 100.0f;
+  EXPECT_EQ(vector4f.s(), 10.0f);
+  EXPECT_EQ(vector4f.t(), 20.0f);
+  EXPECT_EQ(vector4f.p(), 30.0f);
+  EXPECT_EQ(vector4f.q(), 40.0f);
+  EXPECT_EQ(vector3f.s(), 50.0f);
+  EXPECT_EQ(vector3f.t(), 60.0f);
+  EXPECT_EQ(vector3f.p(), 70.0f);
+  EXPECT_EQ(vector2f.s(), 80.0f);
+  EXPECT_EQ(vector2f.t(), 90.0f);
+  EXPECT_EQ(vector1f.s(), 100.0f);
 }
 
 TEST_F(VectorTest, DefaultConstructor) {
