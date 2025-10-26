@@ -2,7 +2,7 @@
 
 #include "GameLayer.hpp"
 #include <Neat.hpp>
-#include <Core/Main.hpp>
+#include <Neat/Main.hpp>
 
 class FlappySpaceshipApp : public Neat::Application {
  public:

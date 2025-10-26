@@ -1,7 +1,7 @@
 #include <memory>
 
 #include <Neat.hpp>
-#include <Core/Main.hpp>
+#include <Neat/Main.hpp>
 #include "ExampleLayer.hpp"
 
 class Sandbox : public Neat::Application {

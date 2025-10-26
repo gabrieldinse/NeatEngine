@@ -32,6 +32,7 @@ endif()
 
 target_include_directories(NeatEditor PRIVATE
     ${NEAT_DIR}/src
+    ${NEAT_DIR}/include
     ${VENDOR_DIR}
 )
 target_link_libraries(NeatEditor PRIVATE Neat)

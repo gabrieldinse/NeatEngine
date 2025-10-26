@@ -1,7 +1,7 @@
 #include <memory>
 
 #include <Neat.hpp>
-#include <Core/Main.hpp>
+#include <Neat/Main.hpp>
 #include "EditorLayer.hpp"
 
 namespace Neat {

@@ -8,7 +8,7 @@ file(GLOB_RECURSE SANDBOX_SOURCES
 
 add_executable(Sandbox ${SANDBOX_SOURCES})
 target_include_directories(Sandbox PRIVATE
-    ${NEAT_DIR}/src
+    ${NEAT_DIR}/include
     ${VENDOR_DIR}
 )
 target_link_libraries(Sandbox PRIVATE Neat)
