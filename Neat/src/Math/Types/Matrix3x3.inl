@@ -4,8 +4,8 @@ namespace Neat {
 // Default constructor
 template <typename T>
 inline constexpr Matrix<3, 3, T>::Matrix()
-    : elements{one<T>,  zero<T>, zero<T>, zero<T>, one<T>,
-               zero<T>, zero<T>, zero<T>, one<T>} {}
+    : elements{One<T>,  Zero<T>, Zero<T>, Zero<T>, One<T>,
+               Zero<T>, Zero<T>, Zero<T>, One<T>} {}
 
 // Basic constructors
 template <typename T>
@@ -18,8 +18,8 @@ inline constexpr Matrix<3, 3, T>::Matrix(const T &m00, const T &m01,
 
 template <typename T>
 inline constexpr Matrix<3, 3, T>::Matrix(const T &scalar)
-    : elements{scalar,  zero<T>, zero<T>, zero<T>, scalar,
-               zero<T>, zero<T>, zero<T>, scalar} {}
+    : elements{scalar,  Zero<T>, Zero<T>, Zero<T>, scalar,
+               Zero<T>, Zero<T>, Zero<T>, scalar} {}
 
 template <typename T>
 inline constexpr Matrix<3, 3, T>::Matrix(const std::array<T, 3 * 3> &data)
@@ -56,8 +56,8 @@ inline constexpr Matrix<3, 3, T>::Matrix(const Matrix<4, 4, U> &m)
 template <typename T>
 template <typename U>
 inline constexpr Matrix<3, 3, T>::Matrix(const Matrix<2, 2, U> &m)
-    : elements{m(0),    m(1),    zero<T>, m(3),    m(4),
-               zero<T>, zero<T>, zero<T>, zero<T>, one<T>} {}
+    : elements{m(0),    m(1),    Zero<T>, m(3),    m(4),
+               Zero<T>, Zero<T>, Zero<T>, Zero<T>, One<T>} {}
 
 template <typename T>
 template <typename V1, typename V2, typename V3>
@@ -74,7 +74,7 @@ inline constexpr Matrix<3, 3, T>::Matrix(const T *data, UInt32 count) {
   }
 
   std::copy(data, data + count, elements.data());
-  std::fill(elements.data() + count, elements.data() + size(), zero<T>);
+  std::fill(elements.data() + count, elements.data() + size(), Zero<T>);
 }
 
 // Non member operators
@@ -250,37 +250,45 @@ inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator/=(const U &scalar) {
 // Element accessing
 template <typename T>
 inline constexpr std::span<T, 3> Matrix<3, 3, T>::operator[](UInt32 row) {
-  return std::span<T, 3>{elements.data() + row * 3, 3};
+  NT_CORE_ASSERT(row < M);
+
+  return std::span<T, M>{elements.data() + row * M, M};
 }
 
 template <typename T>
 inline constexpr std::span<T, 3> Matrix<3, 3, T>::operator[](UInt32 row) const {
-  return std::span<T, 3>{elements.data() + row * 3, 3};
+  NT_CORE_ASSERT(row < M);
+
+  return std::span<T, M>{elements.data() + row * M, M};
 }
 
 template <typename T>
 inline constexpr T &Matrix<3, 3, T>::operator()(UInt32 pos) {
-  NT_CORE_ASSERT(pos < 9);
+  NT_CORE_ASSERT(pos < Size);
+
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Matrix<3, 3, T>::operator()(UInt32 pos) const {
-  NT_CORE_ASSERT(pos < 9);
+  NT_CORE_ASSERT(pos < Size);
+
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr T &Matrix<3, 3, T>::operator()(UInt32 row, UInt32 col) {
-  NT_CORE_ASSERT(row < 3 and col < 3);
-  return elements[row * 3 + col];
+  NT_CORE_ASSERT(row < M and col < N);
+
+  return elements[row * M + col];
 }
 
 template <typename T>
 inline constexpr const T &Matrix<3, 3, T>::operator()(UInt32 row,
                                                       UInt32 col) const {
-  NT_CORE_ASSERT(row < 3 and col < 3);
-  return elements[row * 3 + col];
+  NT_CORE_ASSERT(row < M and col < N);
+
+  return elements[row * M + col];
 }
 
 template <typename T>
@@ -297,16 +305,18 @@ inline constexpr const T &Matrix<3, 3, T>::operator[](UInt32 row,
 template <typename T>
 inline constexpr Matrix<3, 3, T>::RowType Matrix<3, 3, T>::row(
     UInt32 row) const {
-  NT_CORE_ASSERT(row < 3);
-  return RowType{elements[row * 3], elements[row * 3 + 1],
-                 elements[row * 3 + 2]};
+  NT_CORE_ASSERT(row < M);
+
+  return RowType{elements[row * M], elements[row * M + 1],
+                 elements[row * M + 2]};
 }
 
 template <typename T>
 inline constexpr Matrix<3, 3, T>::RowType Matrix<3, 3, T>::col(
     UInt32 col) const {
-  NT_CORE_ASSERT(col < 3);
-  return RowType{elements[col], elements[col + 3], elements[col + 6]};
+  NT_CORE_ASSERT(col < N);
+
+  return RowType{elements[col], elements[col + M], elements[col + 2 * M]};
 }
 
 // Relational operators
@@ -342,7 +352,7 @@ inline Matrix<3, 3, T> transpose(const Matrix<3, 3, T> &m) {
 
 template <typename T>
 inline Matrix<3, 3, T> inverse(const Matrix<3, 3, T> &m) {
-  T inverse_determinant = one<T> / determinant(m);
+  T inverse_determinant = One<T> / determinant(m);
 
   return Matrix<3, 3, T>{
       (m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2)) * inverse_determinant,

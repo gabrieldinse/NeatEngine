@@ -174,7 +174,7 @@ void GameLayer::onPlayerUpdate(float deltaTimeSeconds) {
   }
   playerTransform->setRotation(
       atan2(playerVelocity->value.y(), playerVelocity->value.x()) * 180.0f /
-          Neat::pi<float> -
+          Neat::Pi<> -
       90.0f);
 }
 

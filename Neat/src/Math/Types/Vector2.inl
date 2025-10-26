@@ -3,7 +3,7 @@
 namespace Neat {
 // Default constructor
 template <typename T>
-inline constexpr Vector<2, T>::Vector() : elements{zero<T>, zero<T>} {}
+inline constexpr Vector<2, T>::Vector() : elements{Zero<T>, Zero<T>} {}
 
 // Basic Constructors
 template <typename T>
@@ -42,7 +42,7 @@ inline constexpr Vector<2, T>::Vector(const Vector<3, U> &v)
 template <typename T>
 template <typename U>
 inline constexpr Vector<2, T>::Vector(const Vector<1, U> &v)
-    : elements{static_cast<T>(v.x()), zero<T>} {}
+    : elements{static_cast<T>(v.x()), Zero<T>} {}
 
 template <typename T>
 template <typename A, typename B>
@@ -61,7 +61,7 @@ inline constexpr Vector<2, T>::Vector(const T *data, UInt32 count) {
   }
 
   std::copy(data, data + count, elements.data());
-  std::fill(elements.data() + count, elements.data() + size(), zero<T>);
+  std::fill(elements.data() + count, elements.data() + size(), Zero<T>);
 }
 
 // Assignment operators
@@ -126,17 +126,21 @@ inline constexpr Vector<2, T>::operator bool() const {
   if constexpr (std::is_same_v<T, bool>) {
     return x() and y();
   } else {
-    return (norm(*this) > zero<T>);
+    return (norm(*this) > Zero<T>);
   }
 }
 
 template <typename T>
 inline constexpr T &Vector<2, T>::operator[](UInt32 pos) {
+  NT_CORE_ASSERT(pos < N);
+
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<2, T>::operator[](UInt32 pos) const {
+  NT_CORE_ASSERT(pos < N);
+
   return elements[pos];
 }
 

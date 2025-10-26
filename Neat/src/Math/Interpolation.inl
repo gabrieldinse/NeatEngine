@@ -4,14 +4,14 @@ namespace Neat {
 // Scalar
 template <typename T, typename U>
 inline constexpr T mix(const T &a, const T &b, const U &t) {
-  return a * (one<T> - static_cast<T>(t)) + b * static_cast<T>(t);
+  return a * (One<T> - static_cast<T>(t)) + b * static_cast<T>(t);
 }
 
 // Vector
 template <UInt32 N, typename T, typename U>
 inline constexpr Vector<N, T> mix(const Vector<N, T> &a, const Vector<N, T> &b,
                                   const U &t) {
-  return a * (one<T> - static_cast<T>(t)) + b * static_cast<T>(t);
+  return a * (One<T> - static_cast<T>(t)) + b * static_cast<T>(t);
 }
 
 template <UInt32 N, typename T, typename U>
@@ -50,11 +50,11 @@ constexpr Quaternion<T> mix(const Quaternion<T> &a, const Quaternion<T> &b,
 
   // Performs linear interpolation when cos_theta is close to 1 to avoid
   // sin(angle) to become a division by 0
-  if (cos_theta > one<T> - Limits::Epsilon<T>)
+  if (cos_theta > One<T> - Limits::Epsilon<T>)
     return Quaternion<T>{mix(a.w, b.w), mix(a.v, b.v)};
 
   T angle = acos(cos_theta);
-  return (sin((one<T> - static_cast<T>(t)) * angle) * a +
+  return (sin((One<T> - static_cast<T>(t)) * angle) * a +
           sin(static_cast<T>(t) * angle) * b) /
          sin(angle);
 }
@@ -62,8 +62,8 @@ constexpr Quaternion<T> mix(const Quaternion<T> &a, const Quaternion<T> &b,
 template <typename T, typename U>
 constexpr Quaternion<T> lerp(const Quaternion<T> &a, const Quaternion<T> &b,
                              const U &t) {
-  T factor = std::clamp(static_cast<T>(t), zero<T>, one<T>);
-  return a * (one<T> - factor) + b * factor;
+  T factor = std::clamp(static_cast<T>(t), Zero<T>, One<T>);
+  return a * (One<T> - factor) + b * factor;
 }
 
 template <typename T, typename U>
@@ -73,21 +73,21 @@ constexpr Quaternion<T> slerp(const Quaternion<T> &a, const Quaternion<T> &b,
   Quaternion<T> c{b};
 
   // If cos_theta is negative, slerp will take the longest path
-  // The solution is to invert one of the quaternions (a or b) and so we
+  // The solution is to invert One of the quaternions (a or b) and so we
   // get a positive dot product
-  if (cos_theta < zero<T>) {
+  if (cos_theta < Zero<T>) {
     c = -b;
     cos_theta = -cos_theta;
   }
 
   // Performs linear interpolation when cos_theta is close to 1 to avoid
   // sin(angle) to become a division by 0
-  if (cos_theta > one<T> - Limits::Epsilon<T>)
+  if (cos_theta > One<T> - Limits::Epsilon<T>)
     return Quaternion<T>{mix(a.w, b.w), mix(a.v, b.v)};
 
   T angle = acos(cos_theta);
 
-  return (sin((one<T> - static_cast<T>(t)) * angle) * a +
+  return (sin((One<T> - static_cast<T>(t)) * angle) * a +
           sin(static_cast<T>(t) * angle) * c) /
          sin(angle);
 }

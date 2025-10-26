@@ -2,6 +2,7 @@
 
 #include <filesystem>
 
+#include "Log.hpp"
 #include "PlatformDetection.hpp"
 
 #define NT_EXPAND_MACRO(x) x
@@ -51,7 +52,7 @@
   NT_EXPAND_MACRO(NT_INTERNAL_ASSERT_GET_MACRO_NAME( \
       __VA_ARGS__, NT_INTERNAL_ASSERT_WITH_MSG, NT_INTERNAL_ASSERT_NO_MSG))
 
-// Currently accepts at least the condition and one additional parameter (the
+// Currently accepts at least the condition and One additional parameter (the
 // message) being optional
 #define NT_ASSERT(...) \
   NT_EXPAND_MACRO(NT_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_, __VA_ARGS__))

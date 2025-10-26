@@ -17,15 +17,15 @@ Matrix<3, 3, T> Matrix3Cast(const Quaternion<T> &q) {
   T qwy = q.w() * q.y();
   T qwz = q.w() * q.z();
 
-  result(0, 0) = one<T> - two<T> * (qyy + qzz);
-  result(1, 0) = two<T> * (qxy + qwz);
-  result(2, 0) = two<T> * (qxz - qwy);
-  result(0, 1) = two<T> * (qxy - qwz);
-  result(1, 1) = one<T> - two<T> * (qxx + qzz);
-  result(2, 1) = two<T> * (qyz + qwx);
-  result(0, 2) = two<T> * (qxz + qwy);
-  result(1, 2) = two<T> * (qyz - qwx);
-  result(2, 2) = one<T> - two<T> * (qxx + qyy);
+  result(0, 0) = One<T> - Two<T> * (qyy + qzz);
+  result(1, 0) = Two<T> * (qxy + qwz);
+  result(2, 0) = Two<T> * (qxz - qwy);
+  result(0, 1) = Two<T> * (qxy - qwz);
+  result(1, 1) = One<T> - Two<T> * (qxx + qzz);
+  result(2, 1) = Two<T> * (qyz + qwx);
+  result(0, 2) = Two<T> * (qxz + qwy);
+  result(1, 2) = Two<T> * (qyz - qwx);
+  result(2, 2) = One<T> - Two<T> * (qxx + qyy);
 
   return result;
 }
@@ -57,8 +57,8 @@ Quaternion<T> QuaternionCast(const Matrix<3, 3, T> &m) {
     biggest_index = 3;
   }
 
-  T biggest_value = sqrt(four_biggest_squared_minus1 + one<T>) * oneHalf<T>;
-  T factor = oneForth<T> / biggest_value;
+  T biggest_value = sqrt(four_biggest_squared_minus1 + One<T>) * OneHalf<T>;
+  T factor = OneForth<T> / biggest_value;
 
   switch (biggest_index) {
     case 0:
@@ -94,7 +94,7 @@ Quaternion<T> QuaternionCast(const Matrix<4, 4, T> &m) {
 // Default constructor
 template <typename T>
 inline constexpr Quaternion<T>::Quaternion()
-    : elements{one<T>, zero<T>, zero<T>, zero<T>} {}
+    : elements{One<T>, Zero<T>, Zero<T>, Zero<T>} {}
 
 // Basic constructors
 template <typename T>
@@ -144,8 +144,8 @@ inline constexpr Quaternion<T> Quaternion<T>::fromEulerAngles(T pitch, T yaw,
 template <typename T>
 inline constexpr Quaternion<T> Quaternion<T>::fromEulerAngles(
     const Vector<3, T> &pitchYawRoll) {
-  Vector<3, T> c{cos(pitchYawRoll * oneHalf<T>)};
-  Vector<3, T> s{sin(pitchYawRoll * oneHalf<T>)};
+  Vector<3, T> c{cos(pitchYawRoll * OneHalf<T>)};
+  Vector<3, T> s{sin(pitchYawRoll * OneHalf<T>)};
 
   return Quaternion<T>{c.x() * c.y() * c.z() + s.x() * s.y() * s.z(),
                        s.x() * c.y() * c.z() - c.x() * s.y() * s.z(),
@@ -290,7 +290,7 @@ inline constexpr Vector<3, T> operator*(const Quaternion<T> &q,
   Vector<3, T> uv(cross(q.v(), v));
   Vector<3, T> uuv(cross(q.v(), uv));
 
-  return v + two<T> * (uv * q.w() + uuv);
+  return v + Two<T> * (uv * q.w() + uuv);
 }
 
 template <typename T>
@@ -361,7 +361,7 @@ inline constexpr T norm(const Quaternion<T> &q) {
 
 template <typename T>
 inline constexpr Quaternion<T> normalize(const Quaternion<T> &q) {
-  T one_over_norm = one<T> / norm(q);
+  T one_over_norm = One<T> / norm(q);
   return q * one_over_norm;
 }
 

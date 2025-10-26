@@ -8,9 +8,9 @@ namespace Neat {
 // Vector
 template <typename T>
 inline Matrix<4, 4, T> translate(const Vector<3, T> &v) {
-  return Matrix<4, 4, T>(one<T>, zero<T>, zero<T>, v.x(), zero<T>, one<T>,
-                         zero<T>, v.y(), zero<T>, zero<T>, one<T>, v.z(),
-                         zero<T>, zero<T>, zero<T>, one<T>);
+  return Matrix<4, 4, T>(One<T>, Zero<T>, Zero<T>, v.x(), Zero<T>, One<T>,
+                         Zero<T>, v.y(), Zero<T>, Zero<T>, One<T>, v.z(),
+                         Zero<T>, Zero<T>, Zero<T>, One<T>);
 }
 
 template <typename T>
@@ -32,9 +32,9 @@ inline Matrix<4, 4, T> rotate(const T &angleRadians,
   T s = sin(angleRadians);
   Vector<3, T> axis{normalize(rotationAxis)};
 
-  T one_minus_c_x = (one<T> - c) * axis.x();
-  T one_minus_c_y = (one<T> - c) * axis.y();
-  T one_minus_c_z = (one<T> - c) * axis.z();
+  T one_minus_c_x = (One<T> - c) * axis.x();
+  T one_minus_c_y = (One<T> - c) * axis.y();
+  T one_minus_c_z = (One<T> - c) * axis.z();
 
   T x2c = one_minus_c_x * axis.x();
   T xyc = one_minus_c_x * axis.y();
@@ -53,9 +53,9 @@ inline Matrix<4, 4, T> rotate(const T &angleRadians,
   T r12 = yzc - axis.x() * s;
   T r22 = z2c + c;
 
-  return Matrix<4, 4, T>{r00,     r01,     r02,     zero<T>, r10, r11,
-                         r12,     zero<T>, r20,     r21,     r22, zero<T>,
-                         zero<T>, zero<T>, zero<T>, one<T>};
+  return Matrix<4, 4, T>{r00,     r01,     r02,     Zero<T>, r10, r11,
+                         r12,     Zero<T>, r20,     r21,     r22, Zero<T>,
+                         Zero<T>, Zero<T>, Zero<T>, One<T>};
 }
 
 template <typename T>
@@ -65,9 +65,9 @@ inline Matrix<4, 4, T> rotate(const Matrix<4, 4, T> &m, const T &angleRadians,
   T s = sin(angleRadians);
   Vector<3, T> axis{normalize(rotationAxis)};
 
-  T one_minus_c_x = (one<T> - c) * axis.x();
-  T one_minus_c_y = (one<T> - c) * axis.y();
-  T one_minus_c_z = (one<T> - c) * axis.z();
+  T one_minus_c_x = (One<T> - c) * axis.x();
+  T one_minus_c_y = (One<T> - c) * axis.y();
+  T one_minus_c_z = (One<T> - c) * axis.z();
 
   T x2c = one_minus_c_x * axis.x();
   T xyc = one_minus_c_x * axis.y();
@@ -98,9 +98,9 @@ inline Matrix<4, 4, T> rotate(const Matrix<4, 4, T> &m, const T &angleRadians,
                          r20 * m(0, 1) + r21 * m(1, 1) + r22 * m(2, 1),
                          r20 * m(0, 2) + r21 * m(1, 2) + r22 * m(2, 2),
                          r20 * m(0, 3) + r21 * m(1, 3) + r22 * m(2, 3),
-                         zero<T>,
-                         zero<T>,
-                         zero<T>,
+                         Zero<T>,
+                         Zero<T>,
+                         Zero<T>,
                          m(3, 3)};
 }
 
@@ -109,9 +109,9 @@ inline Matrix<4, 4, T> rotateX(const T &angleRadians) {
   T cos_x = cos(angleRadians);
   T sin_x = sin(angleRadians);
 
-  return Matrix<4, 4, T>{one<T>,  zero<T>, zero<T>, zero<T>, zero<T>, cos_x,
-                         -sin_x,  zero<T>, zero<T>, sin_x,   cos_x,   zero<T>,
-                         zero<T>, zero<T>, zero<T>, one<T>};
+  return Matrix<4, 4, T>{One<T>,  Zero<T>, Zero<T>, Zero<T>, Zero<T>, cos_x,
+                         -sin_x,  Zero<T>, Zero<T>, sin_x,   cos_x,   Zero<T>,
+                         Zero<T>, Zero<T>, Zero<T>, One<T>};
 }
 
 template <typename T>
@@ -119,9 +119,9 @@ inline Matrix<4, 4, T> rotateY(const T &angleRadians) {
   T cos_y = cos(angleRadians);
   T sin_y = sin(angleRadians);
 
-  return Matrix<4, 4, T>{cos_y,   zero<T>, sin_y,   zero<T>, zero<T>, one<T>,
-                         zero<T>, zero<T>, -sin_y,  zero<T>, cos_y,   zero<T>,
-                         zero<T>, zero<T>, zero<T>, one<T>};
+  return Matrix<4, 4, T>{cos_y,   Zero<T>, sin_y,   Zero<T>, Zero<T>, One<T>,
+                         Zero<T>, Zero<T>, -sin_y,  Zero<T>, cos_y,   Zero<T>,
+                         Zero<T>, Zero<T>, Zero<T>, One<T>};
 }
 
 template <typename T>
@@ -129,16 +129,16 @@ inline Matrix<4, 4, T> rotateZ(const T &angleRadians) {
   T cos_z = cos(angleRadians);
   T sin_z = sin(angleRadians);
 
-  return Matrix<4, 4, T>{cos_z,   -sin_z,  zero<T>, zero<T>, sin_z,  cos_z,
-                         zero<T>, zero<T>, zero<T>, zero<T>, one<T>, zero<T>,
-                         zero<T>, zero<T>, zero<T>, one<T>};
+  return Matrix<4, 4, T>{cos_z,   -sin_z,  Zero<T>, Zero<T>, sin_z,  cos_z,
+                         Zero<T>, Zero<T>, Zero<T>, Zero<T>, One<T>, Zero<T>,
+                         Zero<T>, Zero<T>, Zero<T>, One<T>};
 }
 
 template <typename T>
 inline Matrix<4, 4, T> scale(const Vector<3, T> &v) {
-  return Matrix<4, 4, T>{v.x(),   zero<T>, zero<T>, zero<T>, zero<T>, v.y(),
-                         zero<T>, zero<T>, zero<T>, zero<T>, v.z(),   zero<T>,
-                         zero<T>, zero<T>, zero<T>, one<T>};
+  return Matrix<4, 4, T>{v.x(),   Zero<T>, Zero<T>, Zero<T>, Zero<T>, v.y(),
+                         Zero<T>, Zero<T>, Zero<T>, Zero<T>, v.z(),   Zero<T>,
+                         Zero<T>, Zero<T>, Zero<T>, One<T>};
 }
 
 template <typename T>

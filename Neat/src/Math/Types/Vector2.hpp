@@ -6,13 +6,16 @@
 
 #include "TypeVectorN.hpp"
 
+#include "Core/Assert.hpp"
+
 namespace Neat {
 template <typename T>
 struct Vector<2, T> {
   using Type = Vector<2, T>;
   using ValueType = T;
+  static constexpr UInt32 N = 2;
 
-  std::array<T, 2> elements;
+  std::array<T, N> elements;
 
   // Default constructor
   constexpr Vector();
@@ -20,14 +23,14 @@ struct Vector<2, T> {
   // Basic Constructors
   constexpr explicit Vector(const T &scalar);
   constexpr Vector(const T &x, const T &y);
-  constexpr Vector(const std::array<T, 2> &data);
+  constexpr Vector(const std::array<T, N> &data);
 
   // Copy Constructor
-  constexpr Vector(const Vector<2, T> &v);
+  constexpr Vector(const Vector<N, T> &v);
 
   // Conversion constructors
   template <typename U>
-  constexpr explicit Vector(const Vector<2, U> &v);
+  constexpr explicit Vector(const Vector<N, U> &v);
   template <typename U>
   constexpr explicit Vector(const Vector<4, U> &v);
   template <typename U>
@@ -42,23 +45,23 @@ struct Vector<2, T> {
   constexpr Vector(const T *data, UInt32 count);
 
   // Assignment operators
-  constexpr Vector<2, T> &operator=(const Vector<2, T> &other) = default;
+  constexpr Vector<N, T> &operator=(const Vector<N, T> &other) = default;
   template <typename U>
-  constexpr Vector<2, T> &operator=(const Vector<2, U> &other);
+  constexpr Vector<N, T> &operator=(const Vector<N, U> &other);
 
   // Compound assignment operators
   template <typename U>
-  constexpr Vector<2, T> &operator+=(const Vector<2, U> &v);
+  constexpr Vector<N, T> &operator+=(const Vector<N, U> &v);
   template <typename U>
-  constexpr Vector<2, T> &operator-=(const Vector<2, U> &v);
+  constexpr Vector<N, T> &operator-=(const Vector<N, U> &v);
   template <typename U>
-  constexpr Vector<2, T> &operator*=(const Vector<2, U> &v);
+  constexpr Vector<N, T> &operator*=(const Vector<N, U> &v);
   template <typename U>
-  constexpr Vector<2, T> &operator*=(const Vector<1, U> &v);
+  constexpr Vector<N, T> &operator*=(const Vector<1, U> &v);
   template <typename U>
-  constexpr Vector<2, T> &operator*=(const U &scalar);
+  constexpr Vector<N, T> &operator*=(const U &scalar);
   template <typename U>
-  constexpr Vector<2, T> &operator/=(const U &scalar);
+  constexpr Vector<N, T> &operator/=(const U &scalar);
 
   // Explicit conversion operators
   inline constexpr explicit operator bool() const;
@@ -96,11 +99,11 @@ struct Vector<2, T> {
 
   // Relational operators
   template <typename U>
-  friend constexpr bool operator==(const Vector<2, U> &va,
-                                   const Vector<2, U> &vb);
+  friend constexpr bool operator==(const Vector<N, U> &va,
+                                   const Vector<N, U> &vb);
   template <typename U>
-  friend constexpr bool operator!=(const Vector<2, U> &va,
-                                   const Vector<2, U> &vb);
+  friend constexpr bool operator!=(const Vector<N, U> &va,
+                                   const Vector<N, U> &vb);
 
   std::tuple<T, T> toTuple() const { return {x(), y()}; }
 };

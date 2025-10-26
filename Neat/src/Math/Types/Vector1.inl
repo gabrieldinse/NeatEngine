@@ -3,7 +3,7 @@
 namespace Neat {
 // Default constructor
 template <typename T>
-inline constexpr Vector<1, T>::Vector() : elements{zero<T>} {}
+inline constexpr Vector<1, T>::Vector() : elements{Zero<T>} {}
 
 // Basic Constructors
 template <typename T>
@@ -107,17 +107,21 @@ inline constexpr Vector<1, T>::operator bool() const {
   if constexpr (std::is_same_v<T, bool>) {
     return x();
   } else {
-    return (std::fabs(x()) > zero<T>);
+    return (std::fabs(x()) > Zero<T>);
   }
 }
 
 template <typename T>
 inline constexpr T &Vector<1, T>::operator[](UInt32 pos) {
+  NT_CORE_ASSERT(pos < N);
+
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Vector<1, T>::operator[](UInt32 pos) const {
+  NT_CORE_ASSERT(pos < N);
+
   return elements[pos];
 }
 
@@ -189,7 +193,7 @@ T norm(const Vector<1, T> &v) {
 
 template <typename T>
 Vector<1, T> normalize(const Vector<1, T> &v) {
-  T one_over_norm = one<T> / norm(v);
+  T one_over_norm = One<T> / norm(v);
 
   return one_over_norm * v;
 }

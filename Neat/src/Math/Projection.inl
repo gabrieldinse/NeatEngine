@@ -5,11 +5,11 @@ template <typename T>
 Matrix<4, 4, T> orthographicProjection(const T &left, const T &right,
                                        const T &bottom, const T &top,
                                        const T &near, const T &far) {
-  Matrix<4, 4, T> result(one<T>);
+  Matrix<4, 4, T> result(One<T>);
 
-  result[0][0] = two<T> / (right - left);
-  result[1][1] = two<T> / (top - bottom);
-  result[2][2] = -two<T> / (far - near);
+  result[0][0] = Two<T> / (right - left);
+  result[1][1] = Two<T> / (top - bottom);
+  result[2][2] = -Two<T> / (far - near);
   result[0][3] = -(right + left) / (right - left);
   result[1][3] = -(top + bottom) / (top - bottom);
   result[2][3] = -(far + near) / (far - near);
@@ -21,15 +21,15 @@ template <typename T>
 Matrix<4, 4, T> perspectiveProjection(const T &fieldOfView,
                                       const T &aspectRatio, const T &near,
                                       const T &far) {
-  Matrix<4, 4, T> result(one<T>);
+  Matrix<4, 4, T> result(One<T>);
 
-  T tan_half_fov = std::tan(fieldOfView / two<T>);
-  result[0][0] = one<T> / (aspectRatio * tan_half_fov);
-  result[1][1] = one<T> / tan_half_fov;
+  T tan_half_fov = std::tan(fieldOfView / Two<T>);
+  result[0][0] = One<T> / (aspectRatio * tan_half_fov);
+  result[1][1] = One<T> / tan_half_fov;
   result[2][2] = -(far + near) / (far - near);
-  result[2][3] = -two<T> * far * near / (far - near);
-  result[3][2] = -one<T>;
-  result[3][3] = zero<T>;
+  result[2][3] = -Two<T> * far * near / (far - near);
+  result[3][2] = -One<T>;
+  result[3][3] = Zero<T>;
 
   return result;
 }

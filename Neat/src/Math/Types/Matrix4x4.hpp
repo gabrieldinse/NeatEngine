@@ -15,8 +15,11 @@ struct Matrix<4, 4, T> {
   using Type = Matrix<4, 4, T>;
   using RowType = Vector<4, T>;
   using ValueType = T;
+  static constexpr UInt32 M = 4;
+  static constexpr UInt32 N = 4;
+  static constexpr UInt32 Size = M * N;
 
-  std::array<T, 4 * 4> elements;
+  std::array<T, Size> elements;
 
   // Default constructor
   constexpr Matrix();
@@ -28,10 +31,10 @@ struct Matrix<4, 4, T> {
                    const T &m30, const T &m31, const T &m32, const T &m33);
 
   constexpr explicit Matrix(const T &scalar);
-  constexpr Matrix(const std::array<T, 4 * 4> &data);
+  constexpr Matrix(const std::array<T, Size> &data);
 
   // Copy constructor
-  constexpr Matrix(const Matrix<4, 4, T> &m);
+  constexpr Matrix(const Matrix<M, N, T> &m);
 
   // Conversion constructors
   template <typename X1, typename Y1, typename Z1, typename W1, typename X2,
@@ -44,45 +47,45 @@ struct Matrix<4, 4, T> {
                    const X4 &m30, const Y4 &m31, const Z4 &m32, const W4 &m33);
 
   template <typename U>
-  constexpr explicit Matrix(const Matrix<4, 4, U> &m);
+  constexpr explicit Matrix(const Matrix<M, N, U> &m);
   template <typename U>
   constexpr explicit Matrix(const Matrix<3, 3, U> &m);
   template <typename U>
   constexpr explicit Matrix(const Matrix<2, 2, U> &m);
 
   template <typename V1, typename V2, typename V3, typename V4>
-  constexpr Matrix(const Vector<4, V1> &row1, const Vector<4, V2> &row2,
-                   const Vector<4, V3> &row3, const Vector<4, V4> &row4);
+  constexpr Matrix(const Vector<N, V1> &row1, const Vector<N, V2> &row2,
+                   const Vector<N, V3> &row3, const Vector<N, V4> &row4);
 
   constexpr Matrix(const T *data, UInt32 count);
 
   // Static factory constructors
-  static constexpr Matrix<4, 4, T> identity() { return Matrix<4, 4, T>{}; }
+  static constexpr Matrix<M, N, T> identity() { return Matrix<M, N, T>{}; }
 
   // Assignment operators
-  constexpr Matrix<4, 4, T> &operator=(const Matrix<4, 4, T> &m);
+  constexpr Matrix<M, N, T> &operator=(const Matrix<M, N, T> &m);
   template <typename U>
-  constexpr Matrix<4, 4, T> &operator=(const Matrix<4, 4, U> &m);
+  constexpr Matrix<M, N, T> &operator=(const Matrix<M, N, U> &m);
 
   // Compound assigment operators
   template <typename U>
-  constexpr Matrix<4, 4, T> &operator+=(Matrix<4, 4, U> const &m);
+  constexpr Matrix<M, N, T> &operator+=(Matrix<M, N, U> const &m);
   template <typename U>
-  constexpr Matrix<4, 4, T> &operator-=(const U &scalar);
+  constexpr Matrix<M, N, T> &operator-=(const U &scalar);
   template <typename U>
-  constexpr Matrix<4, 4, T> &operator-=(Matrix<4, 4, U> const &m);
+  constexpr Matrix<M, N, T> &operator-=(Matrix<M, N, U> const &m);
   template <typename U>
-  constexpr Matrix<4, 4, T> &operator*=(const U &scalar);
+  constexpr Matrix<M, N, T> &operator*=(const U &scalar);
   template <typename U>
-  constexpr Matrix<4, 4, T> &operator*=(Matrix<4, 4, U> const &m);
+  constexpr Matrix<M, N, T> &operator*=(Matrix<M, N, U> const &m);
   template <typename U>
-  constexpr Matrix<4, 4, T> &operator/=(const U &scalar);
+  constexpr Matrix<M, N, T> &operator/=(const U &scalar);
 
   // Elements acessing
   constexpr T *data() { return elements.data(); }
   constexpr const T *data() const { return elements.data(); }
-  constexpr std::span<T, 4> operator[](UInt32 row);
-  constexpr std::span<T, 4> operator[](UInt32 row) const;
+  constexpr std::span<T, M> operator[](UInt32 row);
+  constexpr std::span<T, M> operator[](UInt32 row) const;
   constexpr T &operator()(UInt32 pos);
   constexpr const T &operator()(UInt32 pos) const;
   constexpr T &operator()(UInt32 row, UInt32 col);
@@ -96,9 +99,9 @@ struct Matrix<4, 4, T> {
 
   // Relational operators
   template <typename U>
-  constexpr bool operator==(const Matrix<4, 4, U> &m) const;
+  constexpr bool operator==(const Matrix<M, N, U> &m) const;
   template <typename U>
-  constexpr bool operator!=(const Matrix<4, 4, U> &m) const;
+  constexpr bool operator!=(const Matrix<M, N, U> &m) const;
 };
 
 // Predefined types

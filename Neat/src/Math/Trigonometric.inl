@@ -9,19 +9,19 @@ namespace Neat {
 // Utility
 template <typename T>
 inline constexpr T degreesToRadians(T angleDegrees) {
-  return angleDegrees * degreeInRadians<T>;
+  return angleDegrees * DegreeInRadians<T>;
 }
 
 template <typename T>
 inline constexpr T radiansToDegrees(T angleRadians) {
-  return angleRadians * radianInDegrees<T>;
+  return angleRadians * RadianInDegrees<T>;
 }
 
 template <typename T>
 inline constexpr T wrapInPiRadians(T angleRadians) {
-  if (abs(angleRadians) > pi<T>) {
-    T revolutions = floor(oneOverTwoPi<T> * (angleRadians + pi<T>));
-    angleRadians -= revolutions * twoPi<T>;
+  if (abs(angleRadians) > Pi<T>) {
+    T revolutions = floor(OneOverTwoPi<T> * (angleRadians + Pi<T>));
+    angleRadians -= revolutions * TwoPi<T>;
   }
 
   return angleRadians;
@@ -29,9 +29,9 @@ inline constexpr T wrapInPiRadians(T angleRadians) {
 
 template <typename T>
 inline constexpr T wrapInTwoPiRadians(T angleRadians) {
-  if (abs(angleRadians) > twoPi<T>) {
-    T revolutions = floor(oneOverTwoPi<T> * angleRadians);
-    angleRadians -= revolutions * twoPi<T>;
+  if (abs(angleRadians) > TwoPi<T>) {
+    T revolutions = floor(OneOverTwoPi<T> * angleRadians);
+    angleRadians -= revolutions * TwoPi<T>;
   }
 
   return angleRadians;

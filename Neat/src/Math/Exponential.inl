@@ -27,7 +27,7 @@ inline T sqrt(T value) {
 
 template <typename T>
 inline T inverseSqrt(T value) {
-  return one<T> / sqrt(value);
+  return One<T> / sqrt(value);
 }
 
 template <typename T>
@@ -109,10 +109,10 @@ inline std::optional<Quaternion<T>> log(const Quaternion<T> &q) {
 
   // To prevent dividing by 0 later on
   if (norm_v < Limits::Epsilon<T>) {
-    if (q.scalar() > zero<T>) {  // Computes log of a scalar
-      return Quaternion<T>(log(q.scalar()), zero<T>, zero<T>, zero<T>);
-    } else if (q.scalar() < zero<T>) {  // Computes log of a scalar
-      return Quaternion<T>(log(-q.scalar()), pi<T>, zero<T>, zero<T>);
+    if (q.scalar() > Zero<T>) {  // Computes log of a scalar
+      return Quaternion<T>(log(q.scalar()), Zero<T>, Zero<T>, Zero<T>);
+    } else if (q.scalar() < Zero<T>) {  // Computes log of a scalar
+      return Quaternion<T>(log(-q.scalar()), Pi<T>, Zero<T>, Zero<T>);
     } else {  // Division by 0 anyway
       return std::nullopt;
     }
@@ -152,12 +152,12 @@ inline Quaternion<T> pow(const Quaternion<T> &q, T exponent) {
 
   T angle;
   if (abs(q.scalar() / norm_q) >
-      cosOneHalf<T>) {  // Better using asin for precision
+      CosOneHalf<T>) {  // Better using asin for precision
     T norm_v = norm(q.vector());
     // To prevent dividing by 0 later on
     if (abs(norm_v) < Limits::Epsilon<T>) {  // Computes pow of a scalar
-      return Quaternion<T>(pow(q.scalar(), exponent), zero<T>, zero<T>,
-                           zero<T>);
+      return Quaternion<T>(pow(q.scalar(), exponent), Zero<T>, Zero<T>,
+                           Zero<T>);
     }
     angle = asin(norm_v / norm_q);
   } else {  // Can use cos normally, shouldn't cause loss of precision
@@ -166,7 +166,7 @@ inline Quaternion<T> pow(const Quaternion<T> &q, T exponent) {
 
   T new_angle = angle * exponent;
   T sin_factor = sin(new_angle) / sin(angle);
-  T norm_q_factor = pow(norm_q, exponent - one<T>);
+  T norm_q_factor = pow(norm_q, exponent - One<T>);
 
   return Quaternion<T>(cos(new_angle) * norm_q_factor * norm_q,
                        sin_factor * norm_q_factor * q.vector());
