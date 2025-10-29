@@ -579,4 +579,226 @@ TEST_F(MatrixTest, MultidimensionalIndexOperator) {
   EXPECT_EQ((matrix3b[0, 1]), true);
   EXPECT_EQ((matrix2b[1, 0]), false);
 }
+
+TEST_F(MatrixTest, ScalarsConstructor) {
+  // This tests are used as a base for other tests, as we will be using this
+  // constructor to test other matrices functionalities. That's why we test all
+  // of the possible types and sizes here.
+
+  Matrix4F customMatrix4f{1.0f,  2.0f,  3.0f,  4.0f,  5.0f,  6.0f,
+                          7.0f,  8.0f,  9.0f,  10.0f, 11.0f, 12.0f,
+                          13.0f, 14.0f, 15.0f, 16.0f};
+  Matrix4D customMatrix4d{1.0, 2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
+                          9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0};
+  Matrix4I customMatrix4i{1, 2,  3,  4,  5,  6,  7,  8,
+                          9, 10, 11, 12, 13, 14, 15, 16};
+  Matrix4U customMatrix4u{1, 2,  3,  4,  5,  6,  7,  8,
+                          9, 10, 11, 12, 13, 14, 15, 16};
+  Matrix4B customMatrix4b{true, false, true, false, true, false, true, false,
+                          true, false, true, false, true, false, true, false};
+  Matrix3B customMatrix3b{true,  false, true,  false, true,
+                          false, true,  false, true};
+  Matrix2B customMatrix2b{true, false, false, true};
+  Matrix3D customMatrix3d{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+  Matrix2D customMatrix2d{1.0, 2.0, 3.0, 4.0};
+  Matrix3I customMatrix3i{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  Matrix2I customMatrix2i{1, 2, 3, 4};
+  Matrix3U customMatrix3u{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  Matrix2U customMatrix2u{1, 2, 3, 4};
+  Matrix3F customMatrix3f{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f};
+  Matrix2F customMatrix2f{1.0f, 2.0f, 3.0f, 4.0f};
+
+  EXPECT_EQ(customMatrix4f(0, 0), 1.0f);
+  EXPECT_EQ(customMatrix4f(0, 1), 2.0f);
+  EXPECT_EQ(customMatrix4f(0, 2), 3.0f);
+  EXPECT_EQ(customMatrix4f(0, 3), 4.0f);
+  EXPECT_EQ(customMatrix4f(1, 0), 5.0f);
+  EXPECT_EQ(customMatrix4f(1, 1), 6.0f);
+  EXPECT_EQ(customMatrix4f(1, 2), 7.0f);
+  EXPECT_EQ(customMatrix4f(1, 3), 8.0f);
+  EXPECT_EQ(customMatrix4f(2, 0), 9.0f);
+  EXPECT_EQ(customMatrix4f(2, 1), 10.0f);
+  EXPECT_EQ(customMatrix4f(2, 2), 11.0f);
+  EXPECT_EQ(customMatrix4f(2, 3), 12.0f);
+  EXPECT_EQ(customMatrix4f(3, 0), 13.0f);
+  EXPECT_EQ(customMatrix4f(3, 1), 14.0f);
+  EXPECT_EQ(customMatrix4f(3, 2), 15.0f);
+  EXPECT_EQ(customMatrix4f(3, 3), 16.0f);
+  EXPECT_EQ(customMatrix3f(0, 0), 1.0f);
+  EXPECT_EQ(customMatrix3f(0, 1), 2.0f);
+  EXPECT_EQ(customMatrix3f(0, 2), 3.0f);
+  EXPECT_EQ(customMatrix3f(1, 0), 4.0f);
+  EXPECT_EQ(customMatrix3f(1, 1), 5.0f);
+  EXPECT_EQ(customMatrix3f(1, 2), 6.0f);
+  EXPECT_EQ(customMatrix3f(2, 0), 7.0f);
+  EXPECT_EQ(customMatrix3f(2, 1), 8.0f);
+  EXPECT_EQ(customMatrix3f(2, 2), 9.0f);
+  EXPECT_EQ(customMatrix2f(0, 0), 1.0f);
+  EXPECT_EQ(customMatrix2f(0, 1), 2.0f);
+  EXPECT_EQ(customMatrix2f(1, 0), 3.0f);
+  EXPECT_EQ(customMatrix2f(1, 1), 4.0f);
+  EXPECT_EQ(customMatrix4d(0, 0), 1.0);
+  EXPECT_EQ(customMatrix4d(0, 1), 2.0);
+  EXPECT_EQ(customMatrix4d(0, 2), 3.0);
+  EXPECT_EQ(customMatrix4d(0, 3), 4.0);
+  EXPECT_EQ(customMatrix4d(1, 0), 5.0);
+  EXPECT_EQ(customMatrix4d(1, 1), 6.0);
+  EXPECT_EQ(customMatrix4d(1, 2), 7.0);
+  EXPECT_EQ(customMatrix4d(1, 3), 8.0);
+  EXPECT_EQ(customMatrix4d(2, 0), 9.0);
+  EXPECT_EQ(customMatrix4d(2, 1), 10.0);
+  EXPECT_EQ(customMatrix4d(2, 2), 11.0);
+  EXPECT_EQ(customMatrix4d(2, 3), 12.0);
+  EXPECT_EQ(customMatrix4d(3, 0), 13.0);
+  EXPECT_EQ(customMatrix4d(3, 1), 14.0);
+  EXPECT_EQ(customMatrix4d(3, 2), 15.0);
+  EXPECT_EQ(customMatrix4d(3, 3), 16.0);
+  EXPECT_EQ(customMatrix3d(0, 0), 1.0);
+  EXPECT_EQ(customMatrix3d(0, 1), 2.0);
+  EXPECT_EQ(customMatrix3d(0, 2), 3.0);
+  EXPECT_EQ(customMatrix3d(1, 0), 4.0);
+  EXPECT_EQ(customMatrix3d(1, 1), 5.0);
+  EXPECT_EQ(customMatrix3d(1, 2), 6.0);
+  EXPECT_EQ(customMatrix3d(2, 0), 7.0);
+  EXPECT_EQ(customMatrix3d(2, 1), 8.0);
+  EXPECT_EQ(customMatrix3d(2, 2), 9.0);
+  EXPECT_EQ(customMatrix2d(0, 0), 1.0);
+  EXPECT_EQ(customMatrix2d(0, 1), 2.0);
+  EXPECT_EQ(customMatrix2d(1, 0), 3.0);
+  EXPECT_EQ(customMatrix2d(1, 1), 4.0);
+  EXPECT_EQ(customMatrix4i(0, 0), 1);
+  EXPECT_EQ(customMatrix4i(0, 1), 2);
+  EXPECT_EQ(customMatrix4i(0, 2), 3);
+  EXPECT_EQ(customMatrix4i(0, 3), 4);
+  EXPECT_EQ(customMatrix4i(1, 0), 5);
+  EXPECT_EQ(customMatrix4i(1, 1), 6);
+  EXPECT_EQ(customMatrix4i(1, 2), 7);
+  EXPECT_EQ(customMatrix4i(1, 3), 8);
+  EXPECT_EQ(customMatrix4i(2, 0), 9);
+  EXPECT_EQ(customMatrix4i(2, 1), 10);
+  EXPECT_EQ(customMatrix4i(2, 2), 11);
+  EXPECT_EQ(customMatrix4i(2, 3), 12);
+  EXPECT_EQ(customMatrix4i(3, 0), 13);
+  EXPECT_EQ(customMatrix4i(3, 1), 14);
+  EXPECT_EQ(customMatrix4i(3, 2), 15);
+  EXPECT_EQ(customMatrix4i(3, 3), 16);
+  EXPECT_EQ(customMatrix3i(0, 0), 1);
+  EXPECT_EQ(customMatrix3i(0, 1), 2);
+  EXPECT_EQ(customMatrix3i(0, 2), 3);
+  EXPECT_EQ(customMatrix3i(1, 0), 4);
+  EXPECT_EQ(customMatrix3i(1, 1), 5);
+  EXPECT_EQ(customMatrix3i(1, 2), 6);
+  EXPECT_EQ(customMatrix3i(2, 0), 7);
+  EXPECT_EQ(customMatrix3i(2, 1), 8);
+  EXPECT_EQ(customMatrix3i(2, 2), 9);
+  EXPECT_EQ(customMatrix2i(0, 0), 1);
+  EXPECT_EQ(customMatrix2i(0, 1), 2);
+  EXPECT_EQ(customMatrix2i(1, 0), 3);
+  EXPECT_EQ(customMatrix2i(1, 1), 4);
+  EXPECT_EQ(customMatrix4u(0, 0), 1);
+  EXPECT_EQ(customMatrix4u(0, 1), 2);
+  EXPECT_EQ(customMatrix4u(0, 2), 3);
+  EXPECT_EQ(customMatrix4u(0, 3), 4);
+  EXPECT_EQ(customMatrix4u(1, 0), 5);
+  EXPECT_EQ(customMatrix4u(1, 1), 6);
+  EXPECT_EQ(customMatrix4u(1, 2), 7);
+  EXPECT_EQ(customMatrix4u(1, 3), 8);
+  EXPECT_EQ(customMatrix4u(2, 0), 9);
+  EXPECT_EQ(customMatrix4u(2, 1), 10);
+  EXPECT_EQ(customMatrix4u(2, 2), 11);
+  EXPECT_EQ(customMatrix4u(2, 3), 12);
+  EXPECT_EQ(customMatrix4u(3, 0), 13);
+  EXPECT_EQ(customMatrix4u(3, 1), 14);
+  EXPECT_EQ(customMatrix4u(3, 2), 15);
+  EXPECT_EQ(customMatrix4u(3, 3), 16);
+  EXPECT_EQ(customMatrix3u(0, 0), 1);
+  EXPECT_EQ(customMatrix3u(0, 1), 2);
+  EXPECT_EQ(customMatrix3u(0, 2), 3);
+  EXPECT_EQ(customMatrix3u(1, 0), 4);
+  EXPECT_EQ(customMatrix3u(1, 1), 5);
+  EXPECT_EQ(customMatrix3u(1, 2), 6);
+  EXPECT_EQ(customMatrix3u(2, 0), 7);
+  EXPECT_EQ(customMatrix3u(2, 1), 8);
+  EXPECT_EQ(customMatrix3u(2, 2), 9);
+  EXPECT_EQ(customMatrix2u(0, 0), 1);
+  EXPECT_EQ(customMatrix2u(0, 1), 2);
+  EXPECT_EQ(customMatrix2u(1, 0), 3);
+  EXPECT_EQ(customMatrix2u(1, 1), 4);
+  EXPECT_EQ(customMatrix4b(0, 0), true);
+  EXPECT_EQ(customMatrix4b(0, 1), false);
+  EXPECT_EQ(customMatrix4b(0, 2), true);
+  EXPECT_EQ(customMatrix4b(0, 3), false);
+  EXPECT_EQ(customMatrix4b(1, 0), true);
+  EXPECT_EQ(customMatrix4b(1, 1), false);
+  EXPECT_EQ(customMatrix4b(1, 2), true);
+  EXPECT_EQ(customMatrix4b(1, 3), false);
+  EXPECT_EQ(customMatrix4b(2, 0), true);
+  EXPECT_EQ(customMatrix4b(2, 1), false);
+  EXPECT_EQ(customMatrix4b(2, 2), true);
+  EXPECT_EQ(customMatrix4b(2, 3), false);
+  EXPECT_EQ(customMatrix4b(3, 0), true);
+  EXPECT_EQ(customMatrix4b(3, 1), false);
+  EXPECT_EQ(customMatrix4b(3, 2), true);
+  EXPECT_EQ(customMatrix4b(3, 3), false);
+  EXPECT_EQ(customMatrix3b(0, 0), true);
+  EXPECT_EQ(customMatrix3b(0, 1), false);
+  EXPECT_EQ(customMatrix3b(0, 2), true);
+  EXPECT_EQ(customMatrix3b(1, 0), false);
+  EXPECT_EQ(customMatrix3b(1, 1), true);
+  EXPECT_EQ(customMatrix3b(1, 2), false);
+  EXPECT_EQ(customMatrix3b(2, 0), true);
+  EXPECT_EQ(customMatrix3b(2, 1), false);
+  EXPECT_EQ(customMatrix3b(2, 2), true);
+  EXPECT_EQ(customMatrix2b(0, 0), true);
+  EXPECT_EQ(customMatrix2b(0, 1), false);
+  EXPECT_EQ(customMatrix2b(1, 0), false);
+  EXPECT_EQ(customMatrix2b(1, 1), true);
+}
+
+TEST_F(MatrixTest, DefaultConstructor) {
+  Matrix4F defaultMatrix4f{};
+  Matrix4D defaultMatrix4d{};
+  Matrix4I defaultMatrix4i{};
+  Matrix4U defaultMatrix4u{};
+  Matrix4B defaultMatrix4b{};
+
+  Matrix3F defaultMatrix3f{};
+  Matrix3D defaultMatrix3d{};
+  Matrix3I defaultMatrix3i{};
+  Matrix3U defaultMatrix3u{};
+  Matrix3B defaultMatrix3b{};
+
+  Matrix2F defaultMatrix2f{};
+  Matrix2D defaultMatrix2d{};
+  Matrix2I defaultMatrix2i{};
+  Matrix2U defaultMatrix2u{};
+  Matrix2B defaultMatrix2b{};
+
+  EXPECT_EQ(defaultMatrix4f,
+            (Matrix4F{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+                      0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f}));
+  EXPECT_EQ(defaultMatrix4d,
+            (Matrix4D{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+                      0.0, 0.0, 0.0, 0.0, 1.0}));
+  EXPECT_EQ(defaultMatrix4i,
+            (Matrix4I{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}));
+  EXPECT_EQ(defaultMatrix4u,
+            (Matrix4U{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}));
+  EXPECT_EQ(defaultMatrix4b,
+            (Matrix4B{true, false, false, false, false, true, false, false,
+                      false, false, true, false, false, false, false, true}));
+  EXPECT_EQ(defaultMatrix3f,
+            (Matrix3F{1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f}));
+  EXPECT_EQ(defaultMatrix3d,
+            (Matrix3D{1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0}));
+  EXPECT_EQ(defaultMatrix3i, (Matrix3I{1, 0, 0, 0, 1, 0, 0, 0, 1}));
+  EXPECT_EQ(defaultMatrix3u, (Matrix3U{1, 0, 0, 0, 1, 0, 0, 0, 1}));
+  EXPECT_EQ(defaultMatrix3b, (Matrix3B{true, false, false, false, true, false,
+                                       false, false, true}));
+  EXPECT_EQ(defaultMatrix2f, (Matrix2F{1.0f, 0.0f, 0.0f, 1.0f}));
+  EXPECT_EQ(defaultMatrix2d, (Matrix2D{1.0, 0.0, 0.0, 1.0}));
+  EXPECT_EQ(defaultMatrix2i, (Matrix2I{1, 0, 0, 1}));
+  EXPECT_EQ(defaultMatrix2u, (Matrix2U{1, 0, 0, 1}));
+  EXPECT_EQ(defaultMatrix2b, (Matrix2B{true, false, false, true}));
+}
 }  // namespace Neat
