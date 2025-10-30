@@ -580,7 +580,7 @@ TEST_F(MatrixTest, MultidimensionalIndexOperator) {
   EXPECT_EQ((matrix2b[1, 0]), false);
 }
 
-TEST_F(MatrixTest, ScalarsConstructor) {
+TEST_F(MatrixTest, MultipleScalarsConstructor) {
   // This tests are used as a base for other tests, as we will be using this
   // constructor to test other matrices functionalities. That's why we test all
   // of the possible types and sizes here.
@@ -801,4 +801,107 @@ TEST_F(MatrixTest, DefaultConstructor) {
   EXPECT_EQ(defaultMatrix2u, (Matrix2U{1, 0, 0, 1}));
   EXPECT_EQ(defaultMatrix2b, (Matrix2B{true, false, false, true}));
 }
+
+TEST_F(MatrixTest, SingleScalarConstructor) {
+  Matrix4F scalarMatrix4f{1.0f};
+  Matrix4D scalarMatrix4d{2.0};
+  Matrix4I scalarMatrix4i{3};
+  Matrix4U scalarMatrix4u{4};
+  Matrix4B scalarMatrix4b{true};
+  Matrix3B scalarMatrix3b{false};
+  Matrix2B scalarMatrix2b{true};
+  Matrix3F scalarMatrix3f{5.0f};
+  Matrix3D scalarMatrix3d{6.0};
+  Matrix3I scalarMatrix3i{7};
+  Matrix3U scalarMatrix3u{8};
+  Matrix2F scalarMatrix2f{9.0f};
+  Matrix2D scalarMatrix2d{10.0};
+  Matrix2I scalarMatrix2i{11};
+  Matrix2U scalarMatrix2u{12};
+
+  EXPECT_EQ(scalarMatrix4f,
+            (Matrix4F{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+                      0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f}));
+  EXPECT_EQ(scalarMatrix4d,
+            (Matrix4D{2.0, 0.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 2.0,
+                      0.0f, 0.0, 0.0, 0.0, 2.0}));
+  EXPECT_EQ(scalarMatrix4i,
+            (Matrix4I{3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3}));
+  EXPECT_EQ(scalarMatrix4u,
+            (Matrix4U{4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4}));
+  EXPECT_EQ(scalarMatrix4b,
+            (Matrix4B{true, false, false, false, false, true, false, false,
+                      false, false, true, false, false, false, false, true}));
+  EXPECT_EQ(scalarMatrix3b, (Matrix3B{false, false, false, false, false, false,
+                                      false, false, false}));
+  EXPECT_EQ(scalarMatrix3f,
+            (Matrix3F{5.0f, 0.0f, 0.0f, 0.0f, 5.0f, 0.0f, 0.0f, 0.0f, 5.0f}));
+  EXPECT_EQ(scalarMatrix3d,
+            (Matrix3D{6.0, 0.0, 0.0, 0.0, 6.0, 0.0, 0.0, 0.0, 6.0}));
+  EXPECT_EQ(scalarMatrix3i, (Matrix3I{7, 0, 0, 0, 7, 0, 0, 0, 7}));
+  EXPECT_EQ(scalarMatrix3u, (Matrix3U{8, 0, 0, 0, 8, 0, 0, 0, 8}));
+  EXPECT_EQ(scalarMatrix2f, (Matrix2F{9.0f, 0.0f, 0.0f, 9.0f}));
+  EXPECT_EQ(scalarMatrix2d, (Matrix2D{10.0, 0.0, 0.0, 10.0}));
+  EXPECT_EQ(scalarMatrix2i, (Matrix2I{11, 0, 0, 11}));
+  EXPECT_EQ(scalarMatrix2u, (Matrix2U{12, 0, 0, 12}));
+  EXPECT_EQ(scalarMatrix2b, (Matrix2B{true, false, false, true}));
+}
+
+TEST_F(MatrixTest, STDArrayConstructor) {
+  std::array array4f = {1.0f, 2.0f,  3.0f,  4.0f,  5.0f,  6.0f,  7.0f,  8.0f,
+                        9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f};
+  Matrix4F matrix4f(array4f);
+  std::array array4d = {1.0, 2.0,  3.0,  4.0,  5.0,  6.0,  7.0,  8.0,
+                        9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0};
+  Matrix4D matrix4d(array4d);
+  std::array<int, 16> array4i = {1, 2,  3,  4,  5,  6,  7,  8,
+                                 9, 10, 11, 12, 13, 14, 15, 16};
+  Matrix4I matrix4i(array4i);
+  std::array<unsigned int, 16> array4u = {1, 2,  3,  4,  5,  6,  7,  8,
+                                          9, 10, 11, 12, 13, 14, 15, 16};
+  Matrix4U matrix4u(array4u);
+  std::array<bool, 16> array4b = {true, false, true, false, true, false,
+                                  true, false, true, false, true, false,
+                                  true, false, true, false};
+  Matrix4B matrix4b(array4b);
+  Matrix3F matrix3f(
+      std::array{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f});
+  Matrix3D matrix3d(std::array{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0});
+  Matrix3I matrix3i(std::array{1, 2, 3, 4, 5, 6, 7, 8, 9});
+  Matrix3U matrix3u(std::array{1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 9U});
+  Matrix3B matrix3b(
+      std::array{true, false, true, false, true, false, true, false, true});
+  Matrix2F matrix2f(std::array{1.0f, 2.0f, 3.0f, 4.0f});
+  Matrix2D matrix2d(std::array{1.0, 2.0, 3.0, 4.0});
+  Matrix2I matrix2i(std::array{1, 2, 3, 4});
+  Matrix2U matrix2u(std::array{1U, 2U, 3U, 4U});
+  Matrix2B matrix2b(std::array{true, false, true, false});
+
+  EXPECT_EQ(matrix4f,
+            (Matrix4F{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f,
+                      10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f}));
+  EXPECT_EQ(matrix4d,
+            (Matrix4D{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0f, 11.0f,
+                      12.0f, 13.0f, 14.0f, 15.0f, 16.0f}));
+  EXPECT_EQ(matrix4i,
+            (Matrix4I{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}));
+  EXPECT_EQ(matrix4u,
+            (Matrix4U{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}));
+  EXPECT_EQ(matrix4b,
+            (Matrix4B{true, false, true, false, true, false, true, false, true,
+                      false, true, false, true, false, true, false}));
+  EXPECT_EQ(matrix3f,
+            (Matrix3F{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f}));
+  EXPECT_EQ(matrix3d, (Matrix3D{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0}));
+  EXPECT_EQ(matrix3i, (Matrix3I{1, 2, 3, 4, 5, 6, 7, 8, 9}));
+  EXPECT_EQ(matrix3u, (Matrix3U{1, 2, 3, 4, 5, 6, 7, 8, 9}));
+  EXPECT_EQ(matrix3b, (Matrix3B{true, false, true, false, true, false, true,
+                                false, true}));
+  EXPECT_EQ(matrix2f, (Matrix2F{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_EQ(matrix2d, (Matrix2D{1.0, 2.0, 3.0, 4.0}));
+  EXPECT_EQ(matrix2i, (Matrix2I{1, 2, 3, 4}));
+  EXPECT_EQ(matrix2u, (Matrix2U{1, 2, 3, 4}));
+  EXPECT_EQ(matrix2b, (Matrix2B{true, false, true, false}));
+}
+
 }  // namespace Neat
