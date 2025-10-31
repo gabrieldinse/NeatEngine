@@ -769,6 +769,26 @@ TEST_F(VectorTest, ScalarConstructor) {
   EXPECT_EQ(vector1i2.x(), 40);
 }
 
+TEST_F(VectorTest, CopyConstructor) {
+  Vector4F vector4f2{vector4f};
+  Vector3F vector3f2{vector3f};
+  Vector2F vector2f2{vector2f};
+  Vector1F vector1f2{vector1f};
+  Vector4I vector4i2{vector4i};
+  Vector3I vector3i2{vector3i};
+  Vector2I vector2i2{vector2i};
+  Vector1I vector1i2{vector1i};
+
+  EXPECT_EQ(vector4f2, vector4f);
+  EXPECT_EQ(vector3f2, vector3f);
+  EXPECT_EQ(vector2f2, vector2f);
+  EXPECT_EQ(vector1f2, vector1f);
+  EXPECT_EQ(vector4i2, vector4i);
+  EXPECT_EQ(vector3i2, vector3i);
+  EXPECT_EQ(vector2i2, vector2i);
+  EXPECT_EQ(vector1i2, vector1i);
+}
+
 TEST_F(VectorTest, ConversionConstructor) {
   Vector4F vector4f2{Vector3F{1.0f, 2.0f, 3.0f}, 4.0f};
   Vector4F vector4f3{Vector2F{1.0f, 2.0f}, 3.0f, 4.0f};

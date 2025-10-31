@@ -904,4 +904,49 @@ TEST_F(MatrixTest, STDArrayConstructor) {
   EXPECT_EQ(matrix2b, (Matrix2B{true, false, true, false}));
 }
 
+TEST_F(MatrixTest, CopyConstructor) {
+  Matrix4F originalMatrix4f{1.0f,  2.0f,  3.0f,  4.0f,  5.0f,  6.0f,
+                            7.0f,  8.0f,  9.0f,  10.0f, 11.0f, 12.0f,
+                            13.0f, 14.0f, 15.0f, 16.0f};
+  Matrix4F copiedMatrix4f{originalMatrix4f};
+  Matrix4D originalMatrix4d{1.0,   2.0,   3.0,   4.0,  5.0,   6.0,
+                            7.0,   8.0,   9.0,   10.0, 11.0f, 12.0f,
+                            13.0f, 14.0f, 15.0f, 16.0f};
+  Matrix4D copiedMatrix4d{originalMatrix4d};
+  Matrix4I originalMatrix4i{1, 2,  3,  4,  5,  6,  7,  8,
+                            9, 10, 11, 12, 13, 14, 15, 16};
+  Matrix4I copiedMatrix4i{originalMatrix4i};
+  Matrix4U originalMatrix4u{1, 2,  3,  4,  5,  6,  7,  8,
+                            9, 10, 11, 12, 13, 14, 15, 16};
+  Matrix4U copiedMatrix4u{originalMatrix4u};
+  Matrix3D originalMatrix3d{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+  Matrix3D copiedMatrix3d{originalMatrix3d};
+  Matrix3U originalMatrix3u{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  Matrix3U copiedMatrix3u{originalMatrix3u};
+  Matrix3F originalMatrix3f{1.0f, 2.0f, 3.0f, 4.0f, 5.0f,
+                            6.0f, 7.0f, 8.0f, 9.0f};
+  Matrix3F copiedMatrix3f{originalMatrix3f};
+  Matrix3I originalMatrix3i{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  Matrix3I copiedMatrix3i{originalMatrix3i};
+  Matrix2D originalMatrix2d{1.0, 2.0, 3.0, 4.0};
+  Matrix2D copiedMatrix2d{originalMatrix2d};
+  Matrix2U originalMatrix2u{1, 2, 3, 4};
+  Matrix2U copiedMatrix2u{originalMatrix2u};
+  Matrix2F originalMatrix2f{1.0f, 2.0f, 3.0f, 4.0f};
+  Matrix2F copiedMatrix2f{originalMatrix2f};
+  Matrix2I originalMatrix2i{1, 2, 3, 4};
+  Matrix2I copiedMatrix2i{originalMatrix2i};
+
+  EXPECT_EQ(copiedMatrix4d, originalMatrix4d);
+  EXPECT_EQ(copiedMatrix4i, originalMatrix4i);
+  EXPECT_EQ(copiedMatrix4u, originalMatrix4u);
+  EXPECT_EQ(copiedMatrix3d, originalMatrix3d);
+  EXPECT_EQ(copiedMatrix3u, originalMatrix3u);
+  EXPECT_EQ(copiedMatrix3f, originalMatrix3f);
+  EXPECT_EQ(copiedMatrix3i, originalMatrix3i);
+  EXPECT_EQ(copiedMatrix2d, originalMatrix2d);
+  EXPECT_EQ(copiedMatrix2u, originalMatrix2u);
+  EXPECT_EQ(copiedMatrix2f, originalMatrix2f);
+  EXPECT_EQ(copiedMatrix2i, originalMatrix2i);
+}
 }  // namespace Neat
