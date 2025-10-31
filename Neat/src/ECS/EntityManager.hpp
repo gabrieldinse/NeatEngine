@@ -971,12 +971,12 @@ inline std::optional<ComponentHandle<C>> Entity::replaceComponent(
 
   auto componentHandleOpt{getComponent<C>()};
   if (componentHandleOpt) {
-    auto componentPtrOpt{*componentHandleOpt.get()};
-    if (not componentPtrOpt) {
+    auto componentPtr{componentHandleOpt.value().get()};
+    if (componentPtr == nullptr) {
       return std::nullopt;
     }
 
-    *(componentPtrOpt) = C(std::forward<Args>(args)...);
+    *(componentPtr) = C(std::forward<Args>(args)...);
   } else {
     return m_entityManager->addComponent<C>(m_id, std::forward<Args>(args)...);
   }
@@ -1021,10 +1021,6 @@ Entity::getComponent() const {
 template <typename... Components>
 [[nodiscard]] inline std::tuple<std::optional<ComponentHandle<Components>>...>
 Entity::getComponents() {
-  if (not isValid()) {
-    return std::nullopt;
-  }
-
   return m_entityManager->getComponents<Components...>(m_id);
 }
 
@@ -1032,10 +1028,6 @@ template <typename... Components>
 [[nodiscard]] inline std::tuple<
     std::optional<ComponentHandle<const Components, const EntityManager>>...>
 Entity::getComponents() const {
-  if (not isValid()) {
-    return std::nullopt;
-  }
-
   return const_cast<const EntityManager *>(m_entityManager)
       ->getComponents<const Components...>(m_id);
 }

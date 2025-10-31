@@ -157,4 +157,6 @@ struct InventoryComponent {
   }
 };
 
+struct InvalidComponent {};
+
 }  // namespace Neat
