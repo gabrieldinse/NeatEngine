@@ -72,4 +72,10 @@ template <typename T, typename U>
 Ref<T> staticCast(const Ref<U> &pointer) noexcept {
   return std::static_pointer_cast<T>(pointer);
 }
+
+template <typename T, typename U>
+  requires std::is_base_of_v<U, T>
+Ref<T> dynamicCast(const Ref<U> &pointer) noexcept {
+  return std::dynamic_pointer_cast<T>(pointer);
+}
 }  // namespace Neat

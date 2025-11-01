@@ -149,7 +149,7 @@ class EventConnections : public BaseEventConnections {
   }
 
  private:
-  auto findEventHandler(LayerID &layerID) {
+  [[nodiscard]] auto findEventHandler(LayerID &layerID) {
     return std::find_if(m_eventHandlers.begin(), m_eventHandlers.end(),
                         [layerID](const EventHandler<EventType> &eventHandler) {
                           return eventHandler.layerID == layerID;

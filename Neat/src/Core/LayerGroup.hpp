@@ -37,6 +37,8 @@ class LayerGroup {
   LayerVectorConstRevIt rbegin() const { return m_layers.rbegin(); }
   LayerVectorConstRevIt rend() const { return m_layers.rend(); }
 
+  SizeType size() const { return m_layers.size(); }
+
   void update(double deltaTimeSeconds);
 
  private:

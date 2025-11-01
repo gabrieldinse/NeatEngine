@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+
 #include <ECS/ECS.hpp>
 #include <Math/Math.hpp>
+#include <Core/Layer.hpp>
 
 namespace Neat {
 struct EventA {
@@ -158,5 +160,18 @@ struct InventoryComponent {
 };
 
 struct InvalidComponent {};
+
+class TestingLayer : public Layer {
+ public:
+  TestingLayer() = default;
+  virtual void attach() override { attached = true; }
+  virtual void detach() override { detached = true; }
+  virtual void update([[maybe_unused]] double deltaTimeSeconds = 0.0) override {
+    updated = true;
+  }
+  bool attached = false;
+  bool detached = false;
+  bool updated = false;
+};
 
 }  // namespace Neat
