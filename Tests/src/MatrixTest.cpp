@@ -949,4 +949,42 @@ TEST_F(MatrixTest, CopyConstructor) {
   EXPECT_EQ(copiedMatrix2f, originalMatrix2f);
   EXPECT_EQ(copiedMatrix2i, originalMatrix2i);
 }
+
+TEST_F(MatrixTest, MultipleScalarsConversionConstructor) {
+  Matrix4D matrix4d{1, 2.0f,  3U,  4L,  5,  6.0f,  7U,  8L,
+                    9, 10.0f, 11U, 12L, 13, 14.0f, 15U, 16L};
+  Matrix4F matrix4f{1, 2.0,  3U,  4L,  5,  6.0,  7U,  8L,
+                    9, 10.0, 11U, 12L, 13, 14.0, 15U, 16L};
+  Matrix4I matrix4i{1L, 2.0f,  3U,  4,  5L,  6.0f,  7U,  8,
+                    9L, 10.0f, 11U, 12, 13L, 14.0f, 15U, 16};
+  Matrix4U matrix4u{1U, 2.0f,  3.0,  4L,  5U,  6.0f,  7.0,  8L,
+                    9U, 10.0f, 11.0, 12L, 13U, 14.0f, 15.0, 16L};
+  Matrix3F matrix3f{1, 2.0, 3U, 4L, 5, 6.0, 7U, 8L, 9};
+  Matrix3D matrix3d{1, 2.0f, 3U, 4L, 5, 6.0f, 7U, 8L, 9};
+  Matrix3I matrix3i{1L, 2.0f, 3U, 4, 5L, 6.0f, 7U, 8, 9L};
+  Matrix3U matrix3u{1U, 2.0f, 3.0, 4L, 5U, 6.0f, 7.0, 8L, 9U};
+  Matrix2D matrix2d{1, 2.0f, 3U, 4L};
+  Matrix2F matrix2f{1, 2.0, 3U, 4L};
+  Matrix2I matrix2i{1L, 2.0f, 3U, 4};
+  Matrix2U matrix2u{1U, 2.0f, 3.0, 4L};
+
+  EXPECT_EQ(matrix4d, (Matrix4D{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0,
+                                10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0}));
+  EXPECT_EQ(matrix4f,
+            (Matrix4F{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f,
+                      10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f}));
+  EXPECT_EQ(matrix4i,
+            (Matrix4D{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}));
+  EXPECT_EQ(matrix4u,
+            (Matrix4U{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}));
+  EXPECT_EQ(matrix3f,
+            (Matrix3F{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f}));
+  EXPECT_EQ(matrix3d, (Matrix3D{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0}));
+  EXPECT_EQ(matrix3i, (Matrix3I{1, 2, 3, 4, 5, 6, 7, 8, 9}));
+  EXPECT_EQ(matrix3u, (Matrix3U{1, 2, 3, 4, 5, 6, 7, 8, 9}));
+  EXPECT_EQ(matrix2d, (Matrix2D{1.0, 2.0, 3.0, 4.0}));
+  EXPECT_EQ(matrix2f, (Matrix2F{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_EQ(matrix2i, (Matrix2I{1, 2, 3, 4}));
+  EXPECT_EQ(matrix2u, (Matrix2U{1, 2, 3, 4}));
+}
 }  // namespace Neat

@@ -855,6 +855,50 @@ TEST_F(VectorTest, ConversionConstructor) {
   EXPECT_EQ(vector2i5, (Vector2I{10, 20}));
 }
 
+TEST_F(VectorTest, MultipleScalarsConversionConstructor) {
+  Vector4F conversionVec4f{1, 2.0, 3U, 4L};
+  Vector3F conversionVec3f{1, 2.0, 3U};
+  Vector2F conversionVec2f{1, 2.0};
+  Vector1F conversionVec1f{1};
+  Vector4I conversionVec4i{1.5f, 2.5, 4L, 5U};
+  Vector3I conversionVec3i{1.5f, 2.5, 4L};
+  Vector2I conversionVec2i{1.5f, 2.5};
+  Vector1I conversionVec1i{1.5f};
+  Vector4D conversionVec4d{1, 2.0f, 3U, 4L};
+  Vector3D conversionVec3d{1, 2.0f, 3U};
+  Vector2D conversionVec2d{1, 2.0};
+  Vector1D conversionVec1d{1};
+  Vector4U conversionVec4u{1, 2.0f, 3U, 4L};
+  Vector3U conversionVec3u{1, 2.0f, 3U};
+  Vector2U conversionVec2u{1, 2.0};
+  Vector1U conversionVec1u{1};
+  Vector4B conversionVec4b{1, 0, 1, 0};
+  Vector3B conversionVec3b{1, 0, 1};
+  Vector2B conversionVec2b{1, 0};
+  Vector1B conversionVec1b{1};
+
+  EXPECT_EQ(conversionVec4f, (Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_EQ(conversionVec3f, (Vector3F{1.0f, 2.0f, 3.0f}));
+  EXPECT_EQ(conversionVec2f, (Vector2F{1.0f, 2.0f}));
+  EXPECT_EQ(conversionVec1f, (Vector1F{1.0f}));
+  EXPECT_EQ(conversionVec4i, (Vector4I{1, 2, 4, 5}));
+  EXPECT_EQ(conversionVec3i, (Vector3I{1, 2, 4}));
+  EXPECT_EQ(conversionVec2i, (Vector2I{1, 2}));
+  EXPECT_EQ(conversionVec1i, (Vector1I{1}));
+  EXPECT_EQ(conversionVec4d, (Vector4D{1.0, 2.0, 3.0, 4.0}));
+  EXPECT_EQ(conversionVec3d, (Vector3D{1.0, 2.0, 3.0}));
+  EXPECT_EQ(conversionVec2d, (Vector2D{1.0, 2.0}));
+  EXPECT_EQ(conversionVec1d, (Vector1D{1.0}));
+  EXPECT_EQ(conversionVec4u, (Vector4U{1U, 2U, 3U, 4U}));
+  EXPECT_EQ(conversionVec3u, (Vector3U{1U, 2U, 3U}));
+  EXPECT_EQ(conversionVec2u, (Vector2U{1U, 2U}));
+  EXPECT_EQ(conversionVec1u, (Vector1U{1U}));
+  EXPECT_EQ(conversionVec4b, (Vector4B{true, false, true, false}));
+  EXPECT_EQ(conversionVec3b, (Vector3B{true, false, true}));
+  EXPECT_EQ(conversionVec2b, (Vector2B{true, false}));
+  EXPECT_EQ(conversionVec1b, (Vector1B{true}));
+}
+
 TEST_F(VectorTest, STDArrayConstructor) {
   Vector4F vector4f2{std::array<float, 4>{1.0f, 2.0f, 3.0f, 4.0f}};
   Vector3F vector3f2{std::array<float, 3>{1.0f, 2.0f, 3.0f}};
