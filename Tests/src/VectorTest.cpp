@@ -43,6 +43,28 @@ class VectorTest : public testing::Test {
   Vector<1, UShort> vector1us{1};
 };
 
+TEST_F(VectorTest, VectorSizes) {
+  EXPECT_EQ(Vector4F::N, 4);
+  EXPECT_EQ(Vector4D::N, 4);
+  EXPECT_EQ(Vector4I::N, 4);
+  EXPECT_EQ(Vector4U::N, 4);
+
+  EXPECT_EQ(Vector3F::N, 3);
+  EXPECT_EQ(Vector3D::N, 3);
+  EXPECT_EQ(Vector3I::N, 3);
+  EXPECT_EQ(Vector3U::N, 3);
+
+  EXPECT_EQ(Vector2F::N, 2);
+  EXPECT_EQ(Vector2D::N, 2);
+  EXPECT_EQ(Vector2I::N, 2);
+  EXPECT_EQ(Vector2U::N, 2);
+
+  EXPECT_EQ(Vector1F::N, 1);
+  EXPECT_EQ(Vector1D::N, 1);
+  EXPECT_EQ(Vector1I::N, 1);
+  EXPECT_EQ(Vector1U::N, 1);
+}
+
 TEST_F(VectorTest, AtOperator) {
   EXPECT_EQ(vector4f[0], 1.0f);
   EXPECT_EQ(vector4f[1], 2.0f);

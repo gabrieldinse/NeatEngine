@@ -27,6 +27,56 @@ class MatrixTest : public testing::Test {
   Matrix2B matrix2b{true, false, true, false};
 };
 
+TEST_F(MatrixTest, MatrixSizes) {
+  EXPECT_EQ(Matrix4F::M, 4);
+  EXPECT_EQ(Matrix4F::N, 4);
+  EXPECT_EQ(Matrix4F::Size, 16);
+
+  EXPECT_EQ(Matrix4D::M, 4);
+  EXPECT_EQ(Matrix4D::N, 4);
+  EXPECT_EQ(Matrix4D::Size, 16);
+
+  EXPECT_EQ(Matrix4I::M, 4);
+  EXPECT_EQ(Matrix4I::N, 4);
+  EXPECT_EQ(Matrix4I::Size, 16);
+
+  EXPECT_EQ(Matrix4U::M, 4);
+  EXPECT_EQ(Matrix4U::N, 4);
+  EXPECT_EQ(Matrix4U::Size, 16);
+
+  EXPECT_EQ(Matrix3F::M, 3);
+  EXPECT_EQ(Matrix3F::N, 3);
+  EXPECT_EQ(Matrix3F::Size, 9);
+
+  EXPECT_EQ(Matrix3D::M, 3);
+  EXPECT_EQ(Matrix3D::N, 3);
+  EXPECT_EQ(Matrix3D::Size, 9);
+
+  EXPECT_EQ(Matrix3I::M, 3);
+  EXPECT_EQ(Matrix3I::N, 3);
+  EXPECT_EQ(Matrix3I::Size, 9);
+
+  EXPECT_EQ(Matrix3U::M, 3);
+  EXPECT_EQ(Matrix3U::N, 3);
+  EXPECT_EQ(Matrix3U::Size, 9);
+
+  EXPECT_EQ(Matrix2F::M, 2);
+  EXPECT_EQ(Matrix2F::N, 2);
+  EXPECT_EQ(Matrix2F::Size, 4);
+
+  EXPECT_EQ(Matrix2D::M, 2);
+  EXPECT_EQ(Matrix2D::N, 2);
+  EXPECT_EQ(Matrix2D::Size, 4);
+
+  EXPECT_EQ(Matrix2I::M, 2);
+  EXPECT_EQ(Matrix2I::N, 2);
+  EXPECT_EQ(Matrix2I::Size, 4);
+
+  EXPECT_EQ(Matrix2U::M, 2);
+  EXPECT_EQ(Matrix2U::N, 2);
+  EXPECT_EQ(Matrix2U::Size, 4);
+}
+
 TEST_F(MatrixTest, RowOperator) {
   EXPECT_EQ(matrix4f.row(0), (Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
   EXPECT_EQ(matrix4f.row(1), (Vector4F{5.0f, 6.0f, 7.0f, 8.0f}));
@@ -578,6 +628,201 @@ TEST_F(MatrixTest, MultidimensionalIndexOperator) {
   EXPECT_EQ((matrix4b[1, 2]), true);
   EXPECT_EQ((matrix3b[0, 1]), true);
   EXPECT_EQ((matrix2b[1, 0]), false);
+}
+
+TEST_F(MatrixTest, CallOperator) {
+  EXPECT_EQ(matrix4f(0), 1.0f);
+  EXPECT_EQ(matrix4d(0), 1.0);
+  EXPECT_EQ(matrix4i(0), 1);
+  EXPECT_EQ(matrix4u(0), 1);
+  EXPECT_EQ(matrix4b(0), true);
+  EXPECT_EQ(matrix3f(0), 1.0f);
+  EXPECT_EQ(matrix3d(0), 1.0);
+  EXPECT_EQ(matrix3i(0), 1);
+  EXPECT_EQ(matrix3u(0), 1);
+  EXPECT_EQ(matrix3b(0), true);
+  EXPECT_EQ(matrix2f(0), 1.0f);
+  EXPECT_EQ(matrix2d(0), 1.0);
+  EXPECT_EQ(matrix2i(0), 1);
+  EXPECT_EQ(matrix2u(0), 1);
+  EXPECT_EQ(matrix2b(0), true);
+
+  EXPECT_EQ(matrix4f(1), 2.0f);
+  EXPECT_EQ(matrix4d(1), 2.0);
+  EXPECT_EQ(matrix4i(1), 2);
+  EXPECT_EQ(matrix4u(1), 2);
+  EXPECT_EQ(matrix4b(1), false);
+  EXPECT_EQ(matrix3f(1), 2.0f);
+  EXPECT_EQ(matrix3d(1), 2.0);
+  EXPECT_EQ(matrix3i(1), 2);
+  EXPECT_EQ(matrix3u(1), 2);
+  EXPECT_EQ(matrix3b(1), false);
+  EXPECT_EQ(matrix2f(1), 2.0f);
+  EXPECT_EQ(matrix2d(1), 2.0);
+  EXPECT_EQ(matrix2i(1), 2);
+  EXPECT_EQ(matrix2u(1), 2);
+  EXPECT_EQ(matrix2b(1), false);
+
+  EXPECT_EQ(matrix4f(2), 3.0f);
+  EXPECT_EQ(matrix4d(2), 3.0);
+  EXPECT_EQ(matrix4i(2), 3);
+  EXPECT_EQ(matrix4u(2), 3);
+  EXPECT_EQ(matrix4b(2), true);
+  EXPECT_EQ(matrix3f(2), 3.0f);
+  EXPECT_EQ(matrix3d(2), 3.0);
+  EXPECT_EQ(matrix3i(2), 3);
+  EXPECT_EQ(matrix3u(2), 3);
+  EXPECT_EQ(matrix3b(2), true);
+  EXPECT_EQ(matrix2f(2), 3.0f);
+  EXPECT_EQ(matrix2d(2), 3.0);
+  EXPECT_EQ(matrix2i(2), 3);
+  EXPECT_EQ(matrix2u(2), 3);
+  EXPECT_EQ(matrix2b(2), true);
+
+  EXPECT_EQ(matrix4f(3), 4.0f);
+  EXPECT_EQ(matrix4d(3), 4.0);
+  EXPECT_EQ(matrix4i(3), 4);
+  EXPECT_EQ(matrix4u(3), 4);
+  EXPECT_EQ(matrix4b(3), false);
+  EXPECT_EQ(matrix3f(3), 4.0f);
+  EXPECT_EQ(matrix3d(3), 4.0);
+  EXPECT_EQ(matrix3i(3), 4);
+  EXPECT_EQ(matrix3u(3), 4);
+  EXPECT_EQ(matrix3b(3), false);
+  EXPECT_EQ(matrix2f(3), 4.0f);
+  EXPECT_EQ(matrix2d(3), 4.0);
+  EXPECT_EQ(matrix2i(3), 4);
+  EXPECT_EQ(matrix2u(3), 4);
+  EXPECT_EQ(matrix2b(3), false);
+
+  EXPECT_EQ(matrix4f(4), 5.0f);
+  EXPECT_EQ(matrix4d(4), 5.0);
+  EXPECT_EQ(matrix4i(4), 5);
+  EXPECT_EQ(matrix4u(4), 5);
+  EXPECT_EQ(matrix4b(4), true);
+  EXPECT_EQ(matrix3f(4), 5.0f);
+  EXPECT_EQ(matrix3d(4), 5.0);
+  EXPECT_EQ(matrix3i(4), 5);
+  EXPECT_EQ(matrix3u(4), 5);
+  EXPECT_EQ(matrix3b(4), true);
+
+  EXPECT_EQ(matrix4f(5), 6.0f);
+  EXPECT_EQ(matrix4d(5), 6.0);
+  EXPECT_EQ(matrix4i(5), 6);
+  EXPECT_EQ(matrix4u(5), 6);
+  EXPECT_EQ(matrix4b(5), false);
+  EXPECT_EQ(matrix3f(5), 6.0f);
+  EXPECT_EQ(matrix3d(5), 6.0);
+  EXPECT_EQ(matrix3i(5), 6);
+  EXPECT_EQ(matrix3u(5), 6);
+  EXPECT_EQ(matrix3b(5), false);
+
+  EXPECT_EQ(matrix4f(6), 7.0f);
+  EXPECT_EQ(matrix4d(6), 7.0);
+  EXPECT_EQ(matrix4i(6), 7);
+  EXPECT_EQ(matrix4u(6), 7);
+  EXPECT_EQ(matrix4b(6), true);
+  EXPECT_EQ(matrix3f(6), 7.0f);
+  EXPECT_EQ(matrix3d(6), 7.0);
+  EXPECT_EQ(matrix3i(6), 7);
+  EXPECT_EQ(matrix3u(6), 7);
+  EXPECT_EQ(matrix3b(6), true);
+
+  EXPECT_EQ(matrix4f(7), 8.0f);
+  EXPECT_EQ(matrix4d(7), 8.0);
+  EXPECT_EQ(matrix4i(7), 8);
+  EXPECT_EQ(matrix4u(7), 8);
+  EXPECT_EQ(matrix4b(7), false);
+  EXPECT_EQ(matrix3f(7), 8.0f);
+  EXPECT_EQ(matrix3d(7), 8.0);
+  EXPECT_EQ(matrix3i(7), 8);
+  EXPECT_EQ(matrix3u(7), 8);
+  EXPECT_EQ(matrix3b(7), false);
+
+  EXPECT_EQ(matrix4f(8), 9.0f);
+  EXPECT_EQ(matrix4d(8), 9.0);
+  EXPECT_EQ(matrix4i(8), 9);
+  EXPECT_EQ(matrix4u(8), 9);
+  EXPECT_EQ(matrix4b(8), true);
+  EXPECT_EQ(matrix3f(8), 9.0f);
+  EXPECT_EQ(matrix3d(8), 9.0);
+  EXPECT_EQ(matrix3i(8), 9);
+  EXPECT_EQ(matrix3u(8), 9);
+  EXPECT_EQ(matrix3b(8), true);
+
+  EXPECT_EQ(matrix4f(9), 10.0f);
+  EXPECT_EQ(matrix4d(9), 10.0);
+  EXPECT_EQ(matrix4i(9), 10);
+  EXPECT_EQ(matrix4u(9), 10);
+  EXPECT_EQ(matrix4b(9), false);
+
+  EXPECT_EQ(matrix4f(10), 11.0f);
+  EXPECT_EQ(matrix4d(10), 11.0);
+  EXPECT_EQ(matrix4i(10), 11);
+  EXPECT_EQ(matrix4u(10), 11);
+  EXPECT_EQ(matrix4b(10), true);
+
+  EXPECT_EQ(matrix4f(11), 12.0f);
+  EXPECT_EQ(matrix4d(11), 12.0);
+  EXPECT_EQ(matrix4i(11), 12);
+  EXPECT_EQ(matrix4u(11), 12);
+  EXPECT_EQ(matrix4b(11), false);
+
+  EXPECT_EQ(matrix4f(12), 13.0f);
+  EXPECT_EQ(matrix4d(12), 13.0);
+  EXPECT_EQ(matrix4i(12), 13);
+  EXPECT_EQ(matrix4u(12), 13);
+  EXPECT_EQ(matrix4b(12), true);
+
+  EXPECT_EQ(matrix4f(13), 14.0f);
+  EXPECT_EQ(matrix4d(13), 14.0);
+  EXPECT_EQ(matrix4i(13), 14);
+  EXPECT_EQ(matrix4u(13), 14);
+  EXPECT_EQ(matrix4b(13), false);
+
+  EXPECT_EQ(matrix4f(14), 15.0f);
+  EXPECT_EQ(matrix4d(14), 15.0);
+  EXPECT_EQ(matrix4i(14), 15);
+  EXPECT_EQ(matrix4u(14), 15);
+  EXPECT_EQ(matrix4b(14), true);
+
+  EXPECT_EQ(matrix4f(15), 16.0f);
+  EXPECT_EQ(matrix4d(15), 16.0);
+  EXPECT_EQ(matrix4i(15), 16);
+  EXPECT_EQ(matrix4u(15), 16);
+  EXPECT_EQ(matrix4b(15), false);
+
+  // Assignment tests
+  matrix4f(10) = 42.0f;
+  EXPECT_EQ(matrix4f(10), 42.0f);
+  matrix4d(5) = 3.14;
+  EXPECT_EQ(matrix4d(5), 3.14);
+  matrix4i(0) = 99;
+  EXPECT_EQ(matrix4i(0), 99);
+  matrix4u(12) = 77;
+  EXPECT_EQ(matrix4u(12), 77);
+  matrix4b(7) = true;
+  EXPECT_EQ(matrix4b(7), true);
+  matrix3f(4) = 24.0f;
+  EXPECT_EQ(matrix3f(4), 24.0f);
+  matrix3d(8) = 6.28;
+  EXPECT_EQ(matrix3d(8), 6.28);
+  matrix3i(2) = 88;
+  EXPECT_EQ(matrix3i(2), 88);
+  matrix3u(6) = 55;
+  EXPECT_EQ(matrix3u(6), 55);
+  matrix3b(3) = true;
+  EXPECT_EQ(matrix3b(3), true);
+  matrix2f(2) = 11.0f;
+  EXPECT_EQ(matrix2f(2), 11.0f);
+  matrix2d(1) = 22.0;
+  EXPECT_EQ(matrix2d(1), 22.0);
+  matrix2i(3) = 33;
+  EXPECT_EQ(matrix2i(3), 33);
+  matrix2u(0) = 44;
+  EXPECT_EQ(matrix2u(0), 44);
+  matrix2b(2) = false;
+  EXPECT_EQ(matrix2b(2), false);
 }
 
 TEST_F(MatrixTest, MultipleScalarsConstructor) {
