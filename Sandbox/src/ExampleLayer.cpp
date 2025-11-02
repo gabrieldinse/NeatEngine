@@ -1,6 +1,8 @@
 #include <memory>
 
 #include <string_view>
+#include <iostream>
+#include <vector>
 
 #include "ExampleLayer.hpp"
 
@@ -8,6 +10,9 @@
 #include <rfl.hpp>
 
 #include <ImGuizmo/ImGuizmo.h>
+
+#include <AL/al.h>
+#include <AL/alc.h>
 
 struct Person {
   std::string first_name;
@@ -217,30 +222,43 @@ ExampleLayer::ExampleLayer(
   m_systemManager->addSystem<Neat::Render2DSystem>();
   m_systemManager->initialize(m_entityManager, m_eventDispatcher);
 
-  // for (std::size_t i = 0; i < this->numberOfLines; ++i) {
-  //   for (std::size_t j = 0; j < this->numberOfColumns; ++j) {
-  //     auto flatColorQuad = m_entityManager->createEntity();
-  //     flatColorQuad.addComponent<Neat::RenderableSpriteComponent>(
-  //         Neat::Vector4F{float(i) / this->numberOfLines,
-  //                        float(j) / this->numberOfColumns, 1.0f, 1.0f});
-  //     flatColorQuad.addComponent<Neat::TransformComponent>(
-  //         Neat::Vector3F{0.1f * j, 0.1f * i, 0.0f},
-  //         Neat::Vector3F{0.1f, 0.1f, 1.0f});
-  //   }
-  // }
+  /****************************** OpenAL ******************************/
+  ALCdevice *device = alcOpenDevice(nullptr);
+  if (!device) {
+    std::cerr << "Failed to open audio device\n";
+    return;
+  }
 
-  // Set values different from the default
-  // m_checkerboardTexture->setMinification(Neat::Texture2DFilter::Nearest);
-  // m_checkerboardTexture->setMagnification(Neat::Texture2DFilter::Nearest);
-  // m_checkerboardTexture->setWrapS(Neat::Texture2DWrapping::ClampToEdge);
+  ALCcontext *context = alcCreateContext(device, nullptr);
+  alcMakeContextCurrent(context);
 
-  // auto checkerboardQuad = m_entityManager->createEntity();
-  // checkerboardQuad.addComponent<Neat::RenderableSpriteComponent>(
-  //     this->m_checkerboardTexture, Neat::Vector4F{0.8f, 0.4f, 0.3f, 0.75f},
-  //     5.0f);
-  // checkerboardQuad.addComponent<Neat::TransformComponent>(
-  //     Neat::Vector3F{0.0f, 0.0f, 0.5f}, Neat::Vector3F{1.0f, 1.0f, 1.0f},
-  //     Neat::Vector3F{0.0f, 0.0f, 45.0f});
+  // Generate a buffer and a source
+  ALuint buffer, source;
+  alGenBuffers(1, &buffer);
+  alGenSources(1, &source);
+
+  // TODO: Load a real WAV file — we’ll use a generated sine wave for now
+  constexpr int sampleRate = 44100;
+  constexpr float duration = 2.0f;
+  std::vector<short> samples(static_cast<size_t>(duration * sampleRate));
+  for (size_t i = 0; i < samples.size(); ++i)
+    samples[i] = 32760 * sin((2.0f * M_PI * 440.0f) *
+                             (i / static_cast<float>(sampleRate)));
+
+  alBufferData(buffer, AL_FORMAT_MONO16, samples.data(),
+               samples.size() * sizeof(short), sampleRate);
+  alSourcei(source, AL_BUFFER, buffer);
+
+  alSourcePlay(source);
+  std::cout << "Playing sound...\n";
+  std::this_thread::sleep_for(std::chrono::seconds(2));
+
+  // Cleanup
+  alDeleteSources(1, &source);
+  alDeleteBuffers(1, &buffer);
+  alcMakeContextCurrent(nullptr);
+  alcDestroyContext(context);
+  alcCloseDevice(device);
 }
 
 void ExampleLayer::onImGuiRender() {

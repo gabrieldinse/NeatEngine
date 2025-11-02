@@ -25,3 +25,6 @@
 [submodule "Vendor/box2d"]
 	path = Vendor/Box2D
 	url = git@github.com:erincatto/box2d.git
+[submodule "Vendor/openal-soft"]
+	path = Vendor/openal-soft
+	url = git@github.com:kcat/openal-soft.git
