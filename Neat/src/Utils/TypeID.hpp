@@ -20,7 +20,7 @@ constexpr TypeID getMethodID() {
 }
 
 template <typename Method>
-constexpr InstanceID getMethodID(const Method &method) {
+constexpr InstanceID getMethodID([[maybe_unused]] const Method &method) {
   return getTypeID<Method>();
 }
 
