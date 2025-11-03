@@ -19,6 +19,11 @@ constexpr TypeID getMethodID() {
   return getTypeID<T>();
 }
 
+template <typename Method>
+constexpr InstanceID getMethodID(const Method &method) {
+  return getTypeID<Method>();
+}
+
 template <typename Instance>
 constexpr InstanceID getInstanceID(const Instance &instance) {
   return reinterpret_cast<InstanceID>(&instance);

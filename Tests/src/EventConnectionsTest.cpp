@@ -6,6 +6,12 @@
 namespace Neat {
 bool calledNonMember = false;
 
+bool foo(const EventA &event) {
+  EXPECT_EQ(event.val, 1234);
+  calledNonMember = true;
+  return false;
+}
+
 class EventConnectionsTest : public testing::Test {
  protected:
   EventConnectionsTest() {
@@ -271,11 +277,22 @@ TEST_F(EventConnectionsTest, ConnectScoped) {
 TEST_F(EventConnectionsTest, NonMemberFunctionUpdate) {
   EventConnections<EventA> connNonMember{};
 
-  connNonMember.connect<[](const EventA &event) {
+  calledNonMember = false;
+  connNonMember.connect([](const EventA &event) {
     EXPECT_EQ(event.val, 1234);
     calledNonMember = true;
     return false;
-  }>();
+  });
+
+  connNonMember.update(EventA{1234});
+  EXPECT_TRUE(calledNonMember);
+}
+
+TEST_F(EventConnectionsTest, PlainFunctionUpdate) {
+  EventConnections<EventA> connNonMember{};
+
+  calledNonMember = false;
+  connNonMember.connect<foo>();
 
   connNonMember.update(EventA{1234});
   EXPECT_TRUE(calledNonMember);
@@ -290,13 +307,13 @@ TEST_F(EventConnectionsTest, NonMemberFunctionConnectAndDisconnect) {
     return false;
   };
 
-  connNonMember.connect<nonMemberFunc>();
+  connNonMember.connect(nonMemberFunc);
 
   connNonMember.update(EventA{1234});
   EXPECT_TRUE(calledNonMember);
 
   calledNonMember = false;
-  connNonMember.disconnect<nonMemberFunc>();
+  connNonMember.disconnect(nonMemberFunc);
 }
 
 TEST_F(EventConnectionsTest, NonMemberFunctionConnectScoped) {
@@ -309,7 +326,7 @@ TEST_F(EventConnectionsTest, NonMemberFunctionConnectScoped) {
   };
 
   calledNonMember = false;
-  auto connScope = connNonMember.connectScoped<nonMemberFunc>();
+  auto connScope = connNonMember.connectScoped(nonMemberFunc);
 
   connNonMember.update(EventA{1234});
   EXPECT_TRUE(calledNonMember);
@@ -321,7 +338,7 @@ TEST_F(EventConnectionsTest, NonMemberFunctionConnectScoped) {
   EXPECT_FALSE(calledNonMember);
 
   {
-    auto connScope2 = connNonMember.connectScoped<nonMemberFunc>();
+    auto connScope2 = connNonMember.connectScoped(nonMemberFunc);
     calledNonMember = false;
     connNonMember.update(EventA{1234});
     EXPECT_TRUE(calledNonMember);

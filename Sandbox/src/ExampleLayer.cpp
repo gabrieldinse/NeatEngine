@@ -242,7 +242,7 @@ ExampleLayer::ExampleLayer(
   constexpr float duration = 2.0f;
   std::vector<short> samples(static_cast<size_t>(duration * sampleRate));
   for (size_t i = 0; i < samples.size(); ++i)
-    samples[i] = 32760 * sin((2.0f * M_PI * 440.0f) *
+    samples[i] = 32760 * sin((2.0f * Neat::Pi<> * 440.0f) *
                              (i / static_cast<float>(sampleRate)));
 
   alBufferData(buffer, AL_FORMAT_MONO16, samples.data(),

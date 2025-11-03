@@ -96,9 +96,9 @@ TEST(TypeIdTest, GetMethodIdWithCallable) {
   auto lambda2 = [](int x) { return x * 2; };
 
   auto id1 = getMethodID<&MyOtherStruct::method>();
-  auto id2 = getMethodID<lambda>();
-  auto id3 = getMethodID<lambda>();
-  auto id4 = getMethodID<lambda2>();
+  auto id2 = getMethodID(lambda);
+  auto id3 = getMethodID(lambda);
+  auto id4 = getMethodID(lambda2);
 
   EXPECT_EQ(id2, id3);
   EXPECT_NE(id1, id2);
