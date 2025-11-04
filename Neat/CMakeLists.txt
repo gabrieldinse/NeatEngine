@@ -112,13 +112,14 @@ set_target_properties(Neat PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}/$<0:>
 )
 
-set(OPENAL_SOFT_BUILD_DIR "${CMAKE_BINARY_DIR}/Vendor/openal-soft")
-add_custom_command(TARGET Neat POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${OPENAL_SOFT_BUILD_DIR}/Debug/OpenAL32.dll"
-        "$<TARGET_FILE_DIR:Neat>"
-)
-
+if (WIN32)
+    set(OPENAL_SOFT_BUILD_DIR "${CMAKE_BINARY_DIR}/Vendor/openal-soft")
+    add_custom_command(TARGET Neat POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${OPENAL_SOFT_BUILD_DIR}/Debug/OpenAL32.dll"
+            "$<TARGET_FILE_DIR:Neat>"
+    )
+endif()
 
 add_custom_command(TARGET Neat POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
