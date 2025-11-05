@@ -163,7 +163,7 @@ struct InvalidComponent {};
 
 class TestingLayer : public Layer {
  public:
-  TestingLayer() = default;
+  TestingLayer() { layerID = layerIDCounter++; }
   virtual void attach() override { attached = true; }
   virtual void detach() override { detached = true; }
   virtual void update([[maybe_unused]] double deltaTimeSeconds = 0.0) override {
@@ -172,6 +172,9 @@ class TestingLayer : public Layer {
   bool attached = false;
   bool detached = false;
   bool updated = false;
+  int updateIndex = 0;
+  LayerID layerID;
+  static inline LayerID layerIDCounter = 0;
 };
 
 }  // namespace Neat

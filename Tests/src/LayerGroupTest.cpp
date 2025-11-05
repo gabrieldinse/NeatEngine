@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <ranges>
+
 #include <Core/LayerGroup.hpp>
 #include <TestUtils.hpp>
 
@@ -38,7 +40,7 @@ TEST(LayerGroupTest, PushLayers) {
       dynamic_cast<TestingLayer *>((layerGroup.end() - 1)->get())->detached);
 }
 
-TEST(LayerGroupTest, PopLayers) {
+TEST(LayerGroupTest, PopLayersAndOverlays) {
   LayerGroup layerGroup;
   layerGroup.pushLayer<TestingLayer>();
   layerGroup.pushLayer<TestingLayer>();
@@ -149,5 +151,82 @@ TEST(LayerGroupTest, DisableAndEnableLayers) {
       dynamic_cast<TestingLayer *>((layerGroup.begin())->get())->updated);
   EXPECT_TRUE(
       dynamic_cast<TestingLayer *>((layerGroup.begin() + 1)->get())->updated);
+}
+
+TEST(LayerGroupTest, PushLayersAndOverlays) {
+  LayerGroup layerGroup;
+
+  layerGroup.pushLayer<TestingLayer>();
+  EXPECT_EQ(layerGroup.size(), 1);
+
+  layerGroup.pushOverlay<TestingLayer>();
+  EXPECT_EQ(layerGroup.size(), 2);
+
+  layerGroup.pushLayer<TestingLayer>();
+  EXPECT_EQ(layerGroup.size(), 3);
+
+  layerGroup.pushOverlay<TestingLayer>();
+  EXPECT_EQ(layerGroup.size(), 4);
+
+  EXPECT_TRUE(
+      dynamic_cast<TestingLayer *>(layerGroup.begin()->get())->attached);
+  EXPECT_TRUE(
+      dynamic_cast<TestingLayer *>((layerGroup.begin() + 1)->get())->attached);
+  EXPECT_TRUE(
+      dynamic_cast<TestingLayer *>((layerGroup.begin() + 2)->get())->attached);
+  EXPECT_TRUE(
+      dynamic_cast<TestingLayer *>((layerGroup.begin() + 3)->get())->attached);
+}
+
+TEST(LayerGroupTest, UpdateLayersAndOverlays) {
+  LayerGroup layerGroup;
+
+  TestingLayer::layerIDCounter = 0;
+  layerGroup.pushLayer<TestingLayer>();    // first, id: 1
+  layerGroup.pushOverlay<TestingLayer>();  // third, id: 2
+  layerGroup.pushLayer<TestingLayer>();    // second, id: 3
+  layerGroup.pushOverlay<TestingLayer>();  // fourth, id: 4
+
+  for (auto &layer : layerGroup) {
+    EXPECT_FALSE(dynamic_cast<TestingLayer *>(layer.get())->updated);
+  }
+
+  for (auto &&[index, layer] : std::ranges::views::enumerate(layerGroup)) {
+    layer->update(0.16);
+    dynamic_cast<TestingLayer *>(layer.get())->updateIndex = index;
+    EXPECT_EQ(dynamic_cast<TestingLayer *>(layer.get())->updateIndex, index);
+  }
+
+  for (auto &layer : layerGroup) {
+    EXPECT_TRUE(dynamic_cast<TestingLayer *>(layer.get())->updated);
+  }
+
+  EXPECT_EQ(dynamic_cast<TestingLayer *>((layerGroup.begin() + 0)->get())
+                ->updateIndex,
+            0);
+  EXPECT_EQ(
+      dynamic_cast<TestingLayer *>((layerGroup.begin() + 0)->get())->layerID,
+      0);
+
+  EXPECT_EQ(dynamic_cast<TestingLayer *>((layerGroup.begin() + 1)->get())
+                ->updateIndex,
+            1);
+  EXPECT_EQ(
+      dynamic_cast<TestingLayer *>((layerGroup.begin() + 1)->get())->layerID,
+      2);
+
+  EXPECT_EQ(dynamic_cast<TestingLayer *>((layerGroup.begin() + 2)->get())
+                ->updateIndex,
+            2);
+  EXPECT_EQ(
+      dynamic_cast<TestingLayer *>((layerGroup.begin() + 2)->get())->layerID,
+      1);
+
+  EXPECT_EQ(dynamic_cast<TestingLayer *>((layerGroup.begin() + 3)->get())
+                ->updateIndex,
+            3);
+  EXPECT_EQ(
+      dynamic_cast<TestingLayer *>((layerGroup.begin() + 3)->get())->layerID,
+      3);
 }
 }  // namespace Neat
