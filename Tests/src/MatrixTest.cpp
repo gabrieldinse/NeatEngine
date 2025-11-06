@@ -1232,4 +1232,72 @@ TEST_F(MatrixTest, MultipleScalarsConversionConstructor) {
   EXPECT_EQ(matrix2i, (Matrix2I{1, 2, 3, 4}));
   EXPECT_EQ(matrix2u, (Matrix2U{1, 2, 3, 4}));
 }
+
+TEST_F(MatrixTest, SameDimensionConversionConstructor) {
+  Matrix4F customMatrix4f{1.0f,  2.0f,  3.0f,  4.0f,  5.0f,  6.0f,
+                          7.0f,  8.0f,  9.0f,  10.0f, 11.0f, 12.0f,
+                          13.0f, 14.0f, 15.0f, 16.0f};
+  Matrix4D customMatrix4d{1.0, 2.0,  3.0,   4.0,   5.0,   6.0,   7.0,   8.0,
+                          9.0, 10.0, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f};
+  Matrix3F customMatrix3f{1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f};
+  Matrix3D customMatrix3d{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+  Matrix2F customMatrix2f{1.0f, 2.0f, 3.0f, 4.0f};
+  Matrix2D customMatrix2d{1.0, 2.0, 3.0, 4.0};
+  Matrix4I customMatrix4i{1, 2,  3,  4,  5,  6,  7,  8,
+                          9, 10, 11, 12, 13, 14, 15, 16};
+  Matrix3I customMatrix3i{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  Matrix2I customMatrix2i{1, 2, 3, 4};
+  Matrix4U customMatrix4u{1, 2,  3,  4,  5,  6,  7,  8,
+                          9, 10, 11, 12, 13, 14, 15, 16};
+  Matrix3U customMatrix3u{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  Matrix2U customMatrix2u{1, 2, 3, 4};
+
+  EXPECT_EQ(Matrix4D{customMatrix4f}, customMatrix4d);
+  EXPECT_EQ(Matrix4D{customMatrix4u}, customMatrix4d);
+  EXPECT_EQ(Matrix4D{customMatrix4i}, customMatrix4d);
+
+  EXPECT_EQ(Matrix4F{customMatrix4d}, customMatrix4f);
+  EXPECT_EQ(Matrix4F{customMatrix4i}, customMatrix4f);
+  EXPECT_EQ(Matrix4F{customMatrix4u}, customMatrix4f);
+
+  EXPECT_EQ(Matrix3D{customMatrix3f}, customMatrix3d);
+  EXPECT_EQ(Matrix3D{customMatrix3u}, customMatrix3d);
+  EXPECT_EQ(Matrix3D{customMatrix3i}, customMatrix3d);
+
+  EXPECT_EQ(Matrix4U{customMatrix4d}, customMatrix4u);
+  EXPECT_EQ(Matrix4U{customMatrix4f}, customMatrix4u);
+  EXPECT_EQ(Matrix4U{customMatrix4i}, customMatrix4u);
+
+  EXPECT_EQ(Matrix4I{customMatrix4f}, customMatrix4i);
+  EXPECT_EQ(Matrix4I{customMatrix4u}, customMatrix4i);
+  EXPECT_EQ(Matrix4I{customMatrix4d}, customMatrix4i);
+
+  EXPECT_EQ(Matrix3F{customMatrix3d}, customMatrix3f);
+  EXPECT_EQ(Matrix3F{customMatrix3i}, customMatrix3f);
+  EXPECT_EQ(Matrix3F{customMatrix3u}, customMatrix3f);
+
+  EXPECT_EQ(Matrix3I{customMatrix3f}, customMatrix3i);
+  EXPECT_EQ(Matrix3I{customMatrix3u}, customMatrix3i);
+  EXPECT_EQ(Matrix3I{customMatrix3d}, customMatrix3i);
+
+  EXPECT_EQ(Matrix3U{customMatrix3i}, customMatrix3u);
+  EXPECT_EQ(Matrix3U{customMatrix3f}, customMatrix3u);
+  EXPECT_EQ(Matrix3U{customMatrix3d}, customMatrix3u);
+
+  EXPECT_EQ(Matrix2D{customMatrix2f}, customMatrix2d);
+  EXPECT_EQ(Matrix2D{customMatrix2u}, customMatrix2d);
+  EXPECT_EQ(Matrix2D{customMatrix2i}, customMatrix2d);
+
+  EXPECT_EQ(Matrix2F{customMatrix2d}, customMatrix2f);
+  EXPECT_EQ(Matrix2F{customMatrix2i}, customMatrix2f);
+  EXPECT_EQ(Matrix2F{customMatrix2u}, customMatrix2f);
+
+  EXPECT_EQ(Matrix2I{customMatrix2f}, customMatrix2i);
+  EXPECT_EQ(Matrix2I{customMatrix2u}, customMatrix2i);
+  EXPECT_EQ(Matrix2I{customMatrix2d}, customMatrix2i);
+
+  EXPECT_EQ(Matrix2U{customMatrix2f}, customMatrix2u);
+  EXPECT_EQ(Matrix2U{customMatrix2i}, customMatrix2u);
+  EXPECT_EQ(Matrix2U{customMatrix2d}, customMatrix2u);
+}
 }  // namespace Neat

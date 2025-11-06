@@ -46,7 +46,11 @@ inline constexpr Matrix<3, 3, T>::Matrix(const X1 &m00, const Y1 &m01,
 template <typename T>
 template <typename U>
 inline constexpr Matrix<3, 3, T>::Matrix(const Matrix<3, 3, U> &m)
-    : elements{m.elements} {}
+    : elements{static_cast<T>(m(0, 0)), static_cast<T>(m(0, 1)),
+               static_cast<T>(m(0, 2)), static_cast<T>(m(1, 0)),
+               static_cast<T>(m(1, 1)), static_cast<T>(m(1, 2)),
+               static_cast<T>(m(2, 0)), static_cast<T>(m(2, 1)),
+               static_cast<T>(m(2, 2))} {}
 
 template <typename T>
 template <typename U>
