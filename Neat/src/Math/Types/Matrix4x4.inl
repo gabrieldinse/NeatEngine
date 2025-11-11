@@ -66,15 +66,42 @@ inline constexpr Matrix<4, 4, T>::Matrix(const Matrix<4, 4, U> &m)
 template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T>::Matrix(const Matrix<3, 3, U> &m)
-    : elements{m(0), m(1), m(2), Zero<T>, m(3),    m(4),    m(5),    Zero<T>,
-               m(6), m(7), m(8), Zero<T>, Zero<T>, Zero<T>, Zero<T>, One<T>} {}
+    : elements{static_cast<T>(m(0, 0)),
+               static_cast<T>(m(0, 1)),
+               static_cast<T>(m(0, 2)),
+               Zero<T>,
+               static_cast<T>(m(1, 0)),
+               static_cast<T>(m(1, 1)),
+               static_cast<T>(m(1, 2)),
+               Zero<T>,
+               static_cast<T>(m(2, 0)),
+               static_cast<T>(m(2, 1)),
+               static_cast<T>(m(2, 2)),
+               Zero<T>,
+               Zero<T>,
+               Zero<T>,
+               Zero<T>,
+               One<T>} {}
 
 template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T>::Matrix(const Matrix<2, 2, U> &m)
-    : elements{m(0),    m(1),    Zero<T>, Zero<T>, m(3),    m(4),
-               Zero<T>, Zero<T>, m(6),    m(7),    Zero<T>, Zero<T>,
-               Zero<T>, Zero<T>, Zero<T>, One<T>} {}
+    : elements{static_cast<T>(m(0, 0)),
+               static_cast<T>(m(0, 1)),
+               Zero<T>,
+               Zero<T>,
+               static_cast<T>(m(1, 0)),
+               static_cast<T>(m(1, 1)),
+               Zero<T>,
+               Zero<T>,
+               Zero<T>,
+               Zero<T>,
+               One<T>,
+               Zero<T>,
+               Zero<T>,
+               Zero<T>,
+               Zero<T>,
+               One<T>} {}
 
 template <typename T>
 template <typename V1, typename V2, typename V3, typename V4>

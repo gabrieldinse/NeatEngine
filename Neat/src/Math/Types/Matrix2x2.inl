@@ -51,7 +51,8 @@ inline constexpr Matrix<2, 2, T>::Matrix(const Matrix<4, 4, U> &m)
 template <typename T>
 template <typename U>
 inline constexpr Matrix<2, 2, T>::Matrix(const Matrix<3, 3, U> &m)
-    : elements{m(0, 0), m(0, 1), m(1, 0), m(1, 1)} {}
+    : elements{static_cast<T>(m(0, 0)), static_cast<T>(m(0, 1)),
+               static_cast<T>(m(1, 0)), static_cast<T>(m(1, 1))} {}
 
 template <typename T>
 template <typename V1, typename V2>
