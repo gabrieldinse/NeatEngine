@@ -79,8 +79,11 @@ template <typename V1, typename V2, typename V3>
 inline constexpr Matrix<3, 3, T>::Matrix(const Vector<3, V1> &row1,
                                          const Vector<3, V2> &row2,
                                          const Vector<3, V3> &row3)
-    : elements{row1.x(), row1.y(), row1.z(), row2.x(), row2.y(),
-               row2.z(), row3.x(), row3.y(), row3.z()} {}
+    : elements{static_cast<T>(row1.x()), static_cast<T>(row1.y()),
+               static_cast<T>(row1.z()), static_cast<T>(row2.x()),
+               static_cast<T>(row2.y()), static_cast<T>(row2.z()),
+               static_cast<T>(row3.x()), static_cast<T>(row3.y()),
+               static_cast<T>(row3.z())} {}
 
 template <typename T>
 inline constexpr Matrix<3, 3, T>::Matrix(const T *data, UInt32 count) {

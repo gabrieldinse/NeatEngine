@@ -109,8 +109,14 @@ inline constexpr Matrix<4, 4, T>::Matrix(const Vector<4, V1> &row1,
                                          const Vector<4, V2> &row2,
                                          const Vector<4, V3> &row3,
                                          const Vector<4, V4> &row4)
-    : elements{row1.x(), row1.y(), row1.z(), row1.w(), row2.x(), row2.y(),
-               row2.z(), row2.w(), row3.x(), row3.y(), row3.z(), row3.w()} {}
+    : elements{static_cast<T>(row1.x()), static_cast<T>(row1.y()),
+               static_cast<T>(row1.z()), static_cast<T>(row1.w()),
+               static_cast<T>(row2.x()), static_cast<T>(row2.y()),
+               static_cast<T>(row2.z()), static_cast<T>(row2.w()),
+               static_cast<T>(row3.x()), static_cast<T>(row3.y()),
+               static_cast<T>(row3.z()), static_cast<T>(row3.w()),
+               static_cast<T>(row4.x()), static_cast<T>(row4.y()),
+               static_cast<T>(row4.z()), static_cast<T>(row4.w())} {}
 
 template <typename T>
 inline constexpr Matrix<4, 4, T>::Matrix(const T *data, UInt32 count) {

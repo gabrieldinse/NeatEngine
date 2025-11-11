@@ -58,7 +58,8 @@ template <typename T>
 template <typename V1, typename V2>
 inline constexpr Matrix<2, 2, T>::Matrix(const Vector<2, V1> &row1,
                                          const Vector<2, V2> &row2)
-    : elements{row1.x(), row1.y(), row2.x(), row2.y()} {}
+    : elements{static_cast<T>(row1.x()), static_cast<T>(row1.y()),
+               static_cast<T>(row2.x()), static_cast<T>(row2.y())} {}
 
 template <typename T>
 inline constexpr Matrix<2, 2, T>::Matrix(const T *data, UInt32 count) {
