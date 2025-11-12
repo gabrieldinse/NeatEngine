@@ -983,6 +983,376 @@ TEST_F(VectorTest, DifferentTypesConversionConstructor) {
   EXPECT_EQ(conversionVec1u3, (Vector1U{1U}));
 }
 
+TEST_F(VectorTest, DifferentSizesAndTypesConversionConstructor) {
+  Vector4F conversionVec4f{vector3i};
+  Vector4F conversionVec4f9{vector3u};
+  Vector4F conversionVec4f7{vector3i};
+  Vector4F conversionVec4f10{vector2i};
+  Vector4F conversionVec4f12{vector2u};
+  Vector4F conversionVec4f4{vector2d};
+  Vector4F conversionVec4f11{vector1d};
+  Vector4F conversionVec4f5{vector1u};
+  Vector4F conversionVec4f8{vector1i};
+  Vector4F conversionVec4f2{vector2d, 3.0, 4};
+  Vector4F conversionVec4f3{vector1u, 2U, 3.0, 4};
+  Vector4F conversionVec4f6{vector3i, 4.0f};
+
+  EXPECT_EQ(conversionVec4f, (Vector4F{1.0f, 2.0f, 3.0f, 0.0f}));
+  EXPECT_EQ(conversionVec4f2, (Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_EQ(conversionVec4f3, (Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_EQ(conversionVec4f4, (Vector4F{1.0f, 2.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(conversionVec4f5, (Vector4F{1.0f, 0.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(conversionVec4f6, (Vector4F{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_EQ(conversionVec4f9, (Vector4F{1.0f, 2.0f, 3.0f, 0.0f}));
+  EXPECT_EQ(conversionVec4f10, (Vector4F{1.0f, 2.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(conversionVec4f11, (Vector4F{1.0f, 0.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(conversionVec4f12, (Vector4F{1.0f, 2.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(conversionVec4f7, (Vector4F{1.0f, 2.0f, 3.0f, 0.0f}));
+  EXPECT_EQ(conversionVec4f8, (Vector4F{1.0f, 0.0f, 0.0f, 0.0f}));
+
+  Vector4I conversionVec4i{vector3f};
+  Vector4I conversionVec4i2{vector3d};
+  Vector4I conversionVec4i3{vector3u};
+  Vector4I conversionVec4i4{vector2f};
+  Vector4I conversionVec4i5{vector2d};
+  Vector4I conversionVec4i6{vector2u};
+  Vector4I conversionVec4i7{vector1f};
+  Vector4I conversionVec4i8{vector1d};
+  Vector4I conversionVec4i9{vector1u};
+  Vector4I conversionVec4i10{vector3f, 4U};
+  Vector4I conversionVec4i11{vector2d, 3.0, 4.0f};
+  Vector4I conversionVec4i12{vector1u, 2, 3U, 4.0};
+
+  EXPECT_EQ(conversionVec4i, (Vector4I{1, 2, 3, 0}));
+  EXPECT_EQ(conversionVec4i2, (Vector4I{1, 2, 3, 0}));
+  EXPECT_EQ(conversionVec4i3, (Vector4I{1, 2, 3, 0}));
+  EXPECT_EQ(conversionVec4i4, (Vector4I{1, 2, 0, 0}));
+  EXPECT_EQ(conversionVec4i5, (Vector4I{1, 2, 0, 0}));
+  EXPECT_EQ(conversionVec4i6, (Vector4I{1, 2, 0, 0}));
+  EXPECT_EQ(conversionVec4i7, (Vector4I{1, 0, 0, 0}));
+  EXPECT_EQ(conversionVec4i8, (Vector4I{1, 0, 0, 0}));
+  EXPECT_EQ(conversionVec4i9, (Vector4I{1, 0, 0, 0}));
+  EXPECT_EQ(conversionVec4i10, (Vector4I{1, 2, 3, 4}));
+  EXPECT_EQ(conversionVec4i11, (Vector4I{1, 2, 3, 4}));
+  EXPECT_EQ(conversionVec4i12, (Vector4I{1, 2, 3, 4}));
+
+  Vector4D conversionVec4d{vector3f};
+  Vector4D conversionVec4d2{vector3i};
+  Vector4D conversionVec4d3{vector3u};
+  Vector4D conversionVec4d4{vector2f};
+  Vector4D conversionVec4d5{vector2i};
+  Vector4D conversionVec4d6{vector2u};
+  Vector4D conversionVec4d7{vector1f};
+  Vector4D conversionVec4d8{vector1i};
+  Vector4D conversionVec4d9{vector1u};
+  Vector4D conversionVec4d10{vector3f, 4};
+  Vector4D conversionVec4d11{vector2i, 3U, 4};
+  Vector4D conversionVec4d12{vector1u, 2.0f, 3, 4U};
+
+  EXPECT_EQ(conversionVec4d, (Vector4D{1.0, 2.0, 3.0, 0.0}));
+  EXPECT_EQ(conversionVec4d2, (Vector4D{1.0, 2.0, 3.0, 0.0}));
+  EXPECT_EQ(conversionVec4d3, (Vector4D{1.0, 2.0, 3.0, 0.0}));
+  EXPECT_EQ(conversionVec4d4, (Vector4D{1.0, 2.0, 0.0, 0.0}));
+  EXPECT_EQ(conversionVec4d5, (Vector4D{1.0, 2.0, 0.0, 0.0}));
+  EXPECT_EQ(conversionVec4d6, (Vector4D{1.0, 2.0, 0.0, 0.0}));
+  EXPECT_EQ(conversionVec4d7, (Vector4D{1.0, 0.0, 0.0, 0.0}));
+  EXPECT_EQ(conversionVec4d8, (Vector4D{1.0, 0.0, 0.0, 0.0}));
+  EXPECT_EQ(conversionVec4d9, (Vector4D{1.0, 0.0, 0.0, 0.0}));
+  EXPECT_EQ(conversionVec4d10, (Vector4D{1.0, 2.0, 3.0, 4.0}));
+  EXPECT_EQ(conversionVec4d11, (Vector4D{1.0, 2.0, 3.0, 4.0}));
+  EXPECT_EQ(conversionVec4d12, (Vector4D{1.0, 2.0, 3.0, 4.0}));
+
+  Vector4U conversionVec4u{vector3f};
+  Vector4U conversionVec4u2{vector3i};
+  Vector4U conversionVec4u3{vector3d};
+  Vector4U conversionVec4u4{vector2f};
+  Vector4U conversionVec4u5{vector2i};
+  Vector4U conversionVec4u6{vector2d};
+  Vector4U conversionVec4u7{vector1f};
+  Vector4U conversionVec4u8{vector1i};
+  Vector4U conversionVec4u9{vector1d};
+  Vector4U conversionVec4u10{vector3f, 4U};
+  Vector4U conversionVec4u11{vector2i, 3, 4.0};
+  Vector4U conversionVec4u12{vector1d, 2.0, 3, 4.0f};
+
+  EXPECT_EQ(conversionVec4u, (Vector4U{1U, 2U, 3U, 0U}));
+  EXPECT_EQ(conversionVec4u2, (Vector4U{1U, 2U, 3U, 0U}));
+  EXPECT_EQ(conversionVec4u3, (Vector4U{1U, 2U, 3U, 0U}));
+  EXPECT_EQ(conversionVec4u4, (Vector4U{1U, 2U, 0U, 0U}));
+  EXPECT_EQ(conversionVec4u5, (Vector4U{1U, 2U, 0U, 0U}));
+  EXPECT_EQ(conversionVec4u6, (Vector4U{1U, 2U, 0U, 0U}));
+  EXPECT_EQ(conversionVec4u7, (Vector4U{1U, 0U, 0U, 0U}));
+  EXPECT_EQ(conversionVec4u8, (Vector4U{1U, 0U, 0U, 0U}));
+  EXPECT_EQ(conversionVec4u9, (Vector4U{1U, 0U, 0U, 0U}));
+  EXPECT_EQ(conversionVec4u10, (Vector4U{1U, 2U, 3U, 4U}));
+  EXPECT_EQ(conversionVec4u11, (Vector4U{1U, 2U, 3U, 4U}));
+  EXPECT_EQ(conversionVec4u12, (Vector4U{1U, 2U, 3U, 4U}));
+
+  Vector3F conversionVec3f{vector2i};
+  Vector3F conversionVec3f2{vector2u};
+  Vector3F conversionVec3f3{vector2d};
+  Vector3F conversionVec3f4{vector1i};
+  Vector3F conversionVec3f5{vector1u};
+  Vector3F conversionVec3f6{vector1d};
+  Vector3F conversionVec3f7{vector4i};
+  Vector3F conversionVec3f8{vector4u};
+  Vector3F conversionVec3f9{vector4d};
+  Vector3F conversionVec3f10{vector2i, 3.0f};
+  Vector3F conversionVec3f11{vector1u, 2.0f, 3.0f};
+
+  EXPECT_EQ(conversionVec3f, (Vector3F{1.0f, 2.0f, 0.0f}));
+  EXPECT_EQ(conversionVec3f2, (Vector3F{1.0f, 2.0f, 0.0f}));
+  EXPECT_EQ(conversionVec3f3, (Vector3F{1.0f, 2.0f, 0.0f}));
+  EXPECT_EQ(conversionVec3f4, (Vector3F{1.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(conversionVec3f5, (Vector3F{1.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(conversionVec3f6, (Vector3F{1.0f, 0.0f, 0.0f}));
+  EXPECT_EQ(conversionVec3f7, (Vector3F{1.0f, 2.0f, 3.0f}));
+  EXPECT_EQ(conversionVec3f8, (Vector3F{1.0f, 2.0f, 3.0f}));
+  EXPECT_EQ(conversionVec3f9, (Vector3F{1.0f, 2.0f, 3.0f}));
+  EXPECT_EQ(conversionVec3f10, (Vector3F{1.0f, 2.0f, 3.0f}));
+  EXPECT_EQ(conversionVec3f11, (Vector3F{1.0f, 2.0f, 3.0f}));
+
+  Vector3D conversionVec3d{vector2i};
+  Vector3D conversionVec3d2{vector2u};
+  Vector3D conversionVec3d3{vector2f};
+  Vector3D conversionVec3d4{vector1i};
+  Vector3D conversionVec3d5{vector1u};
+  Vector3D conversionVec3d6{vector1f};
+  Vector3D conversionVec3d7{vector4i};
+  Vector3D conversionVec3d8{vector4u};
+  Vector3D conversionVec3d9{vector4f};
+  Vector3D conversionVec3d10{vector2i, 3.0f};
+  Vector3D conversionVec3d11{vector1u, 2, 3U};
+
+  EXPECT_EQ(conversionVec3d, (Vector3D{1.0, 2.0, 0.0}));
+  EXPECT_EQ(conversionVec3d2, (Vector3D{1.0, 2.0, 0.0}));
+  EXPECT_EQ(conversionVec3d3, (Vector3D{1.0, 2.0, 0.0}));
+  EXPECT_EQ(conversionVec3d4, (Vector3D{1.0, 0.0, 0.0}));
+  EXPECT_EQ(conversionVec3d5, (Vector3D{1.0, 0.0, 0.0}));
+  EXPECT_EQ(conversionVec3d6, (Vector3D{1.0, 0.0, 0.0}));
+  EXPECT_EQ(conversionVec3d7, (Vector3D{1.0, 2.0, 3.0}));
+  EXPECT_EQ(conversionVec3d8, (Vector3D{1.0, 2.0, 3.0}));
+  EXPECT_EQ(conversionVec3d9, (Vector3D{1.0, 2.0, 3.0}));
+  EXPECT_EQ(conversionVec3d10, (Vector3D{1.0, 2.0, 3.0}));
+  EXPECT_EQ(conversionVec3d11, (Vector3D{1.0, 2.0, 3.0}));
+
+  Vector3U conversionVec3u{vector2i};
+  Vector3U conversionVec3u2{vector2f};
+  Vector3U conversionVec3u3{vector2d};
+  Vector3U conversionVec3u4{vector1i};
+  Vector3U conversionVec3u5{vector1f};
+  Vector3U conversionVec3u6{vector1d};
+  Vector3U conversionVec3u7{vector4i};
+  Vector3U conversionVec3u8{vector4f};
+  Vector3U conversionVec3u9{vector4d};
+  Vector3U conversionVec3u10{vector2i, 3.0};
+  Vector3U conversionVec3u11{vector1f, 2.0f, 3.0};
+
+  EXPECT_EQ(conversionVec3u, (Vector3U{1U, 2U, 0U}));
+  EXPECT_EQ(conversionVec3u2, (Vector3U{1U, 2U, 0U}));
+  EXPECT_EQ(conversionVec3u3, (Vector3U{1U, 2U, 0U}));
+  EXPECT_EQ(conversionVec3u4, (Vector3U{1U, 0U, 0U}));
+  EXPECT_EQ(conversionVec3u5, (Vector3U{1U, 0U, 0U}));
+  EXPECT_EQ(conversionVec3u6, (Vector3U{1U, 0U, 0U}));
+  EXPECT_EQ(conversionVec3u7, (Vector3U{1U, 2U, 3U}));
+  EXPECT_EQ(conversionVec3u8, (Vector3U{1U, 2U, 3U}));
+  EXPECT_EQ(conversionVec3u9, (Vector3U{1U, 2U, 3U}));
+  EXPECT_EQ(conversionVec3u10, (Vector3U{1U, 2U, 3U}));
+  EXPECT_EQ(conversionVec3u11, (Vector3U{1U, 2U, 3U}));
+
+  Vector3I conversionVec3i{vector2f};
+  Vector3I conversionVec3i2{vector2u};
+  Vector3I conversionVec3i3{vector2d};
+  Vector3I conversionVec3i4{vector1f};
+  Vector3I conversionVec3i5{vector1u};
+  Vector3I conversionVec3i6{vector1d};
+  Vector3I conversionVec3i7{vector4f};
+  Vector3I conversionVec3i8{vector4u};
+  Vector3I conversionVec3i9{vector4d};
+  Vector3I conversionVec3i10{vector2f, 3.0f};
+  Vector3I conversionVec3i11{vector1u, 2, 3.0};
+
+  EXPECT_EQ(conversionVec3i, (Vector3I{1, 2, 0}));
+  EXPECT_EQ(conversionVec3i2, (Vector3I{1, 2, 0}));
+  EXPECT_EQ(conversionVec3i3, (Vector3I{1, 2, 0}));
+  EXPECT_EQ(conversionVec3i4, (Vector3I{1, 0, 0}));
+  EXPECT_EQ(conversionVec3i5, (Vector3I{1, 0, 0}));
+  EXPECT_EQ(conversionVec3i6, (Vector3I{1, 0, 0}));
+  EXPECT_EQ(conversionVec3i7, (Vector3I{1, 2, 3}));
+  EXPECT_EQ(conversionVec3i8, (Vector3I{1, 2, 3}));
+  EXPECT_EQ(conversionVec3i9, (Vector3I{1, 2, 3}));
+  EXPECT_EQ(conversionVec3i10, (Vector3I{1, 2, 3}));
+  EXPECT_EQ(conversionVec3i11, (Vector3I{1, 2, 3}));
+
+  Vector2F conversionVec2f{vector1i};
+  Vector2F conversionVec2f2{vector1u};
+  Vector2F conversionVec2f3{vector1d};
+  Vector2F conversionVec2f4{vector4i};
+  Vector2F conversionVec2f5{vector4u};
+  Vector2F conversionVec2f6{vector4d};
+  Vector2F conversionVec2f7{vector3i};
+  Vector2F conversionVec2f8{vector3u};
+  Vector2F conversionVec2f9{vector3d};
+  Vector2F conversionVec2f10{vector1i, 2.0f};
+
+  EXPECT_EQ(conversionVec2f, (Vector2F{1.0f, 0.0f}));
+  EXPECT_EQ(conversionVec2f2, (Vector2F{1.0f, 0.0f}));
+  EXPECT_EQ(conversionVec2f3, (Vector2F{1.0f, 0.0f}));
+  EXPECT_EQ(conversionVec2f4, (Vector2F{1.0f, 2.0f}));
+  EXPECT_EQ(conversionVec2f5, (Vector2F{1.0f, 2.0f}));
+  EXPECT_EQ(conversionVec2f6, (Vector2F{1.0f, 2.0f}));
+  EXPECT_EQ(conversionVec2f7, (Vector2F{1.0f, 2.0f}));
+  EXPECT_EQ(conversionVec2f8, (Vector2F{1.0f, 2.0f}));
+  EXPECT_EQ(conversionVec2f9, (Vector2F{1.0f, 2.0f}));
+  EXPECT_EQ(conversionVec2f10, (Vector2F{1.0f, 2.0f}));
+
+  Vector2I conversionVec2i{vector1f};
+  Vector2I conversionVec2i2{vector1u};
+  Vector2I conversionVec2i3{vector1d};
+  Vector2I conversionVec2i4{vector4f};
+  Vector2I conversionVec2i5{vector4u};
+  Vector2I conversionVec2i6{vector4d};
+  Vector2I conversionVec2i7{vector3f};
+  Vector2I conversionVec2i8{vector3u};
+  Vector2I conversionVec2i9{vector3d};
+  Vector2I conversionVec2i10{vector1f, 2};
+
+  EXPECT_EQ(conversionVec2i, (Vector2I{1, 0}));
+  EXPECT_EQ(conversionVec2i2, (Vector2I{1, 0}));
+  EXPECT_EQ(conversionVec2i3, (Vector2I{1, 0}));
+  EXPECT_EQ(conversionVec2i4, (Vector2I{1, 2}));
+  EXPECT_EQ(conversionVec2i5, (Vector2I{1, 2}));
+  EXPECT_EQ(conversionVec2i6, (Vector2I{1, 2}));
+  EXPECT_EQ(conversionVec2i7, (Vector2I{1, 2}));
+  EXPECT_EQ(conversionVec2i8, (Vector2I{1, 2}));
+  EXPECT_EQ(conversionVec2i9, (Vector2I{1, 2}));
+  EXPECT_EQ(conversionVec2i10, (Vector2I{1, 2}));
+
+  Vector2D conversionVec2d{vector1f};
+  Vector2D conversionVec2d2{vector1i};
+  Vector2D conversionVec2d3{vector1u};
+  Vector2D conversionVec2d4{vector4f};
+  Vector2D conversionVec2d5{vector4i};
+  Vector2D conversionVec2d6{vector4u};
+  Vector2D conversionVec2d7{vector3f};
+  Vector2D conversionVec2d8{vector3i};
+  Vector2D conversionVec2d9{vector3u};
+  Vector2D conversionVec2d10{vector1f, 2.0};
+
+  EXPECT_EQ(conversionVec2d, (Vector2D{1.0, 0.0}));
+  EXPECT_EQ(conversionVec2d2, (Vector2D{1.0, 0.0}));
+  EXPECT_EQ(conversionVec2d3, (Vector2D{1.0, 0.0}));
+  EXPECT_EQ(conversionVec2d4, (Vector2D{1.0, 2.0}));
+  EXPECT_EQ(conversionVec2d5, (Vector2D{1.0, 2.0}));
+  EXPECT_EQ(conversionVec2d6, (Vector2D{1.0, 2.0}));
+  EXPECT_EQ(conversionVec2d7, (Vector2D{1.0, 2.0}));
+  EXPECT_EQ(conversionVec2d8, (Vector2D{1.0, 2.0}));
+  EXPECT_EQ(conversionVec2d9, (Vector2D{1.0, 2.0}));
+  EXPECT_EQ(conversionVec2d10, (Vector2D{1.0, 2.0}));
+
+  Vector2U conversionVec2u{vector1f};
+  Vector2U conversionVec2u2{vector1i};
+  Vector2U conversionVec2u3{vector1d};
+  Vector2U conversionVec2u4{vector4f};
+  Vector2U conversionVec2u5{vector4i};
+  Vector2U conversionVec2u6{vector4d};
+  Vector2U conversionVec2u7{vector3f};
+  Vector2U conversionVec2u8{vector3i};
+  Vector2U conversionVec2u9{vector3d};
+  Vector2U conversionVec2u10{vector1f, 2.0f};
+
+  EXPECT_EQ(conversionVec2u, (Vector2U{1U, 0U}));
+  EXPECT_EQ(conversionVec2u2, (Vector2U{1U, 0U}));
+  EXPECT_EQ(conversionVec2u3, (Vector2U{1U, 0U}));
+  EXPECT_EQ(conversionVec2u4, (Vector2U{1U, 2U}));
+  EXPECT_EQ(conversionVec2u5, (Vector2U{1U, 2U}));
+  EXPECT_EQ(conversionVec2u6, (Vector2U{1U, 2U}));
+  EXPECT_EQ(conversionVec2u7, (Vector2U{1U, 2U}));
+  EXPECT_EQ(conversionVec2u8, (Vector2U{1U, 2U}));
+  EXPECT_EQ(conversionVec2u9, (Vector2U{1U, 2U}));
+  EXPECT_EQ(conversionVec2u10, (Vector2U{1U, 2U}));
+
+  Vector1F conversionVec1f{vector4i};
+  Vector1F conversionVec1f2{vector4u};
+  Vector1F conversionVec1f3{vector4d};
+  Vector1F conversionVec1f4{vector3i};
+  Vector1F conversionVec1f5{vector3u};
+  Vector1F conversionVec1f6{vector3d};
+  Vector1F conversionVec1f7{vector2i};
+  Vector1F conversionVec1f8{vector2u};
+  Vector1F conversionVec1f9{vector2d};
+
+  EXPECT_EQ(conversionVec1f, (Vector1F{1.0f}));
+  EXPECT_EQ(conversionVec1f2, (Vector1F{1.0f}));
+  EXPECT_EQ(conversionVec1f3, (Vector1F{1.0f}));
+  EXPECT_EQ(conversionVec1f4, (Vector1F{1.0f}));
+  EXPECT_EQ(conversionVec1f5, (Vector1F{1.0f}));
+  EXPECT_EQ(conversionVec1f6, (Vector1F{1.0f}));
+  EXPECT_EQ(conversionVec1f7, (Vector1F{1.0f}));
+  EXPECT_EQ(conversionVec1f8, (Vector1F{1.0f}));
+  EXPECT_EQ(conversionVec1f9, (Vector1F{1.0f}));
+
+  Vector1I conversionVec1i{vector4f};
+  Vector1I conversionVec1i2{vector4u};
+  Vector1I conversionVec1i3{vector4d};
+  Vector1I conversionVec1i4{vector3f};
+  Vector1I conversionVec1i5{vector3u};
+  Vector1I conversionVec1i6{vector3d};
+  Vector1I conversionVec1i7{vector2f};
+  Vector1I conversionVec1i8{vector2u};
+  Vector1I conversionVec1i9{vector2d};
+
+  EXPECT_EQ(conversionVec1i, (Vector1I{1}));
+  EXPECT_EQ(conversionVec1i2, (Vector1I{1}));
+  EXPECT_EQ(conversionVec1i3, (Vector1I{1}));
+  EXPECT_EQ(conversionVec1i4, (Vector1I{1}));
+  EXPECT_EQ(conversionVec1i5, (Vector1I{1}));
+  EXPECT_EQ(conversionVec1i6, (Vector1I{1}));
+  EXPECT_EQ(conversionVec1i7, (Vector1I{1}));
+  EXPECT_EQ(conversionVec1i8, (Vector1I{1}));
+  EXPECT_EQ(conversionVec1i9, (Vector1I{1}));
+
+  Vector1D conversionVec1d{vector4f};
+  Vector1D conversionVec1d2{vector4i};
+  Vector1D conversionVec1d3{vector4u};
+  Vector1D conversionVec1d4{vector3f};
+  Vector1D conversionVec1d5{vector3i};
+  Vector1D conversionVec1d6{vector3u};
+  Vector1D conversionVec1d7{vector2f};
+  Vector1D conversionVec1d8{vector2i};
+  Vector1D conversionVec1d9{vector2u};
+
+  EXPECT_EQ(conversionVec1d, (Vector1D{1.0}));
+  EXPECT_EQ(conversionVec1d2, (Vector1D{1.0}));
+  EXPECT_EQ(conversionVec1d3, (Vector1D{1.0}));
+  EXPECT_EQ(conversionVec1d4, (Vector1D{1.0}));
+  EXPECT_EQ(conversionVec1d5, (Vector1D{1.0}));
+  EXPECT_EQ(conversionVec1d6, (Vector1D{1.0}));
+  EXPECT_EQ(conversionVec1d7, (Vector1D{1.0}));
+  EXPECT_EQ(conversionVec1d8, (Vector1D{1.0}));
+  EXPECT_EQ(conversionVec1d9, (Vector1D{1.0}));
+
+  Vector1U conversionVec1u{vector4f};
+  Vector1U conversionVec1u2{vector4i};
+  Vector1U conversionVec1u3{vector4d};
+  Vector1U conversionVec1u4{vector3f};
+  Vector1U conversionVec1u5{vector3i};
+  Vector1U conversionVec1u6{vector3d};
+  Vector1U conversionVec1u7{vector2f};
+  Vector1U conversionVec1u8{vector2i};
+  Vector1U conversionVec1u9{vector2d};
+
+  EXPECT_EQ(conversionVec1u, (Vector1U{1U}));
+  EXPECT_EQ(conversionVec1u2, (Vector1U{1U}));
+  EXPECT_EQ(conversionVec1u3, (Vector1U{1U}));
+  EXPECT_EQ(conversionVec1u4, (Vector1U{1U}));
+  EXPECT_EQ(conversionVec1u5, (Vector1U{1U}));
+  EXPECT_EQ(conversionVec1u6, (Vector1U{1U}));
+  EXPECT_EQ(conversionVec1u7, (Vector1U{1U}));
+  EXPECT_EQ(conversionVec1u8, (Vector1U{1U}));
+  EXPECT_EQ(conversionVec1u9, (Vector1U{1U}));
+}
+
 TEST_F(VectorTest, MultipleScalarsConversionConstructor) {
   Vector4F conversionVec4f{1, 2.0, 3U, 4L};
   Vector3F conversionVec3f{1, 2.0, 3U};
