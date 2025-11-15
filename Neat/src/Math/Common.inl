@@ -39,7 +39,12 @@ T fract(T value) {
 
 template <typename T>
 T mod(T a, T b) {
-  return a - b * floor(a / b);
+  if constexpr (std::is_integral_v<T>) {
+    T result = a % b;
+    return (result < 0) ? result + std::abs(b) : result;
+  }
+
+  return std::fmod(a, b);
 }
 
 template <typename T>
@@ -132,10 +137,10 @@ Vector<N, T> refract(const Vector<N, T> &v, const Vector<N, T> &normal,
   T const d = dot(normal, v);
   T const k = One<T> - eta * eta * (One<T> - d * d);
 
-  Vector<N, T> const result =
-      (k >= Zero<T>) ? eta * v - (eta * d + static_cast<T>(sqrt(k))) * normal
-                     : Vector<N, T>();
+  if (k < Zero<T>) {
+    return Vector<N, T>(Zero<T>);
+  }
 
-  return result;
+  return eta * v - (eta * d + static_cast<T>(sqrt(k))) * normal;
 }
 }  // namespace Neat

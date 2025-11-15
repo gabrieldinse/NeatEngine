@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <type_traits>
 
 #include <ECS/ECS.hpp>
 #include <Math/Math.hpp>
@@ -177,4 +178,18 @@ class TestingLayer : public Layer {
   static inline LayerID layerIDCounter = 0;
 };
 
+template <typename T>
+void expectNearVectorValues(const T &vecA, const T &vecB) {
+  if constexpr (std::is_floating_point_v<typename T::ValueType>) {
+    for (UInt32 i = 0; i < T::N; ++i) {
+      if constexpr (std::is_same_v<typename T::ValueType, float>) {
+        EXPECT_NEAR(vecA.elements[i], vecB.elements[i], 1e-4f);
+      } else {
+        EXPECT_NEAR(vecA.elements[i], vecB.elements[i], 1e-8f);
+      }
+    }
+  } else {
+    EXPECT_EQ(vecA, vecB);
+  }
+}
 }  // namespace Neat
