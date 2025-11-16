@@ -8,7 +8,15 @@ add_subdirectory(${VENDOR_DIR}/GoogleTest ${CMAKE_BINARY_DIR}/GoogleTest-build)
 file(
     GLOB_RECURSE
     NEAT_TESTS_SOURCES
-    src/*.cpp
+
+    src/**.cpp
+
+    # Unit tests
+    src/Unit/Core/**.cpp
+    src/Unit/ECS/**.cpp
+    src/Unit/EventDispatching/**.cpp
+    src/Unit/Math/**.cpp
+    src/Unit/Utils/**.cpp
 )
 
 # Build the test executable

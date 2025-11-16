@@ -4,14 +4,6 @@
 #include "Utils/TypeID.hpp"
 
 namespace Neat {
-struct MyStruct {
-  void foo() {}
-};
-struct MyOtherStruct {
-  int method(int) { return 0x123; }
-};
-struct ThirdStruct : public MyStruct {};
-
 TEST(TypeIdTest, GetTypeId) {
   auto id1 = getTypeID<MyStruct>();
   auto id2 = getTypeID<MyOtherStruct>();

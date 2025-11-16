@@ -263,7 +263,7 @@ TEST(MathCommonTest, VectorRefract) {
   Vector4D normalD{0.0, 1.0, 0.0, 0.0};
   double etaD = 1.0 / 1.5;
   Vector4D resultD = refract(incidentD, normalD, etaD);
-  Vector4D expected4{0.35634832254989918, -0.91766200000000000,
+  Vector4D expected4{0.35634832254989918, -0.91720763258372484,
                      0.17817416127494959, 0.0};
 
   expectNearVectorValues(resultD, expected4);

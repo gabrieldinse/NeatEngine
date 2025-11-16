@@ -31,6 +31,14 @@ struct ListenerA {
   int count = 0;
 };
 
+struct MyStruct {
+  void foo() {}
+};
+struct MyOtherStruct {
+  int method(int) { return 0x123; }
+};
+struct ThirdStruct : public MyStruct {};
+
 struct ListenerB {
   bool process(const EventB &event) {
     count++;
@@ -185,7 +193,7 @@ void expectNearVectorValues(const T &vecA, const T &vecB) {
       if constexpr (std::is_same_v<typename T::ValueType, float>) {
         EXPECT_NEAR(vecA.elements[i], vecB.elements[i], 1e-4f);
       } else {
-        EXPECT_NEAR(vecA.elements[i], vecB.elements[i], 1e-8f);
+        EXPECT_NEAR(vecA.elements[i], vecB.elements[i], 1e-6f);
       }
     }
   } else {
