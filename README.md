@@ -80,3 +80,13 @@ By default, `build.sh` will build all targets in Debug mode. To build an specifi
 This is the simplest possible implementation of a Flappy Bird-like game, meant to test the 2D rendering and check the ECS/events usage experience.
 
 ![Flappy Spaceship](Resources/Images/FlappySpaceship.gif)
+
+## Next Features
+- Vulkan Rendering (probably replace OpenGL).
+- Add missing basic rendering features: draw circles, rectangles, lines, text.
+- Audio Engine (OpenAL).
+  - Integrate with ECS.
+- Particle System.
+- Renderer on a separate thread (multithreading support initiative).
+  - Rendering commands queue.
+- Lua Scripting.
