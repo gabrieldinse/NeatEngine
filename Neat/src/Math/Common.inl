@@ -141,6 +141,6 @@ Vector<N, T> refract(const Vector<N, T> &v, const Vector<N, T> &normal,
     return Vector<N, T>(Zero<T>);
   }
 
-  return eta * v - static_cast<T>(eta * d + sqrt(k)) * normal;
+  return eta * v - (eta * d + static_cast<T>(sqrt(k))) * normal;
 }
 }  // namespace Neat
