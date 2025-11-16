@@ -1566,19 +1566,22 @@ TEST_F(MatrixTest, FromVectorsConstructor) {
 
 TEST_F(MatrixTest, FromDataConstructor) {
   std::array<float, 16> data4f = {1.0f,  2.0f,  3.0f,  4.0f,  5.0f,  6.0f,
-                                 7.0f,  8.0f,  9.0f,  10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f};
+                                  7.0f,  8.0f,  9.0f,  10.0f, 11.0f, 12.0f,
+                                  13.0f, 14.0f, 15.0f, 16.0f};
   EXPECT_EQ(Matrix4F(data4f.data(), data4f.size()), matrix4f);
-  std::array<double, 16> data4d = {1.0, 2.0,  3.0,   4.0,   5.0,   6.0,   7.0,   8.0,
-                                  9.0, 10.0, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f};
+  std::array<double, 16> data4d = {1.0,   2.0,   3.0,   4.0,  5.0,   6.0,
+                                   7.0,   8.0,   9.0,   10.0, 11.0f, 12.0f,
+                                   13.0f, 14.0f, 15.0f, 16.0f};
   EXPECT_EQ(Matrix4D(data4d.data(), data4d.size()), matrix4d);
   std::array<int, 16> data4i = {1, 2,  3,  4,  5,  6,  7,  8,
-                               9, 10, 11, 12, 13, 14, 15, 16};
+                                9, 10, 11, 12, 13, 14, 15, 16};
   EXPECT_EQ(Matrix4I(data4i.data(), data4i.size()), matrix4i);
   std::array<unsigned int, 16> data4u = {1, 2,  3,  4,  5,  6,  7,  8,
-                                        9, 10, 11, 12, 13, 14, 15, 16};
+                                         9, 10, 11, 12, 13, 14, 15, 16};
   EXPECT_EQ(Matrix4U(data4u.data(), data4u.size()), matrix4u);
 
-  std::array<float, 9> data3f = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f};
+  std::array<float, 9> data3f = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f,
+                                 6.0f, 7.0f, 8.0f, 9.0f};
   EXPECT_EQ(Matrix3F(data3f.data(), data3f.size()), matrix3f);
   std::array<double, 9> data3d = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
   EXPECT_EQ(Matrix3D(data3d.data(), data3d.size()), matrix3d);
@@ -1610,4 +1613,70 @@ TEST_F(MatrixTest, FromDataConstructor) {
   EXPECT_EQ(Matrix2I(data2i.data(), data2i.size() + 5), matrix2i);
   EXPECT_EQ(Matrix2U(data2u.data(), data2u.size() + 5), matrix2u);
 }
+
+TEST_F(MatrixTest, NonMemberPlusOperator) {
+  Matrix4F expected4f{2.0f,  4.0f,  6.0f,  8.0f,  10.0f, 12.0f, 14.0f, 16.0f,
+                      18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f, 32.0f};
+  Matrix4D expected4d{2.0,  4.0,  6.0,  8.0,  10.0, 12.0, 14.0, 16.0,
+                      18.0, 20.0, 22.0, 24.0, 26.0, 28.0, 30.0, 32.0};
+  Matrix4U expected4u{2,  4,  6,  8,  10, 12, 14, 16,
+                      18, 20, 22, 24, 26, 28, 30, 32};
+  Matrix4I expected4i{2,  4,  6,  8,  10, 12, 14, 16,
+                      18, 20, 22, 24, 26, 28, 30, 32};
+  EXPECT_EQ(matrix4f + matrix4f, expected4f);
+  EXPECT_EQ(matrix4d + matrix4d, expected4d);
+  EXPECT_EQ(matrix4u + matrix4u, expected4u);
+  EXPECT_EQ(matrix4i + matrix4i, expected4i);
+
+  Matrix3F expected3f{2.0f,  4.0f,  6.0f,  8.0f, 10.0f,
+                      12.0f, 14.0f, 16.0f, 18.0f};
+  Matrix3D expected3d{2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0};
+  Matrix3U expected3u{2, 4, 6, 8, 10, 12, 14, 16, 18};
+  Matrix3I expected3i{2, 4, 6, 8, 10, 12, 14, 16, 18};
+  EXPECT_EQ(matrix3f + matrix3f, expected3f);
+  EXPECT_EQ(matrix3d + matrix3d, expected3d);
+  EXPECT_EQ(matrix3u + matrix3u, expected3u);
+  EXPECT_EQ(matrix3i + matrix3i, expected3i);
+
+  Matrix2F expected2f{2.0f, 4.0f, 6.0f, 8.0f};
+  Matrix2D expected2d{2.0, 4.0, 6.0, 8.0};
+  Matrix2U expected2u{2, 4, 6, 8};
+  Matrix2I expected2i{2, 4, 6, 8};
+  EXPECT_EQ(matrix2f + matrix2f, expected2f);
+  EXPECT_EQ(matrix2d + matrix2d, expected2d);
+  EXPECT_EQ(matrix2u + matrix2u, expected2u);
+  EXPECT_EQ(matrix2i + matrix2i, expected2i);
+}
+
+TEST_F(MatrixTest, NonMemberMinusOperator) {
+  Matrix4F expected4f{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                      0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  Matrix4D expected4d{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  Matrix4U expected4u{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  Matrix4I expected4i{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  EXPECT_EQ(matrix4f - matrix4f, expected4f);
+  EXPECT_EQ(matrix4d - matrix4d, expected4d);
+  EXPECT_EQ(matrix4u - matrix4u, expected4u);
+  EXPECT_EQ(matrix4i - matrix4i, expected4i);
+
+  Matrix3F expected3f{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  Matrix3D expected3d{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  Matrix3U expected3u{0, 0, 0, 0, 0, 0, 0, 0, 0};
+  Matrix3I expected3i{0, 0, 0, 0, 0, 0, 0, 0, 0};
+  EXPECT_EQ(matrix3f - matrix3f, expected3f);
+  EXPECT_EQ(matrix3d - matrix3d, expected3d);
+  EXPECT_EQ(matrix3u - matrix3u, expected3u);
+  EXPECT_EQ(matrix3i - matrix3i, expected3i);
+
+  Matrix2F expected2f{0.0f, 0.0f, 0.0f, 0.0f};
+  Matrix2D expected2d{0.0, 0.0, 0.0, 0.0};
+  Matrix2U expected2u{0, 0, 0, 0};
+  Matrix2I expected2i{0, 0, 0, 0};
+  EXPECT_EQ(matrix2f - matrix2f, expected2f);
+  EXPECT_EQ(matrix2d - matrix2d, expected2d);
+  EXPECT_EQ(matrix2u - matrix2u, expected2u);
+  EXPECT_EQ(matrix2i - matrix2i, expected2i);
+}
+
 }  // namespace Neat

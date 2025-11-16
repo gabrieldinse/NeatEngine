@@ -11,6 +11,16 @@ Neat Engine is a in-progress, for learning puposes, game engine.
 
 Currently, it only supports OpenGL. Other Graphics APIs, like Vulkan, should be added in the future.
 
+## Table of Contents
+- [Prerequisites](#prerequisites)
+  - [Ubuntu](#ubuntu)
+  - [Windows](#windows)
+- [Building Neat](#building-neat)
+  - [Linux](#linux)
+- [Examples](#examples)
+  - [Flappy Spaceship](#flappy-spaceship)
+- [Roadmap](#roadmap)
+
 ## Prerequisites
 
 ### Ubuntu
@@ -81,7 +91,7 @@ This is the simplest possible implementation of a Flappy Bird-like game, meant t
 
 ![Flappy Spaceship](Resources/Images/FlappySpaceship.gif)
 
-## Next Features
+## Roadmap
 - Vulkan Rendering (probably replace OpenGL).
 - Add missing basic rendering features: draw circles, rectangles, lines, text.
 - Audio Engine (OpenAL).
