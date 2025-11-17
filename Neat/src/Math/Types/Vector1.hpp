@@ -100,6 +100,8 @@ using Vector1I = Vector<1, Int32>;
 using Vector1UI = Vector<1, UInt32>;
 using Vector1B = Vector<1, bool>;
 using Vector1D = Vector<1, double>;
+using Vector1L = Vector<1, Int64>;
+using Vector1UL = Vector<1, UInt64>;
 using Vector1U = Vector1UI;
 
 // Nom member operators

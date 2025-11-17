@@ -106,6 +106,8 @@ using Matrix3I = Matrix<3, 3, Int32>;
 using Matrix3U = Matrix<3, 3, UInt32>;
 using Matrix3UI = Matrix<3, 3, UInt32>;
 using Matrix3D = Matrix<3, 3, double>;
+using Matrix3L = Matrix<3, 3, Int64>;
+using Matrix3UL = Matrix<3, 3, UInt64>;
 using Matrix3B = Matrix<3, 3, bool>;
 
 // Nom member operators

@@ -89,17 +89,17 @@ inline constexpr Matrix<2, 2, T> operator-(const Matrix<2, 2, T> &ma,
 template <typename T>
 inline constexpr Matrix<2, 2, T> operator*(const Matrix<2, 2, T> &ma,
                                            const Matrix<2, 2, T> &mb) {
-  return Matrix<2, 2, T>(ma(0, 0) * mb(0, 0) + ma(0, 1) * mb(1, 0),
+  return Matrix<2, 2, T>{ma(0, 0) * mb(0, 0) + ma(0, 1) * mb(1, 0),
                          ma(0, 0) * mb(0, 1) + ma(0, 1) * mb(1, 1),
                          ma(1, 0) * mb(0, 0) + ma(1, 1) * mb(1, 0),
-                         ma(1, 0) * mb(0, 1) + ma(1, 1) * mb(1, 1));
+                         ma(1, 0) * mb(0, 1) + ma(1, 1) * mb(1, 1)};
 }
 
 template <typename T>
 inline constexpr Matrix<2, 2, T> operator*(const T &scalar,
                                            const Matrix<2, 2, T> &m) {
-  return Matrix<2, 2, T>(scalar * m(0), scalar * m(1), scalar * m(2),
-                         scalar * m(3));
+  return Matrix<2, 2, T>{scalar * m(0), scalar * m(1), scalar * m(2),
+                         scalar * m(3)};
 }
 
 template <typename T>

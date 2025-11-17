@@ -1679,4 +1679,111 @@ TEST_F(MatrixTest, NonMemberMinusOperator) {
   EXPECT_EQ(matrix2i - matrix2i, expected2i);
 }
 
+TEST_F(MatrixTest, NonMemberMultiplyOperator) {
+  Matrix4F expected4f{90.0f,  100.0f, 110.0f, 120.0f, 202.0f, 228.0f,
+                      254.0f, 280.0f, 314.0f, 356.0f, 398.0f, 440.0f,
+                      426.0f, 484.0f, 542.0f, 600.0f};
+  Matrix4D expected4d{90.0,  100.0, 110.0, 120.0, 202.0, 228.0, 254.0, 280.0,
+                      314.0, 356.0, 398.0, 440.0, 426.0, 484.0, 542.0, 600.0};
+  Matrix4I expected4i{90,  100, 110, 120, 202, 228, 254, 280,
+                      314, 356, 398, 440, 426, 484, 542, 600};
+  Matrix4U expected4u{90,  100, 110, 120, 202, 228, 254, 280,
+                      314, 356, 398, 440, 426, 484, 542, 600};
+
+  EXPECT_EQ(matrix4f * matrix4f, expected4f);
+  EXPECT_EQ(matrix4d * matrix4d, expected4d);
+  EXPECT_EQ(matrix4u * matrix4u, expected4u);
+  EXPECT_EQ(matrix4i * matrix4i, expected4i);
+
+  Matrix3F expected3f{30.0f, 36.0f,  42.0f,  66.0f, 81.0f,
+                      96.0f, 102.0f, 126.0f, 150.0f};
+  Matrix3D expected3d{30.0, 36.0, 42.0, 66.0, 81.0, 96.0, 102.0, 126.0, 150.0};
+  Matrix3U expected3u{30, 36, 42, 66, 81, 96, 102, 126, 150};
+  Matrix3I expected3i{30, 36, 42, 66, 81, 96, 102, 126, 150};
+  EXPECT_EQ(matrix3f * matrix3f, expected3f);
+  EXPECT_EQ(matrix3d * matrix3d, expected3d);
+  EXPECT_EQ(matrix3u * matrix3u, expected3u);
+  EXPECT_EQ(matrix3i * matrix3i, expected3i);
+
+  Matrix2F expected2f{7.0f, 10.0f, 15.0f, 22.0f};
+  Matrix2D expected2d{7.0, 10.0, 15.0, 22.0};
+  Matrix2U expected2u{7, 10, 15, 22};
+  Matrix2I expected2i{7, 10, 15, 22};
+  EXPECT_EQ(matrix2f * matrix2f, expected2f);
+  EXPECT_EQ(matrix2d * matrix2d, expected2d);
+  EXPECT_EQ(matrix2u * matrix2u, expected2u);
+  EXPECT_EQ(matrix2i * matrix2i, expected2i);
+}
+
+TEST_F(MatrixTest, NonMemberScalarMultiplyOperator) {
+  Matrix4F expected4f{2.0f,  4.0f,  6.0f,  8.0f,  10.0f, 12.0f, 14.0f, 16.0f,
+                      18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f, 32.0f};
+  Matrix4D expected4d{20.0,  40.0,  60.0,  80.0,  100.0, 120.0, 140.0, 160.0,
+                      180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0};
+  Matrix4U expected4u{200,  400,  600,  800,  1000, 1200, 1400, 1600,
+                      1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200};
+  Matrix4I expected4i{2000,  4000,  6000,  8000,  10000, 12000, 14000, 16000,
+                      18000, 20000, 22000, 24000, 26000, 28000, 30000, 32000};
+  EXPECT_EQ(matrix4f * 2.0f, expected4f);
+  EXPECT_EQ(matrix4d * 20.0, expected4d);
+  EXPECT_EQ(matrix4u * 200u, expected4u);
+  EXPECT_EQ(matrix4i * 2000, expected4i);
+
+  Matrix3F expected3f{2.0f,  4.0f,  6.0f,  8.0f, 10.0f,
+                      12.0f, 14.0f, 16.0f, 18.0f};
+  Matrix3D expected3d{20.0,  40.0,  60.0,  80.0, 100.0,
+                      120.0, 140.0, 160.0, 180.0};
+  Matrix3U expected3u{200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800};
+  Matrix3I expected3i{2000,  4000,  6000,  8000, 10000,
+                      12000, 14000, 16000, 18000};
+  EXPECT_EQ(matrix3f * 2.0f, expected3f);
+  EXPECT_EQ(matrix3d * 20.0, expected3d);
+  EXPECT_EQ(matrix3u * 200u, expected3u);
+  EXPECT_EQ(matrix3i * 2000, expected3i);
+
+  Matrix2F expected2f{2.0f, 4.0f, 6.0f, 8.0f};
+  Matrix2D expected2d{20.0, 40.0, 60.0, 80.0};
+  Matrix2U expected2u{200, 400, 600, 800};
+  Matrix2I expected2i{2000, 4000, 6000, 8000};
+  EXPECT_EQ(matrix2f * 2.0f, expected2f);
+  EXPECT_EQ(matrix2d * 20.0, expected2d);
+  EXPECT_EQ(matrix2u * 200u, expected2u);
+  EXPECT_EQ(matrix2i * 2000, expected2i);
+}
+
+TEST_F(MatrixTest, NonMemberScalarMultiplyOperator2) {
+  Matrix4F expected4f{2.0f,  4.0f,  6.0f,  8.0f,  10.0f, 12.0f, 14.0f, 16.0f,
+                      18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f, 32.0f};
+  Matrix4D expected4d{20.0,  40.0,  60.0,  80.0,  100.0, 120.0, 140.0, 160.0,
+                      180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0};
+  Matrix4U expected4u{200,  400,  600,  800,  1000, 1200, 1400, 1600,
+                      1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200};
+  Matrix4I expected4i{2000,  4000,  6000,  8000,  10000, 12000, 14000, 16000,
+                      18000, 20000, 22000, 24000, 26000, 28000, 30000, 32000};
+  EXPECT_EQ(2.0f * matrix4f, expected4f);
+  EXPECT_EQ(20.0 * matrix4d, expected4d);
+  EXPECT_EQ(200u * matrix4u, expected4u);
+  EXPECT_EQ(2000 * matrix4i, expected4i);
+
+  Matrix3F expected3f{2.0f,  4.0f,  6.0f,  8.0f, 10.0f,
+                      12.0f, 14.0f, 16.0f, 18.0f};
+  Matrix3D expected3d{20.0,  40.0,  60.0,  80.0, 100.0,
+                      120.0, 140.0, 160.0, 180.0};
+  Matrix3U expected3u{200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800};
+  Matrix3I expected3i{2000,  4000,  6000,  8000, 10000,
+                      12000, 14000, 16000, 18000};
+  EXPECT_EQ(2.0f * matrix3f, expected3f);
+  EXPECT_EQ(20.0 * matrix3d, expected3d);
+  EXPECT_EQ(200u * matrix3u, expected3u);
+  EXPECT_EQ(2000 * matrix3i, expected3i);
+
+  Matrix2F expected2f{2.0f, 4.0f, 6.0f, 8.0f};
+  Matrix2D expected2d{20.0, 40.0, 60.0, 80.0};
+  Matrix2U expected2u{200, 400, 600, 800};
+  Matrix2I expected2i{2000, 4000, 6000, 8000};
+  EXPECT_EQ(2.0f * matrix2f, expected2f);
+  EXPECT_EQ(20.0 * matrix2d, expected2d);
+  EXPECT_EQ(200u * matrix2u, expected2u);
+  EXPECT_EQ(2000 * matrix2i, expected2i);
+}
 }  // namespace Neat

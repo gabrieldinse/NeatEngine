@@ -33,8 +33,8 @@ git submodule update --init --recursive
 
 mkdir -p "${build_dir}"
 
-do_log "Removing build cache."
-rm -f "${build_dir}/CMakeCache.txt"
+#do_log "Removing build cache."
+#rm -f "${build_dir}/CMakeCache.txt"
 
 do_log "Configuring build: ${build_configuration}."
 cmake -S "${root_dir}" -B "${build_dir}" -DCMAKE_BUILD_TYPE="${build_configuration}"

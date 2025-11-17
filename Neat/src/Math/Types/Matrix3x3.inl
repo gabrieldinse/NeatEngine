@@ -130,9 +130,9 @@ inline constexpr Matrix<3, 3, T> operator*(const Matrix<3, 3, T> &ma,
 template <typename T>
 inline constexpr Matrix<3, 3, T> operator*(const T &scalar,
                                            const Matrix<3, 3, T> &m) {
-  return Matrix<3, 3, T>{scalar * m[0], scalar * m[1], scalar * m[2],
-                         scalar * m[3], scalar * m[4], scalar * m[5],
-                         scalar * m[6], scalar * m[7], scalar * m[8]};
+  return Matrix<3, 3, T>{scalar * m(0), scalar * m(1), scalar * m(2),
+                         scalar * m(3), scalar * m(4), scalar * m(5),
+                         scalar * m(6), scalar * m(7), scalar * m(8)};
 }
 
 template <typename T>
@@ -144,9 +144,9 @@ inline constexpr Matrix<3, 3, T> operator*(const Matrix<3, 3, T> &m,
 template <typename T>
 inline constexpr Vector<3, T> operator*(const Matrix<3, 3, T> &m,
                                         const Vector<3, T> &v) {
-  return Vector<3, T>(m(0, 0) * v[0] + m(0, 1) * v[1] + m(0, 2) * v[2],
+  return Vector<3, T>{m(0, 0) * v[0] + m(0, 1) * v[1] + m(0, 2) * v[2],
                       m(1, 0) * v[0] + m(1, 1) * v[1] + m(1, 2) * v[2],
-                      m(2, 0) * v[0] + m(2, 1) * v[1] + m(2, 2) * v[2]);
+                      m(2, 0) * v[0] + m(2, 1) * v[1] + m(2, 2) * v[2]};
 }
 
 template <typename T>

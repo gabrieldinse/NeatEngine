@@ -100,6 +100,8 @@ using Matrix2I = Matrix<2, 2, Int32>;
 using Matrix2U = Matrix<2, 2, UInt32>;
 using Matrix2UI = Matrix<2, 2, UInt32>;
 using Matrix2D = Matrix<2, 2, double>;
+using Matrix2L = Matrix<2, 2, Int64>;
+using Matrix2UL = Matrix<2, 2, UInt64>;
 using Matrix2B = Matrix<2, 2, bool>;
 
 // Nom member operators

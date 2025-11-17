@@ -189,11 +189,11 @@ inline constexpr Matrix<4, 4, T> operator*(const Matrix<4, 4, T> &ma,
 template <typename T>
 inline constexpr Matrix<4, 4, T> operator*(const T &scalar,
                                            const Matrix<4, 4, T> &m) {
-  return Matrix<3, 3, T>{
-      scalar * m[0],  scalar * m[1],  scalar * m[2],  scalar * m[3],
-      scalar * m[4],  scalar * m[5],  scalar * m[6],  scalar * m[7],
-      scalar * m[8],  scalar * m[9],  scalar * m[10], scalar * m[11],
-      scalar * m[12], scalar * m[13], scalar * m[14], scalar * m[15]};
+  return Matrix<4, 4, T>{
+      scalar * m(0),  scalar * m(1),  scalar * m(2),  scalar * m(3),
+      scalar * m(4),  scalar * m(5),  scalar * m(6),  scalar * m(7),
+      scalar * m(8),  scalar * m(9),  scalar * m(10), scalar * m(11),
+      scalar * m(12), scalar * m(13), scalar * m(14), scalar * m(15)};
 }
 
 template <typename T>

@@ -110,6 +110,8 @@ using Matrix4I = Matrix<4, 4, Int32>;
 using Matrix4U = Matrix<4, 4, UInt32>;
 using Matrix4UI = Matrix<4, 4, UInt32>;
 using Matrix4D = Matrix<4, 4, double>;
+using Matrix4L = Matrix<4, 4, Int64>;
+using Matrix4UL = Matrix<4, 4, UInt64>;
 using Matrix4B = Matrix<4, 4, bool>;
 
 // Nom member operators
