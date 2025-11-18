@@ -216,10 +216,10 @@ template <typename T>
 inline constexpr Matrix<4, 4, T> operator/(const Matrix<4, 4, T> &m,
                                            const T &scalar) {
   return Matrix<4, 4, T>{
-      scalar * m[0],  scalar * m[1],  scalar * m[2],  scalar * m[3],
-      scalar * m[4],  scalar * m[5],  scalar * m[6],  scalar * m[7],
-      scalar * m[8],  scalar * m[9],  scalar * m[10], scalar * m[11],
-      scalar * m[12], scalar * m[13], scalar * m[14], scalar * m[15]};
+      m(0) / scalar,  m(1) / scalar,  m(2) / scalar,  m(3) / scalar,
+      m(4) / scalar,  m(5) / scalar,  m(6) / scalar,  m(7) / scalar,
+      m(8) / scalar,  m(9) / scalar,  m(10) / scalar, m(11) / scalar,
+      m(12) / scalar, m(13) / scalar, m(14) / scalar, m(15) / scalar};
 }
 
 // Assignment operators
@@ -227,7 +227,13 @@ template <typename T>
 template <typename U>
 inline constexpr Matrix<4, 4, T> &Matrix<4, 4, T>::operator=(
     const Matrix<4, 4, U> &m) {
-  elements = m.elements;
+  elements = {
+      static_cast<T>(m(0)),  static_cast<T>(m(1)),  static_cast<T>(m(2)),
+      static_cast<T>(m(3)),  static_cast<T>(m(4)),  static_cast<T>(m(5)),
+      static_cast<T>(m(6)),  static_cast<T>(m(7)),  static_cast<T>(m(8)),
+      static_cast<T>(m(9)),  static_cast<T>(m(10)), static_cast<T>(m(11)),
+      static_cast<T>(m(12)), static_cast<T>(m(13)), static_cast<T>(m(14)),
+      static_cast<T>(m(15))};
 
   return *this;
 }

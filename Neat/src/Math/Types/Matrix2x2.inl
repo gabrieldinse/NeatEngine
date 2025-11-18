@@ -135,7 +135,8 @@ template <typename T>
 template <typename U>
 inline constexpr Matrix<2, 2, T> &Matrix<2, 2, T>::operator=(
     const Matrix<2, 2, U> &m) {
-  elements = m.elements;
+  elements = {static_cast<T>(m(0)), static_cast<T>(m(1)), static_cast<T>(m(2)),
+              static_cast<T>(m(3))};
 
   return *this;
 }

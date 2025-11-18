@@ -152,9 +152,9 @@ inline constexpr Vector<3, T> operator*(const Matrix<3, 3, T> &m,
 template <typename T>
 inline constexpr Matrix<3, 3, T> operator/(const Matrix<3, 3, T> &m,
                                            const T &scalar) {
-  return Matrix<3, 3, T>{m[0] / scalar, m[1] / scalar, m[2] / scalar,
-                         m[3] / scalar, m[4] / scalar, m[5] / scalar,
-                         m[6] / scalar, m[7] / scalar, m[8] / scalar};
+  return Matrix<3, 3, T>{m(0) / scalar, m(1) / scalar, m(2) / scalar,
+                         m(3) / scalar, m(4) / scalar, m(5) / scalar,
+                         m(6) / scalar, m(7) / scalar, m(8) / scalar};
 }
 
 // Assignment operators
@@ -170,7 +170,9 @@ template <typename T>
 template <typename U>
 inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator=(
     const Matrix<3, 3, U> &m) {
-  elements = m.elements;
+  elements = {static_cast<T>(m(0)), static_cast<T>(m(1)), static_cast<T>(m(2)),
+              static_cast<T>(m(3)), static_cast<T>(m(4)), static_cast<T>(m(5)),
+              static_cast<T>(m(6)), static_cast<T>(m(7)), static_cast<T>(m(8))};
 
   return *this;
 }

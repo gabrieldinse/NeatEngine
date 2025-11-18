@@ -1786,4 +1786,179 @@ TEST_F(MatrixTest, NonMemberScalarMultiplyOperator2) {
   EXPECT_EQ(200u * matrix2u, expected2u);
   EXPECT_EQ(2000 * matrix2i, expected2i);
 }
+
+TEST_F(MatrixTest, NonMemberDivideOperator) {
+  Matrix4F expected4f{0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f,
+                      4.5f, 5.0f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f, 8.0f};
+  Matrix4D expected4d{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0,
+                      4.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0};
+  Matrix4U expected4u{0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8};
+  Matrix4I expected4i{0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8};
+  EXPECT_EQ(matrix4f / 2.0f, expected4f);
+  EXPECT_EQ(matrix4d / 2.0, expected4d);
+  EXPECT_EQ(matrix4u / 2u, expected4u);
+  EXPECT_EQ(matrix4i / 2, expected4i);
+
+  Matrix3F expected3f{0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f};
+  Matrix3D expected3d{0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5};
+  Matrix3U expected3u{0, 1, 1, 2, 2, 3, 3, 4, 4};
+  Matrix3I expected3i{0, 1, 1, 2, 2, 3, 3, 4, 4};
+  EXPECT_EQ(matrix3f / 2.0f, expected3f);
+  EXPECT_EQ(matrix3d / 2.0, expected3d);
+  EXPECT_EQ(matrix3u / 2u, expected3u);
+  EXPECT_EQ(matrix3i / 2, expected3i);
+
+  Matrix2F expected2f{0.5f, 1.0f, 1.5f, 2.0f};
+  Matrix2D expected2d{0.5, 1.0, 1.5, 2.0};
+  Matrix2U expected2u{0, 1, 1, 2};
+  Matrix2I expected2i{0, 1, 1, 2};
+  EXPECT_EQ(matrix2f / 2.0f, expected2f);
+  EXPECT_EQ(matrix2d / 2.0, expected2d);
+  EXPECT_EQ(matrix2u / 2u, expected2u);
+  EXPECT_EQ(matrix2i / 2, expected2i);
+}
+
+TEST_F(MatrixTest, AssignmentOperator) {
+  Matrix4F matrix4fAssign{10.0f,  20.0f,  30.0f,  40.0f,  50.0f,  60.0f,
+                          70.0f,  80.0f,  90.0f,  100.0f, 110.0f, 120.0f,
+                          130.0f, 140.0f, 150.0f, 160.0f};
+  Matrix4D matrix4dAssign{10.0,  20.0,  30.0,  40.0,  50.0,  60.0,
+                          70.0,  80.0,  90.0,  100.0, 110.0, 120.0,
+                          130.0, 140.0, 150.0, 160.0};
+  Matrix4I matrix4iAssign{10, 20,  30,  40,  50,  60,  70,  80,
+                          90, 100, 110, 120, 130, 140, 150, 160};
+  Matrix4U matrix4uAssign{10, 20,  30,  40,  50,  60,  70,  80,
+                          90, 100, 110, 120, 130, 140, 150, 160};
+  matrix4f = matrix4fAssign;
+  matrix4d = matrix4dAssign;
+  matrix4i = matrix4iAssign;
+  matrix4u = matrix4uAssign;
+  EXPECT_EQ(matrix4f, matrix4fAssign);
+  EXPECT_EQ(matrix4d, matrix4dAssign);
+  EXPECT_EQ(matrix4i, matrix4iAssign);
+  EXPECT_EQ(matrix4u, matrix4uAssign);
+
+  Matrix3F matrix3fAssign{10.0f, 20.0f, 30.0f, 40.0f, 50.0f,
+                          60.0f, 70.0f, 80.0f, 90.0f};
+  Matrix3D matrix3dAssign{10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0};
+  Matrix3I matrix3iAssign{10, 20, 30, 40, 50, 60, 70, 80, 90};
+  Matrix3U matrix3uAssign{10, 20, 30, 40, 50, 60, 70, 80, 90};
+  matrix3f = matrix3fAssign;
+  matrix3d = matrix3dAssign;
+  matrix3i = matrix3iAssign;
+  matrix3u = matrix3uAssign;
+  EXPECT_EQ(matrix3f, matrix3fAssign);
+  EXPECT_EQ(matrix3d, matrix3dAssign);
+  EXPECT_EQ(matrix3i, matrix3iAssign);
+  EXPECT_EQ(matrix3u, matrix3uAssign);
+
+  Matrix2F matrix2fAssign{10.0f, 20.0f, 30.0f, 40.0f};
+  Matrix2D matrix2dAssign{10.0, 20.0, 30.0, 40.0};
+  Matrix2I matrix2iAssign{10, 20, 30, 40};
+  Matrix2U matrix2uAssign{10, 20, 30, 40};
+  matrix2f = matrix2fAssign;
+  matrix2d = matrix2dAssign;
+  matrix2i = matrix2iAssign;
+  matrix2u = matrix2uAssign;
+  EXPECT_EQ(matrix2f, matrix2fAssign);
+  EXPECT_EQ(matrix2d, matrix2dAssign);
+  EXPECT_EQ(matrix2i, matrix2iAssign);
+  EXPECT_EQ(matrix2u, matrix2uAssign);
+}
+
+TEST_F(MatrixTest, DifferentTypesAssignmentOperator) {
+  Matrix4F matrix4fAssign{10.0f,  20.0f,  30.0f,  40.0f,  50.0f,  60.0f,
+                          70.0f,  80.0f,  90.0f,  100.0f, 110.0f, 120.0f,
+                          130.0f, 140.0f, 150.0f, 160.0f};
+  Matrix4D matrix4dAssign{10.0,  20.0,  30.0,  40.0,  50.0,  60.0,
+                          70.0,  80.0,  90.0,  100.0, 110.0, 120.0,
+                          130.0, 140.0, 150.0, 160.0};
+  Matrix4I matrix4iAssign{10, 20,  30,  40,  50,  60,  70,  80,
+                          90, 100, 110, 120, 130, 140, 150, 160};
+  Matrix4U matrix4uAssign{10, 20,  30,  40,  50,  60,  70,  80,
+                          90, 100, 110, 120, 130, 140, 150, 160};
+  matrix4f = matrix4dAssign;
+  EXPECT_EQ(matrix4f, matrix4fAssign);
+  matrix4f = matrix4iAssign;
+  EXPECT_EQ(matrix4f, matrix4fAssign);
+  matrix4f = matrix4uAssign;
+  EXPECT_EQ(matrix4f, matrix4fAssign);
+  matrix4d = matrix4fAssign;
+  EXPECT_EQ(matrix4d, matrix4dAssign);
+  matrix4d = matrix4iAssign;
+  EXPECT_EQ(matrix4d, matrix4dAssign);
+  matrix4d = matrix4uAssign;
+  EXPECT_EQ(matrix4d, matrix4dAssign);
+  matrix4i = matrix4fAssign;
+  EXPECT_EQ(matrix4i, matrix4iAssign);
+  matrix4i = matrix4dAssign;
+  EXPECT_EQ(matrix4i, matrix4iAssign);
+  matrix4i = matrix4uAssign;
+  EXPECT_EQ(matrix4i, matrix4iAssign);
+  matrix4u = matrix4fAssign;
+  EXPECT_EQ(matrix4u, matrix4uAssign);
+  matrix4u = matrix4dAssign;
+  EXPECT_EQ(matrix4u, matrix4uAssign);
+  matrix4u = matrix4iAssign;
+  EXPECT_EQ(matrix4u, matrix4uAssign);
+
+  Matrix3F matrix3fAssign{10.0f, 20.0f, 30.0f, 40.0f, 50.0f,
+                          60.0f, 70.0f, 80.0f, 90.0f};
+  Matrix3D matrix3dAssign{10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0};
+  Matrix3I matrix3iAssign{10, 20, 30, 40, 50, 60, 70, 80, 90};
+  Matrix3U matrix3uAssign{10, 20, 30, 40, 50, 60, 70, 80, 90};
+  matrix3f = matrix3dAssign;
+  EXPECT_EQ(matrix3f, matrix3fAssign);
+  matrix3f = matrix3iAssign;
+  EXPECT_EQ(matrix3f, matrix3fAssign);
+  matrix3f = matrix3uAssign;
+  EXPECT_EQ(matrix3f, matrix3fAssign);
+  matrix3d = matrix3fAssign;
+  EXPECT_EQ(matrix3d, matrix3dAssign);
+  matrix3d = matrix3iAssign;
+  EXPECT_EQ(matrix3d, matrix3dAssign);
+  matrix3d = matrix3uAssign;
+  EXPECT_EQ(matrix3d, matrix3dAssign);
+  matrix3i = matrix3fAssign;
+  EXPECT_EQ(matrix3i, matrix3iAssign);
+  matrix3i = matrix3dAssign;
+  EXPECT_EQ(matrix3i, matrix3iAssign);
+  matrix3i = matrix3uAssign;
+  EXPECT_EQ(matrix3i, matrix3iAssign);
+  matrix3u = matrix3fAssign;
+  EXPECT_EQ(matrix3u, matrix3uAssign);
+  matrix3u = matrix3dAssign;
+  EXPECT_EQ(matrix3u, matrix3uAssign);
+  matrix3u = matrix3iAssign;
+  EXPECT_EQ(matrix3u, matrix3uAssign);
+
+  Matrix2F matrix2fAssign{10.0f, 20.0f, 30.0f, 40.0f};
+  Matrix2D matrix2dAssign{10.0, 20.0, 30.0, 40.0};
+  Matrix2I matrix2iAssign{10, 20, 30, 40};
+  Matrix2U matrix2uAssign{10, 20, 30, 40};
+  matrix2f = matrix2dAssign;
+  EXPECT_EQ(matrix2f, matrix2fAssign);
+  matrix2f = matrix2iAssign;
+  EXPECT_EQ(matrix2f, matrix2fAssign);
+  matrix2f = matrix2uAssign;
+  EXPECT_EQ(matrix2f, matrix2fAssign);
+  matrix2d = matrix2fAssign;
+  EXPECT_EQ(matrix2d, matrix2dAssign);
+  matrix2d = matrix2iAssign;
+  EXPECT_EQ(matrix2d, matrix2dAssign);
+  matrix2d = matrix2uAssign;
+  EXPECT_EQ(matrix2d, matrix2dAssign);
+  matrix2i = matrix2fAssign;
+  EXPECT_EQ(matrix2i, matrix2iAssign);
+  matrix2i = matrix2dAssign;
+  EXPECT_EQ(matrix2i, matrix2iAssign);
+  matrix2i = matrix2uAssign;
+  EXPECT_EQ(matrix2i, matrix2iAssign);
+  matrix2u = matrix2fAssign;
+  EXPECT_EQ(matrix2u, matrix2uAssign);
+  matrix2u = matrix2dAssign;
+  EXPECT_EQ(matrix2u, matrix2uAssign);
+  matrix2u = matrix2iAssign;
+  EXPECT_EQ(matrix2u, matrix2uAssign);
+}
 }  // namespace Neat
