@@ -2008,8 +2008,46 @@ TEST_F(MatrixTest, NonMemberPlusEqualOperator) {
   EXPECT_EQ(matrix2i, expected2i);
 }
 
-//TEST_F(MatrixTest, NonMemberMinusEqualOperator) {
-//  Matrix4F expected4f{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-//                      0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-//}
+TEST_F(MatrixTest, NonMemberMinusEqualOperator) {
+  Matrix4F expected4f{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                      0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  Matrix4D expected4d{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  Matrix4U expected4u{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  Matrix4I expected4i{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  matrix4f -= matrix4f;
+  matrix4d -= matrix4d;
+  matrix4u -= matrix4u;
+  matrix4i -= matrix4i;
+  EXPECT_EQ(matrix4f, expected4f);
+  EXPECT_EQ(matrix4d, expected4d);
+  EXPECT_EQ(matrix4u, expected4u);
+  EXPECT_EQ(matrix4i, expected4i);
+
+  Matrix3F expected3f{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  Matrix3D expected3d{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  Matrix3U expected3u{0, 0, 0, 0, 0, 0, 0, 0, 0};
+  Matrix3I expected3i{0, 0, 0, 0, 0, 0, 0, 0, 0};
+  matrix3f -= matrix3f;
+  matrix3d -= matrix3d;
+  matrix3u -= matrix3u;
+  matrix3i -= matrix3i;
+  EXPECT_EQ(matrix3f, expected3f);
+  EXPECT_EQ(matrix3d, expected3d);
+  EXPECT_EQ(matrix3u, expected3u);
+  EXPECT_EQ(matrix3i, expected3i);
+
+  Matrix2F expected2f{0.0f, 0.0f, 0.0f, 0.0f};
+  Matrix2D expected2d{0.0, 0.0, 0.0, 0.0};
+  Matrix2U expected2u{0, 0, 0, 0};
+  Matrix2I expected2i{0, 0, 0, 0};
+  matrix2f -= matrix2f;
+  matrix2d -= matrix2d;
+  matrix2u -= matrix2u;
+  matrix2i -= matrix2i;
+  EXPECT_EQ(matrix2f, expected2f);
+  EXPECT_EQ(matrix2d, expected2d);
+  EXPECT_EQ(matrix2u, expected2u);
+  EXPECT_EQ(matrix2i, expected2i);
+}
 }  // namespace Neat
