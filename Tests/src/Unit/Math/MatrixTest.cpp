@@ -1961,4 +1961,55 @@ TEST_F(MatrixTest, DifferentTypesAssignmentOperator) {
   matrix2u = matrix2iAssign;
   EXPECT_EQ(matrix2u, matrix2uAssign);
 }
+
+TEST_F(MatrixTest, NonMemberPlusEqualOperator) {
+  Matrix4F expected4f{2.0f,  4.0f,  6.0f,  8.0f,  10.0f, 12.0f, 14.0f, 16.0f,
+                      18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f, 32.0f};
+  Matrix4D expected4d{2.0,  4.0,  6.0,   8.0,   10.0,  12.0,  14.0,  16.0,
+                      18.0, 20.0, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f, 32.0f};
+  Matrix4U expected4u{2,  4,  6,  8,  10, 12, 14, 16,
+                      18, 20, 22, 24, 26, 28, 30, 32};
+  Matrix4I expected4i{2,  4,  6,  8,  10, 12, 14, 16,
+                      18, 20, 22, 24, 26, 28, 30, 32};
+  matrix4f += matrix4f;
+  matrix4d += matrix4d;
+  matrix4u += matrix4u;
+  matrix4i += matrix4i;
+  EXPECT_EQ(matrix4f, expected4f);
+  EXPECT_EQ(matrix4d, expected4d);
+  EXPECT_EQ(matrix4u, expected4u);
+  EXPECT_EQ(matrix4i, expected4i);
+
+  Matrix3F expected3f{2.0f,  4.0f,  6.0f,  8.0f, 10.0f,
+                      12.0f, 14.0f, 16.0f, 18.0f};
+  Matrix3D expected3d{2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0};
+  Matrix3U expected3u{2, 4, 6, 8, 10, 12, 14, 16, 18};
+  Matrix3I expected3i{2, 4, 6, 8, 10, 12, 14, 16, 18};
+  matrix3f += matrix3f;
+  matrix3d += matrix3d;
+  matrix3u += matrix3u;
+  matrix3i += matrix3i;
+  EXPECT_EQ(matrix3f, expected3f);
+  EXPECT_EQ(matrix3d, expected3d);
+  EXPECT_EQ(matrix3u, expected3u);
+  EXPECT_EQ(matrix3i, expected3i);
+
+  Matrix2F expected2f{2.0f, 4.0f, 6.0f, 8.0f};
+  Matrix2D expected2d{2.0, 4.0, 6.0, 8.0};
+  Matrix2U expected2u{2, 4, 6, 8};
+  Matrix2I expected2i{2, 4, 6, 8};
+  matrix2f += matrix2f;
+  matrix2d += matrix2d;
+  matrix2u += matrix2u;
+  matrix2i += matrix2i;
+  EXPECT_EQ(matrix2f, expected2f);
+  EXPECT_EQ(matrix2d, expected2d);
+  EXPECT_EQ(matrix2u, expected2u);
+  EXPECT_EQ(matrix2i, expected2i);
+}
+
+//TEST_F(MatrixTest, NonMemberMinusEqualOperator) {
+//  Matrix4F expected4f{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+//                      0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+//}
 }  // namespace Neat
