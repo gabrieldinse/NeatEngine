@@ -3,6 +3,8 @@
 
 #include <Math/Matrix.hpp>
 
+#include "TestUtils.hpp"
+
 namespace Neat {
 class MatrixTest : public testing::Test {
  protected:
@@ -2008,6 +2010,38 @@ TEST_F(MatrixTest, NonMemberPlusEqualOperator) {
   EXPECT_EQ(matrix2i, expected2i);
 }
 
+TEST_F(MatrixTest, NonMemberScalarMinusEqualOperator) {
+  Matrix4F expected4f{-9.0f, -8.0f, -7.0f, -6.0f, -5.0f, -4.0f, -3.0f, -2.0f,
+                      -1.0f, 0.0f,  1.0f,  2.0f,  3.0f,  4.0f,  5.0f,  6.0f};
+  Matrix4D expected4d{-9.0, -8.0, -7.0, -6.0, -5.0, -4.0, -3.0, -2.0,
+                      -1.0, 0.0,  1.0,  2.0,  3.0,  4.0,  5.0,  6.0};
+  Matrix4U expected4u{Limits::Max<UInt32> - 8,
+                      Limits::Max<UInt32> - 7,
+                      Limits::Max<UInt32> - 6,
+                      Limits::Max<UInt32> - 5,
+                      Limits::Max<UInt32> - 4,
+                      Limits::Max<UInt32> - 3,
+                      Limits::Max<UInt32> - 2,
+                      Limits::Max<UInt32> - 1,
+                      Limits::Max<UInt32>,
+                      0,
+                      1,
+                      2,
+                      3,
+                      4,
+                      5,
+                      6};
+  Matrix4I expected4i{-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6};
+  matrix4f -= 10.0f;
+  matrix4d -= 10.0;
+  matrix4u -= 10u;
+  matrix4i -= 10;
+  EXPECT_EQ(matrix4f, expected4f);
+  EXPECT_EQ(matrix4d, expected4d);
+  EXPECT_EQ(matrix4u, expected4u);
+  EXPECT_EQ(matrix4i, expected4i);
+}
+
 TEST_F(MatrixTest, NonMemberMinusEqualOperator) {
   Matrix4F expected4f{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
                       0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
@@ -2045,6 +2079,54 @@ TEST_F(MatrixTest, NonMemberMinusEqualOperator) {
   matrix2d -= matrix2d;
   matrix2u -= matrix2u;
   matrix2i -= matrix2i;
+  EXPECT_EQ(matrix2f, expected2f);
+  EXPECT_EQ(matrix2d, expected2d);
+  EXPECT_EQ(matrix2u, expected2u);
+  EXPECT_EQ(matrix2i, expected2i);
+}
+
+TEST_F(MatrixTest, NonMemberScalarMultiplyEqualOperator) {
+  Matrix4F expected4f{2.0f,  4.0f,  6.0f,  8.0f,  10.0f, 12.0f, 14.0f, 16.0f,
+                      18.0f, 20.0f, 22.0f, 24.0f, 26.0f, 28.0f, 30.0f, 32.0f};
+  Matrix4D expected4d{20.0,  40.0,  60.0,  80.0,  100.0, 120.0, 140.0, 160.0,
+                      180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0};
+  Matrix4U expected4u{200,  400,  600,  800,  1000, 1200, 1400, 1600,
+                      1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200};
+  Matrix4I expected4i{2000,  4000,  6000,  8000,  10000, 12000, 14000, 16000,
+                      18000, 20000, 22000, 24000, 26000, 28000, 30000, 32000};
+  matrix4f *= 2.0f;
+  matrix4d *= 20.0;
+  matrix4u *= 200u;
+  matrix4i *= 2000;
+  EXPECT_EQ(matrix4f, expected4f);
+  EXPECT_EQ(matrix4d, expected4d);
+  EXPECT_EQ(matrix4u, expected4u);
+  EXPECT_EQ(matrix4i, expected4i);
+
+  Matrix3F expected3f{2.0f,  4.0f,  6.0f,  8.0f, 10.0f,
+                      12.0f, 14.0f, 16.0f, 18.0f};
+  Matrix3D expected3d{20.0,  40.0,  60.0,  80.0, 100.0,
+                      120.0, 140.0, 160.0, 180.0};
+  Matrix3U expected3u{200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800};
+  Matrix3I expected3i{2000,  4000,  6000,  8000, 10000,
+                      12000, 14000, 16000, 18000};
+  matrix3f *= 2.0f;
+  matrix3d *= 20.0;
+  matrix3u *= 200u;
+  matrix3i *= 2000;
+  EXPECT_EQ(matrix3f, expected3f);
+  EXPECT_EQ(matrix3d, expected3d);
+  EXPECT_EQ(matrix3u, expected3u);
+  EXPECT_EQ(matrix3i, expected3i);
+
+  Matrix2F expected2f{2.0f, 4.0f, 6.0f, 8.0f};
+  Matrix2D expected2d{20.0, 40.0, 60.0, 80.0};
+  Matrix2U expected2u{200, 400, 600, 800};
+  Matrix2I expected2i{2000, 4000, 6000, 8000};
+  matrix2f *= 2.0f;
+  matrix2d *= 20.0;
+  matrix2u *= 200u;
+  matrix2i *= 2000;
   EXPECT_EQ(matrix2f, expected2f);
   EXPECT_EQ(matrix2d, expected2d);
   EXPECT_EQ(matrix2u, expected2u);

@@ -6,6 +6,8 @@
 #include <ECS/ECS.hpp>
 #include <Math/Math.hpp>
 #include <Core/Layer.hpp>
+#include <Core/Limits.hpp>
+#include <Core/Constants.hpp>
 
 namespace Neat {
 struct EventA {
