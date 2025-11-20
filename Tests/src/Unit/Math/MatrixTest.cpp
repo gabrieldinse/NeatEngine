@@ -1,3 +1,4 @@
+#include <ranges>
 
 #include <gtest/gtest.h>
 
@@ -825,6 +826,71 @@ TEST_F(MatrixTest, CallOperator) {
   EXPECT_EQ(matrix2u(0), 44);
   matrix2b(2) = false;
   EXPECT_EQ(matrix2b(2), false);
+}
+
+TEST_F(MatrixTest, IndexOperator) {
+  EXPECT_TRUE(std::ranges::equal(matrix4f[0],
+                                 std::array<Float, 4>{1.0f, 2.0f, 3.0f, 4.0f}));
+  EXPECT_TRUE(std::ranges::equal(matrix4f[1],
+                                 std::array<Float, 4>{5.0f, 6.0f, 7.0f, 8.0f}));
+  EXPECT_TRUE(std::ranges::equal(
+      matrix4f[2], std::array<Float, 4>{9.0f, 10.0f, 11.0f, 12.0f}));
+  EXPECT_TRUE(std::ranges::equal(
+      matrix4f[3], std::array<Float, 4>{13.0f, 14.0f, 15.0f, 16.0f}));
+  EXPECT_TRUE(std::ranges::equal(matrix4d[0],
+                                 std::array<Double, 4>{1.0, 2.0, 3.0, 4.0}));
+  EXPECT_TRUE(std::ranges::equal(matrix4d[1],
+                                 std::array<Double, 4>{5.0, 6.0, 7.0, 8.0}));
+  EXPECT_TRUE(std::ranges::equal(matrix4d[2],
+                                 std::array<Double, 4>{9.0, 10.0, 11.0, 12.0}));
+  EXPECT_TRUE(std::ranges::equal(
+      matrix4d[3], std::array<Double, 4>{13.0, 14.0, 15.0, 16.0}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix4i[0], std::array<Int32, 4>{1, 2, 3, 4}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix4i[1], std::array<Int32, 4>{5, 6, 7, 8}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix4i[2], std::array<Int32, 4>{9, 10, 11, 12}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix4i[3], std::array<Int32, 4>{13, 14, 15, 16}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix4u[0], std::array<UInt32, 4>{1, 2, 3, 4}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix4u[1], std::array<UInt32, 4>{5, 6, 7, 8}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix4u[2], std::array<UInt32, 4>{9, 10, 11, 12}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix4u[3], std::array<UInt32, 4>{13, 14, 15, 16}));
+
+  EXPECT_TRUE(
+      std::ranges::equal(matrix3f[0], std::array<Float, 3>{1.0f, 2.0f, 3.0f}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix3f[1], std::array<Float, 3>{4.0f, 5.0f, 6.0f}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix3f[2], std::array<Float, 3>{7.0f, 8.0f, 9.0f}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix3d[0], std::array<Double, 3>{1.0, 2.0, 3.0}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix3d[1], std::array<Double, 3>{4.0, 5.0, 6.0}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix3d[2], std::array<Double, 3>{7.0, 8.0, 9.0}));
+  EXPECT_TRUE(std::ranges::equal(matrix3i[0], std::array<Int32, 3>{1, 2, 3}));
+  EXPECT_TRUE(std::ranges::equal(matrix3i[1], std::array<Int32, 3>{4, 5, 6}));
+  EXPECT_TRUE(std::ranges::equal(matrix3i[2], std::array<Int32, 3>{7, 8, 9}));
+  EXPECT_TRUE(std::ranges::equal(matrix3u[0], std::array<UInt32, 3>{1, 2, 3}));
+  EXPECT_TRUE(std::ranges::equal(matrix3u[1], std::array<UInt32, 3>{4, 5, 6}));
+  EXPECT_TRUE(std::ranges::equal(matrix3u[2], std::array<UInt32, 3>{7, 8, 9}));
+
+  EXPECT_TRUE(
+      std::ranges::equal(matrix2f[0], std::array<Float, 2>{1.0f, 2.0f}));
+  EXPECT_TRUE(
+      std::ranges::equal(matrix2f[1], std::array<Float, 2>{3.0f, 4.0f}));
+  EXPECT_TRUE(std::ranges::equal(matrix2d[0], std::array<Double, 2>{1.0, 2.0}));
+  EXPECT_TRUE(std::ranges::equal(matrix2d[1], std::array<Double, 2>{3.0, 4.0}));
+  EXPECT_TRUE(std::ranges::equal(matrix2i[0], std::array<Int32, 2>{1, 2}));
+  EXPECT_TRUE(std::ranges::equal(matrix2i[1], std::array<Int32, 2>{3, 4}));
+  EXPECT_TRUE(std::ranges::equal(matrix2u[0], std::array<UInt32, 2>{1, 2}));
+  EXPECT_TRUE(std::ranges::equal(matrix2u[1], std::array<UInt32, 2>{3, 4}));
 }
 
 TEST_F(MatrixTest, MultipleScalarsConstructor) {

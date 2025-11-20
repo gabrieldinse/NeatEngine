@@ -65,7 +65,7 @@ TEST_F(VectorTest, VectorSizes) {
   EXPECT_EQ(Vector1U::N, 1);
 }
 
-TEST_F(VectorTest, AtOperator) {
+TEST_F(VectorTest, IndexOperator) {
   EXPECT_EQ(vector4f[0], 1.0f);
   EXPECT_EQ(vector4f[1], 2.0f);
   EXPECT_EQ(vector4f[2], 3.0f);
