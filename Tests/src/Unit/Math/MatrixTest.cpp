@@ -2198,4 +2198,116 @@ TEST_F(MatrixTest, NonMemberScalarMultiplyEqualOperator) {
   EXPECT_EQ(matrix2u, expected2u);
   EXPECT_EQ(matrix2i, expected2i);
 }
+
+TEST_F(MatrixTest, OperatorEqual) {
+  Matrix4F matrix4fCopy = matrix4f;
+  Matrix4D matrix4dCopy = matrix4d;
+  Matrix4U matrix4uCopy = matrix4u;
+  Matrix4I matrix4iCopy = matrix4i;
+  EXPECT_TRUE(matrix4f == matrix4fCopy);
+  EXPECT_TRUE(matrix4d == matrix4dCopy);
+  EXPECT_TRUE(matrix4u == matrix4uCopy);
+  EXPECT_TRUE(matrix4i == matrix4iCopy);
+
+  Matrix3F matrix3fCopy = matrix3f;
+  Matrix3D matrix3dCopy = matrix3d;
+  Matrix3U matrix3uCopy = matrix3u;
+  Matrix3I matrix3iCopy = matrix3i;
+  EXPECT_TRUE(matrix3f == matrix3fCopy);
+  EXPECT_TRUE(matrix3d == matrix3dCopy);
+  EXPECT_TRUE(matrix3u == matrix3uCopy);
+  EXPECT_TRUE(matrix3i == matrix3iCopy);
+
+  Matrix2F matrix2fCopy = matrix2f;
+  Matrix2D matrix2dCopy = matrix2d;
+  Matrix2U matrix2uCopy = matrix2u;
+  Matrix2I matrix2iCopy = matrix2i;
+  EXPECT_TRUE(matrix2f == matrix2fCopy);
+  EXPECT_TRUE(matrix2d == matrix2dCopy);
+  EXPECT_TRUE(matrix2u == matrix2uCopy);
+  EXPECT_TRUE(matrix2i == matrix2iCopy);
+
+  matrix4fCopy[0, 0] += 1.0f;
+  EXPECT_FALSE(matrix4f == matrix4fCopy);
+  matrix4dCopy[0, 1] += 1.0;
+  EXPECT_FALSE(matrix4d == matrix4dCopy);
+  matrix4uCopy[1, 1] += 1;
+  EXPECT_FALSE(matrix4u == matrix4uCopy);
+  matrix4iCopy[1, 0] += 1;
+  EXPECT_FALSE(matrix4i == matrix4iCopy);
+
+  matrix3fCopy[0, 0] += 1.0f;
+  EXPECT_FALSE(matrix3f == matrix3fCopy);
+  matrix3dCopy[0, 1] += 1.0;
+  EXPECT_FALSE(matrix3d == matrix3dCopy);
+  matrix3uCopy[1, 1] += 1;
+  EXPECT_FALSE(matrix3u == matrix3uCopy);
+  matrix3iCopy[1, 0] += 1;
+  EXPECT_FALSE(matrix3i == matrix3iCopy);
+
+  matrix2fCopy[0, 0] += 1.0f;
+  EXPECT_FALSE(matrix2f == matrix2fCopy);
+  matrix2dCopy[0, 1] += 1.0;
+  EXPECT_FALSE(matrix2d == matrix2dCopy);
+  matrix2uCopy[1, 1] += 1;
+  EXPECT_FALSE(matrix2u == matrix2uCopy);
+  matrix2iCopy[1, 0] += 1;
+  EXPECT_FALSE(matrix2i == matrix2iCopy);
+}
+
+TEST_F(MatrixTest, OperatorNotEqual) {
+  Matrix4F matrix4fCopy = matrix4f;
+  Matrix4D matrix4dCopy = matrix4d;
+  Matrix4U matrix4uCopy = matrix4u;
+  Matrix4I matrix4iCopy = matrix4i;
+  EXPECT_FALSE(matrix4f != matrix4fCopy);
+  EXPECT_FALSE(matrix4d != matrix4dCopy);
+  EXPECT_FALSE(matrix4u != matrix4uCopy);
+  EXPECT_FALSE(matrix4i != matrix4iCopy);
+
+  Matrix3F matrix3fCopy = matrix3f;
+  Matrix3D matrix3dCopy = matrix3d;
+  Matrix3U matrix3uCopy = matrix3u;
+  Matrix3I matrix3iCopy = matrix3i;
+  EXPECT_FALSE(matrix3f != matrix3fCopy);
+  EXPECT_FALSE(matrix3d != matrix3dCopy);
+  EXPECT_FALSE(matrix3u != matrix3uCopy);
+  EXPECT_FALSE(matrix3i != matrix3iCopy);
+
+  Matrix2F matrix2fCopy = matrix2f;
+  Matrix2D matrix2dCopy = matrix2d;
+  Matrix2U matrix2uCopy = matrix2u;
+  Matrix2I matrix2iCopy = matrix2i;
+  EXPECT_FALSE(matrix2f != matrix2fCopy);
+  EXPECT_FALSE(matrix2d != matrix2dCopy);
+  EXPECT_FALSE(matrix2u != matrix2uCopy);
+  EXPECT_FALSE(matrix2i != matrix2iCopy);
+
+  matrix4fCopy[0, 0] += 1.0f;
+  EXPECT_TRUE(matrix4f != matrix4fCopy);
+  matrix4dCopy[0, 1] += 1.0;
+  EXPECT_TRUE(matrix4d != matrix4dCopy);
+  matrix4uCopy[1, 1] += 1;
+  EXPECT_TRUE(matrix4u != matrix4uCopy);
+  matrix4iCopy[1, 0] += 1;
+  EXPECT_TRUE(matrix4i != matrix4iCopy);
+
+  matrix3fCopy[0, 0] += 1.0f;
+  EXPECT_TRUE(matrix3f != matrix3fCopy);
+  matrix3dCopy[0, 1] += 1.0;
+  EXPECT_TRUE(matrix3d != matrix3dCopy);
+  matrix3uCopy[1, 1] += 1;
+  EXPECT_TRUE(matrix3u != matrix3uCopy);
+  matrix3iCopy[1, 0] += 1;
+  EXPECT_TRUE(matrix3i != matrix3iCopy);
+
+  matrix2fCopy[0, 0] += 1.0f;
+  EXPECT_TRUE(matrix2f != matrix2fCopy);
+  matrix2dCopy[0, 1] += 1.0;
+  EXPECT_TRUE(matrix2d != matrix2dCopy);
+  matrix2uCopy[1, 1] += 1;
+  EXPECT_TRUE(matrix2u != matrix2uCopy);
+  matrix2iCopy[1, 0] += 1;
+  EXPECT_TRUE(matrix2i != matrix2iCopy);
+}
 }  // namespace Neat
