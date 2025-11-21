@@ -3,6 +3,8 @@ project(NeatProject)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# For generating compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;Dist")
 set(VENDOR_DIR "${CMAKE_SOURCE_DIR}/Vendor")

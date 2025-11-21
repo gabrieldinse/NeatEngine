@@ -4,6 +4,7 @@
 
 #include <Math/Matrix.hpp>
 
+#include "Math/Types/Matrix2x2.hpp"
 #include "TestUtils.hpp"
 
 namespace Neat {
@@ -1493,6 +1494,12 @@ TEST_F(MatrixTest, DifferentDimensionsConversionConstructor) {
   EXPECT_EQ(Matrix2D{customMatrix3f}, matrix2From3d);
   EXPECT_EQ(Matrix2D{customMatrix3u}, matrix2From3d);
   EXPECT_EQ(Matrix2D{customMatrix3d}, matrix2From3d);
+  EXPECT_EQ(Matrix2F{customMatrix4f}, matrix2From4f);
+  EXPECT_EQ(Matrix2F{customMatrix4u}, matrix2From4f);
+  EXPECT_EQ(Matrix2F{customMatrix4d}, matrix2From4f);
+  EXPECT_EQ(Matrix2D{customMatrix4f}, matrix2From4d);
+  EXPECT_EQ(Matrix2D{customMatrix4u}, matrix2From4d);
+  EXPECT_EQ(Matrix2D{customMatrix4d}, matrix2From4d);
 }
 
 TEST_F(MatrixTest, FromVectorsConstructor) {
