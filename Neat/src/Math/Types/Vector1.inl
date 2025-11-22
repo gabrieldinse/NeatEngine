@@ -98,6 +98,8 @@ inline constexpr Vector<1, T> &Vector<1, T>::operator*=(const U &scalar) {
 template <typename T>
 template <typename U>
 inline constexpr Vector<1, T> &Vector<1, T>::operator/=(const U &scalar) {
+  NT_CORE_ASSERT(scalar != Zero<T>,
+                 "Division by zero in vector-scalar division.");
   x() /= static_cast<T>(scalar);
 
   return *this;
@@ -165,6 +167,8 @@ inline constexpr Vector<1, T> operator*(const Vector<1, T> &v,
 template <typename T>
 inline constexpr Vector<1, T> operator/(const Vector<1, T> &v,
                                         const T &scalar) {
+  NT_CORE_ASSERT(scalar != Zero<T>,
+                 "Division by zero in vector-scalar division.");
   return Vector<1, T>(v) /= scalar;
 }
 

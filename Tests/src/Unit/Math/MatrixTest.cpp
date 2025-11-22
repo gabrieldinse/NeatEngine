@@ -5,6 +5,8 @@
 #include <Math/Matrix.hpp>
 
 #include "Math/Types/Matrix2x2.hpp"
+#include "Math/Types/Matrix3x3.hpp"
+#include "Math/Types/Matrix4x4.hpp"
 
 namespace Neat {
 class MatrixTest : public testing::Test {
@@ -2315,5 +2317,77 @@ TEST_F(MatrixTest, OperatorNotEqual) {
   EXPECT_TRUE(matrix2u != matrix2uCopy);
   matrix2iCopy[1, 0] += 1;
   EXPECT_TRUE(matrix2i != matrix2iCopy);
+}
+
+TEST_F(MatrixTest, Determinant) {
+  EXPECT_EQ(determinant(matrix4f), 0.0f);
+  EXPECT_EQ(determinant(matrix4d), 0.0);
+  EXPECT_EQ(determinant(matrix4i), 0);
+  EXPECT_EQ(determinant(matrix4u), static_cast<UInt32>(0));
+  EXPECT_EQ(determinant(matrix3f), 0.0f);
+  EXPECT_EQ(determinant(matrix3d), 0.0);
+  EXPECT_EQ(determinant(matrix3i), 0);
+  EXPECT_EQ(determinant(matrix3u), static_cast<UInt32>(0));
+  EXPECT_EQ(determinant(matrix2f), -2.0f);
+  EXPECT_EQ(determinant(matrix2d), -2.0);
+  EXPECT_EQ(determinant(matrix2i), -2);
+  EXPECT_EQ(determinant(matrix2u),
+            static_cast<UInt32>(Limits::Max<UInt32> - 1));
+}
+
+TEST_F(MatrixTest, Inverse) {
+  Matrix2F expected2f{-2.0f, 1.0f, 1.5f, -0.5f};
+  Matrix2D expected2d{-2.0, 1.0, 1.5, -0.5};
+  Matrix2F inverse2f = inverse(matrix2f);
+  Matrix2D inverse2d = inverse(matrix2d);
+  EXPECT_EQ(inverse2f, expected2f);
+  EXPECT_EQ(inverse2d, expected2d);
+
+  Matrix3F expected3f{};
+  Matrix3D expected3d{};
+  Matrix3F inverse3f = inverse(matrix3f);
+  Matrix3D inverse3d = inverse(matrix3d);
+  EXPECT_EQ(inverse3f, expected3f);
+  EXPECT_EQ(inverse3d, expected3d);
+  Matrix4F expected4f{};
+  Matrix4D expected4d{};
+  Matrix4F inverse4f = inverse(matrix4f);
+  Matrix4D inverse4d = inverse(matrix4d);
+  EXPECT_EQ(inverse4f, expected4f);
+  EXPECT_EQ(inverse4d, expected4d);
+
+  Matrix4F transform4f{1.0f, 0.0f, 0.0f, 5.0f, 0.0f, 1.0f, 0.0f, -3.0f,
+                       0.0f, 0.0f, 1.0f, 2.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+  Matrix4F inverseTransform4f = inverse(transform4f);
+  Matrix4F expectedInverseTransform4f{1.0f, 0.0f, 0.0f, -5.0f, 0.0f, 1.0f,
+                                      0.0f, 3.0f, 0.0f, 0.0f,  1.0f, -2.0f,
+                                      0.0f, 0.0f, 0.0f, 1.0f};
+  EXPECT_EQ(inverseTransform4f, expectedInverseTransform4f);
+  Matrix4D transform4d{1.0, 0.0, 0.0, 5.0, 0.0, 1.0, 0.0, -3.0,
+                       0.0, 0.0, 1.0, 2.0, 0.0, 0.0, 0.0, 1.0};
+  Matrix4D inverseTransform4d = inverse(transform4d);
+  Matrix4D expectedInverseTransform4d{1.0, 0.0, 0.0, -5.0, 0.0, 1.0, 0.0, 3.0,
+                                      0.0, 0.0, 1.0, -2.0, 0.0, 0.0, 0.0, 1.0};
+  EXPECT_EQ(inverseTransform4d, expectedInverseTransform4d);
+
+  Matrix3F transform3f{0.0f, -1.0f, 2.0f, 1.0f, 0.0f, 3.0f, 0.0f, 0.0f, 1.0f};
+  Matrix3F inverseTransform3f = inverse(transform3f);
+  Matrix3F expectedInverseTransform3f{0.0f, 1.0f, -3.0f, -1.0f, 0.0f,
+                                      2.0f, 0.0f, 0.0f,  1.0f};
+  EXPECT_EQ(inverseTransform3f, expectedInverseTransform3f);
+  Matrix3D transform3d{0.0, -1.0, 2.0, 1.0, 0.0, 3.0, 0.0, 0.0, 1.0};
+  Matrix3D inverseTransform3d = inverse(transform3d);
+  Matrix3D expectedInverseTransform3d{0.0, 1.0, -3.0, -1.0, 0.0,
+                                      2.0, 0.0, 0.0,  1.0};
+  EXPECT_EQ(inverseTransform3d, expectedInverseTransform3d);
+
+  Matrix2F transform2f{0.0f, -1.0f, 1.0f, 0.0f};
+  Matrix2F inverseTransform2f = inverse(transform2f);
+  Matrix2F expectedInverseTransform2f{0.0f, 1.0f, -1.0f, 0.0f};
+  EXPECT_EQ(inverseTransform2f, expectedInverseTransform2f);
+  Matrix2D transform2d{0.0, -1.0, 1.0, 0.0};
+  Matrix2D inverseTransform2d = inverse(transform2d);
+  Matrix2D expectedInverseTransform2d{0.0, 1.0, -1.0, 0.0};
+  EXPECT_EQ(inverseTransform2d, expectedInverseTransform2d);
 }
 }  // namespace Neat

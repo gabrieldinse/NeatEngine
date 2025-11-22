@@ -118,6 +118,8 @@ inline constexpr Vector<2, T> operator*(const Matrix<2, 2, T> &m,
 template <typename T>
 inline constexpr Matrix<2, 2, T> operator/(const Matrix<2, 2, T> &m,
                                            const T &scalar) {
+  NT_CORE_ASSERT(scalar != Zero<T>,
+                 "Division by zero in matrix-scalar division.");
   return Matrix<2, 2, T>{m(0) / scalar, m(1) / scalar, m(2) / scalar,
                          m(3) / scalar};
 }
@@ -198,6 +200,8 @@ inline constexpr Matrix<2, 2, T> &Matrix<2, 2, T>::operator*=(
 template <typename T>
 template <typename U>
 inline constexpr Matrix<2, 2, T> &Matrix<2, 2, T>::operator/=(const U &scalar) {
+  NT_CORE_ASSERT(scalar != Zero<T>,
+                 "Division by zero in matrix-scalar division.");
   elements[0] /= scalar;
   elements[1] /= scalar;
   elements[2] /= scalar;
@@ -306,10 +310,14 @@ inline Matrix<2, 2, T> transpose(const Matrix<2, 2, T> &m) {
 
 template <typename T>
 inline Matrix<2, 2, T> inverse(const Matrix<2, 2, T> &m) {
-  T inverse_determinant = One<T> / (m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1));
+  T det = determinant(m);
+  if (det == Zero<T>) {
+    return Matrix<2, 2, T>{};
+  }
+  T inverseDeterminant = One<T> / det;
 
   return Matrix<2, 2, T>(
-      m(1, 1) * inverse_determinant, -m(0, 1) * inverse_determinant,
-      -m(1, 0) * inverse_determinant, m(0, 0) * inverse_determinant);
+      m(1, 1) * inverseDeterminant, -m(0, 1) * inverseDeterminant,
+      -m(1, 0) * inverseDeterminant, m(0, 0) * inverseDeterminant);
 }
 }  // namespace Neat

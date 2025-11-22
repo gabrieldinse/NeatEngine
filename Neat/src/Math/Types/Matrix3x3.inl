@@ -152,6 +152,8 @@ inline constexpr Vector<3, T> operator*(const Matrix<3, 3, T> &m,
 template <typename T>
 inline constexpr Matrix<3, 3, T> operator/(const Matrix<3, 3, T> &m,
                                            const T &scalar) {
+  NT_CORE_ASSERT(scalar != Zero<T>,
+                 "Division by zero in matrix-scalar division.");
   return Matrix<3, 3, T>{m(0) / scalar, m(1) / scalar, m(2) / scalar,
                          m(3) / scalar, m(4) / scalar, m(5) / scalar,
                          m(6) / scalar, m(7) / scalar, m(8) / scalar};
@@ -254,6 +256,8 @@ inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator*=(
 template <typename T>
 template <typename U>
 inline constexpr Matrix<3, 3, T> &Matrix<3, 3, T>::operator/=(const U &scalar) {
+  NT_CORE_ASSERT(scalar != Zero<T>,
+                 "Division by zero in matrix-scalar division.");
   elements[0] /= scalar;
   elements[1] /= scalar;
   elements[2] /= scalar;
@@ -372,17 +376,21 @@ inline Matrix<3, 3, T> transpose(const Matrix<3, 3, T> &m) {
 
 template <typename T>
 inline Matrix<3, 3, T> inverse(const Matrix<3, 3, T> &m) {
-  T inverse_determinant = One<T> / determinant(m);
+  T det = determinant(m);
+  if (det == Zero<T>) {
+    return Matrix<3, 3, T>{};
+  }
+  T inverseDeterminant = One<T> / det;
 
   return Matrix<3, 3, T>{
-      (m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2)) * inverse_determinant,
-      -(m(0, 1) * m(2, 2) - m(2, 1) * m(0, 2)) * inverse_determinant,
-      (m(0, 1) * m(1, 2) - m(1, 1) * m(0, 2)) * inverse_determinant,
-      -(m(1, 0) * m(2, 2) - m(2, 0) * m(1, 2)) * inverse_determinant,
-      (m(0, 0) * m(2, 2) - m(2, 0) * m(0, 2)) * inverse_determinant,
-      -(m(0, 0) * m(1, 2) - m(1, 0) * m(0, 2)) * inverse_determinant,
-      (m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1)) * inverse_determinant,
-      -(m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1)) * inverse_determinant,
-      (m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1)) * inverse_determinant};
+      (m(1, 1) * m(2, 2) - m(2, 1) * m(1, 2)) * inverseDeterminant,
+      -(m(0, 1) * m(2, 2) - m(2, 1) * m(0, 2)) * inverseDeterminant,
+      (m(0, 1) * m(1, 2) - m(1, 1) * m(0, 2)) * inverseDeterminant,
+      -(m(1, 0) * m(2, 2) - m(2, 0) * m(1, 2)) * inverseDeterminant,
+      (m(0, 0) * m(2, 2) - m(2, 0) * m(0, 2)) * inverseDeterminant,
+      -(m(0, 0) * m(1, 2) - m(1, 0) * m(0, 2)) * inverseDeterminant,
+      (m(1, 0) * m(2, 1) - m(2, 0) * m(1, 1)) * inverseDeterminant,
+      -(m(0, 0) * m(2, 1) - m(2, 0) * m(0, 1)) * inverseDeterminant,
+      (m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1)) * inverseDeterminant};
 }
 }  // namespace Neat
