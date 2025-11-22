@@ -1,6 +1,10 @@
 #pragma once
 
-#include "Components/Components.hpp"
+#include "Math/Matrix.hpp"
+#include "Math/Vector.hpp"
+#include "Components/TransformComponent.hpp"
+#include "Components/RenderableSpriteComponent.hpp"
+#include "Components/CameraComponent.hpp"
 
 #include <rfl.hpp>
 

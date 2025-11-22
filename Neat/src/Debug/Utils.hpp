@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Core/Types.hpp"
-
 namespace Neat {
 template <size_t N>
 struct ChangeResult {

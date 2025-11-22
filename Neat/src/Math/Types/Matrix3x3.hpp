@@ -4,10 +4,7 @@
 #include <span>
 
 #include "TypeMatrixMxN.hpp"
-#include "TypeVectorN.hpp"
 #include "Vector3.hpp"
-
-#include "Core/Assert.hpp"
 
 namespace Neat {
 template <typename T>
@@ -150,4 +147,4 @@ template <typename T>
 inline Matrix<3, 3, T> inverse(const Matrix<3, 3, T> &m);
 }  // namespace Neat
 
-#include "Math/Types/Matrix3x3.inl"
+#include "Matrix3x3.inl"

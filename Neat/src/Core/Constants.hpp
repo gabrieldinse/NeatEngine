@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstddef>
-
 #include "Types.hpp"
 #include "Limits.hpp"
 

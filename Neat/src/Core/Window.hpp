@@ -1,14 +1,9 @@
 #pragma once
 
-#include <memory>
-#include <string>
-
-#include "PlatformDetection.hpp"
 #include "Types.hpp"
 #include "WindowProperties.hpp"
 
 #include "EventDispatching/EventDispatcher.hpp"
-#include "Core/Window.hpp"
 #include "Graphics/GraphicsContext.hpp"
 
 struct GLFWwindow;

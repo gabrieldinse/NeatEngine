@@ -5,9 +5,7 @@
 #include "Core/Input.hpp"
 #include "Core/KeyCodes.hpp"
 #include "Core/MouseButtonCodes.hpp"
-#include "Math/Projection.hpp"
 #include "Math/Trigonometric.hpp"
-#include "Math/Transform.hpp"
 
 namespace Neat {
 EditorCamera::EditorCamera(const PerspectiveProperties& perspectiveProperties,

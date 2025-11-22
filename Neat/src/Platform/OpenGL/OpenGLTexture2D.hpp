@@ -1,11 +1,9 @@
 #pragma once
 
-#include <cstdint>
-#include <memory>
 #include <string>
 
 #include "Core/Types.hpp"
-#include "Math/Vector.hpp"
+#include "Math/Types/Vector2.hpp"
 #include "Graphics/Texture2D.hpp"
 
 namespace Neat {

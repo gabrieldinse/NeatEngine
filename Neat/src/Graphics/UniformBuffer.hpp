@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Types.hpp"
-#include "Math/Matrix.hpp"
+#include "Math/Types/Matrix4x4.hpp"
 
 namespace Neat {
 class UniformBuffer {

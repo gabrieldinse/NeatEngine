@@ -1,7 +1,7 @@
 #include "NeatPCH.hpp"
 
 #include "UniformBuffer.hpp"
-#include "Renderer.hpp"
+#include "RendererAPI.hpp"
 #include "Platform/OpenGL/OpenGLUniformBuffer.hpp"
 
 namespace Neat {

@@ -2,10 +2,10 @@
 
 #include "EditorCamera.hpp"
 
-#include "ECS/ECS.hpp"
+#include "ECS/EntityManager.hpp"
+#include "ECS/SystemManager.hpp"
 #include "EventDispatching/EventDispatcher.hpp"
 #include "EventDispatching/EventConnectionHandles.hpp"
-#include "Systems/Systems.hpp"
 #include "Components/ActiveCameraTagComponent.hpp"
 #include "Core/Constants.hpp"
 

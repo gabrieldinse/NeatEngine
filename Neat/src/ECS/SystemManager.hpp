@@ -1,13 +1,11 @@
 #pragma once
 
-#include <memory>
 #include <unordered_map>
 #include <utility>
 #include <optional>
 
 #include "System.hpp"
 
-#include "Core/Log.hpp"
 #include "Utils/NonCopyable.hpp"
 
 namespace Neat {

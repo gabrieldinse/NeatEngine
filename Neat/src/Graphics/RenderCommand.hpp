@@ -1,12 +1,10 @@
 #pragma once
 
-#include <memory>
-
 #include "VertexArray.hpp"
 #include "RendererAPI.hpp"
 
 #include "Core/Types.hpp"
-#include "Math/Vector.hpp"
+#include "Math/Types/Vector4.hpp"
 #include "Debug/Debug.hpp"
 
 namespace Neat {

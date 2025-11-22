@@ -3,7 +3,7 @@
 #include "VertexArray.hpp"
 
 #include "Core/Types.hpp"
-#include "Math/Vector.hpp"
+#include "Math/Types/Vector4.hpp"
 
 namespace Neat {
 class RendererAPI {

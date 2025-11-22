@@ -1,7 +1,7 @@
 #include "NeatPCH.hpp"
 
-#include "Renderer.hpp"
 #include "ShaderProgram.hpp"
+#include "RendererAPI.hpp"
 
 #include "Platform/OpenGL/OpenGLShaderProgram.hpp"
 

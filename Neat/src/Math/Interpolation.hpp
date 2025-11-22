@@ -41,4 +41,4 @@ inline constexpr Quaternion<T> slerp(const Quaternion<T> &a,
                                      const Quaternion<T> &b, const U &t);
 }  // namespace Neat
 
-#include "Math/Interpolation.inl"
+#include "Interpolation.inl"

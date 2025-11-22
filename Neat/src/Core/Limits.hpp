@@ -2,8 +2,6 @@
 
 #include <limits>
 
-#include "Types.hpp"
-
 namespace Neat {
 namespace Limits {
 template <typename T>

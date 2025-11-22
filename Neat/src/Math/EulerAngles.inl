@@ -1,4 +1,3 @@
-#include "Constants.hpp"
 #include "Trigonometric.hpp"
 
 namespace Neat {

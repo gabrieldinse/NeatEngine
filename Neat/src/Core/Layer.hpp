@@ -1,8 +1,5 @@
 #pragma once
 
-#include <string>
-
-#include "PlatformDetection.hpp"
 #include "Types.hpp"
 
 #include "EventDispatching/EventDispatcher.hpp"

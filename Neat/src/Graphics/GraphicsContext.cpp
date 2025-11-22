@@ -3,7 +3,7 @@
 #include "GraphicsContext.hpp"
 
 #include "Platform/OpenGL/OpenGLGraphicsContext.hpp"
-#include "Graphics/Renderer.hpp"
+#include "Graphics/RendererAPI.hpp"
 
 namespace Neat {
 Scope<GraphicsContext> GraphicsContext::create(void *window) {

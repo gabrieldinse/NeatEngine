@@ -4,8 +4,6 @@
 #include <bitset>
 #include <iterator>
 #include <ostream>
-#include <queue>
-#include <string>
 #include <tuple>
 #include <type_traits>
 #include <vector>
@@ -14,7 +12,6 @@
 #include "Component.hpp"
 
 #include "Core/Limits.hpp"
-#include "Core/Log.hpp"
 #include "Core/Assert.hpp"
 #include "Core/Types.hpp"
 #include "EventDispatching/EventDispatcher.hpp"
@@ -870,14 +867,14 @@ class EntityManager : public NonCopyable {
 
   template <typename C>
   [[nodiscard]] ComponentMask createComponentMask(
-      const ComponentHandle<C> &componentHandle) {
+      [[maybe_unused]] const ComponentHandle<C> &componentHandle) {
     return createComponentMask<C>();
   }
 
   template <typename C1, typename... Cn>
   [[nodiscard]] ComponentMask createComponentMask(
-      const ComponentHandle<C1> &componentHandle1,
-      const ComponentHandle<Cn> &...others) {
+      [[maybe_unused]] const ComponentHandle<C1> &componentHandle1,
+      [[maybe_unused]] const ComponentHandle<Cn> &...others) {
     return createComponentMask<C1, Cn...>();
   }
 

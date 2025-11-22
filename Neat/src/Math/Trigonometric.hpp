@@ -104,4 +104,4 @@ template <UInt32 N, typename T>
 inline Vector<N, T> atan2(const Vector<N, T> &vy, const Vector<N, T> &vx);
 }  // namespace Neat
 
-#include "Math/Trigonometric.inl"
+#include "Trigonometric.inl"

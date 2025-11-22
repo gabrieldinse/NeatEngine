@@ -3,7 +3,7 @@
 #include <initializer_list>
 
 #include "Core/Types.hpp"
-#include "Math/Vector.hpp"
+#include "Math/Types/Vector2.hpp"
 
 namespace Neat {
 enum class FramebufferColorFormat {

@@ -1,7 +1,7 @@
 #include "NeatPCH.hpp"
 
 #include "Texture2D.hpp"
-#include "Renderer.hpp"
+#include "RendererAPI.hpp"
 
 #include "Platform/OpenGL/OpenGLTexture2D.hpp"
 

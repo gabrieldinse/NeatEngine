@@ -40,4 +40,4 @@ Quaternion<T> rotate(const Quaternion<T> &q, const T &angleRadians,
                      const Vector<3, T> &rotationAxis);
 }  // namespace Neat
 
-#include "Math/Transform.inl"
+#include "Transform.inl"

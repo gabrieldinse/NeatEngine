@@ -1,7 +1,6 @@
 #pragma once
 
 #include <array>
-#include <span>
 
 #include "TypeMatrixMxN.hpp"
 #include "TypeVectorN.hpp"
@@ -208,4 +207,4 @@ inline constexpr Vector<4, T> rotate(const Quaternion<T> &q,
                                      const Vector<4, T> &v);
 }  // namespace Neat
 
-#include "Math/Types/TypeQuaternion.inl"
+#include "TypeQuaternion.inl"

@@ -1,9 +1,6 @@
 #include "NeatPCH.hpp"
 
-#include "Renderer.hpp"
 #include "ShaderLibrary.hpp"
-
-#include "Platform/OpenGL/OpenGLShaderProgram.hpp"
 
 namespace Neat {
 void ShaderLibrary::add(const Ref<ShaderProgram> &shader) {

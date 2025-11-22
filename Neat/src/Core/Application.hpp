@@ -1,6 +1,5 @@
 #pragma once
 
-#include "PlatformDetection.hpp"
 #include "LayerGroup.hpp"
 #include "Window.hpp"
 #include "ApplicationProperties.hpp"
@@ -9,7 +8,6 @@
 #include "Events/WindowCloseEvent.hpp"
 #include "Events/WindowResizeEvent.hpp"
 #include "EventDispatching/EventDispatcher.hpp"
-#include "ImGui/ImGuiRender.hpp"
 
 namespace Neat {
 class Application {

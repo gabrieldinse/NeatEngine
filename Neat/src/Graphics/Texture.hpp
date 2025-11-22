@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Types.hpp"
-#include "Math/Vector.hpp"
+#include "Math/Types/Vector2.hpp"
 
 namespace Neat {
 class Texture {

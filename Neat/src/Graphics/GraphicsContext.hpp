@@ -1,7 +1,5 @@
 #pragma once
 
-#include "GraphicsContext.hpp"
-
 namespace Neat {
 class GraphicsContext {
  public:

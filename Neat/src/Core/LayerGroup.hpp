@@ -1,7 +1,5 @@
 #pragma once
 
-#include <functional>
-#include <memory>
 #include <vector>
 
 #include "Layer.hpp"

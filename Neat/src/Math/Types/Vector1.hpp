@@ -1,13 +1,10 @@
 #pragma once
 
 #include <cmath>
-#include <type_traits>
 #include <array>
 #include <tuple>
 
 #include "TypeVectorN.hpp"
-
-#include "Core/Assert.hpp"
 
 namespace Neat {
 template <typename T>
@@ -140,4 +137,4 @@ template <typename T>
 inline Vector<1, T> normalize(const Vector<1, T> &v);
 }  // namespace Neat
 
-#include "Math/Types/Vector1.inl"
+#include "Vector1.inl"

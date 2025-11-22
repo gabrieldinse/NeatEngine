@@ -1,7 +1,7 @@
 #include <cmath>
 
 #include "Common.hpp"
-#include "Trigonometric.hpp"
+#include "Constants.hpp"
 #include "Types/FunctorDoubleVector.hpp"
 #include "Types/FunctorVector.hpp"
 

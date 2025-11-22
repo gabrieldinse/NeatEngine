@@ -3,16 +3,24 @@
 #include "Reflectors.hpp"
 #include "ComponentSerializationRegistry.hpp"
 
+#include "Components/ActiveCameraTagComponent.hpp"
+#include "Components/BoxCollider2DComponent.hpp"
+#include "Components/CameraComponent.hpp"
+#include "Components/LabelComponent.hpp"
+#include "Components/RenderableSpriteComponent.hpp"
+#include "Components/RigidBody2DComponent.hpp"
+#include "Components/TransformComponent.hpp"
+
 namespace Neat {
 ComponentSerializationRegistry::ComponentSerializationRegistry() {
   NT_PROFILE_FUNCTION();
 
-  registerComponent<LabelComponent>("LabelComponent");
-  registerComponent<TransformComponent>("TransformComponent");
-  registerComponent<RenderableSpriteComponent>("RenderableSpriteComponent");
   registerComponent<ActiveCameraTagComponent>("ActiveCameraTagComponent");
-  registerComponent<CameraComponent>("CameraComponent");
   registerComponent<BoxCollider2DComponent>("BoxCollider2DComponent");
+  registerComponent<CameraComponent>("CameraComponent");
+  registerComponent<LabelComponent>("LabelComponent");
+  registerComponent<RenderableSpriteComponent>("RenderableSpriteComponent");
   registerComponent<RigidBody2DComponent>("RigidBody2DComponent");
+  registerComponent<TransformComponent>("TransformComponent");
 }
 }  // namespace Neat

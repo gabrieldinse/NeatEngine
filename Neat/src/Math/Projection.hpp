@@ -23,4 +23,4 @@ Matrix<4, 4, T> lookAtRightHandView(const Vector<3, T> &eye,
                                     const Vector<3, T> &upDirection);
 }  // namespace Neat
 
-#include "Math/Projection.inl"
+#include "Projection.inl"

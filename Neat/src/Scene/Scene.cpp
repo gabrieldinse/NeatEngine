@@ -4,11 +4,10 @@
 
 #include "Components/CameraComponent.hpp"
 #include "Components/TransformComponent.hpp"
-#include "Components/LabelComponent.hpp"
-#include "Components/LabelComponent.hpp"
 #include "Graphics/RenderCommand.hpp"
 #include "Graphics/Renderer2D.hpp"
-#include "Math/Matrix.hpp"
+#include "Systems/Render2DSystem.hpp"
+#include "Systems/Physics2DSystem.hpp"
 
 namespace Neat {
 Scene::Scene(const Ref<EventDispatcher> &eventDispatcher, LayerID layerID) {

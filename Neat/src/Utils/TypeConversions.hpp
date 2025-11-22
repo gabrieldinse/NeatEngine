@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Math/Vector.hpp"
+#include "Math/Types/Vector4.hpp"
+#include "Math/Types/Vector2.hpp"
 
 struct ImVec4;
 struct ImVec2;

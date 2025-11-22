@@ -6,7 +6,10 @@
 
 #include "Math/Transform.hpp"
 #include "Math/Trigonometric.hpp"
-#include "Math/Vector.hpp"
+#include "Math/Types/Vector2.hpp"
+#include "Math/Types/Vector3.hpp"
+#include "Math/Types/Vector4.hpp"
+#include "Math/Types/Matrix4x4.hpp"
 
 namespace Neat {
 Scope<Renderer2D::Renderer2DData> Renderer2D::s_data =

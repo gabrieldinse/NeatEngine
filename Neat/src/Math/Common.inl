@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 
+#include "Constants.hpp"
 #include "Types/FunctorDoubleVector.hpp"
 #include "Types/FunctorTripleVector.hpp"
 #include "Types/FunctorVector.hpp"

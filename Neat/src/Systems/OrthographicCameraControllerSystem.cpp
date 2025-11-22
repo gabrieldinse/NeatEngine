@@ -2,9 +2,7 @@
 
 #include "OrthographicCameraControllerSystem.hpp"
 
-#include "Core/Application.hpp"
 #include "Core/Input.hpp"
-#include "Math/Transform.hpp"
 #include "ECS/EntityManager.hpp"
 #include "Components/ActiveCameraTagComponent.hpp"
 

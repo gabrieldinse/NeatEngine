@@ -1,4 +1,5 @@
 #include "Math/Exponential.hpp"
+#include "Core/Assert.hpp"
 
 namespace Neat {
 // Default constructor

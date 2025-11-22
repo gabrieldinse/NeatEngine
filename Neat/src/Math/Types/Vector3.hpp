@@ -173,4 +173,4 @@ template <typename T>
 inline Vector<3, T> normalize(const Vector<3, T> &v);
 }  // namespace Neat
 
-#include "Math/Types/Vector3.inl"
+#include "Vector3.inl"

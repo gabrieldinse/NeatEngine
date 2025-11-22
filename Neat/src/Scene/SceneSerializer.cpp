@@ -2,8 +2,6 @@
 
 #include "SceneSerializer.hpp"
 
-#include "Components/Components.hpp"
-
 #include <rfl/yaml.hpp>
 #include <rfl.hpp>
 

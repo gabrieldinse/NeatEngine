@@ -1,8 +1,5 @@
 #pragma once
 
-#include <memory>
-
-#include "PlatformDetection.hpp"
 #include "Types.hpp"
 
 #include <spdlog/spdlog.h>

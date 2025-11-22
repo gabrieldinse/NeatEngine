@@ -1,6 +1,5 @@
 #include "NeatPCH.hpp"
 
-#include "Core/Application.hpp"
 #include "Core/Input.hpp"
 
 #include <GLFW/glfw3.h>

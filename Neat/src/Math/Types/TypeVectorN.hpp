@@ -1,8 +1,5 @@
 #pragma once
 
-#include <iostream>
-
-#include "Math/Constants.hpp"
 #include "Core/Types.hpp"
 
 namespace Neat {

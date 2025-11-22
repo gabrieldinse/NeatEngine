@@ -3,7 +3,6 @@
 #include <array>
 #include <memory>
 
-#include "Color.hpp"
 #include "Texture2D.hpp"
 #include "VertexArray.hpp"
 #include "ShaderProgram.hpp"

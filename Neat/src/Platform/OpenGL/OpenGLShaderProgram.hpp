@@ -1,13 +1,15 @@
 #pragma once
 
-#include <memory>
 #include <string>
 #include <unordered_map>
 
 #include "Core/Types.hpp"
 #include "Graphics/ShaderProgram.hpp"
-#include "Math/Matrix.hpp"
-#include "Math/Vector.hpp"
+#include "Math/Types/Matrix4x4.hpp"
+#include "Math/Types/Matrix3x3.hpp"
+#include "Math/Types/Vector4.hpp"
+#include "Math/Types/Vector3.hpp"
+#include "Math/Types/Vector2.hpp"
 
 namespace Neat {
 class OpenGLShaderProgram : public ShaderProgram {

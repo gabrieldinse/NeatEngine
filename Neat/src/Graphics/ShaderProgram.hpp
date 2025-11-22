@@ -1,11 +1,13 @@
 #pragma once
 
-#include <memory>
 #include <string>
 
 #include "Core/Types.hpp"
-#include "Math/Matrix.hpp"
-#include "Math/Vector.hpp"
+#include "Math/Types/Vector2.hpp"
+#include "Math/Types/Vector3.hpp"
+#include "Math/Types/Vector4.hpp"
+#include "Math/Types/Matrix3x3.hpp"
+#include "Math/Types/Matrix4x4.hpp"
 
 namespace Neat {
 class ShaderProgram {

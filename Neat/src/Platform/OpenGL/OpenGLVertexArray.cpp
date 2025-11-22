@@ -3,8 +3,6 @@
 #include "OpenGLVertexArray.hpp"
 #include "OpenGLUtils.hpp"
 
-#include "Graphics/Renderer.hpp"
-
 #include <glad/glad.h>
 
 namespace Neat {

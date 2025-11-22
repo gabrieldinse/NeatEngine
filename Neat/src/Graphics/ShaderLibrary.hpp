@@ -1,14 +1,11 @@
 #pragma once
 
-#include <memory>
 #include <string>
 #include <unordered_map>
 
 #include "ShaderProgram.hpp"
 
 #include "Core/Types.hpp"
-#include "Math/Matrix.hpp"
-#include "Math/Vector.hpp"
 
 namespace Neat {
 class ShaderLibrary {

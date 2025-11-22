@@ -7,6 +7,8 @@
 
 #include "Graphics/Renderer.hpp"
 
+#include "ImGui/ImGuiRender.hpp"
+
 namespace Neat {
 Application *Application::s_instance = nullptr;
 

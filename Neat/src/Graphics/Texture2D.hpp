@@ -6,7 +6,6 @@
 #include "Texture.hpp"
 
 #include "Core/Types.hpp"
-#include "Math/Vector.hpp"
 
 namespace Neat {
 enum class Texture2DFilter {

@@ -3,7 +3,7 @@
 #include "Framebuffer.hpp"
 
 #include "Platform/OpenGL/OpenGLFramebuffer.hpp"
-#include "Graphics/Renderer.hpp"
+#include "Graphics/RendererAPI.hpp"
 
 namespace Neat {
 Ref<Framebuffer> Framebuffer::create(const FramebufferSpecification &spec) {

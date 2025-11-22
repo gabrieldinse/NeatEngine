@@ -2,6 +2,7 @@
 
 #include "Renderer.hpp"
 #include "Renderer2D.hpp"
+#include "RenderCommand.hpp"
 
 namespace Neat {
 Scope<Renderer::SceneData> Renderer::m_sceneData =

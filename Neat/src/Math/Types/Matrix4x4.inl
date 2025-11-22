@@ -1,4 +1,4 @@
-#pragma once
+#include "Core/Assert.hpp"
 
 namespace Neat {
 // Default constructor

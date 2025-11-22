@@ -4,9 +4,9 @@
 #include "EventDispatching/EventDispatcher.hpp"
 #include "Components/CameraComponent.hpp"
 #include "Components/TransformComponent.hpp"
-#include "Math/Matrix.hpp"
-#include "Math/Vector.hpp"
-#include "Math/Quaternion.hpp"
+#include "Math/Types/Matrix4x4.hpp"
+#include "Math/Types/Vector3.hpp"
+#include "Math/Types/Vector2.hpp"
 
 namespace Neat {
 

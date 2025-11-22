@@ -1,12 +1,10 @@
 #pragma once
 
-#include "Debug/Debug.hpp"
 #include "ECS/System.hpp"
 #include "ECS/EntityManager.hpp"
 #include "Events/MouseScrolledEvent.hpp"
-#include "Events/MouseMovedEvent.hpp"
 #include "EventDispatching/EventDispatcher.hpp"
-#include "Math/Vector.hpp"
+#include "Math/Types/Vector2.hpp"
 #include "Components/CameraComponent.hpp"
 #include "Components/TransformComponent.hpp"
 

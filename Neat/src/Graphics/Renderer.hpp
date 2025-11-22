@@ -1,7 +1,8 @@
 #pragma once
 
-#include "RenderCommand.hpp"
-#include "ShaderProgram.hpp"
+#include "Core/Types.hpp"
+#include "Math/Types/Matrix4x4.hpp"
+#include "Graphics/RendererAPI.hpp"
 
 namespace Neat {
 class Renderer {

@@ -1,13 +1,8 @@
 #pragma once
 
-#include <utility>
-
-#include "PlatformDetection.hpp"
 #include "KeyCodes.hpp"
 #include "MouseButtonCodes.hpp"
 #include "Window.hpp"
-
-#include "Math/Vector.hpp"
 
 namespace Neat {
 class Input {

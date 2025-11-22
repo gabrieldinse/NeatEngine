@@ -2,7 +2,6 @@
 
 #include "Window.hpp"
 
-#include "Core/Application.hpp"
 #include "Core/Log.hpp"
 #include "Events/KeyPressedEvent.hpp"
 #include "Events/KeyReleasedEvent.hpp"
@@ -11,6 +10,8 @@
 #include "Events/MouseButtonReleasedEvent.hpp"
 #include "Events/MouseMovedEvent.hpp"
 #include "Events/MouseScrolledEvent.hpp"
+#include "Events/WindowResizeEvent.hpp"
+#include "Events/WindowCloseEvent.hpp"
 #include "EventDispatching/EventDispatcher.hpp"
 
 #include <GLFW/glfw3.h>
@@ -182,13 +183,11 @@ void mouseButtonActionCallback(GLFWwindow *window, Int32 button, Int32 action,
 
   switch (action) {
     case GLFW_PRESS: {
-      MouseButtonPressedEvent event(static_cast<MouseButton>(button));
       windowData.eventDispatcher->enqueue<MouseButtonPressedEvent>(
           static_cast<MouseButton>(button));
       break;
     }
     case GLFW_RELEASE: {
-      MouseButtonReleasedEvent event(static_cast<MouseButton>(button));
       windowData.eventDispatcher->enqueue<MouseButtonReleasedEvent>(
           static_cast<MouseButton>(button));
       break;
@@ -200,7 +199,6 @@ void mouseScrollCallback(GLFWwindow *window, double xOffset, double yOffset) {
   auto &windowData =
       *static_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
-  MouseScrolledEvent event((float)xOffset, (float)yOffset);
   windowData.eventDispatcher->enqueue<MouseScrolledEvent>((float)xOffset,
                                                           (float)yOffset);
 }
@@ -209,7 +207,6 @@ void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos) {
   auto &windowData =
       *static_cast<WindowData *>(glfwGetWindowUserPointer(window));
 
-  MouseMovedEvent event((float)xPos, (float)yPos);
   windowData.eventDispatcher->enqueue<MouseMovedEvent>((float)xPos,
                                                        (float)yPos);
 }

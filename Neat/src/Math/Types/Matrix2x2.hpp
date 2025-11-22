@@ -4,10 +4,7 @@
 #include <span>
 
 #include "TypeMatrixMxN.hpp"
-#include "TypeVectorN.hpp"
 #include "Vector2.hpp"
-
-#include "Core/Assert.hpp"
 
 namespace Neat {
 template <typename T>

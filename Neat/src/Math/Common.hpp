@@ -82,4 +82,4 @@ Vector<N, T> refract(const Vector<N, T> &v, const Vector<N, T> &normal,
 // Quaternion
 }  // namespace Neat
 
-#include "Math/Common.inl"
+#include "Common.inl"

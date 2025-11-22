@@ -3,9 +3,6 @@
 #include <random>
 #include <mutex>
 
-#include "Core/Types.hpp"
-#include "Core/Limits.hpp"
-
 namespace Neat {
 class Random {
  public:

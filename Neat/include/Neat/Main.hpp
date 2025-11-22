@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core/Log.hpp"
-#include "Core/Types.hpp"
 #include "Debug/Debug.hpp"
 
 extern Neat::Scope<Neat::Application> Neat::createApplication(

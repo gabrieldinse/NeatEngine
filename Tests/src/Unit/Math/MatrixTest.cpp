@@ -1,11 +1,10 @@
-#include <ranges>
+#include <algorithm>
 
 #include <gtest/gtest.h>
 
 #include <Math/Matrix.hpp>
 
 #include "Math/Types/Matrix2x2.hpp"
-#include "TestUtils.hpp"
 
 namespace Neat {
 class MatrixTest : public testing::Test {
