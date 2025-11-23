@@ -87,11 +87,12 @@ By default, `build.sh` will build all targets in Debug mode. To build an specifi
 
 ## Examples
 ### Flappy Spaceship
-This is the simplest possible implementation of a Flappy Bird-like game, meant to test the 2D rendering and check the ECS/events usage experience.
+This is a simple implementation of a Flappy Bird-like game, meant to test the 2D rendering and check the ECS/events usage experience.
 
 ![Flappy Spaceship](Resources/Images/FlappySpaceship.gif)
 
 ## Roadmap
+- Add unit tests to old modules (Math, Utils, etc).
 - Vulkan Rendering (probably replace OpenGL).
 - Add missing basic rendering features: draw circles, rectangles, lines, text.
 - Audio Engine (OpenAL).
