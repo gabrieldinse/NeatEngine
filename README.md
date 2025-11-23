@@ -7,11 +7,10 @@
 ![Compiler: MSVC](https://img.shields.io/badge/MSVC-2022%2B-blueviolet)
 ![License](https://img.shields.io/badge/license-Apache%202.0-green)
 
-Neat Engine is a in-progress, for learning puposes, game engine.
-
-Currently, it only supports OpenGL. Other Graphics APIs, like Vulkan, should be added in the future.
+Neat Engine is a in-progress, for learning purposes, C++23 game engine.
 
 ## Table of Contents
+- [Features](#features)
 - [Prerequisites](#prerequisites)
   - [Ubuntu](#ubuntu)
   - [Windows](#windows)
@@ -20,6 +19,16 @@ Currently, it only supports OpenGL. Other Graphics APIs, like Vulkan, should be 
 - [Examples](#examples)
   - [Flappy Spaceship](#flappy-spaceship)
 - [Roadmap](#roadmap)
+
+## Features
+- Application Framework (main loop, window management, input handling).
+- 2D OpenGL Rendering.
+- Entity Component System (ECS) with basic components and systems.
+- Event System.
+- Math Library (Vectors, Matrices, Quaternions).
+- Scene Management with basic serialization support.
+- 2D Physics.
+- Profiling System.
 
 ## Prerequisites
 
@@ -94,10 +103,13 @@ This is a simple implementation of a Flappy Bird-like game, meant to test the 2D
 ## Roadmap
 - Add unit tests to old modules (Math, Utils, etc).
 - Vulkan Rendering (probably replace OpenGL).
-- Add missing basic rendering features: draw circles, rectangles, lines, text.
+- Add missing basic 2D rendering features: draw circles, rectangles, lines, text.
 - Audio Engine (OpenAL).
   - Integrate with ECS.
 - Particle System.
 - Renderer on a separate thread (multithreading support initiative).
   - Rendering commands queue.
+- Finish the Editor (NeatEditor).
+- 3D Rendering.
+- 3D Physics.
 - Lua Scripting.
