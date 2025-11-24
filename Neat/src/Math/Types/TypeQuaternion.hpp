@@ -10,6 +10,8 @@ template <typename T>
 struct Quaternion {
   using Type = Quaternion<T>;
   using ValueType = T;
+  static constexpr UInt32 N = 4;
+  static constexpr UInt32 Size = N;
 
   std::array<T, 4> elements;
 

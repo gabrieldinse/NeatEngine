@@ -213,4 +213,19 @@ void expectNearMatrixValues(const T &matA, const T &matB) {
     EXPECT_EQ(matA, matB);
   }
 }
+
+template <typename T>
+void expectNearQuaternionValues(const T &quatA, const T &quatB) {
+  if constexpr (std::is_floating_point_v<typename T::ValueType>) {
+    for (UInt32 i = 0; i < T::Size; ++i) {
+      if constexpr (std::is_same_v<typename T::ValueType, float>) {
+        EXPECT_NEAR(quatA.elements[i], quatB.elements[i], 1e-4f);
+      } else {
+        EXPECT_NEAR(quatA.elements[i], quatB.elements[i], 1e-6f);
+      }
+    }
+  } else {
+    EXPECT_EQ(quatA, quatB);
+  }
+}
 }  // namespace Neat

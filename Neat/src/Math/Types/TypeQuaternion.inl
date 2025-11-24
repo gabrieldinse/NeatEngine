@@ -1,20 +1,23 @@
 #include "Math/Trigonometric.hpp"
 #include "Math/Constants.hpp"
 
+#include "Core/Assert.hpp"
+
 namespace Neat {
 // Quaternion/Matrix conversion
 template <typename T>
 Matrix<3, 3, T> matrix3Cast(const Quaternion<T> &q) {
+  Quaternion<T> normalizedQ = normalize(q);
   Matrix<3, 3, T> result{};
-  T qxx = q.x() * q.x();
-  T qyy = q.y() * q.y();
-  T qzz = q.z() * q.z();
-  T qxz = q.x() * q.z();
-  T qxy = q.x() * q.y();
-  T qyz = q.y() * q.z();
-  T qwx = q.w() * q.x();
-  T qwy = q.w() * q.y();
-  T qwz = q.w() * q.z();
+  T qxx = normalizedQ.x() * normalizedQ.x();
+  T qyy = normalizedQ.y() * normalizedQ.y();
+  T qzz = normalizedQ.z() * normalizedQ.z();
+  T qxz = normalizedQ.x() * normalizedQ.z();
+  T qxy = normalizedQ.x() * normalizedQ.y();
+  T qyz = normalizedQ.y() * normalizedQ.z();
+  T qwx = normalizedQ.w() * normalizedQ.x();
+  T qwy = normalizedQ.w() * normalizedQ.y();
+  T qwz = normalizedQ.w() * normalizedQ.z();
 
   result(0, 0) = One<T> - Two<T> * (qyy + qzz);
   result(1, 0) = Two<T> * (qxy + qwz);
@@ -248,11 +251,15 @@ inline Quaternion<T>::operator Matrix<4, 4, T>() const {
 // Elements accessing
 template <typename T>
 inline constexpr T &Quaternion<T>::operator[](UInt32 pos) {
+  NT_CORE_ASSERT(pos < 4, "Quaternion index out of bounds");
+
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Quaternion<T>::operator[](UInt32 pos) const {
+  NT_CORE_ASSERT(pos < 4, "Quaternion index out of bounds");
+
   return elements[pos];
 }
 
@@ -344,7 +351,7 @@ inline constexpr bool operator!=(const Quaternion<T> &qa,
 // Quaternion operations
 template <typename T>
 inline constexpr T dot(const Quaternion<T> &qa, const Quaternion<T> &qb) {
-  return qa.w * qb.w + qa.x * qb.x + qa.y + qb.y + qa.z * qb.z;
+  return qa.w() * qb.w() + qa.x() * qb.x() + qa.y() * qb.y() + qa.z() * qb.z();
 }
 
 template <typename T>

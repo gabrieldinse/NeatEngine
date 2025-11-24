@@ -2,6 +2,8 @@
 #include <gtest/gtest.h>
 
 #include <TestUtils.hpp>
+#include <cstring>
+#include "Math/Types/TypeQuaternion.hpp"
 
 namespace Neat {
 class QuaternionTest : public testing::Test {
@@ -81,17 +83,48 @@ TEST_F(QuaternionTest, ConversionCopyConstructor) {
   EXPECT_EQ(qfFromD.z(), 4.0f);
 }
 
-TEST_F(QuaternionTest, Matrix3Cast) {
-  Matrix3F expectedMatrixF{-0.6666667f, 0.1333333f,  0.7333333f,
-                           0.6666667f,  -0.3333333f, 0.6666667f,
-                           0.3333333f,  0.9333333f,  0.1333333f};
-  Matrix3F fromQuaternionF{matrix3Cast(quaternionf)};
-  expectNearMatrixValues(fromQuaternionF, expectedMatrixF);
+TEST_F(QuaternionTest, DotProduct) {
+  float dotF = dot(quaternionf, quaternionf);
+  EXPECT_FLOAT_EQ(dotF, 30.0f);
 
-  Matrix3D expectedMatrixD{-0.6666667, 0.1333333,  0.7333333,
-                           0.6666667,  -0.3333333, 0.6666667,
-                           0.3333333,  0.9333333,  0.1333333};
-  Matrix3D fromQuaternionD{matrix3Cast(quaterniond)};
-  expectNearMatrixValues(fromQuaternionD, expectedMatrixD);
+  double dotD = dot(quaterniond, quaterniond);
+  EXPECT_DOUBLE_EQ(dotD, 30.0);
+}
+
+TEST_F(QuaternionTest, Norm) {
+  float normF = norm(quaternionf);
+  EXPECT_FLOAT_EQ(normF, sqrt(30.0f));
+
+  double normD = norm(quaterniond);
+  EXPECT_DOUBLE_EQ(normD, sqrt(30.0));
+}
+
+TEST_F(QuaternionTest, Normalize) {
+  QuaternionF qfNormalized{normalize(quaternionf)};
+  expectNearQuaternionValues(
+      qfNormalized,
+      QuaternionF{0.18257418f, 0.36514837f, 0.54772256f, 0.73029673f});
+
+  QuaternionD qdNormalized{normalize(quaterniond)};
+  expectNearQuaternionValues(
+      qdNormalized, QuaternionD{0.18257418583505536, 0.3651483716701107,
+                                0.5477225575051661, 0.7302967433402214});
+}
+
+TEST_F(QuaternionTest, Matrix3Cast) {
+  Matrix3F expectedMatrix3F{-0.6666667f, 0.1333333f,  0.7333333f,
+                            0.6666667f,  -0.3333333f, 0.6666667f,
+                            0.3333333f,  0.9333333f,  0.1333333f};
+  Matrix3F matrix3F = matrix3Cast(quaternionf);
+  expectNearMatrixValues(matrix3F, expectedMatrix3F);
+
+  Matrix3D expectedMatrix3D{-0.6666666666666667, 0.13333333333333333,
+                             0.7333333333333333,
+                             0.6666666666666667, -0.3333333333333333,
+                             0.6666666666666667,
+                             0.3333333333333333, 0.9333333333333333,
+                             0.13333333333333333};
+  Matrix3D matrix3D = matrix3Cast(quaterniond);
+  expectNearMatrixValues(matrix3D, expectedMatrix3D);
 }
 }  // namespace Neat
