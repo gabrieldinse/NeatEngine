@@ -2,11 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include <Math/Matrix.hpp>
-
-#include "Math/Types/Matrix2x2.hpp"
-#include "Math/Types/Matrix3x3.hpp"
-#include "Math/Types/Matrix4x4.hpp"
+#include <TestUtils.hpp>
 
 namespace Neat {
 class MatrixTest : public testing::Test {

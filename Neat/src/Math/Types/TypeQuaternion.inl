@@ -1,12 +1,10 @@
-#include "TypeQuaternion.hpp"
-
 #include "Math/Trigonometric.hpp"
 #include "Math/Constants.hpp"
 
 namespace Neat {
 // Quaternion/Matrix conversion
 template <typename T>
-Matrix<3, 3, T> Matrix3Cast(const Quaternion<T> &q) {
+Matrix<3, 3, T> matrix3Cast(const Quaternion<T> &q) {
   Matrix<3, 3, T> result{};
   T qxx = q.x() * q.x();
   T qyy = q.y() * q.y();
@@ -32,12 +30,12 @@ Matrix<3, 3, T> Matrix3Cast(const Quaternion<T> &q) {
 }
 
 template <typename T>
-Matrix<4, 4, T> Matrix4Cast(const Quaternion<T> &q) {
-  return Matrix<4, 4, T>{Matrix3Cast(q)};
+Matrix<4, 4, T> matrix4Cast(const Quaternion<T> &q) {
+  return Matrix<4, 4, T>{matrix3Cast(q)};
 }
 
 template <typename T>
-Quaternion<T> QuaternionCast(const Matrix<3, 3, T> &m) {
+Quaternion<T> quaternionCast(const Matrix<3, 3, T> &m) {
   T four_x_squared_minus1 = m(0, 0) - m(1, 1) - m(2, 2);
   T four_y_squared_minus1 = m(1, 1) - m(0, 0) - m(2, 2);
   T four_z_squared_minus1 = m(2, 2) - m(0, 0) - m(1, 1);
@@ -88,8 +86,8 @@ Quaternion<T> QuaternionCast(const Matrix<3, 3, T> &m) {
 }
 
 template <typename T>
-Quaternion<T> QuaternionCast(const Matrix<4, 4, T> &m) {
-  return QuaternionCast(Matrix<3, 3, T>{m});
+Quaternion<T> quaternionCast(const Matrix<4, 4, T> &m) {
+  return quaternionCast(Matrix<3, 3, T>{m});
 }
 
 // Default constructor
@@ -121,12 +119,12 @@ inline constexpr Quaternion<T>::Quaternion(const Quaternion<U> &q)
 // Matrix constructor
 template <typename T>
 inline constexpr Quaternion<T>::Quaternion(const Matrix<3, 3, T> &rotation) {
-  *this = QuaternionCast(rotation);
+  *this = quaternionCast(rotation);
 }
 
 template <typename T>
 inline constexpr Quaternion<T>::Quaternion(const Matrix<4, 4, T> &rotation) {
-  *this = QuaternionCast(rotation);
+  *this = quaternionCast(rotation);
 }
 
 // Static factory constructors
@@ -157,12 +155,12 @@ inline constexpr Quaternion<T> Quaternion<T>::fromEulerAngles(
 // Member converters
 template <typename T>
 inline constexpr Matrix<3, 3, T> Quaternion<T>::toMatrix3() const {
-  return Matrix3Cast(*this);
+  return matrix3Cast(*this);
 }
 
 template <typename T>
 inline constexpr Matrix<4, 4, T> Quaternion<T>::toMatrix4() const {
-  return Matrix4Cast(*this);
+  return matrix4Cast(*this);
 }
 
 // Assignment operators
@@ -239,12 +237,12 @@ inline constexpr Quaternion<T> &Quaternion<T>::operator/=(U scalar) {
 // Explicit conversion operators
 template <typename T>
 inline Quaternion<T>::operator Matrix<3, 3, T>() const {
-  return Matrix3Cast(*this);
+  return matrix3Cast(*this);
 }
 
 template <typename T>
 inline Quaternion<T>::operator Matrix<4, 4, T>() const {
-  return Matrix4Cast(*this);
+  return matrix4Cast(*this);
 }
 
 // Elements accessing

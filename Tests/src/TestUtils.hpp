@@ -3,11 +3,7 @@
 #include <string>
 #include <type_traits>
 
-#include <ECS/ECS.hpp>
-#include <Math/Math.hpp>
-#include <Core/Layer.hpp>
-#include <Core/Limits.hpp>
-#include <Core/Constants.hpp>
+#include <Neat.hpp>
 
 namespace Neat {
 struct EventA {
@@ -191,7 +187,7 @@ class TestingLayer : public Layer {
 template <typename T>
 void expectNearVectorValues(const T &vecA, const T &vecB) {
   if constexpr (std::is_floating_point_v<typename T::ValueType>) {
-    for (UInt32 i = 0; i < T::N; ++i) {
+    for (UInt32 i = 0; i < T::Size; ++i) {
       if constexpr (std::is_same_v<typename T::ValueType, float>) {
         EXPECT_NEAR(vecA.elements[i], vecB.elements[i], 1e-4f);
       } else {
@@ -200,6 +196,21 @@ void expectNearVectorValues(const T &vecA, const T &vecB) {
     }
   } else {
     EXPECT_EQ(vecA, vecB);
+  }
+}
+
+template <typename T>
+void expectNearMatrixValues(const T &matA, const T &matB) {
+  if constexpr (std::is_floating_point_v<typename T::ValueType>) {
+    for (UInt32 i = 0; i < T::Size; ++i) {
+      if constexpr (std::is_same_v<typename T::ValueType, float>) {
+        EXPECT_NEAR(matA.elements[i], matB.elements[i], 1e-4f);
+      } else {
+        EXPECT_NEAR(matA.elements[i], matB.elements[i], 1e-6f);
+      }
+    }
+  } else {
+    EXPECT_EQ(matA, matB);
   }
 }
 }  // namespace Neat

@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "TestUtils.hpp"
-#include "Utils/TypeID.hpp"
+#include <TestUtils.hpp>
 
 namespace Neat {
 TEST(TypeIdTest, GetTypeId) {

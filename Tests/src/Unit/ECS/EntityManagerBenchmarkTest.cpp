@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 
-#include <ECS/ECS.hpp>
-#include <Core/Timer.hpp>
 #include <TestUtils.hpp>
 
 namespace Neat {

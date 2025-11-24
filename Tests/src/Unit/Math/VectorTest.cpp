@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 
-#include <Math/Vector.hpp>
+#include <TestUtils.hpp>
 
 namespace Neat {
 class VectorTest : public testing::Test {
@@ -63,6 +63,26 @@ TEST_F(VectorTest, VectorSizes) {
   EXPECT_EQ(Vector1D::N, 1);
   EXPECT_EQ(Vector1I::N, 1);
   EXPECT_EQ(Vector1U::N, 1);
+
+  EXPECT_EQ(Vector4F::Size, 4);
+  EXPECT_EQ(Vector4D::Size, 4);
+  EXPECT_EQ(Vector4I::Size, 4);
+  EXPECT_EQ(Vector4U::Size, 4);
+
+  EXPECT_EQ(Vector3F::Size, 3);
+  EXPECT_EQ(Vector3D::Size, 3);
+  EXPECT_EQ(Vector3I::Size, 3);
+  EXPECT_EQ(Vector3U::Size, 3);
+
+  EXPECT_EQ(Vector2F::Size, 2);
+  EXPECT_EQ(Vector2D::Size, 2);
+  EXPECT_EQ(Vector2I::Size, 2);
+  EXPECT_EQ(Vector2U::Size, 2);
+
+  EXPECT_EQ(Vector1F::Size, 1);
+  EXPECT_EQ(Vector1D::Size, 1);
+  EXPECT_EQ(Vector1I::Size, 1);
+  EXPECT_EQ(Vector1U::Size, 1);
 }
 
 TEST_F(VectorTest, IndexOperator) {

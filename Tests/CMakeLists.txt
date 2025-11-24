@@ -45,7 +45,7 @@ endif()
 
 # Include headers
 target_include_directories(NeatTests PUBLIC
-    ${NEAT_DIR}/src
+    ${NEAT_DIR}/include
     src
 )
 

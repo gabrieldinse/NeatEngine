@@ -2,7 +2,6 @@
 
 #include <ranges>
 
-#include <Core/LayerGroup.hpp>
 #include <TestUtils.hpp>
 
 namespace Neat {

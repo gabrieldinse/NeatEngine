@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include <EventDispatching/EventConnections.hpp>
 #include <TestUtils.hpp>
 
 namespace Neat {

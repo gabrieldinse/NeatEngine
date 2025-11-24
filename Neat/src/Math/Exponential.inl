@@ -3,8 +3,6 @@
 #include "Constants.hpp"
 #include "Types/FunctorDoubleVector.hpp"
 #include "Types/FunctorVector.hpp"
-#include "Types/TypeQuaternion.hpp"
-#include "Types/TypeVectorN.hpp"
 
 #include "Core/Limits.hpp"
 

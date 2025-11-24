@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 
-#include <Math/Vector.hpp>
+#include <TestUtils.hpp>
 
 namespace Neat {
 class QuaternionTest : public testing::Test {
@@ -79,5 +79,19 @@ TEST_F(QuaternionTest, ConversionCopyConstructor) {
   EXPECT_EQ(qfFromD.x(), 2.0f);
   EXPECT_EQ(qfFromD.y(), 3.0f);
   EXPECT_EQ(qfFromD.z(), 4.0f);
+}
+
+TEST_F(QuaternionTest, Matrix3Cast) {
+  Matrix3F expectedMatrixF{-0.6666667f, 0.1333333f,  0.7333333f,
+                           0.6666667f,  -0.3333333f, 0.6666667f,
+                           0.3333333f,  0.9333333f,  0.1333333f};
+  Matrix3F fromQuaternionF{matrix3Cast(quaternionf)};
+  expectNearMatrixValues(fromQuaternionF, expectedMatrixF);
+
+  Matrix3D expectedMatrixD{-0.6666667, 0.1333333,  0.7333333,
+                           0.6666667,  -0.3333333, 0.6666667,
+                           0.3333333,  0.9333333,  0.1333333};
+  Matrix3D fromQuaternionD{matrix3Cast(quaterniond)};
+  expectNearMatrixValues(fromQuaternionD, expectedMatrixD);
 }
 }  // namespace Neat

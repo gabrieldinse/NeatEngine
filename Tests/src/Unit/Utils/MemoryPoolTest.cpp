@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include <Utils/MemoryPool.hpp>
 #include <TestUtils.hpp>
 
 namespace Neat {

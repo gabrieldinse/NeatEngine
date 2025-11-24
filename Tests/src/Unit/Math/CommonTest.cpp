@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "TestUtils.hpp"
-#include "Math/Common.hpp"
+#include <TestUtils.hpp>
 
 namespace Neat {
 TEST(MathCommonTest, Min) {

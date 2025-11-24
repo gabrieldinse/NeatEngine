@@ -111,16 +111,16 @@ using QuaternionD = Quaternion<double>;
 
 // Quaternion/Matrix conversion
 template <typename T>
-Matrix<3, 3, T> Matrix3Cast(const Quaternion<T> &q);
+Matrix<3, 3, T> matrix3Cast(const Quaternion<T> &q);
 
 template <typename T>
-Matrix<4, 4, T> Matrix4Cast(const Quaternion<T> &q);
+Matrix<4, 4, T> matrix4Cast(const Quaternion<T> &q);
 
 template <typename T>
-Quaternion<T> QuaternionCast(const Matrix<3, 3, T> &m);
+Quaternion<T> quaternionCast(const Matrix<3, 3, T> &m);
 
 template <typename T>
-Quaternion<T> QuaternionCast(const Matrix<4, 4, T> &m4);
+Quaternion<T> quaternionCast(const Matrix<4, 4, T> &m4);
 
 // Non members operators
 template <typename T>

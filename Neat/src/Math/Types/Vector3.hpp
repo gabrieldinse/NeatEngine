@@ -13,6 +13,7 @@ struct Vector<3, T> {
   using Type = Vector<3, T>;
   using ValueType = T;
   static constexpr UInt32 N = 3;
+  static constexpr UInt32 Size = N;
 
   std::array<T, 3> elements;
 

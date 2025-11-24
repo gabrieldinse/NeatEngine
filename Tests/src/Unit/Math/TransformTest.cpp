@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "TestUtils.hpp"
-#include "Math/Transform.hpp"
+#include <TestUtils.hpp>
 
 namespace Neat {
 TEST(TransformTest, Translate) {

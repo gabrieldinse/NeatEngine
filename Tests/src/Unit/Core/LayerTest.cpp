@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include <Core/Layer.hpp>
 #include <TestUtils.hpp>
 
 namespace Neat {

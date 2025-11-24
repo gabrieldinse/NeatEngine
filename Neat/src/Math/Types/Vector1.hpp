@@ -12,6 +12,7 @@ struct Vector<1, T> {
   using Type = Vector<1, T>;
   using ValueType = T;
   static constexpr UInt32 N = 1;
+  static constexpr UInt32 Size = N;
 
   std::array<T, 1> elements;
 

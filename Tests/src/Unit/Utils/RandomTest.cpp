@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utils/Random.hpp"
+#include <TestUtils.hpp>
 
 namespace Neat {
 TEST(RandomTest, GetFloatTest) {
