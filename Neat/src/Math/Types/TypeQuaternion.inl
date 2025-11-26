@@ -39,51 +39,52 @@ Matrix<4, 4, T> matrix4Cast(const Quaternion<T> &q) {
 
 template <typename T>
 Quaternion<T> quaternionCast(const Matrix<3, 3, T> &m) {
-  T four_x_squared_minus1 = m(0, 0) - m(1, 1) - m(2, 2);
-  T four_y_squared_minus1 = m(1, 1) - m(0, 0) - m(2, 2);
-  T four_z_squared_minus1 = m(2, 2) - m(0, 0) - m(1, 1);
-  T four_w_squared_minus1 = m(0, 0) + m(1, 1) + m(2, 2);
+  T fourXSquaredMinus1 = m(0, 0) - m(1, 1) - m(2, 2);
+  T fourYSquaredMinus1 = m(1, 1) - m(0, 0) - m(2, 2);
+  T fourZSquaredMinus1 = m(2, 2) - m(0, 0) - m(1, 1);
+  T fourWSquaredMinus1 = m(0, 0) + m(1, 1) + m(2, 2);
 
-  int biggest_index = 0;
-  T four_biggest_squared_minus1 = four_w_squared_minus1;
-  if (four_x_squared_minus1 > four_biggest_squared_minus1) {
-    four_biggest_squared_minus1 = four_x_squared_minus1;
-    biggest_index = 1;
+  int biggestIndex = 0;
+  T fourBiggerSquaredMinus1 = fourWSquaredMinus1;
+  if (fourXSquaredMinus1 > fourBiggerSquaredMinus1) {
+    fourBiggerSquaredMinus1 = fourXSquaredMinus1;
+    biggestIndex = 1;
   }
-  if (four_y_squared_minus1 > four_biggest_squared_minus1) {
-    four_biggest_squared_minus1 = four_y_squared_minus1;
-    biggest_index = 2;
+  if (fourYSquaredMinus1 > fourBiggerSquaredMinus1) {
+    fourBiggerSquaredMinus1 = fourYSquaredMinus1;
+    biggestIndex = 2;
   }
-  if (four_z_squared_minus1 > four_biggest_squared_minus1) {
-    four_biggest_squared_minus1 = four_z_squared_minus1;
-    biggest_index = 3;
+  if (fourZSquaredMinus1 > fourBiggerSquaredMinus1) {
+    fourBiggerSquaredMinus1 = fourZSquaredMinus1;
+    biggestIndex = 3;
   }
 
-  T biggest_value = sqrt(four_biggest_squared_minus1 + One<T>) * OneHalf<T>;
-  T factor = OneForth<T> / biggest_value;
+  T biggestValue = sqrt(fourBiggerSquaredMinus1 + One<T>) * OneHalf<T>;
+  T factor = OneForth<T> / biggestValue;
 
-  switch (biggest_index) {
+  switch (biggestIndex) {
     case 0:
-      return Quaternion<T>{biggest_value, (m(1, 2) - m(2, 1)) * factor,
-                           (m(2, 0) - m(0, 2)) * factor,
-                           (m(0, 1) - m(1, 0)) * factor};
+      return Quaternion<T>{biggestValue, (m(2, 1) - m(1, 2)) * factor,
+                           (m(0, 2) - m(2, 0)) * factor,
+                           (m(1, 0) - m(0, 1)) * factor};
 
     case 1:
-      return Quaternion<T>{(m(1, 2) - m(2, 1)) * factor, biggest_value,
-                           (m(0, 1) + m(1, 0)) * factor,
-                           (m(2, 0) + m(0, 2)) * factor};
+      return Quaternion<T>{(m(2, 1) - m(1, 2)) * factor, biggestValue,
+                           (m(1, 0) + m(0, 1)) * factor,
+                           (m(0, 2) + m(2, 0)) * factor};
 
     case 2:
-      return Quaternion<T>{(m(2, 0) - m(0, 2)) * factor,
-                           (m(0, 1) + m(1, 0)) * factor, biggest_value,
-                           (m(1, 2) + m(2, 1)) * factor};
+      return Quaternion<T>{(m(0, 2) - m(2, 0)) * factor,
+                           (m(1, 0) + m(0, 1)) * factor, biggestValue,
+                           (m(2, 1) + m(1, 2)) * factor};
 
     case 3:
-      return Quaternion<T>{(m(0, 1) - m(1, 0)) * factor,
-                           (m(2, 0) + m(0, 2)) * factor,
-                           (m(1, 2) + m(2, 1)) * factor, biggest_value};
+      return Quaternion<T>{(m(1, 0) - m(0, 1)) * factor,
+                           (m(0, 2) + m(2, 0)) * factor,
+                           (m(2, 1) + m(1, 2)) * factor, biggestValue};
 
     default:
+      NT_CORE_ASSERT(false, "Unreachable code reached in quaternionCast.");
       return Quaternion<T>{};
   }
 }

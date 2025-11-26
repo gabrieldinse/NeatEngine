@@ -118,13 +118,75 @@ TEST_F(QuaternionTest, Matrix3Cast) {
   Matrix3F matrix3F = matrix3Cast(quaternionf);
   expectNearMatrixValues(matrix3F, expectedMatrix3F);
 
-  Matrix3D expectedMatrix3D{-0.6666666666666667, 0.13333333333333333,
-                             0.7333333333333333,
-                             0.6666666666666667, -0.3333333333333333,
-                             0.6666666666666667,
-                             0.3333333333333333, 0.9333333333333333,
-                             0.13333333333333333};
+  Matrix3D expectedMatrix3D{
+      -0.6666666666666667, 0.13333333333333333, 0.7333333333333333,
+      0.6666666666666667,  -0.3333333333333333, 0.6666666666666667,
+      0.3333333333333333,  0.9333333333333333,  0.13333333333333333};
   Matrix3D matrix3D = matrix3Cast(quaterniond);
   expectNearMatrixValues(matrix3D, expectedMatrix3D);
+}
+
+TEST_F(QuaternionTest, Matrix4Cast) {
+  Matrix4F expectedMatrix4F{-0.6666667f, 0.1333333f,  0.7333333f, 0.0f,
+                            0.6666667f,  -0.3333333f, 0.6666667f, 0.0f,
+                            0.3333333f,  0.9333333f,  0.1333333f, 0.0f,
+                            0.0f,        0.0f,        0.0f,       1.0f};
+  Matrix4F matrix4F = matrix4Cast(quaternionf);
+  expectNearMatrixValues(matrix4F, expectedMatrix4F);
+
+  Matrix4D expectedMatrix4D{-0.6666666666666667,
+                            0.13333333333333333,
+                            0.7333333333333333,
+                            0.0,
+                            0.6666666666666667,
+                            -0.3333333333333333,
+                            0.6666666666666667,
+                            0.0,
+                            0.3333333333333333,
+                            0.9333333333333333,
+                            0.13333333333333333,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0};
+  Matrix4D matrix4D = matrix4Cast(quaterniond);
+  expectNearMatrixValues(matrix4D, expectedMatrix4D);
+}
+
+TEST_F(QuaternionTest, QuaternionCastFromMatrix3) {
+  Matrix3F matrix3F = matrix3Cast(quaternionf);
+  QuaternionF qfFromMatrix3 = quaternionCast(matrix3F);
+  expectNearQuaternionValues(qfFromMatrix3, normalize(quaternionf));
+
+  Matrix3D matrix3D = matrix3Cast(quaterniond);
+  QuaternionD qdFromMatrix3 = quaternionCast(matrix3D);
+  expectNearQuaternionValues(qdFromMatrix3, normalize(quaterniond));
+}
+
+TEST_F(QuaternionTest, QuaternionCastFromMatrix4) {
+  Matrix4F matrix4F = matrix4Cast(quaternionf);
+  QuaternionF qfFromMatrix4 = quaternionCast(matrix4F);
+  expectNearQuaternionValues(qfFromMatrix4, normalize(quaternionf));
+
+  Matrix4D matrix4D = matrix4Cast(quaterniond);
+  QuaternionD qdFromMatrix4 = quaternionCast(matrix4D);
+  expectNearQuaternionValues(qdFromMatrix4, normalize(quaterniond));
+}
+
+TEST_F(QuaternionTest, FromMatrix3Constructor) {
+  QuaternionF qfFromMatrix3(matrix3Cast(quaternionf));
+  expectNearQuaternionValues(qfFromMatrix3, normalize(quaternionf));
+
+  QuaternionD qdFromMatrix3(matrix3Cast(quaterniond));
+  expectNearQuaternionValues(qdFromMatrix3, normalize(quaterniond));
+}
+
+TEST_F(QuaternionTest, FromMatrix4Constructor) {
+  QuaternionF qfFromMatrix4(matrix4Cast(quaternionf));
+  expectNearQuaternionValues(qfFromMatrix4, normalize(quaternionf));
+
+  QuaternionD qdFromMatrix4(matrix4Cast(quaterniond));
+  expectNearQuaternionValues(qdFromMatrix4, normalize(quaterniond));
 }
 }  // namespace Neat
