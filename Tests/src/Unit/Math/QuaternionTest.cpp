@@ -13,6 +13,18 @@ class QuaternionTest : public testing::Test {
   QuaternionD quaterniond{1.0, 2.0, 3.0, 4.0};
 };
 
+TEST_F(QuaternionTest, SizeFunction) {
+  EXPECT_EQ(quaternionf.size(), 4);
+  EXPECT_EQ(quaterniond.size(), 4);
+}
+
+TEST_F(QuaternionTest, QuaternionSizes) {
+  EXPECT_EQ(QuaternionF::N, 4);
+  EXPECT_EQ(QuaternionD::N, 4);
+  EXPECT_EQ(QuaternionF::Size, 4);
+  EXPECT_EQ(QuaternionD::Size, 4);
+}
+
 TEST_F(QuaternionTest, DefaultConstructor) {
   QuaternionF qf;
   EXPECT_EQ(qf.w(), 1.0f);
@@ -188,5 +200,131 @@ TEST_F(QuaternionTest, FromMatrix4Constructor) {
 
   QuaternionD qdFromMatrix4(matrix4Cast(quaterniond));
   expectNearQuaternionValues(qdFromMatrix4, normalize(quaterniond));
+}
+
+TEST_F(QuaternionTest, IndexOperator) {
+  EXPECT_EQ(quaternionf[0], 1.0f);
+  EXPECT_EQ(quaternionf[1], 2.0f);
+  EXPECT_EQ(quaternionf[2], 3.0f);
+  EXPECT_EQ(quaternionf[3], 4.0f);
+
+  EXPECT_EQ(quaterniond[0], 1.0);
+  EXPECT_EQ(quaterniond[1], 2.0);
+  EXPECT_EQ(quaterniond[2], 3.0);
+  EXPECT_EQ(quaterniond[3], 4.0);
+}
+
+TEST_F(QuaternionTest, WXYZ) {
+  EXPECT_EQ(quaternionf.w(), 1.0f);
+  EXPECT_EQ(quaternionf.x(), 2.0f);
+  EXPECT_EQ(quaternionf.y(), 3.0f);
+  EXPECT_EQ(quaternionf.z(), 4.0f);
+
+  EXPECT_EQ(quaterniond.w(), 1.0);
+  EXPECT_EQ(quaterniond.x(), 2.0);
+  EXPECT_EQ(quaterniond.y(), 3.0);
+  EXPECT_EQ(quaterniond.z(), 4.0);
+}
+
+TEST_F(QuaternionTest, ABCD) {
+  EXPECT_EQ(quaternionf.a(), 1.0f);
+  EXPECT_EQ(quaternionf.b(), 2.0f);
+  EXPECT_EQ(quaternionf.c(), 3.0f);
+  EXPECT_EQ(quaternionf.d(), 4.0f);
+
+  EXPECT_EQ(quaterniond.a(), 1.0);
+  EXPECT_EQ(quaterniond.b(), 2.0);
+  EXPECT_EQ(quaterniond.c(), 3.0);
+  EXPECT_EQ(quaterniond.d(), 4.0);
+}
+
+TEST_F(QuaternionTest, Q0Q1Q2Q3) {
+  EXPECT_EQ(quaternionf.q0(), 1.0f);
+  EXPECT_EQ(quaternionf.q1(), 2.0f);
+  EXPECT_EQ(quaternionf.q2(), 3.0f);
+  EXPECT_EQ(quaternionf.q3(), 4.0f);
+
+  EXPECT_EQ(quaterniond.q0(), 1.0);
+  EXPECT_EQ(quaterniond.q1(), 2.0);
+  EXPECT_EQ(quaterniond.q2(), 3.0);
+  EXPECT_EQ(quaterniond.q3(), 4.0);
+}
+
+TEST_F(QuaternionTest, AccessScalarComponent) {
+  EXPECT_EQ(quaternionf.s(), 1.0f);
+  EXPECT_EQ(quaternionf.scalar(), 1.0f);
+
+  EXPECT_EQ(quaterniond.s(), 1.0);
+  EXPECT_EQ(quaterniond.scalar(), 1.0);
+}
+
+TEST_F(QuaternionTest, AccessVectorComponent) {
+  Vector3F vecF = quaternionf.v();
+  EXPECT_EQ(vecF.x(), 2.0f);
+  EXPECT_EQ(vecF.y(), 3.0f);
+  EXPECT_EQ(vecF.z(), 4.0f);
+
+  Vector3D vecD = quaterniond.v();
+  EXPECT_EQ(vecD.x(), 2.0);
+  EXPECT_EQ(vecD.y(), 3.0);
+  EXPECT_EQ(vecD.z(), 4.0);
+
+  Vector3F vecF2 = quaternionf.vector();
+  EXPECT_EQ(vecF2.x(), 2.0f);
+  EXPECT_EQ(vecF2.y(), 3.0f);
+  EXPECT_EQ(vecF2.z(), 4.0f);
+
+  Vector3D vecD2 = quaterniond.vector();
+  EXPECT_EQ(vecD2.x(), 2.0);
+  EXPECT_EQ(vecD2.y(), 3.0);
+  EXPECT_EQ(vecD2.z(), 4.0);
+}
+
+TEST_F(QuaternionTest, FromAngleAxisConstructor) {
+  float angleF = degreesToRadians(90.0f);
+  Vector3F axisF{0.0f, 0.0f, 1.0f};
+  QuaternionF qfFromAngleAxis = QuaternionF::fromAngleAxis(angleF, axisF);
+  expectNearQuaternionValues(
+      qfFromAngleAxis,
+      QuaternionF{cos(angleF / 2.0f), 0.0f, 0.0f, sin(angleF / 2.0f)});
+
+  double angleD = degreesToRadians(90.0);
+  Vector3D axisD{0.0, 0.0, 1.0};
+  QuaternionD qdFromAngleAxis = QuaternionD::fromAngleAxis(angleD, axisD);
+  expectNearQuaternionValues(
+      qdFromAngleAxis,
+      QuaternionD{cos(angleD / 2.0), 0.0, 0.0, sin(angleD / 2.0)});
+}
+
+TEST_F(QuaternionTest, FromEulerAnglesZYXConstructor) {
+  float pitchF = degreesToRadians(45.0f);
+  float yawF = degreesToRadians(60.0f);
+  float rollF = degreesToRadians(30.0f);
+  QuaternionF qfFromEuler =
+      QuaternionF::fromEulerAnglesXYZ(pitchF, yawF, rollF);
+  expectNearQuaternionValues(qfFromEuler, QuaternionF{0.8223632f, 0.2005621f,
+                                                      0.5319757f, 0.02226003f});
+
+  double pitchD = degreesToRadians(45.0);
+  double yawD = degreesToRadians(60.0);
+  double rollD = degreesToRadians(30.0);
+  QuaternionD qdFromEuler =
+      QuaternionD::fromEulerAnglesXYZ(pitchD, yawD, rollD);
+  expectNearQuaternionValues(
+      qdFromEuler, QuaternionD{0.8223631719059994, 0.20056212114657512,
+                               0.5319756951821666, 0.02226002671473378});
+}
+
+TEST_F(QuaternionTest, FromEulerAnglesZYXVectorConstructor) {
+  Vector3F eulerF = degreesToRadians(Vector3F{45.0f, 60.0f, 30.0f});
+  QuaternionF qfFromEuler = QuaternionF::fromEulerAnglesXYZ(eulerF);
+  expectNearQuaternionValues(qfFromEuler, QuaternionF{0.8223632f, 0.2005621f,
+                                                      0.5319757f, 0.02226003f});
+
+  Vector3D eulerD = degreesToRadians(Vector3D{45.0, 60.0, 30.0});
+  QuaternionD qdFromEuler = QuaternionD::fromEulerAnglesXYZ(eulerD);
+  expectNearQuaternionValues(
+      qdFromEuler, QuaternionD{0.8223631719059994, 0.20056212114657512,
+                               0.5319756951821666, 0.02226002671473378});
 }
 }  // namespace Neat

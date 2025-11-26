@@ -155,6 +155,6 @@ template <typename T>
 inline Quaternion<T> rotate(const Quaternion<T> &q, const T &angleRadians,
                             const Vector<3, T> &rotationAxis) {
   return q *
-         Quaternion<T>::fromAngleAxis(angleRadians, normalize(rotationAxis));
+         Quaternion<T>::fromAngleAxisZYX(angleRadians, normalize(rotationAxis));
 }
 }  // namespace Neat

@@ -34,7 +34,7 @@ struct TransformComponent {
   }
 
   QuaternionF getOrientation() const {
-    return QuaternionF::fromEulerAngles(degreesToRadians(rotation));
+    return QuaternionF::fromEulerAnglesXYZ(degreesToRadians(rotation));
   }
 
   Vector2F getPosition2D() const {

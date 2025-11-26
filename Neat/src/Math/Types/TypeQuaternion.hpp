@@ -53,9 +53,9 @@ struct Quaternion {
   // Static factory constructors
   static constexpr Quaternion<T> fromAngleAxis(T angleRadians,
                                                const Vector<3, T> &axis);
-  static constexpr Quaternion<T> fromEulerAngles(
+  static constexpr Quaternion<T> fromEulerAnglesXYZ(
       const Vector<3, T> &pitchYawRoll);
-  static constexpr Quaternion<T> fromEulerAngles(T pitch, T yaw, T roll);
+  static constexpr Quaternion<T> fromEulerAnglesXYZ(T pitch, T yaw, T roll);
   static constexpr Quaternion<T> identity() { return Quaternion<T>(); }
 
   // Member converters

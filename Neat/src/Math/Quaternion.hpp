@@ -12,7 +12,7 @@ struct formatter<Neat::Quaternion<T>> {
   template <typename Context>
   auto format(const Neat::Quaternion<T>& q, Context& ctx) const {
     std::string str =
-        fmt::format("Quaternion{{}, {}, {}, {}}", q.w(), q.x(), q.y(), q.z());
+        fmt::format("Quaternion{{{}, {}, {}, {}}}", q.w(), q.x(), q.y(), q.z());
     return format_to(ctx.out(), "{}", str);
   }
 };

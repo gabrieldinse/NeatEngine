@@ -139,13 +139,13 @@ inline constexpr Quaternion<T> Quaternion<T>::fromAngleAxis(
 }
 
 template <typename T>
-inline constexpr Quaternion<T> Quaternion<T>::fromEulerAngles(T pitch, T yaw,
-                                                              T roll) {
-  return fromEulerAngles(Vector<3, T>{pitch, yaw, roll});
+inline constexpr Quaternion<T> Quaternion<T>::fromEulerAnglesXYZ(T pitch, T yaw,
+                                                                 T roll) {
+  return fromEulerAnglesXYZ(Vector<3, T>{pitch, yaw, roll});
 }
 
 template <typename T>
-inline constexpr Quaternion<T> Quaternion<T>::fromEulerAngles(
+inline constexpr Quaternion<T> Quaternion<T>::fromEulerAnglesXYZ(
     const Vector<3, T> &pitchYawRoll) {
   Vector<3, T> c{cos(pitchYawRoll * OneHalf<T>)};
   Vector<3, T> s{sin(pitchYawRoll * OneHalf<T>)};

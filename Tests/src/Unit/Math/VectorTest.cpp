@@ -297,7 +297,7 @@ TEST_F(VectorTest, CallOperator) {
   EXPECT_EQ(vector1f(0), 100.0f);
 }
 
-TEST_F(VectorTest, CoordinatesAccessingXYZW) {
+TEST_F(VectorTest, XYZW) {
   EXPECT_EQ(vector4f.x(), 1.0f);
   EXPECT_EQ(vector4f.y(), 2.0f);
   EXPECT_EQ(vector4f.z(), 3.0f);
@@ -409,7 +409,7 @@ TEST_F(VectorTest, CoordinatesAccessingXYZW) {
   EXPECT_EQ(vector1f.x(), 100.0f);
 }
 
-TEST_F(VectorTest, CoordinatesAccessingRGBA) {
+TEST_F(VectorTest, RGBA) {
   EXPECT_EQ(vector4f.r(), 1.0f);
   EXPECT_EQ(vector4f.g(), 2.0f);
   EXPECT_EQ(vector4f.b(), 3.0f);
@@ -521,7 +521,7 @@ TEST_F(VectorTest, CoordinatesAccessingRGBA) {
   EXPECT_EQ(vector1f.r(), 100.0f);
 }
 
-TEST_F(VectorTest, CoordinatesAccessingIJKL) {
+TEST_F(VectorTest, IJKL) {
   EXPECT_EQ(vector4f.i(), 1.0f);
   EXPECT_EQ(vector4f.j(), 2.0f);
   EXPECT_EQ(vector4f.k(), 3.0f);
@@ -633,7 +633,7 @@ TEST_F(VectorTest, CoordinatesAccessingIJKL) {
   EXPECT_EQ(vector1f.i(), 100.0f);
 }
 
-TEST_F(VectorTest, CoordinatesAccessingSTPQ) {
+TEST_F(VectorTest, STPQ) {
   EXPECT_EQ(vector4f.s(), 1.0f);
   EXPECT_EQ(vector4f.t(), 2.0f);
   EXPECT_EQ(vector4f.p(), 3.0f);
