@@ -138,6 +138,21 @@ TEST_F(QuaternionTest, Matrix3Cast) {
   expectNearMatrixValues(matrix3D, expectedMatrix3D);
 }
 
+TEST_F(QuaternionTest, ToMatrix3) {
+  Matrix3F expectedMatrix3F{-0.6666667f, 0.1333333f,  0.7333333f,
+                            0.6666667f,  -0.3333333f, 0.6666667f,
+                            0.3333333f,  0.9333333f,  0.1333333f};
+  Matrix3F matrix3F = quaternionf.toMatrix3();
+  expectNearMatrixValues(matrix3F, expectedMatrix3F);
+
+  Matrix3D expectedMatrix3D{
+      -0.6666666666666667, 0.13333333333333333, 0.7333333333333333,
+      0.6666666666666667,  -0.3333333333333333, 0.6666666666666667,
+      0.3333333333333333,  0.9333333333333333,  0.13333333333333333};
+  Matrix3D matrix3D = quaterniond.toMatrix3();
+  expectNearMatrixValues(matrix3D, expectedMatrix3D);
+}
+
 TEST_F(QuaternionTest, Matrix4Cast) {
   Matrix4F expectedMatrix4F{-0.6666667f, 0.1333333f,  0.7333333f, 0.0f,
                             0.6666667f,  -0.3333333f, 0.6666667f, 0.0f,
@@ -163,6 +178,34 @@ TEST_F(QuaternionTest, Matrix4Cast) {
                             0.0,
                             1.0};
   Matrix4D matrix4D = matrix4Cast(quaterniond);
+  expectNearMatrixValues(matrix4D, expectedMatrix4D);
+}
+
+TEST_F(QuaternionTest, ToMatrix4) {
+  Matrix4F expectedMatrix4F{-0.6666667f, 0.1333333f,  0.7333333f, 0.0f,
+                            0.6666667f,  -0.3333333f, 0.6666667f, 0.0f,
+                            0.3333333f,  0.9333333f,  0.1333333f, 0.0f,
+                            0.0f,        0.0f,        0.0f,       1.0f};
+  Matrix4F matrix4F = quaternionf.toMatrix4();
+  expectNearMatrixValues(matrix4F, expectedMatrix4F);
+
+  Matrix4D expectedMatrix4D{-0.6666666666666667,
+                            0.13333333333333333,
+                            0.7333333333333333,
+                            0.0,
+                            0.6666666666666667,
+                            -0.3333333333333333,
+                            0.6666666666666667,
+                            0.0,
+                            0.3333333333333333,
+                            0.9333333333333333,
+                            0.13333333333333333,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0};
+  Matrix4D matrix4D = quaterniond.toMatrix4();
   expectNearMatrixValues(matrix4D, expectedMatrix4D);
 }
 
@@ -326,5 +369,25 @@ TEST_F(QuaternionTest, FromEulerAnglesZYXVectorConstructor) {
   expectNearQuaternionValues(
       qdFromEuler, QuaternionD{0.8223631719059994, 0.20056212114657512,
                                0.5319756951821666, 0.02226002671473378});
+}
+
+TEST_F(QuaternionTest, AssignmentOperator) {
+  QuaternionF qf{0.5f, 0.6f, 0.7f, 0.8f};
+  qf = quaternionf;
+  expectNearQuaternionValues(qf, quaternionf);
+
+  QuaternionD qd{0.5, 0.6, 0.7, 0.8};
+  qd = quaterniond;
+  expectNearQuaternionValues(qd, quaterniond);
+}
+
+TEST_F(QuaternionTest, PlusEqualOperator) {
+  QuaternionF qf{0.5f, 0.6f, 0.7f, 0.8f};
+  qf += quaternionf;
+  expectNearQuaternionValues(qf, QuaternionF{1.5f, 2.6f, 3.7f, 4.8f});
+
+  QuaternionD qd{0.5, 0.6, 0.7, 0.8};
+  qd += quaterniond;
+  expectNearQuaternionValues(qd, QuaternionD{1.5, 2.6, 3.7, 4.8});
 }
 }  // namespace Neat

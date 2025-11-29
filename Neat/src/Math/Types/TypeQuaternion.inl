@@ -172,7 +172,10 @@ template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator=(
     const Quaternion<U> &q) {
-  elements = q.elements;
+  w() = static_cast<T>(q.w());
+  x() = static_cast<T>(q.x());
+  y() = static_cast<T>(q.y());
+  z() = static_cast<T>(q.z());
 
   return *this;
 }
@@ -182,8 +185,10 @@ template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator+=(
     const Quaternion<U> &q) {
-  elements = {static_cast<T>(q.w()), static_cast<T>(q.x()),
-              static_cast<T>(q.y()), static_cast<T>(q.z())};
+  w() += static_cast<T>(q.w());
+  x() += static_cast<T>(q.x());
+  y() += static_cast<T>(q.y());
+  z() += static_cast<T>(q.z());
 
   return *this;
 }
@@ -192,10 +197,10 @@ template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator-=(
     const Quaternion<U> &q) {
-  elements[0] -= static_cast<T>(q.w());
-  elements[1] -= static_cast<T>(q.x());
-  elements[2] -= static_cast<T>(q.y());
-  elements[3] -= static_cast<T>(q.z());
+  w() -= static_cast<T>(q.w());
+  x() -= static_cast<T>(q.x());
+  y() -= static_cast<T>(q.y());
+  z() -= static_cast<T>(q.z());
 
   return *this;
 }
@@ -204,13 +209,13 @@ template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator*=(
     const Quaternion<U> &q) {
-  elements[0] = elements[0] * q.w() - elements[1] * q.x() -
+  w() = elements[0] * q.w() - elements[1] * q.x() -
                 elements[2] * q.y() - elements[3] * q.z();
-  elements[1] = elements[0] * q.x() + elements[1] * q.w() +
+  x() = elements[0] * q.x() + elements[1] * q.w() +
                 elements[2] * q.z() - elements[3] * q.y();
-  elements[2] = elements[0] * q.y() + elements[1] * q.x() +
+  y() = elements[0] * q.y() + elements[1] * q.x() +
                 elements[3] * q.x() - elements[2] * q.z();
-  elements[3] = elements[0] * q.z() + elements[1] * q.y() +
+  z() = elements[0] * q.z() + elements[1] * q.y() +
                 elements[2] * q.x() - elements[3] * q.w();
 
   return *this;
@@ -219,10 +224,10 @@ inline constexpr Quaternion<T> &Quaternion<T>::operator*=(
 template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator*=(U scalar) {
-  elements[0] *= static_cast<T>(scalar);
-  elements[1] *= static_cast<T>(scalar);
-  elements[2] *= static_cast<T>(scalar);
-  elements[3] *= static_cast<T>(scalar);
+  w() *= static_cast<T>(scalar);
+  x() *= static_cast<T>(scalar);
+  y() *= static_cast<T>(scalar);
+  z() *= static_cast<T>(scalar);
 
   return *this;
 }
@@ -230,10 +235,10 @@ inline constexpr Quaternion<T> &Quaternion<T>::operator*=(U scalar) {
 template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator/=(U scalar) {
-  elements[0] /= static_cast<T>(scalar);
-  elements[1] /= static_cast<T>(scalar);
-  elements[2] /= static_cast<T>(scalar);
-  elements[3] /= static_cast<T>(scalar);
+  w() /= static_cast<T>(scalar);
+  x() /= static_cast<T>(scalar);
+  y() /= static_cast<T>(scalar);
+  z() /= static_cast<T>(scalar);
 
   return *this;
 }
@@ -252,14 +257,14 @@ inline Quaternion<T>::operator Matrix<4, 4, T>() const {
 // Elements accessing
 template <typename T>
 inline constexpr T &Quaternion<T>::operator[](UInt32 pos) {
-  NT_CORE_ASSERT(pos < 4, "Quaternion index out of bounds");
+  NT_CORE_ASSERT(pos < N, "Quaternion index out of bounds");
 
   return elements[pos];
 }
 
 template <typename T>
 inline constexpr const T &Quaternion<T>::operator[](UInt32 pos) const {
-  NT_CORE_ASSERT(pos < 4, "Quaternion index out of bounds");
+  NT_CORE_ASSERT(pos < N, "Quaternion index out of bounds");
 
   return elements[pos];
 }
