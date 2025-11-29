@@ -209,14 +209,14 @@ template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator*=(
     const Quaternion<U> &q) {
-  w() = elements[0] * q.w() - elements[1] * q.x() -
-                elements[2] * q.y() - elements[3] * q.z();
-  x() = elements[0] * q.x() + elements[1] * q.w() +
-                elements[2] * q.z() - elements[3] * q.y();
-  y() = elements[0] * q.y() + elements[1] * q.x() +
-                elements[3] * q.x() - elements[2] * q.z();
-  z() = elements[0] * q.z() + elements[1] * q.y() +
-                elements[2] * q.x() - elements[3] * q.w();
+  w() = elements[0] * q.w() - elements[1] * q.x() - elements[2] * q.y() -
+        elements[3] * q.z();
+  x() = elements[0] * q.x() + elements[1] * q.w() + elements[2] * q.z() -
+        elements[3] * q.y();
+  y() = elements[0] * q.y() + elements[1] * q.x() + elements[3] * q.x() -
+        elements[2] * q.z();
+  z() = elements[0] * q.z() + elements[1] * q.y() + elements[2] * q.x() -
+        elements[3] * q.w();
 
   return *this;
 }

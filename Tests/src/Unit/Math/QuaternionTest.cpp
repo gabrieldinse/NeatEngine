@@ -371,23 +371,53 @@ TEST_F(QuaternionTest, FromEulerAnglesZYXVectorConstructor) {
                                0.5319756951821666, 0.02226002671473378});
 }
 
+TEST_F(QuaternionTest, EqualOperator) {
+  QuaternionF qfEqual = quaternionf;
+  EXPECT_TRUE(qfEqual == quaternionf);
+
+  QuaternionD qdEqual = quaterniond;
+  EXPECT_TRUE(qdEqual == quaterniond);
+
+  qfEqual.x() = 5.0f;
+  EXPECT_FALSE(qfEqual == quaternionf);
+
+  qdEqual.x() = 5.0;
+  EXPECT_FALSE(qdEqual == quaterniond);
+
+  qfEqual.x() = 2.0f;
+  EXPECT_TRUE(qfEqual == quaternionf);
+
+  qdEqual.x() = 2.0;
+  EXPECT_TRUE(qdEqual == quaterniond);
+}
+
 TEST_F(QuaternionTest, AssignmentOperator) {
   QuaternionF qf{0.5f, 0.6f, 0.7f, 0.8f};
   qf = quaternionf;
-  expectNearQuaternionValues(qf, quaternionf);
+  EXPECT_EQ(qf, quaternionf);
 
   QuaternionD qd{0.5, 0.6, 0.7, 0.8};
   qd = quaterniond;
-  expectNearQuaternionValues(qd, quaterniond);
+  EXPECT_EQ(qd, quaterniond);
 }
 
 TEST_F(QuaternionTest, PlusEqualOperator) {
   QuaternionF qf{0.5f, 0.6f, 0.7f, 0.8f};
   qf += quaternionf;
-  expectNearQuaternionValues(qf, QuaternionF{1.5f, 2.6f, 3.7f, 4.8f});
+  EXPECT_EQ(qf, (QuaternionF{1.5f, 2.6f, 3.7f, 4.8f}));
 
   QuaternionD qd{0.5, 0.6, 0.7, 0.8};
   qd += quaterniond;
-  expectNearQuaternionValues(qd, QuaternionD{1.5, 2.6, 3.7, 4.8});
+  EXPECT_EQ(qd, (QuaternionD{1.5, 2.6, 3.7, 4.8}));
+}
+
+TEST_F(QuaternionTest, MinusEqualOperator) {
+  QuaternionF qf{0.5f, 0.6f, 0.7f, 0.8f};
+  qf -= quaternionf;
+  EXPECT_EQ(qf, (QuaternionF{-0.5f, -1.4f, -2.3f, -3.2f}));
+
+  QuaternionD qd{0.5, 0.6, 0.7, 0.8};
+  qd -= quaterniond;
+  EXPECT_EQ(qd, (QuaternionD{-0.5, -1.4, -2.3, -3.2}));
 }
 }  // namespace Neat
