@@ -153,6 +153,21 @@ TEST_F(QuaternionTest, ToMatrix3) {
   expectNearMatrixValues(matrix3D, expectedMatrix3D);
 }
 
+TEST_F(QuaternionTest, Matrix3Operator) {
+  Matrix3F expectedMatrix3F{-0.6666667f, 0.1333333f,  0.7333333f,
+                            0.6666667f,  -0.3333333f, 0.6666667f,
+                            0.3333333f,  0.9333333f,  0.1333333f};
+  Matrix3F matrix3F = static_cast<Matrix3F>(quaternionf);
+  expectNearMatrixValues(matrix3F, expectedMatrix3F);
+
+  Matrix3D expectedMatrix3D{
+      -0.6666666666666667, 0.13333333333333333, 0.7333333333333333,
+      0.6666666666666667,  -0.3333333333333333, 0.6666666666666667,
+      0.3333333333333333,  0.9333333333333333,  0.13333333333333333};
+  Matrix3D matrix3D = static_cast<Matrix3D>(quaterniond);
+  expectNearMatrixValues(matrix3D, expectedMatrix3D);
+}
+
 TEST_F(QuaternionTest, Matrix4Cast) {
   Matrix4F expectedMatrix4F{-0.6666667f, 0.1333333f,  0.7333333f, 0.0f,
                             0.6666667f,  -0.3333333f, 0.6666667f, 0.0f,
@@ -209,6 +224,34 @@ TEST_F(QuaternionTest, ToMatrix4) {
   expectNearMatrixValues(matrix4D, expectedMatrix4D);
 }
 
+TEST_F(QuaternionTest, Matrix4Operator) {
+  Matrix4F expectedMatrix4F{-0.6666667f, 0.1333333f,  0.7333333f, 0.0f,
+                            0.6666667f,  -0.3333333f, 0.6666667f, 0.0f,
+                            0.3333333f,  0.9333333f,  0.1333333f, 0.0f,
+                            0.0f,        0.0f,        0.0f,       1.0f};
+  Matrix4F matrix4F = static_cast<Matrix4F>(quaternionf);
+  expectNearMatrixValues(matrix4F, expectedMatrix4F);
+
+  Matrix4D expectedMatrix4D{-0.6666666666666667,
+                            0.13333333333333333,
+                            0.7333333333333333,
+                            0.0,
+                            0.6666666666666667,
+                            -0.3333333333333333,
+                            0.6666666666666667,
+                            0.0,
+                            0.3333333333333333,
+                            0.9333333333333333,
+                            0.13333333333333333,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0};
+  Matrix4D matrix4D = static_cast<Matrix4D>(quaterniond);
+  expectNearMatrixValues(matrix4D, expectedMatrix4D);
+}
+
 TEST_F(QuaternionTest, QuaternionCastFromMatrix3) {
   Matrix3F matrix3F = matrix3Cast(quaternionf);
   QuaternionF qfFromMatrix3 = quaternionCast(matrix3F);
@@ -255,6 +298,25 @@ TEST_F(QuaternionTest, IndexOperator) {
   EXPECT_EQ(quaterniond[1], 2.0);
   EXPECT_EQ(quaterniond[2], 3.0);
   EXPECT_EQ(quaterniond[3], 4.0);
+
+  // Assignment tests
+  quaternionf[0] = 5.0f;
+  quaternionf[1] = 6.0f;
+  quaternionf[2] = 7.0f;
+  quaternionf[3] = 8.0f;
+  EXPECT_EQ(quaternionf[0], 5.0f);
+  EXPECT_EQ(quaternionf[1], 6.0f);
+  EXPECT_EQ(quaternionf[2], 7.0f);
+  EXPECT_EQ(quaternionf[3], 8.0f);
+
+  quaterniond[0] = 5.0;
+  quaterniond[1] = 6.0;
+  quaterniond[2] = 7.0;
+  quaterniond[3] = 8.0;
+  EXPECT_EQ(quaterniond[0], 5.0);
+  EXPECT_EQ(quaterniond[1], 6.0);
+  EXPECT_EQ(quaterniond[2], 7.0);
+  EXPECT_EQ(quaterniond[3], 8.0);
 }
 
 TEST_F(QuaternionTest, WXYZ) {
@@ -267,6 +329,25 @@ TEST_F(QuaternionTest, WXYZ) {
   EXPECT_EQ(quaterniond.x(), 2.0);
   EXPECT_EQ(quaterniond.y(), 3.0);
   EXPECT_EQ(quaterniond.z(), 4.0);
+
+  // Assignment tests
+  quaternionf.w() = 5.0f;
+  quaternionf.x() = 6.0f;
+  quaternionf.y() = 7.0f;
+  quaternionf.z() = 8.0f;
+  EXPECT_EQ(quaternionf.w(), 5.0f);
+  EXPECT_EQ(quaternionf.x(), 6.0f);
+  EXPECT_EQ(quaternionf.y(), 7.0f);
+  EXPECT_EQ(quaternionf.z(), 8.0f);
+
+  quaterniond.w() = 5.0;
+  quaterniond.x() = 6.0;
+  quaterniond.y() = 7.0;
+  quaterniond.z() = 8.0;
+  EXPECT_EQ(quaterniond.w(), 5.0);
+  EXPECT_EQ(quaterniond.x(), 6.0);
+  EXPECT_EQ(quaterniond.y(), 7.0);
+  EXPECT_EQ(quaterniond.z(), 8.0);
 }
 
 TEST_F(QuaternionTest, ABCD) {
@@ -279,6 +360,25 @@ TEST_F(QuaternionTest, ABCD) {
   EXPECT_EQ(quaterniond.b(), 2.0);
   EXPECT_EQ(quaterniond.c(), 3.0);
   EXPECT_EQ(quaterniond.d(), 4.0);
+
+  // Assignment tests
+  quaternionf.a() = 5.0f;
+  quaternionf.b() = 6.0f;
+  quaternionf.c() = 7.0f;
+  quaternionf.d() = 8.0f;
+  EXPECT_EQ(quaternionf.a(), 5.0f);
+  EXPECT_EQ(quaternionf.b(), 6.0f);
+  EXPECT_EQ(quaternionf.c(), 7.0f);
+  EXPECT_EQ(quaternionf.d(), 8.0f);
+
+  quaterniond.a() = 5.0;
+  quaterniond.b() = 6.0;
+  quaterniond.c() = 7.0;
+  quaterniond.d() = 8.0;
+  EXPECT_EQ(quaterniond.a(), 5.0);
+  EXPECT_EQ(quaterniond.b(), 6.0);
+  EXPECT_EQ(quaterniond.c(), 7.0);
+  EXPECT_EQ(quaterniond.d(), 8.0);
 }
 
 TEST_F(QuaternionTest, Q0Q1Q2Q3) {
@@ -291,6 +391,25 @@ TEST_F(QuaternionTest, Q0Q1Q2Q3) {
   EXPECT_EQ(quaterniond.q1(), 2.0);
   EXPECT_EQ(quaterniond.q2(), 3.0);
   EXPECT_EQ(quaterniond.q3(), 4.0);
+
+  // Assignment tests
+  quaternionf.q0() = 5.0f;
+  quaternionf.q1() = 6.0f;
+  quaternionf.q2() = 7.0f;
+  quaternionf.q3() = 8.0f;
+  EXPECT_EQ(quaternionf.q0(), 5.0f);
+  EXPECT_EQ(quaternionf.q1(), 6.0f);
+  EXPECT_EQ(quaternionf.q2(), 7.0f);
+  EXPECT_EQ(quaternionf.q3(), 8.0f);
+
+  quaterniond.q0() = 5.0;
+  quaterniond.q1() = 6.0;
+  quaterniond.q2() = 7.0;
+  quaterniond.q3() = 8.0;
+  EXPECT_EQ(quaterniond.q0(), 5.0);
+  EXPECT_EQ(quaterniond.q1(), 6.0);
+  EXPECT_EQ(quaterniond.q2(), 7.0);
+  EXPECT_EQ(quaterniond.q3(), 8.0);
 }
 
 TEST_F(QuaternionTest, AccessScalarComponent) {
@@ -299,6 +418,11 @@ TEST_F(QuaternionTest, AccessScalarComponent) {
 
   EXPECT_EQ(quaterniond.s(), 1.0);
   EXPECT_EQ(quaterniond.scalar(), 1.0);
+
+  quaternionf.s() = 5.0f;
+  EXPECT_EQ(quaternionf.s(), 5.0f);
+  quaterniond.s() = 5.0;
+  EXPECT_EQ(quaterniond.s(), 5.0);
 }
 
 TEST_F(QuaternionTest, AccessVectorComponent) {
@@ -458,5 +582,37 @@ TEST_F(QuaternionTest, DivideEqualScalarOperator) {
   QuaternionD qd{0.5, 0.6, 0.7, 0.8};
   qd /= 2.0;
   EXPECT_EQ(qd, (QuaternionD{0.25, 0.3, 0.35, 0.4}));
+}
+
+TEST_F(QuaternionTest, NonMemberPlusOperator) {
+  QuaternionF qfSum = quaternionf + quaternionf;
+  EXPECT_EQ(qfSum, (QuaternionF{2.0f, 4.0f, 6.0f, 8.0f}));
+
+  QuaternionD qdSum = quaterniond + quaterniond;
+  EXPECT_EQ(qdSum, (QuaternionD{2.0, 4.0, 6.0, 8.0}));
+}
+
+TEST_F(QuaternionTest, NonMemberMinusOperator) {
+  QuaternionF qfDiff = quaternionf - quaternionf;
+  EXPECT_EQ(qfDiff, (QuaternionF{0.0f, 0.0f, 0.0f, 0.0f}));
+
+  QuaternionD qdDiff = quaterniond - quaterniond;
+  EXPECT_EQ(qdDiff, (QuaternionD{0.0, 0.0, 0.0, 0.0}));
+}
+
+TEST_F(QuaternionTest, NonMemberUnitaryMinusOperator) {
+  QuaternionF qfNeg = -quaternionf;
+  EXPECT_EQ(qfNeg, (QuaternionF{-1.0f, -2.0f, -3.0f, -4.0f}));
+
+  QuaternionD qdNeg = -quaterniond;
+  EXPECT_EQ(qdNeg, (QuaternionD{-1.0, -2.0, -3.0, -4.0}));
+}
+
+TEST_F(QuaternionTest, NonMemberMultiplyOperator) {
+  QuaternionF qfProd = quaternionf * quaternionf;
+  expectNearQuaternionValues(qfProd, (QuaternionF{-28.0f, 4.0f, 6.0f, 8.0f}));
+
+  QuaternionD qdProd = quaterniond * quaterniond;
+  expectNearQuaternionValues(qdProd, (QuaternionD{-28.0, 4.0, 6.0, 8.0}));
 }
 }  // namespace Neat
