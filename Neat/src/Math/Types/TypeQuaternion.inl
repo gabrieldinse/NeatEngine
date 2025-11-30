@@ -209,14 +209,18 @@ template <typename T>
 template <typename U>
 inline constexpr Quaternion<T> &Quaternion<T>::operator*=(
     const Quaternion<U> &q) {
-  w() = elements[0] * q.w() - elements[1] * q.x() - elements[2] * q.y() -
-        elements[3] * q.z();
-  x() = elements[0] * q.x() + elements[1] * q.w() + elements[2] * q.z() -
-        elements[3] * q.y();
-  y() = elements[0] * q.y() + elements[1] * q.x() + elements[3] * q.x() -
-        elements[2] * q.z();
-  z() = elements[0] * q.z() + elements[1] * q.y() + elements[2] * q.x() -
-        elements[3] * q.w();
+  T qw = w() * static_cast<T>(q.w()) - x() * static_cast<T>(q.x()) -
+         y() * static_cast<T>(q.y()) - z() * static_cast<T>(q.z());
+  T qx = w() * static_cast<T>(q.x()) + x() * static_cast<T>(q.w()) +
+         y() * static_cast<T>(q.z()) - z() * static_cast<T>(q.y());
+  T qy = w() * static_cast<T>(q.y()) - x() * static_cast<T>(q.z()) +
+         y() * static_cast<T>(q.w()) + z() * static_cast<T>(q.x());
+  T qz = w() * static_cast<T>(q.z()) + x() * static_cast<T>(q.y()) -
+         y() * static_cast<T>(q.x()) + z() * static_cast<T>(q.w());
+  w() = qw;
+  x() = qx;
+  y() = qy;
+  z() = qz;
 
   return *this;
 }

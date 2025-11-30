@@ -420,4 +420,43 @@ TEST_F(QuaternionTest, MinusEqualOperator) {
   qd -= quaterniond;
   EXPECT_EQ(qd, (QuaternionD{-0.5, -1.4, -2.3, -3.2}));
 }
+
+TEST_F(QuaternionTest, MultiplyEqualOperator) {
+  QuaternionF qf{0.5f, 0.6f, 0.7f, 0.8f};
+  qf *= quaternionf;
+  expectNearQuaternionValues(qf, (QuaternionF{-6.0f, 2.0f, 1.4f, 3.2f}));
+
+  QuaternionF qf2{0.5f, 0.6f, 0.7f, 0.8f};
+  quaternionf *= qf2;
+  expectNearQuaternionValues(quaternionf,
+                             (QuaternionF{-6.0f, 1.2f, 3.0f, 2.4f}));
+
+  QuaternionD qd{0.5, 0.6, 0.7, 0.8};
+  qd *= quaterniond;
+  expectNearQuaternionValues(qd, (QuaternionD{-6.0, 2.0, 1.4, 3.2}));
+
+  QuaternionD qd2{0.5, 0.6, 0.7, 0.8};
+  quaterniond *= qd2;
+  expectNearQuaternionValues(quaterniond, (QuaternionD{-6.0, 1.2, 3.0, 2.4}));
+}
+
+TEST_F(QuaternionTest, MultiplyScalarEqualOperator) {
+  QuaternionF qf{0.5f, 0.6f, 0.7f, 0.8f};
+  qf *= 2.0f;
+  EXPECT_EQ(qf, (QuaternionF{1.0f, 1.2f, 1.4f, 1.6f}));
+
+  QuaternionD qd{0.5, 0.6, 0.7, 0.8};
+  qd *= 2.0;
+  EXPECT_EQ(qd, (QuaternionD{1.0, 1.2, 1.4, 1.6}));
+}
+
+TEST_F(QuaternionTest, DivideEqualScalarOperator) {
+  QuaternionF qf{0.5f, 0.6f, 0.7f, 0.8f};
+  qf /= 2.0f;
+  EXPECT_EQ(qf, (QuaternionF{0.25f, 0.3f, 0.35f, 0.4f}));
+
+  QuaternionD qd{0.5, 0.6, 0.7, 0.8};
+  qd /= 2.0;
+  EXPECT_EQ(qd, (QuaternionD{0.25, 0.3, 0.35, 0.4}));
+}
 }  // namespace Neat
