@@ -377,8 +377,8 @@ inline constexpr T norm(const Quaternion<T> &q) {
 
 template <typename T>
 inline constexpr Quaternion<T> normalize(const Quaternion<T> &q) {
-  T one_over_norm = One<T> / norm(q);
-  return q * one_over_norm;
+  T oneOverNorm = One<T> / norm(q);
+  return q * oneOverNorm;
 }
 
 template <typename T>

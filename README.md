@@ -11,6 +11,7 @@ Neat Engine is a in-progress, for learning purposes, C++23 game engine.
 
 ## Table of Contents
 - [Features](#features)
+- [Supported Platforms](#supported-platforms)
 - [Prerequisites](#prerequisites)
   - [Ubuntu](#ubuntu)
   - [Windows](#windows)
@@ -26,9 +27,14 @@ Neat Engine is a in-progress, for learning purposes, C++23 game engine.
 - Entity Component System (ECS) with basic components and systems.
 - Event System.
 - Math Library (Vectors, Matrices, Quaternions).
-- Scene Management with basic serialization support.
+- Scene Management with serialization support using reflection.
 - 2D Physics.
 - Profiling System.
+- Some Game Examples (more to come).
+
+## Supported Platforms
+- Linux (tested on Ubuntu 24.04)
+- Windows (tested on Windows 11)
 
 ## Prerequisites
 
@@ -101,7 +107,7 @@ This is a simple implementation of a Flappy Bird-like game, meant to test the 2D
 ![Flappy Spaceship](Resources/Images/FlappySpaceship.gif)
 
 ## Roadmap
-- Add unit tests to old modules (Math, Utils, etc).
+- Finish adding tests to old modules (Math, Utils, etc).
 - Vulkan Rendering (probably replace OpenGL).
 - Add missing basic 2D rendering features: draw circles, rectangles, lines, text.
 - Audio Engine (OpenAL).

@@ -103,7 +103,6 @@ struct Quaternion {
   constexpr T &operator[](UInt32 pos);
   constexpr const T &operator[](UInt32 pos) const;
 
-  // Static member functions
   constexpr UInt32 size() { return elements.size(); }
 };
 
