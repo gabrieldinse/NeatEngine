@@ -7,7 +7,7 @@
 ![Compiler: MSVC](https://img.shields.io/badge/MSVC-2022%2B-blueviolet)
 ![License](https://img.shields.io/badge/license-Apache%202.0-green)
 
-Neat Engine is a in-progress, for learning purposes, C++23 game engine.
+Neat Engine is a C++23 and OpenGL game engine.
 
 ## Table of Contents
 - [Features](#features)
