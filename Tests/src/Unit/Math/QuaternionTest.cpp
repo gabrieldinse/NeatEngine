@@ -615,4 +615,32 @@ TEST_F(QuaternionTest, NonMemberMultiplyOperator) {
   QuaternionD qdProd = quaterniond * quaterniond;
   expectNearQuaternionValues(qdProd, (QuaternionD{-28.0, 4.0, 6.0, 8.0}));
 }
+
+TEST_F(QuaternionTest, NonMemberMultiplyVectorOperator) {
+  Vector3F vecF{1.0f, 0.0f, 0.0f};
+  Vector3F vecFRotated = quaternionf * vecF;
+  expectNearVectorValues(vecFRotated, Vector3F{-49.0f, 20.0f, 10.0f});
+
+  Vector3F vecF2{0.5, 1.5, -2.0f};
+  Vector3F vecF2Rotated = quaternionf * vecF2;
+  expectNearVectorValues(vecF2Rotated, Vector3F{-62.5f, -88.5f, 97.0f});
+
+  Vector3F vecF3Rotated = normalize(quaternionf) * vecF;
+  expectNearVectorValues(vecF3Rotated,
+                         Vector3F{-0.66666662693023682f, 0.66666662693023682f,
+                                  0.33333331346511841f});
+
+  Vector3D vecD{1.0, 0.0, 0.0};
+  Vector3D vecDRotated = quaterniond * vecD;
+  expectNearVectorValues(vecDRotated, Vector3D{-49.0, 20.0, 10.0});
+
+  Vector3D vecD2{0.5, 1.5, -2.0};
+  Vector3D vecD2Rotated = quaterniond * vecD2;
+  expectNearVectorValues(vecD2Rotated, Vector3D{-62.5, -88.5, 97.0});
+
+  Vector3D vecD3Rotated = normalize(quaterniond) * vecD;
+  expectNearVectorValues(
+      vecD3Rotated,
+      Vector3D{-0.66666662693023682, 0.66666662693023682, 0.33333331346511841});
+}
 }  // namespace Neat
