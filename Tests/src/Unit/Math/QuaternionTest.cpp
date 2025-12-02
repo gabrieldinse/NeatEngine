@@ -4,6 +4,7 @@
 #include <TestUtils.hpp>
 #include <cstring>
 #include "Math/Types/TypeQuaternion.hpp"
+#include "Math/Types/Vector3.hpp"
 
 namespace Neat {
 class QuaternionTest : public testing::Test {
@@ -121,6 +122,26 @@ TEST_F(QuaternionTest, Normalize) {
   expectNearQuaternionValues(
       qdNormalized, QuaternionD{0.18257418583505536, 0.3651483716701107,
                                 0.5477225575051661, 0.7302967433402214});
+}
+
+TEST_F(QuaternionTest, Conjugate) {
+  QuaternionF qfConjugate{conjugate(quaternionf)};
+  expectNearQuaternionValues(qfConjugate,
+                             QuaternionF{1.0f, -2.0f, -3.0f, -4.0f});
+
+  QuaternionD qdConjugate{conjugate(quaterniond)};
+  expectNearQuaternionValues(qdConjugate, QuaternionD{1.0, -2.0, -3.0, -4.0});
+}
+
+TEST_F(QuaternionTest, Inverse) {
+  QuaternionF qfInverse{inverse(quaternionf)};
+  expectNearQuaternionValues(
+      qfInverse, QuaternionF{0.033333335f, -0.06666667f, -0.1f, -0.13333334f});
+
+  QuaternionD qdInverse{inverse(quaterniond)};
+  expectNearQuaternionValues(
+      qdInverse, QuaternionD{0.03333333333333333, -0.06666666666666667, -0.1,
+                             -0.13333333333333333});
 }
 
 TEST_F(QuaternionTest, Matrix3Cast) {
@@ -616,7 +637,7 @@ TEST_F(QuaternionTest, NonMemberMultiplyOperator) {
   expectNearQuaternionValues(qdProd, (QuaternionD{-28.0, 4.0, 6.0, 8.0}));
 }
 
-TEST_F(QuaternionTest, NonMemberMultiplyVectorOperator) {
+TEST_F(QuaternionTest, NonMemberMultiplyQuaternionVectorOperator) {
   Vector3F vecF{1.0f, 0.0f, 0.0f};
   Vector3F vecFRotated = quaternionf * vecF;
   expectNearVectorValues(vecFRotated, Vector3F{-49.0f, 20.0f, 10.0f});
@@ -642,5 +663,35 @@ TEST_F(QuaternionTest, NonMemberMultiplyVectorOperator) {
   expectNearVectorValues(
       vecD3Rotated,
       Vector3D{-0.66666662693023682, 0.66666662693023682, 0.33333331346511841});
+}
+
+TEST_F(QuaternionTest, NonMemberMultiplyVectorQuaternionOperator) {
+  Vector3F vecF{1.0f, 0.0f, 0.0f};
+  Vector3F vecFRotated = vecF * quaternionf;
+  Vector3F expectedVecF = inverse(quaternionf) * vecF;
+  expectNearVectorValues(vecFRotated, expectedVecF);
+
+  Vector3F vecF2{0.5, 1.5, -2.0f};
+  Vector3F vecF2Rotated = vecF2 * quaternionf;
+  Vector3F expectedVecF2 = inverse(quaternionf) * vecF2;
+  expectNearVectorValues(vecF2Rotated, expectedVecF2);
+
+  Vector3F vecF3Rotated = vecF * normalize(quaternionf);
+  Vector3F expectedVecF3 = inverse(normalize(quaternionf)) * vecF;
+  expectNearVectorValues(vecF3Rotated, expectedVecF3);
+
+  Vector3D vecD{1.0, 0.0, 0.0};
+  Vector3D vecDRotated = vecD * quaterniond;
+  Vector3D expectedVecD = inverse(quaterniond) * vecD;
+  expectNearVectorValues(vecDRotated, expectedVecD);
+
+  Vector3D vecD2{0.5, 1.5, -2.0};
+  Vector3D vecD2Rotated = vecD2 * quaterniond;
+  Vector3D expectedVecD2 = inverse(quaterniond) * vecD2;
+  expectNearVectorValues(vecD2Rotated, expectedVecD2);
+
+  Vector3D vecD3Rotated = vecD * normalize(quaterniond);
+  Vector3D expectedVecD3 = inverse(normalize(quaterniond)) * vecD;
+  expectNearVectorValues(vecD3Rotated, expectedVecD3);
 }
 }  // namespace Neat

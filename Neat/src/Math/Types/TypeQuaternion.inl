@@ -388,7 +388,13 @@ inline constexpr Quaternion<T> conjugate(const Quaternion<T> &q) {
 
 template <typename T>
 inline constexpr Quaternion<T> inverse(const Quaternion<T> &q) {
-  return conjugate(q) / dot(q, q);
+  T dotProduct = dot(q, q);
+  if (dotProduct == Zero<T>) {
+    NT_CORE_ASSERT(false, "Cannot invert a quaternion with zero norm.");
+    return Quaternion<T>{};
+  }
+
+  return conjugate(q) / dotProduct;
 }
 
 template <typename T>
