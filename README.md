@@ -100,6 +100,8 @@ By default, `build.sh` will build all targets in Debug mode. To build an specifi
 ./Scripts/build.sh Debug FlappySpaceship
 ```
 
+This will be default run the unit tests after building.
+
 ## Examples
 ### Flappy Spaceship
 This is a simple implementation of a Flappy Bird-like game, meant to test the 2D rendering and check the ECS/events usage experience.
