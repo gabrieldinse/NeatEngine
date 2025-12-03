@@ -318,7 +318,7 @@ inline constexpr Vector<3, T> operator*(const Vector<3, T> &v,
 template <typename T>
 inline constexpr Vector<4, T> operator*(const Quaternion<T> &q,
                                         const Vector<4, T> &v) {
-  return Vector<4, T>{q * Vector<3, T>(v), v.w};
+  return Vector<4, T>{q * Vector<3, T>(v), v.w()};
 }
 
 template <typename T>

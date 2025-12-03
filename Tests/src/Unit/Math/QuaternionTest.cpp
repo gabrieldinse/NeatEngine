@@ -637,7 +637,7 @@ TEST_F(QuaternionTest, NonMemberMultiplyOperator) {
   expectNearQuaternionValues(qdProd, (QuaternionD{-28.0, 4.0, 6.0, 8.0}));
 }
 
-TEST_F(QuaternionTest, NonMemberMultiplyQuaternionVectorOperator) {
+TEST_F(QuaternionTest, NonMemberMultiplyQuaternionVector3Operator) {
   Vector3F vecF{1.0f, 0.0f, 0.0f};
   Vector3F vecFRotated = quaternionf * vecF;
   expectNearVectorValues(vecFRotated, Vector3F{-49.0f, 20.0f, 10.0f});
@@ -665,7 +665,7 @@ TEST_F(QuaternionTest, NonMemberMultiplyQuaternionVectorOperator) {
       Vector3D{-0.66666662693023682, 0.66666662693023682, 0.33333331346511841});
 }
 
-TEST_F(QuaternionTest, NonMemberMultiplyVectorQuaternionOperator) {
+TEST_F(QuaternionTest, NonMemberMultiplyVector3QuaternionOperator) {
   Vector3F vecF{1.0f, 0.0f, 0.0f};
   Vector3F vecFRotated = vecF * quaternionf;
   Vector3F expectedVecF = inverse(quaternionf) * vecF;
@@ -694,4 +694,121 @@ TEST_F(QuaternionTest, NonMemberMultiplyVectorQuaternionOperator) {
   Vector3D expectedVecD3 = inverse(normalize(quaterniond)) * vecD;
   expectNearVectorValues(vecD3Rotated, expectedVecD3);
 }
+
+TEST_F(QuaternionTest, RotateVector3) {
+  // Same as Quaternion * Vector
+  Vector3F vecF{1.0f, 0.0f, 0.0f};
+  Vector3F vecFRotated = rotate(quaternionf, vecF);
+  expectNearVectorValues(vecFRotated, Vector3F{-49.0f, 20.0f, 10.0f});
+
+  Vector3F vecF2{0.5, 1.5, -2.0f};
+  Vector3F vecF2Rotated = rotate(quaternionf, vecF2);
+  expectNearVectorValues(vecF2Rotated, Vector3F{-62.5f, -88.5f, 97.0f});
+
+  Vector3F vecF3Rotated = rotate(normalize(quaternionf), vecF);
+  expectNearVectorValues(vecF3Rotated,
+                         Vector3F{-0.66666662693023682f, 0.66666662693023682f,
+                                  0.33333331346511841f});
+
+  Vector3D vecD{1.0, 0.0, 0.0};
+  Vector3D vecDRotated = rotate(quaterniond, vecD);
+  expectNearVectorValues(vecDRotated, Vector3D{-49.0, 20.0, 10.0});
+
+  Vector3D vecD2{0.5, 1.5, -2.0};
+  Vector3D vecD2Rotated = rotate(quaterniond, vecD2);
+  expectNearVectorValues(vecD2Rotated, Vector3D{-62.5, -88.5, 97.0});
+
+  Vector3D vecD3Rotated = rotate(normalize(quaterniond), vecD);
+  expectNearVectorValues(
+      vecD3Rotated,
+      Vector3D{-0.66666662693023682, 0.66666662693023682, 0.33333331346511841});
+}
+
+TEST_F(QuaternionTest, NonMemberMultiplyQuaternionVector4Operator) {
+  Vector4F vecF{1.0f, 0.0f, 0.0f, 1.0f};
+  Vector4F vecFRotated = quaternionf * vecF;
+  expectNearVectorValues(vecFRotated, Vector4F{-49.0f, 20.0f, 10.0f, 1.0f});
+
+  Vector4F vecF2{0.5, 1.5, -2.0f, 1.0f};
+  Vector4F vecF2Rotated = quaternionf * vecF2;
+  expectNearVectorValues(vecF2Rotated, Vector4F{-62.5f, -88.5f, 97.0f, 1.0f});
+
+  Vector4F vecF3Rotated = normalize(quaternionf) * vecF;
+  expectNearVectorValues(vecF3Rotated,
+                         Vector4F{-0.66666662693023682f, 0.66666662693023682f,
+                                  0.33333331346511841f, 1.0f});
+
+  Vector4D vecD{1.0, 0.0, 0.0, 1.0};
+  Vector4D vecDRotated = quaterniond * vecD;
+  expectNearVectorValues(vecDRotated, Vector4D{-49.0, 20.0, 10.0, 1.0});
+
+  Vector4D vecD2{0.5, 1.5, -2.0, 1.0};
+  Vector4D vecD2Rotated = quaterniond * vecD2;
+  expectNearVectorValues(vecD2Rotated, Vector4D{-62.5, -88.5, 97.0, 1.0});
+
+  Vector4D vecD3Rotated = normalize(quaterniond) * vecD;
+  expectNearVectorValues(vecD3Rotated,
+                         Vector4D{-0.66666662693023682, 0.66666662693023682,
+                                  0.33333331346511841, 1.0});
+}
+
+TEST_F(QuaternionTest, NonMemberMultiplyVector4QuaternionOperator) {
+  Vector4F vecF{1.0f, 0.0f, 0.0f, 1.0f};
+  Vector4F vecFRotated = vecF * quaternionf;
+  Vector4F expectedVecF = inverse(quaternionf) * vecF;
+  expectNearVectorValues(vecFRotated, expectedVecF);
+
+  Vector4F vecF2{0.5, 1.5, -2.0f, 1.0f};
+  Vector4F vecF2Rotated = vecF2 * quaternionf;
+  Vector4F expectedVecF2 = inverse(quaternionf) * vecF2;
+  expectNearVectorValues(vecF2Rotated, expectedVecF2);
+
+  Vector4F vecF3Rotated = vecF * normalize(quaternionf);
+  Vector4F expectedVecF3 = inverse(normalize(quaternionf)) * vecF;
+  expectNearVectorValues(vecF3Rotated, expectedVecF3);
+
+  Vector4D vecD{1.0, 0.0, 0.0, 1.0};
+  Vector4D vecDRotated = vecD * quaterniond;
+  Vector4D expectedVecD = inverse(quaterniond) * vecD;
+  expectNearVectorValues(vecDRotated, expectedVecD);
+
+  Vector4D vecD2{0.5, 1.5, -2.0, 1.0};
+  Vector4D vecD2Rotated = vecD2 * quaterniond;
+  Vector4D expectedVecD2 = inverse(quaterniond) * vecD2;
+  expectNearVectorValues(vecD2Rotated, expectedVecD2);
+
+  Vector4D vecD3Rotated = vecD * normalize(quaterniond);
+  Vector4D expectedVecD3 = inverse(normalize(quaterniond)) * vecD;
+  expectNearVectorValues(vecD3Rotated, expectedVecD3);
+}
+
+TEST_F(QuaternionTest, RotateVector4) {
+  // Same as Quaternion * Vector
+  Vector4F vecF{1.0f, 0.0f, 0.0f, 1.0f};
+  Vector4F vecFRotated = rotate(quaternionf, vecF);
+  expectNearVectorValues(vecFRotated, Vector4F{-49.0f, 20.0f, 10.0f, 1.0f});
+
+  Vector4F vecF2{0.5, 1.5, -2.0f, 1.0f};
+  Vector4F vecF2Rotated = rotate(quaternionf, vecF2);
+  expectNearVectorValues(vecF2Rotated, Vector4F{-62.5f, -88.5f, 97.0f, 1.0f});
+
+  Vector4F vecF3Rotated = rotate(normalize(quaternionf), vecF);
+  expectNearVectorValues(vecF3Rotated,
+                         Vector4F{-0.66666662693023682f, 0.66666662693023682f,
+                                  0.33333331346511841f, 1.0f});
+
+  Vector4D vecD{1.0, 0.0, 0.0, 1.0};
+  Vector4D vecDRotated = rotate(quaterniond, vecD);
+  expectNearVectorValues(vecDRotated, Vector4D{-49.0, 20.0, 10.0, 1.0});
+
+  Vector4D vecD2{0.5, 1.5, -2.0, 1.0};
+  Vector4D vecD2Rotated = rotate(quaterniond, vecD2);
+  expectNearVectorValues(vecD2Rotated, Vector4D{-62.5, -88.5, 97.0, 1.0});
+
+  Vector4D vecD3Rotated = rotate(normalize(quaterniond), vecD);
+  expectNearVectorValues(vecD3Rotated,
+                         Vector4D{-0.66666662693023682, 0.66666662693023682,
+                                  0.33333331346511841, 1.0});
+}
+
 }  // namespace Neat
