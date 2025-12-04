@@ -104,6 +104,15 @@ TEST_F(QuaternionTest, DotProduct) {
   EXPECT_DOUBLE_EQ(dotD, 30.0);
 }
 
+TEST_F(QuaternionTest, CrossProduct) {
+  // Same as multiplying quaterions
+  QuaternionF qfProd = cross(quaternionf, quaternionf);
+  expectNearQuaternionValues(qfProd, (QuaternionF{-28.0f, 4.0f, 6.0f, 8.0f}));
+
+  QuaternionD qdProd = cross(quaterniond, quaterniond);
+  expectNearQuaternionValues(qdProd, (QuaternionD{-28.0, 4.0, 6.0, 8.0}));
+}
+
 TEST_F(QuaternionTest, Norm) {
   float normF = norm(quaternionf);
   EXPECT_FLOAT_EQ(normF, sqrt(30.0f));
@@ -536,6 +545,26 @@ TEST_F(QuaternionTest, EqualOperator) {
   EXPECT_TRUE(qdEqual == quaterniond);
 }
 
+TEST_F(QuaternionTest, NotEqualOperator) {
+  QuaternionF qfEqual = quaternionf;
+  EXPECT_FALSE(qfEqual != quaternionf);
+
+  QuaternionD qdEqual = quaterniond;
+  EXPECT_FALSE(qdEqual != quaterniond);
+
+  qfEqual.y() = 5.0f;
+  EXPECT_TRUE(qfEqual != quaternionf);
+
+  qdEqual.y() = 5.0;
+  EXPECT_TRUE(qdEqual != quaterniond);
+
+  qfEqual.y() = 3.0f;
+  EXPECT_FALSE(qfEqual != quaternionf);
+
+  qdEqual.y() = 3.0;
+  EXPECT_FALSE(qdEqual != quaterniond);
+}
+
 TEST_F(QuaternionTest, AssignmentOperator) {
   QuaternionF qf{0.5f, 0.6f, 0.7f, 0.8f};
   qf = quaternionf;
@@ -811,4 +840,27 @@ TEST_F(QuaternionTest, RotateVector4) {
                                   0.33333331346511841, 1.0});
 }
 
+TEST_F(QuaternionTest, NonMemberMultiplyQuaternionScalarOperator) {
+  QuaternionF qfScaled = quaternionf * 2.0f;
+  EXPECT_EQ(qfScaled, (QuaternionF{2.0f, 4.0f, 6.0f, 8.0f}));
+
+  QuaternionD qdScaled = quaterniond * 2.0;
+  EXPECT_EQ(qdScaled, (QuaternionD{2.0, 4.0, 6.0, 8.0}));
+}
+
+TEST_F(QuaternionTest, NonMemberMultiplyScalarQuaternionOperator) {
+  QuaternionF qfScaled = 2.0f * quaternionf;
+  EXPECT_EQ(qfScaled, (QuaternionF{2.0f, 4.0f, 6.0f, 8.0f}));
+
+  QuaternionD qdScaled = 2.0 * quaterniond;
+  EXPECT_EQ(qdScaled, (QuaternionD{2.0, 4.0, 6.0, 8.0}));
+}
+
+TEST_F(QuaternionTest, NonMemberDivideQuaternionScalarOperator) {
+  QuaternionF qfScaled = quaternionf / 2.0f;
+  EXPECT_EQ(qfScaled, (QuaternionF{0.5f, 1.0f, 1.5f, 2.0f}));
+
+  QuaternionD qdScaled = quaterniond / 2.0;
+  EXPECT_EQ(qdScaled, (QuaternionD{0.5, 1.0, 1.5, 2.0}));
+}
 }  // namespace Neat

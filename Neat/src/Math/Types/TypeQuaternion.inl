@@ -342,6 +342,9 @@ inline constexpr Quaternion<T> operator*(T const &scalar,
 template <typename T>
 inline constexpr Quaternion<T> operator/(const Quaternion<T> &q,
                                          const T &scalar) {
+  NT_CORE_ASSERT(scalar != Zero<T>,
+                 "Division by zero in Quaternion scalar division.");
+
   return Quaternion<T>{q} /= scalar;
 }
 
