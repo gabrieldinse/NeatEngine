@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <TestUtils.hpp>
+#include "ECS/EntityManager.hpp"
 
 namespace Neat {
 class EntityManagerTest : public testing::Test {
@@ -476,5 +477,33 @@ TEST_F(EntityManagerTest, EntitiesWithComponents) {
     noEntities.push_back(entity);
   }
   EXPECT_EQ(noEntities.size(), 0);
+}
+
+TEST_F(EntityManagerTest, Unpack) {
+  auto entity1 = entityManager->createEntity();
+  entity1.addComponent<SpeedComponent>(Vector3F{5.0f, 10.0f, 15.0f});
+  entity1.addComponent<PlayerStatsComponent>(100, 50, 10);
+
+  ComponentHandle<SpeedComponent> speedComponentHandle;
+  ComponentHandle<PlayerStatsComponent> playerStatsComponentHandle;
+  ComponentHandle<InventoryComponent> inventoryComponentHandle;
+  EXPECT_TRUE(entity1.unpack(speedComponentHandle, playerStatsComponentHandle));
+  EXPECT_TRUE(speedComponentHandle.isValid());
+  EXPECT_TRUE(playerStatsComponentHandle.isValid());
+  EXPECT_FALSE(inventoryComponentHandle.isValid());
+  EXPECT_EQ(speedComponentHandle->velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
+  EXPECT_EQ(playerStatsComponentHandle->health, 100);
+  EXPECT_EQ(playerStatsComponentHandle->mana, 50);
+  EXPECT_EQ(playerStatsComponentHandle->damage, 10);
+
+  entity1.getComponent<SpeedComponent>().value()->velocity =
+      Vector3F{20.0f, 30.0f, 40.0f};
+  entity1.getComponent<PlayerStatsComponent>().value()->health = 300;
+  entity1.getComponent<PlayerStatsComponent>().value()->mana = 150;
+  entity1.getComponent<PlayerStatsComponent>().value()->damage = 25;
+
+  EXPECT_FALSE(entity1.unpack(speedComponentHandle, playerStatsComponentHandle,
+                              inventoryComponentHandle));
+  EXPECT_FALSE(inventoryComponentHandle.isValid());
 }
 }  // namespace Neat
