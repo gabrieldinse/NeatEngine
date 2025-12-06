@@ -365,6 +365,41 @@ TEST_F(EntityManagerTest, RemoveComponent) {
   EXPECT_EQ(lastPlayerStatsComponentRemoved.health, 100);
 }
 
+TEST_F(EntityManagerTest, RemoveComponentFromComponentHandle) {
+  auto entity1 = entityManager->createEntity();
+  auto speedComponentHandleOpt =
+      entity1.addComponent<SpeedComponent>(Vector3F{5.0f, 10.0f, 15.0f});
+  EXPECT_TRUE(speedComponentHandleOpt.has_value());
+
+  auto speedComponentHandle = *speedComponentHandleOpt;
+  EXPECT_TRUE(entity1.hasComponent<SpeedComponent>());
+  EXPECT_FALSE(entity1.hasComponent<PlayerStatsComponent>());
+
+  speedComponentHandle.remove();
+  EXPECT_FALSE(entity1.hasComponent<SpeedComponent>());
+  EXPECT_FALSE(entity1.hasComponent<PlayerStatsComponent>());
+  EXPECT_FALSE(entity1.hasAnyComponent());
+  EXPECT_FALSE(speedComponentHandle.isValid());
+  EXPECT_NE(lastSpeedComponentRemoved.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
+
+  eventDispatcher->update();
+  EXPECT_EQ(lastSpeedComponentRemoved.velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
+
+  entity1.addComponent<SpeedComponent>(Vector3F{50.0f, 100.0f, 150.0f});
+  auto playerStatsComponentHandleOpt =
+      entity1.addComponent<PlayerStatsComponent>(100, 50, 10);
+  EXPECT_TRUE(playerStatsComponentHandleOpt.has_value());
+
+  auto playerStatsComponentHandle = *playerStatsComponentHandleOpt;
+  playerStatsComponentHandle.remove();
+  eventDispatcher->update();
+  EXPECT_FALSE(entity1.hasComponent<PlayerStatsComponent>());
+  EXPECT_TRUE(entity1.hasComponent<SpeedComponent>());
+  EXPECT_TRUE(entity1.hasAnyComponent());
+  EXPECT_FALSE(playerStatsComponentHandle.isValid());
+  EXPECT_EQ(lastPlayerStatsComponentRemoved.health, 100);
+}
+
 TEST_F(EntityManagerTest, ReplaceComponent) {
   auto entity1 = entityManager->createEntity();
   auto speedComponentHandleOpt =
@@ -505,5 +540,25 @@ TEST_F(EntityManagerTest, Unpack) {
   EXPECT_FALSE(entity1.unpack(speedComponentHandle, playerStatsComponentHandle,
                               inventoryComponentHandle));
   EXPECT_FALSE(inventoryComponentHandle.isValid());
+}
+
+TEST_F(EntityManagerTest, ComponentHandleGet) {
+  auto entity1 = entityManager->createEntity();
+  auto speedComponentHandleOpt =
+      entity1.addComponent<SpeedComponent>(Vector3F{5.0f, 10.0f, 15.0f});
+  EXPECT_TRUE(speedComponentHandleOpt.has_value());
+
+  auto speedComponentHandle = *speedComponentHandleOpt;
+  auto speedComponentPtr = speedComponentHandle.get();
+  EXPECT_NE(speedComponentPtr, nullptr);
+  EXPECT_EQ(speedComponentPtr->velocity, (Vector3F{5.0f, 10.0f, 15.0f}));
+
+  speedComponentPtr->velocity = Vector3F{25.0f, 50.0f, 75.0f};
+  EXPECT_EQ(speedComponentHandle->velocity, (Vector3F{25.0f, 50.0f, 75.0f}));
+
+  entity1.removeComponent<SpeedComponent>();
+  speedComponentPtr = speedComponentHandle.get();
+  EXPECT_FALSE(speedComponentHandle.isValid());
+  EXPECT_EQ(speedComponentPtr, nullptr);
 }
 }  // namespace Neat

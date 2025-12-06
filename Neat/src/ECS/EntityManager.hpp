@@ -1111,7 +1111,9 @@ template <typename C, typename EM>
 
 template <typename C, typename EM>
 [[nodiscard]] inline C *ComponentHandle<C, EM>::get() {
-  NT_CORE_ASSERT(isValid());
+  if (not isValid()) {
+    return nullptr;
+  }
 
   auto componentPtr{m_entityManager->template getComponentPtr<C>(m_id)};
   if (not componentPtr) {
@@ -1123,7 +1125,9 @@ template <typename C, typename EM>
 
 template <typename C, typename EM>
 [[nodiscard]] inline const C *ComponentHandle<C, EM>::get() const {
-  NT_CORE_ASSERT(isValid());
+  if (not isValid()) {
+    return nullptr;
+  }
 
   auto componentPtr{m_entityManager->template getComponentPtr<C>(m_id)};
   if (not componentPtr) {
