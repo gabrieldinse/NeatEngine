@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <TestUtils.hpp>
+#include "Math/Types/Vector3.hpp"
 
 namespace Neat {
 TEST(ProjectionTest, OrthographicProjection) {
@@ -61,5 +62,35 @@ TEST(ProjectionTest, PerspectiveProjection) {
                             0.0,        0.0, 0.0,  0.0, -1.0004, -0.20004,
                             0.0,        0.0, -1.0, 0.0};
   expectNearMatrixValues(perspectiveMatrix2D, expectedMatrix2D);
+}
+
+TEST(ProjectionTest, LookAtRightHandView) {
+  {
+    Vector3F eye{0.0f, 0.0f, 5.0f};
+    Vector3F target{0.0f, 0.0f, 0.0f};
+    Vector3F up{0.0f, 1.0f, 0.0f};
+
+    Matrix4F viewMatrix = lookAtRightHandView(eye, target, up);
+
+    Matrix4F expectedMatrix{1.0f, 0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f, 0.0f,
+                            0.0f, 0.0f, 1.0f, -5.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+
+    expectNearMatrixValues(viewMatrix, expectedMatrix);
+  }
+
+  {
+    Vector3D eye{0.0, 4.0, 10.0};
+    Vector3D target{0.0, 0.0, 0.0};
+    Vector3D up{0.0, 1.0, 0.0};
+
+    Matrix4D viewMatrixD = lookAtRightHandView(eye, target, up);
+
+    Matrix4D expectedMatrixD{1.0, 0.0,        0.0,         0.0,
+                             0.0, 0.92847669, -0.37139068, 0.0,
+                             0.0, 0.37139068, 0.92847669,  -10.77032961,
+                             0.0, 0.0,        0.0,         1.0};
+
+    expectNearMatrixValues(viewMatrixD, expectedMatrixD);
+  }
 }
 }  // namespace Neat

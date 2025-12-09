@@ -1,5 +1,7 @@
 #include <cmath>
 
+#include "Constants.hpp"
+
 namespace Neat {
 template <typename T>
 Matrix<4, 4, T> orthographicProjection(const T &left, const T &right,
@@ -23,9 +25,9 @@ Matrix<4, 4, T> perspectiveProjection(const T &fieldOfView,
                                       const T &far) {
   Matrix<4, 4, T> result(One<T>);
 
-  T tan_half_fov = std::tan(fieldOfView / Two<T>);
-  result[0][0] = One<T> / (aspectRatio * tan_half_fov);
-  result[1][1] = One<T> / tan_half_fov;
+  T tanHalfFov = std::tan(fieldOfView / Two<T>);
+  result[0][0] = One<T> / (aspectRatio * tanHalfFov);
+  result[1][1] = One<T> / tanHalfFov;
   result[2][2] = -(far + near) / (far - near);
   result[2][3] = -Two<T> * far * near / (far - near);
   result[3][2] = -One<T>;
@@ -42,9 +44,21 @@ Matrix<4, 4, T> lookAtRightHandView(const Vector<3, T> &eye,
   Vector<3, T> right(normalize(cross(front, upDirection)));
   Vector<3, T> up(cross(right, front));
 
-  return Matrix<4, 4, T>(right.x(), right.y, right.z, -dot(eye, right), up.x(),
-                         up.y, up.z, -dot(eye, up), -front.x(), -front.y,
-                         -front.z, dot(eye, front), 0, 0, 0, 1);
+  Matrix<4, 4, T> result{};
+  result[0, 0] = right.x();
+  result[0, 1] = right.y();
+  result[0, 2] = right.z();
+  result[1, 0] = up.x();
+  result[1, 1] = up.y();
+  result[1, 2] = up.z();
+  result[2, 0] = -front.x();
+  result[2, 1] = -front.y();
+  result[2, 2] = -front.z();
+  result[0, 3] = -dot(right, eye);
+  result[1, 3] = -dot(up, eye);
+  result[2, 3] = dot(front, eye);
+
+  return result;
 }
 
 template <typename T>
