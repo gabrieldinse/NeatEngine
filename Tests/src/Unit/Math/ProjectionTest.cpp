@@ -93,4 +93,33 @@ TEST(ProjectionTest, LookAtRightHandView) {
     expectNearMatrixValues(viewMatrixD, expectedMatrixD);
   }
 }
+
+TEST(ProjectionTest, LookAtLeftHandView) {
+  {
+    Vector3F eye{0.0f, 0.0f, 5.0f};
+    Vector3F target{0.0f, 0.0f, 0.0f};
+    Vector3F up{0.0f, 1.0f, 0.0f};
+
+    Matrix4F viewMatrix = lookAtLeftHandView(eye, target, up);
+
+    Matrix4F expectedMatrix{-1.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+                            0.0f,  0.0f, -1.0f, 5.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+    expectNearMatrixValues(viewMatrix, expectedMatrix);
+  }
+
+  {
+    Vector3D eye{0.0, 4.0, 10.0};
+    Vector3D target{0.0, 0.0, 0.0};
+    Vector3D up{0.0, 1.0, 0.0};
+
+    Matrix4D viewMatrixD = lookAtLeftHandView(eye, target, up);
+
+    Matrix4D expectedMatrixD{-1.0, 0.0,         0.0,         0.0,
+                             0.0,  0.92847669,  -0.37139068, 0.0,
+                             0.0,  -0.37139068, -0.92847669, 10.77032961,
+                             0.0,  0.0,         0.0,         1.0};
+
+    expectNearMatrixValues(viewMatrixD, expectedMatrixD);
+  }
+}
 }  // namespace Neat
